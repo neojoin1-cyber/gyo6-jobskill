@@ -172,7 +172,7 @@ export default function LoginScreen() {
     <div style={{ minHeight: '100dvh', background: 'linear-gradient(160deg, #4C1D95 0%, #6D28D9 45%, #92400E 100%)', overflowY: 'auto', WebkitOverflowScrolling: 'touch' }}>
       {/* 헤더 */}
       <div style={{ textAlign: 'center', padding: '52px 24px 24px' }}>
-        <img src="/icons/icon-192.png" alt="설탕과소금"
+        <img src={`${import.meta.env.BASE_URL}icons/icon-192.png`} alt="설탕과소금"
           style={{ width: 80, height: 80, borderRadius: 22, marginBottom: 16, boxShadow: '0 8px 32px rgba(0,0,0,0.35)' }} />
         <h1 style={{ color: '#fff', fontSize: 28, fontWeight: 800, margin: '0 0 6px', letterSpacing: -0.5 }}>설탕과소금</h1>
         <p style={{ color: 'rgba(255,255,255,0.72)', fontSize: 14, margin: 0, lineHeight: 1.6 }}>
@@ -261,7 +261,7 @@ export default function LoginScreen() {
     <div style={{ height: '100dvh', overflowY: 'auto', WebkitOverflowScrolling: 'touch', padding: '24px 24px 40px', boxSizing: 'border-box', background: 'var(--bg)' }}>
       {backBtn}
       <div style={{ textAlign: 'center', margin: '16px 0 28px' }}>
-        <img src="/icons/icon-192.png" alt="" style={{ width: 56, height: 56, borderRadius: 14, marginBottom: 10 }} />
+        <img src={`${import.meta.env.BASE_URL}icons/icon-192.png`} alt="" style={{ width: 56, height: 56, borderRadius: 14, marginBottom: 10 }} />
         <h1 style={{ fontSize: 20, fontWeight: 700, margin: '0 0 4px' }}>로그인</h1>
         <p style={{ color: 'var(--text-muted)', fontSize: 13, margin: 0 }}>설탕과소금 계정으로 로그인하세요</p>
       </div>
@@ -289,7 +289,7 @@ export default function LoginScreen() {
     <div style={{ height: '100dvh', overflowY: 'auto', WebkitOverflowScrolling: 'touch', padding: '24px 24px 40px', boxSizing: 'border-box', background: 'var(--bg)' }}>
       {backBtn}
       <div style={{ textAlign: 'center', margin: '16px 0 24px' }}>
-        <img src="/icons/icon-192.png" alt="" style={{ width: 56, height: 56, borderRadius: 14, marginBottom: 10 }} />
+        <img src={`${import.meta.env.BASE_URL}icons/icon-192.png`} alt="" style={{ width: 56, height: 56, borderRadius: 14, marginBottom: 10 }} />
         <h1 style={{ fontSize: 20, fontWeight: 700, margin: '0 0 4px' }}>회원가입</h1>
       </div>
 
