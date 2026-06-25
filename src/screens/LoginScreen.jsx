@@ -169,7 +169,7 @@ export default function LoginScreen() {
   const isNative = Capacitor.isNativePlatform()
 
   if (view === 'landing') return (
-    <div style={{ minHeight: '100dvh', background: 'linear-gradient(160deg, #4C1D95 0%, #6D28D9 45%, #92400E 100%)', overflowY: 'auto', WebkitOverflowScrolling: 'touch' }}>
+    <div style={{ height: '100dvh', background: 'linear-gradient(160deg, #4C1D95 0%, #6D28D9 45%, #92400E 100%)', overflowY: 'scroll', WebkitOverflowScrolling: 'touch', overscrollBehavior: 'contain' }}>
       {/* 헤더 */}
       <div style={{ textAlign: 'center', padding: '52px 24px 24px' }}>
         <img src={`${import.meta.env.BASE_URL}icons/icon-192.png`} alt="설탕과소금"
@@ -247,7 +247,7 @@ export default function LoginScreen() {
         </div>
       </div>
 
-      <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.35)', fontSize: 11, margin: '24px 0 32px', lineHeight: 1.9 }}>
+      <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.35)', fontSize: 11, margin: '24px 0 0', paddingBottom: 'max(80px, env(safe-area-inset-bottom, 0px))', lineHeight: 1.9 }}>
         설탕과소금 AI Digital Content Lab<br />특성화고 · 마이스터고 취업 학습 플랫폼
       </p>
     </div>
