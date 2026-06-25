@@ -19,7 +19,7 @@ const LEVEL_BADGE_BG = {
 
 const CATEGORIES = [...new Set(lessons.map(l => l.category))]
 
-export default function InterviewStudyScreen() {
+export default function InterviewStudyScreen({ onBack }) {
   const [category,    setCategory]    = useState(null)
   const [lessonId,    setLessonId]    = useState(null)
   const [view,             setView]             = useState('theory')
@@ -63,6 +63,7 @@ export default function InterviewStudyScreen() {
     return (
       <div className="screen">
         <div className="appbar">
+          {onBack && <button className="appbar-back" onClick={onBack}>←</button>}
           <span className="appbar-title">🎤 면접 학습</span>
           <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>{lessons.length}개 단원</span>
         </div>

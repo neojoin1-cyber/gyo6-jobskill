@@ -44,8 +44,8 @@ function buildFoodAreas(qs) {
   return Object.values(map).sort((a, b) => a.id.localeCompare(b.id))
 }
 
-export default function StudyScreen() {
-  const [subjectId,    setSubjectId]    = useState('job-common')
+export default function StudyScreen({ initialSubject, onBack }) {
+  const [subjectId,    setSubjectId]    = useState(initialSubject ?? 'job-common')
   const [areaId,       setAreaId]       = useState(null)
   const [lessonId,     setLessonId]     = useState(null)
   const [learnIdx,     setLearnIdx]     = useState(0)
@@ -133,11 +133,13 @@ export default function StudyScreen() {
     return (
       <div className="screen">
         <div className="appbar">
-          <span className="appbar-title">📚 학습하기</span>
-          <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>{subject?.label}</span>
+          {onBack && (
+            <button className="appbar-back" onClick={onBack}>←</button>
+          )}
+          <span className="appbar-title">{subject?.label ?? '학습하기'}</span>
         </div>
         <div className="screen-body">
-          {subjectBar}
+          {!initialSubject && subjectBar}
           <p className="section-title">영역 선택</p>
           {areas.map(a => (
             <button key={a.id} onClick={() => selectArea(a.id)}

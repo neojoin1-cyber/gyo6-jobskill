@@ -15,7 +15,7 @@ const SOURCE_TABS = [
   { id: 'practice', label: '📝 문제풀이', sub: '520문항·모의10회' },
 ]
 
-export default function QualityMgmtScreen() {
+export default function QualityMgmtScreen({ onBack }) {
   const [source,      setSource]      = useState('textbook') // 'textbook' | 'practice'
   const [unitId,      setUnitId]      = useState(null)
   const [view,        setView]        = useState('theory')
@@ -83,7 +83,8 @@ export default function QualityMgmtScreen() {
     return (
       <div className="screen">
         <div className="appbar">
-          <span className="appbar-title">🏭 품질경영</span>
+          {onBack && <button className="appbar-back" onClick={onBack}>←</button>}
+          <span className="appbar-title">⚙️ 품질경영</span>
           <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>{data.meta.questionCount}문항</span>
         </div>
         {sourceBar}
