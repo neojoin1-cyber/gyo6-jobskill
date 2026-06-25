@@ -47,6 +47,7 @@ export default defineConfig({
       manifest: false,
     }),
   ],
+  base: process.env.GITHUB_ACTIONS ? '/gyo6-jobskill/' : '/',
   server: { port: 5173 },
   build: { outDir: 'dist' },
 })
