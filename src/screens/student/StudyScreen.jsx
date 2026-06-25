@@ -54,6 +54,7 @@ export default function StudyScreen() {
   const [quizAnswer,   setQuizAnswer]   = useState(null)
   const [quizRevealed, setQuizRevealed] = useState(false)
   const [quizDone,     setQuizDone]     = useState(false)
+  const [showJump,     setShowJump]     = useState(false)
 
   const questionIdx = studyMode === 'learn' ? learnIdx : quizIdx
 
@@ -258,78 +259,62 @@ export default function StudyScreen() {
     ? lessons.find(l => l.id === lessonId)?.label ?? '학습'
     : selectedArea?.label ?? '학습'
 
+  function handleBack() {
+    if (subjectId === 'job-common' && lessonId !== '__all__') setLessonId(null)
+    else setAreaId(null)
+    resetQuiz(); setShowJump(false)
+  }
+
   return (
-    <div className="screen">
-      <div className="appbar">
-        <button className="appbar-back" onClick={() => {
-          if (subjectId === 'job-common' && lessonId !== '__all__') setLessonId(null)
-          else setAreaId(null)
-          resetQuiz()
-        }}>←</button>
-        <span className="appbar-title" style={{ fontSize: 13 }}>{backTitle}</span>
-        <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>{questionIdx + 1}/{total}</span>
-      </div>
-
-      {/* 진행 바 */}
-      <div style={{ height: 3, background: 'var(--border)' }}>
-        <div style={{
-          height: '100%', background: 'var(--primary)',
-          width: `${((questionIdx + 1) / total) * 100}%`,
-          transition: 'width 0.2s',
-        }} />
-      </div>
-
-      <div style={{ flex: 1, overflowY: 'auto', padding: '14px 16px' }}>
-
-        {/* 학습/퀴즈 모드 토글 */}
-        <div style={{
-          display: 'flex', gap: 0, marginBottom: 14,
-          background: 'var(--bg)', borderRadius: 10,
-          border: '1px solid var(--border)', overflow: 'hidden',
-        }}>
-          {[
-            { id: 'learn', label: '📖 학습', sub: '답 바로 확인' },
-            { id: 'quiz',  label: '📝 퀴즈', sub: '1번부터 시작' },
-          ].map(m => (
+    <div className="screen" style={{ position: 'relative' }}>
+      {/* ── 컴팩트 단일 헤더 ── */}
+      <div style={{
+        display: 'flex', alignItems: 'center', gap: 6,
+        padding: '0 8px', height: 44,
+        borderBottom: '1px solid var(--border)',
+        background: 'var(--card)', flexShrink: 0,
+      }}>
+        <button onClick={handleBack}
+          style={{ background: 'none', border: 'none', fontSize: 20, cursor: 'pointer', color: 'var(--primary)', padding: '0 4px', flexShrink: 0 }}>
+          ←
+        </button>
+        <span style={{ flex: 1, fontSize: 13, fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          {backTitle}
+        </span>
+        {/* 학습/퀴즈 미니 토글 */}
+        <div style={{ display: 'flex', background: 'var(--border)', borderRadius: 8, padding: 2, flexShrink: 0 }}>
+          {[{ id: 'learn', label: '학습' }, { id: 'quiz', label: '퀴즈' }].map(m => (
             <button key={m.id} onClick={() => switchMode(m.id)}
               style={{
-                flex: 1, padding: '9px 0', border: 'none', cursor: 'pointer',
+                padding: '4px 10px', border: 'none', borderRadius: 6,
+                fontSize: 12, fontWeight: 700, cursor: 'pointer',
                 background: studyMode === m.id ? 'var(--primary)' : 'transparent',
                 color: studyMode === m.id ? '#fff' : 'var(--text-muted)',
-                fontWeight: studyMode === m.id ? 700 : 400, fontSize: 13,
-                lineHeight: 1.3,
               }}>
               {m.label}
-              <span style={{
-                display: 'block', fontSize: 10,
-                opacity: studyMode === m.id ? 0.8 : 0.6,
-                fontWeight: 400,
-              }}>{m.sub}</span>
             </button>
           ))}
         </div>
+        <span style={{ fontSize: 12, color: 'var(--text-muted)', fontWeight: 600, flexShrink: 0 }}>
+          {questionIdx + 1}/{total}
+        </span>
+      </div>
 
-        {/* 퀴즈 모드 안내 */}
-        {studyMode === 'quiz' && (
-          <p style={{ fontSize: 11, color: 'var(--text-muted)', textAlign: 'center', marginBottom: 8 }}>
-            💡 학습 ↔ 퀴즈 전환 시 퀴즈는 1번 문항부터 다시 시작됩니다
-          </p>
-        )}
+      {/* 진행 바 */}
+      <div style={{ height: 3, background: 'var(--border)', flexShrink: 0 }}>
+        <div style={{ height: '100%', background: 'var(--primary)', width: `${((questionIdx + 1) / total) * 100}%`, transition: 'width 0.2s' }} />
+      </div>
 
-        {/* 배지 */}
-        <div style={{ display: 'flex', gap: 6, marginBottom: 10, flexWrap: 'wrap' }}>
+      {/* ── 콘텐츠 영역 ── */}
+      <div style={{ flex: 1, overflowY: 'auto', padding: '10px 14px 8px' }}>
+        <div style={{ display: 'flex', gap: 5, marginBottom: 8, flexWrap: 'wrap' }}>
           {q?.area && <span className="badge badge-blue">{q.area}</span>}
           {q?.lessonTitle && <span className="badge badge-gray" style={{ fontSize: 10 }}>{q.lessonTitle}</span>}
           {isSelf && <span className="badge badge-yellow">서술형</span>}
           {isOX   && <span className="badge badge-green">O/X</span>}
         </div>
 
-        {/* ── 학습 모드 ─────────────────────────────────────────────── */}
-        {isLearn && (
-          <LearnCard q={q} isSelf={isSelf} isOX={isOX} correctIdx={correctIdx} />
-        )}
-
-        {/* ── 퀴즈 모드 ─────────────────────────────────────────────── */}
+        {isLearn && <LearnCard q={q} isSelf={isSelf} isOX={isOX} correctIdx={correctIdx} />}
         {!isLearn && (
           <QuizCard
             q={q} isSelf={isSelf} isOX={isOX} correctIdx={correctIdx}
@@ -338,44 +323,74 @@ export default function StudyScreen() {
             courseId={subjectId === 'food-service' ? 3 : 1}
           />
         )}
-
-        {/* 이전/다음 */}
-        <div style={{ display: 'flex', gap: 10, marginTop: 14 }}>
-          <button className="btn btn-ghost" style={{ flex: 1 }}
-            disabled={questionIdx === 0}
-            onClick={() => goQuestion(questionIdx - 1)}>
-            ← 이전
-          </button>
-          {studyMode === 'quiz' && questionIdx === total - 1 ? (
-            <button className="btn btn-primary" style={{ flex: 1, background: 'var(--success)' }}
-              onClick={() => { setQuizDone(true); recordActivity('quiz') }}>
-              ✅ 퀴즈 완료
-            </button>
-          ) : (
-            <button className="btn btn-primary" style={{ flex: 1 }}
-              disabled={questionIdx === total - 1}
-              onClick={() => goQuestion(questionIdx + 1)}>
-              다음 →
-            </button>
-          )}
-        </div>
-
-        {/* 문항 점프 */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 14, maxHeight: 120, overflowY: 'auto' }}>
-          {questionPool.map((_, i) => (
-            <button key={i} onClick={() => goQuestion(i)}
-              style={{
-                width: 36, height: 36, borderRadius: 8, fontSize: 12, fontWeight: 700,
-                border: `2px solid ${i === questionIdx ? 'var(--primary)' : 'var(--border)'}`,
-                background: i === questionIdx ? 'var(--primary)' : 'var(--card)',
-                color: i === questionIdx ? '#fff' : 'var(--text)',
-                cursor: 'pointer',
-              }}>
-              {i + 1}
-            </button>
-          ))}
-        </div>
       </div>
+
+      {/* ── 고정 하단 네비게이션 ── */}
+      <div style={{
+        display: 'flex', alignItems: 'center', gap: 8,
+        padding: '8px 12px', borderTop: '1px solid var(--border)',
+        background: 'var(--card)', flexShrink: 0,
+      }}>
+        <button className="btn btn-ghost" style={{ flex: 1, padding: '10px 0' }}
+          disabled={questionIdx === 0}
+          onClick={() => goQuestion(questionIdx - 1)}>
+          ← 이전
+        </button>
+        <button onClick={() => setShowJump(v => !v)}
+          style={{
+            padding: '10px 14px', background: 'var(--bg)',
+            border: '1px solid var(--border)', borderRadius: 10,
+            fontSize: 12, fontWeight: 700, cursor: 'pointer', color: 'var(--text)',
+          }}>
+          {questionIdx + 1}/{total}
+        </button>
+        {studyMode === 'quiz' && questionIdx === total - 1 ? (
+          <button className="btn btn-primary" style={{ flex: 1, padding: '10px 0', background: 'var(--success)' }}
+            onClick={() => { setQuizDone(true); recordActivity('quiz') }}>
+            완료 ✅
+          </button>
+        ) : (
+          <button className="btn btn-primary" style={{ flex: 1, padding: '10px 0' }}
+            disabled={questionIdx === total - 1}
+            onClick={() => goQuestion(questionIdx + 1)}>
+            다음 →
+          </button>
+        )}
+      </div>
+
+      {/* ── 번호 이동 바텀시트 ── */}
+      {showJump && (
+        <>
+          <div onClick={() => setShowJump(false)}
+            style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.3)', zIndex: 99 }} />
+          <div style={{
+            position: 'fixed', bottom: 0, left: 0, right: 0,
+            background: 'var(--card)', borderRadius: '18px 18px 0 0',
+            border: '1px solid var(--border)', padding: '16px 14px 28px',
+            zIndex: 100, maxHeight: '45vh', overflowY: 'auto',
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+              <span style={{ fontWeight: 700, fontSize: 14 }}>문항 이동 · 전체 {total}문항</span>
+              <button onClick={() => setShowJump(false)}
+                style={{ background: 'none', border: 'none', fontSize: 22, cursor: 'pointer', color: 'var(--text-muted)' }}>×</button>
+            </div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+              {questionPool.map((_, i) => (
+                <button key={i} onClick={() => { goQuestion(i); setShowJump(false) }}
+                  style={{
+                    width: 42, height: 42, borderRadius: 10, fontSize: 13, fontWeight: 700,
+                    border: `2px solid ${i === questionIdx ? 'var(--primary)' : 'var(--border)'}`,
+                    background: i === questionIdx ? 'var(--primary)' : 'var(--card)',
+                    color: i === questionIdx ? '#fff' : 'var(--text)',
+                    cursor: 'pointer',
+                  }}>
+                  {i + 1}
+                </button>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   )
 }
