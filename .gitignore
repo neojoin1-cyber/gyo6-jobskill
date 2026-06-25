@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.env.local
+.env.*.local
+archive/
+
+# 보안 파일 — 절대 커밋 금지
+android/app/google-services.json
+android/app/*.jks
+android/keystore.properties
+.env

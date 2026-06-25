@@ -1,0 +1,35 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#5B21B6"/>
+      <stop offset="100%" stop-color="#B45309"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 배경 -->
+  <rect width="512" height="512" rx="80" fill="url(#bg)"/>
+
+  <!-- 흰 다이아몬드 (설탕 크리스탈) -->
+  <polygon points="210,50 370,210 210,370 50,210" fill="white" opacity="0.93"/>
+  <!-- 다이아몬드 내부 광택 -->
+  <polygon points="210,100 310,210 210,320 110,210" fill="white" opacity="0.18"/>
+
+  <!-- 황금 육각형 (소금 크리스탈) -->
+  <polygon points="400,310 355,388 265,388 220,310 265,232 355,232" fill="#FCD34D" opacity="0.93"/>
+  <!-- 육각형 내부 광택 -->
+  <polygon points="370,310 345,352 295,352 270,310 295,268 345,268" fill="white" opacity="0.22"/>
+
+  <!-- 황금 별 스파클 (우상단) -->
+  <path d="M418,88 L423,73 L428,88 L443,93 L428,98 L423,113 L418,98 L403,93 Z" fill="#FDE68A" opacity="0.95"/>
+
+  <!-- 흰 별 스파클 (좌하단) -->
+  <path d="M78,392 L82,380 L86,392 L98,396 L86,400 L82,412 L78,400 L66,396 Z" fill="white" opacity="0.88"/>
+
+  <!-- 소형 점 스파클 -->
+  <circle cx="445" cy="162" r="5" fill="#FDE68A" opacity="0.75"/>
+  <circle cx="458" cy="385" r="6" fill="#FDE68A" opacity="0.55"/>
+  <circle cx="66"  cy="142" r="5" fill="white"   opacity="0.72"/>
+  <circle cx="52"  cy="365" r="4" fill="white"   opacity="0.55"/>
+  <circle cx="438" cy="248" r="3" fill="#FDE68A" opacity="0.65"/>
+  <circle cx="138" cy="450" r="4" fill="white"   opacity="0.60"/>
+</svg>

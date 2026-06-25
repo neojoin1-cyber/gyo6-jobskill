@@ -1,0 +1,40 @@
+{
+  "name": "gyo6-jobskill-game",
+  "version": "1.0.0",
+  "description": "직업공통능력 교재 매치3+퀴즈 하이브리드 게임 학습 앱",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "extract": "node scripts/extract-questions.cjs",
+    "verify": "node scripts/verify-extraction.cjs",
+    "icons": "node scripts/generate-icons.mjs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@capacitor/android": "^8.4.1",
+    "@capacitor/cli": "^8.4.1",
+    "@capacitor/core": "^8.4.1",
+    "@capacitor/push-notifications": "^8.1.1",
+    "@capacitor/splash-screen": "^8.0.1",
+    "@capacitor/status-bar": "^8.0.2",
+    "@supabase/supabase-js": "^2.108.2",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-router-dom": "^7.18.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
+    "@vitejs/plugin-react": "^6.0.3",
+    "cheerio": "^1.2.0",
+    "pg": "^8.22.0",
+    "sharp": "^0.35.2",
+    "vite": "^8.1.0",
+    "vite-plugin-pwa": "^1.3.0"
+  }
+}

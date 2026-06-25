@@ -1,0 +1,356 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-06-24",
+  "areas": [
+    {
+      "id": "a01",
+      "displayName": "의사소통능력",
+      "totalQuestions": 43,
+      "lessons": [
+        {
+          "id": "C01-0",
+          "title": "의사소통능력 진단평가",
+          "level": "진단",
+          "questionCount": 9,
+          "isAGradeLesson": true
+        },
+        {
+          "id": "C09-8",
+          "title": "업무 공지문과 이메일에서 핵심 정보 찾기",
+          "level": "기초",
+          "questionCount": 8,
+          "isAGradeLesson": true
+        },
+        {
+          "id": "C17-16",
+          "title": "보고서와 회의록에서 결론과 근거 찾기",
+          "level": "표준",
+          "questionCount": 8,
+          "isAGradeLesson": true
+        },
+        {
+          "id": "C25-24",
+          "title": "고급 비즈니스 커뮤니케이션",
+          "level": "심화",
+          "questionCount": 9,
+          "isAGradeLesson": true
+        },
+        {
+          "id": "C33-32",
+          "title": "의사소통능력 종합복습 및 실전모의고사",
+          "level": "심화",
+          "questionCount": 9,
+          "isAGradeLesson": true
+        }
+      ]
+    },
+    {
+      "id": "a02",
+      "displayName": "수리능력",
+      "totalQuestions": 40,
+      "lessons": [
+        {
+          "id": "C02-1",
+          "title": "수와 연산의 기초",
+          "level": "기초",
+          "questionCount": 8,
+          "isAGradeLesson": true
+        },
+        {
+          "id": "C10-9",
+          "title": "비율과 증감률 구분하기",
+          "level": "기초",
+          "questionCount": 8,
+          "isAGradeLesson": true
+        },
+        {
+          "id": "C18-17",
+          "title": "도표와 그래프에서 데이터 비교하기",
+          "level": "표준",
+          "questionCount": 9,
+          "isAGradeLesson": true
+        },
+        {
+          "id": "C26-25",
+          "title": "실무 자료의 평균, 중앙값, 비율 계산",
+          "level": "심화",
+          "questionCount": 7,
+          "isAGradeLesson": true
+        },
+        {
+          "id": "C34-33",
+          "title": "수리능력 종합평가",
+          "level": "심화",
+          "questionCount": 8,
+          "isAGradeLesson": true
+        }
+      ]
+    },
+    {
+      "id": "a03",
+      "displayName": "문제해결능력",
+      "totalQuestions": 41,
+      "lessons": [
+        {
+          "id": "C03-2",
+          "title": "문제해결능력의 기초 이해",
+          "level": "기초",
+          "questionCount": 8,
+          "isAGradeLesson": true
+        },
+        {
+          "id": "C11-10",
+          "title": "대안 비교와 최선의 해결책 선택",
+          "level": "기초",
+          "questionCount": 8,
+          "isAGradeLesson": true
+        },
+        {
+          "id": "C19-18",
+          "title": "복수 조건에서 우선순위 판단하기",
+          "level": "표준",
+          "questionCount": 7,
+          "isAGradeLesson": true
+        },
+        {
+          "id": "C27-26",
+          "title": "복합 문제 해결과 창의적 사고",
+          "level": "심화",
+          "questionCount": 9,
+          "isAGradeLesson": true
+        },
+        {
+          "id": "C35-34",
+          "title": "문제해결능력 종합평가",
+          "level": "심화",
+          "questionCount": 9,
+          "isAGradeLesson": true
+        }
+      ]
+    },
+    {
+      "id": "a04",
+      "displayName": "자기개발능력",
+      "totalQuestions": 18,
+      "lessons": [
+        {
+          "id": "C28-27",
+          "title": "자기개발 전략과 경력 설계",
+          "level": "심화",
+          "questionCount": 9,
+          "isAGradeLesson": true
+        },
+        {
+          "id": "C36-35",
+          "title": "자기개발능력 총정리",
+          "level": "심화",
+          "questionCount": 9,
+          "isAGradeLesson": true
+        }
+      ]
+    },
+    {
+      "id": "a05",
+      "displayName": "자원관리능력",
+      "totalQuestions": 18,
+      "lessons": [
+        {
+          "id": "C04-3",
+          "title": "자원관리능력 진단: 업무 일정표와 시간관리",
+          "level": "진단",
+          "questionCount": 2,
+          "isAGradeLesson": true
+        },
+        {
+          "id": "C12-11",
+          "title": "인력과 예산 배분하기",
+          "level": "기초",
+          "questionCount": 8,
+          "isAGradeLesson": true
+        },
+        {
+          "id": "C20-19",
+          "title": "복수 자원과 복수 제약 조건 최적화",
+          "level": "표준",
+          "questionCount": 8,
+          "isAGradeLesson": true
+        }
+      ]
+    },
+    {
+      "id": "a06",
+      "displayName": "정보능력",
+      "totalQuestions": 36,
+      "lessons": [
+        {
+          "id": "C05-4",
+          "title": "정보능력 진단: 업무에 필요한 정보 찾기",
+          "level": "진단",
+          "questionCount": 2,
+          "isAGradeLesson": true
+        },
+        {
+          "id": "C13-12",
+          "title": "자료 분류와 정보 신뢰도 판단",
+          "level": "기초",
+          "questionCount": 8,
+          "isAGradeLesson": true
+        },
+        {
+          "id": "C21-20",
+          "title": "AI 검색 결과 검증과 출처 확인",
+          "level": "표준",
+          "questionCount": 9,
+          "isAGradeLesson": true
+        },
+        {
+          "id": "C29-28",
+          "title": "지능형 정보처리와 활용 전략",
+          "level": "심화",
+          "questionCount": 8,
+          "isAGradeLesson": true
+        },
+        {
+          "id": "C37-36",
+          "title": "정보능력 활용 역량 평가",
+          "level": "심화",
+          "questionCount": 9,
+          "isAGradeLesson": true
+        }
+      ]
+    },
+    {
+      "id": "a07",
+      "displayName": "기술능력",
+      "totalQuestions": 46,
+      "lessons": [
+        {
+          "id": "C06-5",
+          "title": "기술능력 진단: 업무 도구와 기술 절차 이해",
+          "level": "진단",
+          "questionCount": 2,
+          "isAGradeLesson": true
+        },
+        {
+          "id": "C14-13",
+          "title": "업무 도구 선택과 오류 대응",
+          "level": "기초",
+          "questionCount": 8,
+          "isAGradeLesson": true
+        },
+        {
+          "id": "C22-21",
+          "title": "업무 자동화 도구 활용과 데이터 보안",
+          "level": "표준",
+          "questionCount": 9,
+          "isAGradeLesson": true
+        },
+        {
+          "id": "C30-29",
+          "title": "4차 산업혁명 기술과 융합 활용",
+          "level": "심화",
+          "questionCount": 9,
+          "isAGradeLesson": true
+        },
+        {
+          "id": "C38-37",
+          "title": "기술능력 융합 사고력 테스트",
+          "level": "심화",
+          "questionCount": 9,
+          "isAGradeLesson": true
+        },
+        {
+          "id": "C38-38",
+          "title": "기술능력 종합 복습",
+          "level": "종합",
+          "questionCount": 9,
+          "isAGradeLesson": true
+        }
+      ]
+    },
+    {
+      "id": "a08",
+      "displayName": "조직이해능력",
+      "totalQuestions": 35,
+      "lessons": [
+        {
+          "id": "C07-6",
+          "title": "조직이해능력 진단: 조직의 역할과 업무 흐름 이해",
+          "level": "진단",
+          "questionCount": 2,
+          "isAGradeLesson": true
+        },
+        {
+          "id": "C15-14",
+          "title": "보고체계와 협업 대상 구분",
+          "level": "기초",
+          "questionCount": 9,
+          "isAGradeLesson": true
+        },
+        {
+          "id": "C23-22",
+          "title": "이해관계자 분석과 조직 목표 이해",
+          "level": "표준",
+          "questionCount": 7,
+          "isAGradeLesson": true
+        },
+        {
+          "id": "C31-30",
+          "title": "조직 변화 관리와 리더십",
+          "level": "심화",
+          "questionCount": 8,
+          "isAGradeLesson": true
+        },
+        {
+          "id": "C39-39",
+          "title": "조직이해능력 종합 복습",
+          "level": "종합",
+          "questionCount": 9,
+          "isAGradeLesson": true
+        }
+      ]
+    },
+    {
+      "id": "a09",
+      "displayName": "직업윤리",
+      "totalQuestions": 34,
+      "lessons": [
+        {
+          "id": "C08-7",
+          "title": "직업윤리 진단: 직장에서 지켜야 할 기본 윤리 판단",
+          "level": "진단",
+          "questionCount": 2,
+          "isAGradeLesson": true
+        },
+        {
+          "id": "C16-15",
+          "title": "책임 있는 업무 태도와 보고 행동",
+          "level": "기초",
+          "questionCount": 7,
+          "isAGradeLesson": false
+        },
+        {
+          "id": "C24-23",
+          "title": "개인정보 보호와 이해충돌 판단",
+          "level": "표준",
+          "questionCount": 8,
+          "isAGradeLesson": true
+        },
+        {
+          "id": "C32-31",
+          "title": "기업윤리와 사회적 책임 경영",
+          "level": "심화",
+          "questionCount": 9,
+          "isAGradeLesson": true
+        },
+        {
+          "id": "C40-40",
+          "title": "직업윤리 종합 복습",
+          "level": "종합",
+          "questionCount": 8,
+          "isAGradeLesson": true
+        }
+      ]
+    }
+  ]
+}
