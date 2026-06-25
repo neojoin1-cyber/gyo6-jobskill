@@ -10,13 +10,29 @@ const EDUCATION_OFFICES = [
 ]
 
 const TABS = [
-  { id: 'login',   label: '로그인' },
   { id: 'student', label: '학생 가입' },
   { id: 'teacher', label: '교사 가입' },
 ]
 
+const COURSES = [
+  { icon: '📖', name: '직업기초능력', desc: '공채 필기시험 대비 · 9개 영역 311문항' },
+  { icon: '🍽️', name: '도제학교 외부평가 — 식음료서비스', desc: 'NCS 기반 이론 560문항' },
+  { icon: '⚙️', name: '도제학교 외부평가 — 품질경영', desc: 'ISO · KS 품질관리 이론' },
+  { icon: '🎤', name: '고졸취업 면접스킬', desc: '자소서 작성 · 면접 핵심 전략' },
+]
+
+const FEATURES = [
+  { icon: '🎯', text: '교사 미션 · 학급 관리' },
+  { icon: '🏆', text: '학급 · 전국 랭킹' },
+  { icon: '📝', text: '오답노트' },
+  { icon: '🔥', text: '학습 스트릭' },
+  { icon: '🌙', text: '다크모드' },
+  { icon: '📡', text: '오프라인 지원' },
+]
+
 export default function LoginScreen() {
-  const [tab,      setTab]     = useState('login')
+  const [view,     setView]    = useState('landing') // 'landing' | 'login' | 'signup'
+  const [tab,      setTab]     = useState('student')
   const [email,    setEmail]   = useState('')
   const [password, setPassword] = useState('')
   const [loading,  setLoading] = useState(false)
@@ -143,27 +159,125 @@ export default function LoginScreen() {
     setLoading(false)
   }
 
-  const submitFn = tab === 'login' ? handleLogin
+  const submitFn = view === 'login' ? handleLogin
     : tab === 'student' ? handleStudentJoin
     : handleTeacherJoin
 
+  // ── 랜딩 화면 ──
+  if (view === 'landing') return (
+    <div style={{ minHeight: '100dvh', background: 'linear-gradient(160deg, #4C1D95 0%, #6D28D9 45%, #92400E 100%)', overflowY: 'auto', WebkitOverflowScrolling: 'touch' }}>
+      {/* 헤더 */}
+      <div style={{ textAlign: 'center', padding: '52px 24px 24px' }}>
+        <img src="/icons/icon-192.png" alt="설탕과소금"
+          style={{ width: 80, height: 80, borderRadius: 22, marginBottom: 16, boxShadow: '0 8px 32px rgba(0,0,0,0.35)' }} />
+        <h1 style={{ color: '#fff', fontSize: 28, fontWeight: 800, margin: '0 0 6px', letterSpacing: -0.5 }}>설탕과소금</h1>
+        <p style={{ color: 'rgba(255,255,255,0.72)', fontSize: 14, margin: 0, lineHeight: 1.6 }}>
+          달콤한 취업 성공을 위한 짭짤한 실력 준비
+        </p>
+      </div>
+
+      {/* 글래스 카드 */}
+      <div style={{ margin: '0 16px', borderRadius: 22, border: '1px solid rgba(255,255,255,0.18)', background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', overflow: 'hidden' }}>
+        {/* 과목 */}
+        <div style={{ padding: '18px 20px 12px' }}>
+          <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 10, fontWeight: 700, letterSpacing: 2, margin: '0 0 14px', textTransform: 'uppercase' }}>학습 과목</p>
+          {COURSES.map((c, i) => (
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '10px 0', borderBottom: i < COURSES.length - 1 ? '1px solid rgba(255,255,255,0.08)' : 'none' }}>
+              <div style={{ width: 40, height: 40, borderRadius: 12, background: 'rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}>
+                {c.icon}
+              </div>
+              <div>
+                <div style={{ color: '#fff', fontSize: 14, fontWeight: 600, lineHeight: 1.3 }}>{c.name}</div>
+                <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: 11, marginTop: 2 }}>{c.desc}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* 구분선 */}
+        <div style={{ height: 1, background: 'rgba(255,255,255,0.1)' }} />
+
+        {/* 앱 기능 */}
+        <div style={{ padding: '14px 20px 18px' }}>
+          <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 10, fontWeight: 700, letterSpacing: 2, margin: '0 0 12px', textTransform: 'uppercase' }}>앱 기능</p>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px 8px' }}>
+            {FEATURES.map((f, i) => (
+              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <span style={{ fontSize: 16 }}>{f.icon}</span>
+                <span style={{ color: 'rgba(255,255,255,0.8)', fontSize: 12 }}>{f.text}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* 버튼 */}
+      <div style={{ padding: '20px 16px 0', display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <button onClick={() => { setView('login'); reset() }}
+          style={{ width: '100%', padding: '15px', background: '#fff', color: '#5B21B6', border: 'none', borderRadius: 14, fontSize: 16, fontWeight: 700, cursor: 'pointer', boxShadow: '0 4px 20px rgba(0,0,0,0.25)' }}>
+          로그인
+        </button>
+        <button onClick={() => { setView('signup'); setTab('student'); reset() }}
+          style={{ width: '100%', padding: '15px', background: 'rgba(255,255,255,0.13)', color: '#fff', border: '1.5px solid rgba(255,255,255,0.35)', borderRadius: 14, fontSize: 16, fontWeight: 700, cursor: 'pointer' }}>
+          회원가입
+        </button>
+      </div>
+
+      <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.35)', fontSize: 11, margin: '24px 0 32px', lineHeight: 1.9 }}>
+        설탕과소금 AI Digital Content Lab<br />특성화고 · 마이스터고 취업 학습 플랫폼
+      </p>
+    </div>
+  )
+
+  // ── 공통 헤더 (로그인/가입 뷰) ──
+  const backBtn = (
+    <button onClick={() => { setView('landing'); reset() }}
+      style={{ background: 'none', border: 'none', color: 'var(--primary)', fontSize: 14, cursor: 'pointer', padding: '0 0 4px', display: 'flex', alignItems: 'center', gap: 4 }}>
+      ← 처음으로
+    </button>
+  )
+
+  // ── 로그인 화면 ──
+  if (view === 'login') return (
+    <div style={{ height: '100dvh', overflowY: 'auto', WebkitOverflowScrolling: 'touch', padding: '24px 24px 40px', boxSizing: 'border-box', background: 'var(--bg)' }}>
+      {backBtn}
+      <div style={{ textAlign: 'center', margin: '16px 0 28px' }}>
+        <img src="/icons/icon-192.png" alt="" style={{ width: 56, height: 56, borderRadius: 14, marginBottom: 10 }} />
+        <h1 style={{ fontSize: 20, fontWeight: 700, margin: '0 0 4px' }}>로그인</h1>
+        <p style={{ color: 'var(--text-muted)', fontSize: 13, margin: 0 }}>설탕과소금 계정으로 로그인하세요</p>
+      </div>
+      <form onSubmit={handleLogin}>
+        <div className="form-group">
+          <label className="form-label">이메일</label>
+          <input className="form-input" type="email" value={email}
+            onChange={e => setEmail(e.target.value)} placeholder="이메일 입력" autoComplete="email" />
+        </div>
+        <div className="form-group">
+          <label className="form-label">비밀번호</label>
+          <input className="form-input" type="password" value={password}
+            onChange={e => setPassword(e.target.value)} placeholder="비밀번호" autoComplete="current-password" />
+        </div>
+        {error && <div style={{ background: '#ffebee', border: '1px solid var(--danger)', borderRadius: 10, padding: '12px 14px', marginBottom: 14 }}><p style={{ fontSize: 13, color: 'var(--danger)', margin: 0 }}>{error}</p></div>}
+        <button className="btn btn-primary btn-full" type="submit" disabled={loading || !email || !password}>
+          {loading ? '로그인 중...' : '로그인'}
+        </button>
+      </form>
+    </div>
+  )
+
+  // ── 회원가입 화면 ──
   return (
-    <div style={{ height: '100dvh', overflowY: 'auto', WebkitOverflowScrolling: 'touch', padding: '32px 24px', boxSizing: 'border-box', background: 'var(--bg)' }}>
-      <div style={{ textAlign: 'center', marginBottom: 28 }}>
-        <div style={{ fontSize: 52, marginBottom: 6 }}>🎓</div>
-        <h1 style={{ fontSize: 22, fontWeight: 700 }}>설탕과소금</h1>
-        <p style={{ color: 'var(--text-muted)', fontSize: 14, marginTop: 3 }}>달콤한 취업 성공을 위한 짭짤한 실력 준비</p>
+    <div style={{ height: '100dvh', overflowY: 'auto', WebkitOverflowScrolling: 'touch', padding: '24px 24px 40px', boxSizing: 'border-box', background: 'var(--bg)' }}>
+      {backBtn}
+      <div style={{ textAlign: 'center', margin: '16px 0 24px' }}>
+        <img src="/icons/icon-192.png" alt="" style={{ width: 56, height: 56, borderRadius: 14, marginBottom: 10 }} />
+        <h1 style={{ fontSize: 20, fontWeight: 700, margin: '0 0 4px' }}>회원가입</h1>
       </div>
 
       <div style={{ display: 'flex', gap: 3, marginBottom: 24, background: 'var(--border)', borderRadius: 10, padding: 4 }}>
         {TABS.map(t => (
           <button key={t.id} className="btn" onClick={() => { setTab(t.id); reset() }}
-            style={{
-              flex: 1, padding: '9px 4px', borderRadius: 8, fontSize: 13,
-              background: tab === t.id ? '#fff' : 'transparent',
-              color: tab === t.id ? 'var(--primary)' : 'var(--text-muted)',
-              boxShadow: tab === t.id ? 'var(--shadow)' : 'none',
-            }}>
+            style={{ flex: 1, padding: '9px 4px', borderRadius: 8, fontSize: 13, background: tab === t.id ? '#fff' : 'transparent', color: tab === t.id ? 'var(--primary)' : 'var(--text-muted)', boxShadow: tab === t.id ? 'var(--shadow)' : 'none' }}>
             {t.label}
           </button>
         ))}
@@ -178,10 +292,7 @@ export default function LoginScreen() {
         <div className="form-group">
           <label className="form-label">비밀번호</label>
           <input className="form-input" type="password" value={password}
-            onChange={e => setPassword(e.target.value)}
-            placeholder={tab === 'login' ? '비밀번호' : '6자 이상'}
-            minLength={tab === 'login' ? undefined : 6}
-            autoComplete={tab === 'login' ? 'current-password' : 'new-password'} />
+            onChange={e => setPassword(e.target.value)} placeholder="6자 이상" minLength={6} autoComplete="new-password" />
         </div>
 
         {tab === 'student' && (
@@ -303,10 +414,7 @@ export default function LoginScreen() {
 
         <button className="btn btn-primary btn-full" type="submit"
           disabled={loading || !email || !password}>
-          {loading ? '처리 중...'
-            : tab === 'login' ? '로그인'
-            : tab === 'student' ? '학생으로 가입'
-            : '교사로 가입'}
+          {loading ? '처리 중...' : tab === 'student' ? '학생으로 가입' : '교사로 가입'}
         </button>
       </form>
     </div>
