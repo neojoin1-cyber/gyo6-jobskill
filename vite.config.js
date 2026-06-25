@@ -13,8 +13,9 @@ export default defineConfig({
       workbox: {
         // JSON 데이터가 번들에 포함돼 5MB 이상 → 제한 상향
         maximumFileSizeToCacheInBytes: 6 * 1024 * 1024,
-        // 앱 셸: JS/CSS/HTML 사전 캐시
+        // 앱 셸: JS/CSS/HTML 사전 캐시 (join.html은 랜딩 페이지라 캐시 제외)
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+        globIgnores: ['join.html'],
         // 런타임 캐시
         runtimeCaching: [
           {
@@ -41,7 +42,7 @@ export default defineConfig({
         ],
         // 오프라인 폴백 페이지
         navigateFallback: 'index.html',
-        navigateFallbackDenylist: [/^\/api\//],
+        navigateFallbackDenylist: [/^\/api\//, /\/join\.html$/],
       },
       // manifest는 public/manifest.json 사용 (직접 관리)
       manifest: false,
