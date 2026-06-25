@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Capacitor } from '@capacitor/core'
 import { supabase } from '../lib/supabase.js'
 
 const EDUCATION_OFFICES = [
@@ -15,6 +16,7 @@ const TABS = [
 ]
 
 const COURSES = [
+  { icon: '🏅', name: '직업공통능력', desc: '교육부 인증평가 대비' },
   { icon: '📖', name: '직업기초능력', desc: '공채 필기시험 대비 · 9개 영역 311문항' },
   { icon: '🍽️', name: '도제학교 외부평가 — 식음료서비스', desc: 'NCS 기반 이론 560문항' },
   { icon: '⚙️', name: '도제학교 외부평가 — 품질경영', desc: 'ISO · KS 품질관리 이론' },
@@ -164,6 +166,8 @@ export default function LoginScreen() {
     : handleTeacherJoin
 
   // ── 랜딩 화면 ──
+  const isNative = Capacitor.isNativePlatform()
+
   if (view === 'landing') return (
     <div style={{ minHeight: '100dvh', background: 'linear-gradient(160deg, #4C1D95 0%, #6D28D9 45%, #92400E 100%)', overflowY: 'auto', WebkitOverflowScrolling: 'touch' }}>
       {/* 헤더 */}
@@ -213,14 +217,29 @@ export default function LoginScreen() {
 
       {/* 버튼 */}
       <div style={{ padding: '20px 16px 0', display: 'flex', flexDirection: 'column', gap: 10 }}>
-        <button onClick={() => { setView('login'); reset() }}
-          style={{ width: '100%', padding: '15px', background: '#fff', color: '#5B21B6', border: 'none', borderRadius: 14, fontSize: 16, fontWeight: 700, cursor: 'pointer', boxShadow: '0 4px 20px rgba(0,0,0,0.25)' }}>
-          로그인
-        </button>
-        <button onClick={() => { setView('signup'); setTab('student'); reset() }}
-          style={{ width: '100%', padding: '15px', background: 'rgba(255,255,255,0.13)', color: '#fff', border: '1.5px solid rgba(255,255,255,0.35)', borderRadius: 14, fontSize: 16, fontWeight: 700, cursor: 'pointer' }}>
-          회원가입
-        </button>
+        {isNative ? (
+          <>
+            <button onClick={() => { setView('login'); reset() }}
+              style={{ width: '100%', padding: '15px', background: '#fff', color: '#5B21B6', border: 'none', borderRadius: 14, fontSize: 16, fontWeight: 700, cursor: 'pointer', boxShadow: '0 4px 20px rgba(0,0,0,0.25)' }}>
+              로그인
+            </button>
+            <button onClick={() => { setView('signup'); setTab('student'); reset() }}
+              style={{ width: '100%', padding: '15px', background: 'rgba(255,255,255,0.13)', color: '#fff', border: '1.5px solid rgba(255,255,255,0.35)', borderRadius: 14, fontSize: 16, fontWeight: 700, cursor: 'pointer' }}>
+              회원가입
+            </button>
+          </>
+        ) : (
+          <a href="https://play.google.com/apps/internaltest/4701531516564569722"
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, width: '100%', padding: '15px', background: '#fff', color: '#5B21B6', border: 'none', borderRadius: 14, fontSize: 16, fontWeight: 700, textDecoration: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.25)', boxSizing: 'border-box' }}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M3.18 23.76a2 2 0 0 0 2.2-.23l12.3-7.1-3.35-3.35L3.18 23.76z" fill="#EA4335"/>
+              <path d="M22.38 10.27C21.88 9.9 18 7.6 5.38.23A2 2 0 0 0 3.18.47L14.33 11.6l8.05-1.33z" fill="#4285F4"/>
+              <path d="M3.18.47A2 2 0 0 0 2 2.24v19.52a2 2 0 0 0 1.18 1.77l11.15-11.15L3.18.47z" fill="#34A853"/>
+              <path d="M14.33 12l3.35 3.35 4.7-2.72a2 2 0 0 0 0-3.46l-4.7-2.7L14.33 12z" fill="#FBBC04"/>
+            </svg>
+            Google Play에서 설치
+          </a>
+        )}
       </div>
 
       <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.35)', fontSize: 11, margin: '24px 0 32px', lineHeight: 1.9 }}>
