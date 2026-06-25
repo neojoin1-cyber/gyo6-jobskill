@@ -180,6 +180,38 @@ export default function LoginScreen() {
         </p>
       </div>
 
+      {/* 버튼 — 헤더 바로 아래 최상단 */}
+      <div style={{ padding: '0 16px 20px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+        {isNative ? (
+          <>
+            <button onClick={() => { setView('login'); reset() }}
+              style={{ width: '100%', padding: '15px', background: '#fff', color: '#5B21B6', border: 'none', borderRadius: 14, fontSize: 16, fontWeight: 700, cursor: 'pointer', boxShadow: '0 4px 20px rgba(0,0,0,0.25)' }}>
+              로그인
+            </button>
+            <button onClick={() => { setView('signup'); setTab('student'); reset() }}
+              style={{ width: '100%', padding: '15px', background: 'rgba(255,255,255,0.13)', color: '#fff', border: '1.5px solid rgba(255,255,255,0.35)', borderRadius: 14, fontSize: 16, fontWeight: 700, cursor: 'pointer' }}>
+              회원가입
+            </button>
+          </>
+        ) : (
+          <>
+            <a href="https://play.google.com/apps/internaltest/4701531516564569722"
+              style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, width: '100%', padding: '15px', background: '#fff', color: '#5B21B6', border: 'none', borderRadius: 14, fontSize: 16, fontWeight: 700, textDecoration: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.25)', boxSizing: 'border-box' }}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M3.18 23.76a2 2 0 0 0 2.2-.23l12.3-7.1-3.35-3.35L3.18 23.76z" fill="#EA4335"/>
+                <path d="M22.38 10.27C21.88 9.9 18 7.6 5.38.23A2 2 0 0 0 3.18.47L14.33 11.6l8.05-1.33z" fill="#4285F4"/>
+                <path d="M3.18.47A2 2 0 0 0 2 2.24v19.52a2 2 0 0 0 1.18 1.77l11.15-11.15L3.18.47z" fill="#34A853"/>
+                <path d="M14.33 12l3.35 3.35 4.7-2.72a2 2 0 0 0 0-3.46l-4.7-2.7L14.33 12z" fill="#FBBC04"/>
+              </svg>
+              Google Play에서 설치
+            </a>
+            <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.5)', fontSize: 11, margin: 0, lineHeight: 1.6 }}>
+              ※ 내부 테스트 버전 · 링크 클릭 → 테스터 등록 → Play 스토어에서 설치
+            </p>
+          </>
+        )}
+      </div>
+
       {/* 글래스 카드 */}
       <div style={{ margin: '0 16px', borderRadius: 22, border: '1px solid rgba(255,255,255,0.18)', background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', overflow: 'hidden' }}>
         {/* 과목 */}
@@ -213,33 +245,6 @@ export default function LoginScreen() {
             ))}
           </div>
         </div>
-      </div>
-
-      {/* 버튼 */}
-      <div style={{ padding: '20px 16px 0', display: 'flex', flexDirection: 'column', gap: 10 }}>
-        {isNative ? (
-          <>
-            <button onClick={() => { setView('login'); reset() }}
-              style={{ width: '100%', padding: '15px', background: '#fff', color: '#5B21B6', border: 'none', borderRadius: 14, fontSize: 16, fontWeight: 700, cursor: 'pointer', boxShadow: '0 4px 20px rgba(0,0,0,0.25)' }}>
-              로그인
-            </button>
-            <button onClick={() => { setView('signup'); setTab('student'); reset() }}
-              style={{ width: '100%', padding: '15px', background: 'rgba(255,255,255,0.13)', color: '#fff', border: '1.5px solid rgba(255,255,255,0.35)', borderRadius: 14, fontSize: 16, fontWeight: 700, cursor: 'pointer' }}>
-              회원가입
-            </button>
-          </>
-        ) : (
-          <a href="https://play.google.com/apps/internaltest/4701531516564569722"
-            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, width: '100%', padding: '15px', background: '#fff', color: '#5B21B6', border: 'none', borderRadius: 14, fontSize: 16, fontWeight: 700, textDecoration: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.25)', boxSizing: 'border-box' }}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path d="M3.18 23.76a2 2 0 0 0 2.2-.23l12.3-7.1-3.35-3.35L3.18 23.76z" fill="#EA4335"/>
-              <path d="M22.38 10.27C21.88 9.9 18 7.6 5.38.23A2 2 0 0 0 3.18.47L14.33 11.6l8.05-1.33z" fill="#4285F4"/>
-              <path d="M3.18.47A2 2 0 0 0 2 2.24v19.52a2 2 0 0 0 1.18 1.77l11.15-11.15L3.18.47z" fill="#34A853"/>
-              <path d="M14.33 12l3.35 3.35 4.7-2.72a2 2 0 0 0 0-3.46l-4.7-2.7L14.33 12z" fill="#FBBC04"/>
-            </svg>
-            Google Play에서 설치
-          </a>
-        )}
       </div>
 
       <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.35)', fontSize: 11, margin: '24px 0 32px', lineHeight: 1.9 }}>
