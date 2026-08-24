@@ -252,6 +252,7 @@
 
 /* Teacher app shell */
 .teacher-shellbar { position: relative; z-index: 80; min-height: 62px; flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: calc(var(--safe-top) + 7px) 14px 7px; background: #244fd7; color: #fff; box-shadow: 0 1px 0 rgba(15,35,105,.18); }
+.teacher-shell-screen { container: teacher-shell / inline-size; }
 .teacher-shellbar button { font: inherit; }
 .teacher-shell-brand { min-width: 0; display: flex; align-items: center; gap: 9px; padding: 0; border: 0; background: transparent; color: #fff; text-align: left; cursor: pointer; }
 .teacher-shell-brand > span { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 8px; background: #fff; color: #1769f6; }
@@ -584,6 +585,57 @@
   .recipient-panel { border-right: 0; border-bottom: 1px solid var(--campus-line); }
   .recipient-list { max-height: 180px; }
   .message-writing-desk { padding: 16px; }
+}
+
+/* The portal iframe can be wide while the app itself is kept in a 480px phone
+   frame. Viewport media queries then see the portal width and leave the teacher
+   rail open. Query the actual teacher app container so iframe and pop-out views
+   choose the same layout. */
+@container teacher-shell (max-width: 720px) {
+  .teacher-shellbar { min-height: 58px; padding-inline: 10px; }
+  .teacher-shell-brand > span { width: 36px; height: 36px; }
+  .teacher-shell-brand b { font-size: 13px; }
+  .teacher-shell-actions { gap: 4px; }
+  .teacher-shell-icon { width: 40px; height: 40px; }
+  .teacher-shell-actions > button[title] { min-width: 40px !important; min-height: 40px !important; padding: 3px 8px !important; }
+  .teacher-account-trigger { width: 42px; min-height: 40px; padding: 3px; border: 0; background: rgba(255,255,255,.14); }
+  .teacher-account-trigger > span { width: 34px; height: 34px; }
+  .teacher-account-trigger b, .teacher-account-trigger > svg { display: none; }
+  .teacher-account-popover { position: fixed; top: calc(var(--safe-top) + 58px); right: 10px; }
+  .teacher-campus { display: block; overflow: auto; }
+  .teacher-campus-rail { display: none; }
+  .teacher-campus-main { padding: 0 12px 82px; }
+  .teacher-empty-workspace > header h1 { font-size: 20px; }
+  .teacher-class-form { grid-template-columns: 1fr; }
+  .teacher-ready-greeting { grid-template-columns: auto minmax(0,1fr); min-height: 108px; }
+  .teacher-ready-greeting > button { grid-column: 1 / -1; justify-content: center; }
+  .teacher-ready-greeting h1 { font-size: 17px !important; }
+  .teacher-learning-map { height: clamp(292px,86cqw,358px); margin-inline: -12px; border-width: 1px 0; border-radius: 0; }
+  .teacher-bonus-grid { grid-template-columns: 1fr 1fr; }
+  .teacher-bonus-grid > button { min-height: 104px; grid-template-columns: 36px minmax(0,1fr) auto; padding: 10px; }
+  .teacher-bonus-grid > button > span { width: 36px; height: 36px; }
+  .teacher-connect-class { align-items: stretch; flex-direction: column; }
+  .teacher-connect-actions { width: 100%; margin-left: 0; }
+  .teacher-connect-actions button { flex: 1; justify-content: center; }
+  .teacher-student-view-strip { grid-template-columns: 82px minmax(0,1fr) 14px; min-height: 72px; padding-right: 10px; }
+  .teacher-student-view-strip img { width: 82px; height: 72px; }
+  .teacher-student-view-strip strong { display: none; }
+  .teacher-smart-brief { padding: 12px 0; border-width: 1px 0; border-radius: 0; }
+  .teacher-smart-brief > div { display: flex; overflow-x: auto; padding-bottom: 2px; }
+  .teacher-smart-brief button { min-width: 210px; flex: 0 0 auto; }
+  .teacher-campus-head { padding-top: 10px; flex-wrap: wrap; }
+  .teacher-campus-head > div:first-child { flex: 1 1 100%; }
+  .teacher-campus-code { margin-left: 0; }
+  .teacher-campus-summary { grid-template-columns: 1fr; }
+  .summary-image { height: 150px; }
+  .summary-copy { border-right: 0; border-bottom: 1px solid var(--campus-line); }
+  .teacher-summary-stats { grid-column: auto; grid-template-columns: repeat(2,1fr); }
+  .student-growth > header { align-items: flex-start; flex-direction: column; }
+  .student-growth label { width: 100%; }
+  .class-progress-summary { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .progress-student-actions { align-items: flex-end; flex-direction: column; }
+  .teacher-preview-context { grid-template-columns: 36px 30px minmax(0,1fr) auto; padding-inline: 8px; }
+  .teacher-preview-exit { padding-inline: 7px; }
 }
 
 /* Local design preview, development only */

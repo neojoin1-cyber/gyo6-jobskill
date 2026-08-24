@@ -159,7 +159,7 @@ export default function TeacherShell() {
 
   function closeScreen() { setScreen(null) }
 
-  async function logout() { await supabase.auth.signOut() }
+  async function logout() { await supabase.auth.signOut({ scope: 'local' }) }
 
   if (screen) {
     if (screen.name === 'classroom')
@@ -218,7 +218,7 @@ export default function TeacherShell() {
   }
 
   return (
-    <div className="screen">
+    <div className="screen teacher-shell-screen">
       {confirmExit && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.55)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, padding: 24 }}>
           <div className="card" style={{ width: '100%', maxWidth: 300, textAlign: 'center' }}>

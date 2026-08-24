@@ -22,7 +22,7 @@ export default function SchoolAdminShell() {
   const [confirmExit, setConfirmExit] = useState(false)
   const [screen, setScreen]       = useState(null)   // {name, classId, className} 오버레이 화면
 
-  async function logout() { await supabase.auth.signOut() }
+  async function logout() { await supabase.auth.signOut({ scope: 'local' }) }
   function navigate(name, params = {}) { setScreen({ name, ...params }) }
   function closeScreen() { setScreen(null) }
 

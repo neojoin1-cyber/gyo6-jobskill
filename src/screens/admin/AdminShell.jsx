@@ -14,7 +14,7 @@ export default function AdminShell({ profile }) {
   const [tab,         setTab]         = useState('schools')
   const [confirmExit, setConfirmExit] = useState(false)
 
-  async function logout() { await supabase.auth.signOut() }
+  async function logout() { await supabase.auth.signOut({ scope: 'local' }) }
 
   // 뒤로가기: 최신 tab을 ref로 읽어 처리(핸들러 1회 등록 → id 기반 해제, 스택 오염 방지)
   const backRef = useRef(null)

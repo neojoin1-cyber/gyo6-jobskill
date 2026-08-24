@@ -110,7 +110,7 @@ export default function StudentShell() {
 
   function openMission(mission) { setOverlay({ screen: 'mission', mission }) }
   function closeOverlay()       { setOverlay(null) }
-  async function logout()       { await supabase.auth.signOut() }
+  async function logout()       { await supabase.auth.signOut({ scope: 'local' }) }
 
   // Android 뒤로가기: 오버레이 닫기 → 홈 탭 → 종료 확인
   const backRef = useRef(null)

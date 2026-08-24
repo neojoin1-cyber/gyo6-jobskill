@@ -302,7 +302,7 @@ function AppInner() {
             교사: 학교 관리자에게 문의하세요
           </p>
           <button className="btn btn-primary" style={{ marginTop: 20 }}
-            onClick={() => supabase.auth.signOut()}>
+            onClick={() => supabase.auth.signOut({ scope: 'local' })}>
             로그아웃 후 다시 가입
           </button>
         </div>
@@ -326,7 +326,7 @@ function AppInner() {
             {msgs[profile.role] ?? '관리자의 승인을 기다리고 있습니다.'}
           </p>
           <button className="btn btn-ghost" style={{ marginTop: 20, fontSize: 13 }}
-            onClick={() => supabase.auth.signOut()}>
+            onClick={() => supabase.auth.signOut({ scope: 'local' })}>
             로그아웃
           </button>
         </div>
