@@ -16,8 +16,8 @@ if (/gyo6-api|supabase\\?\.co/.test(viteConfig)) {
 if (/branches:\s*\[(?:.|\n)*?(main|master)/.test(workflow)) {
   errors.push('GitHub Pages deployment must not run on every main/master push')
 }
-if (!/tags:\s*\['web-v\*'\]/.test(workflow)) {
-  errors.push('GitHub Pages deployment is not restricted to web-v* release tags')
+if (!workflow.includes('workflow_dispatch:') || !workflow.includes('Verified web release version')) {
+  errors.push('GitHub Pages deployment is not restricted to an explicit verified release dispatch')
 }
 if (!workflow.includes('npm run verify:production-flows')) {
   errors.push('GitHub Pages deployment is missing the production role-flow gate')
@@ -41,4 +41,4 @@ if (errors.length) {
   process.exit(1)
 }
 
-console.log('PASS: deployment safety gate (release-tag deploy, role-flow gate, no Supabase response cache)')
+console.log('PASS: deployment safety gate (explicit release dispatch, role-flow gate, no Supabase response cache)')

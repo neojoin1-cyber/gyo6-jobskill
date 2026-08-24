@@ -1,9 +1,12 @@
 name: Deploy to GitHub Pages
 
 on:
-  push:
-    tags: ['web-v*']
   workflow_dispatch:
+    inputs:
+      release:
+        description: Verified web release version
+        required: true
+        type: string
 
 permissions:
   contents: read
