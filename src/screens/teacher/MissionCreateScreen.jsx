@@ -1,22 +1,29 @@
 import { useState, useEffect } from 'react'
+import { filterActiveSubjects } from '../../lib/subjectCatalog.js'
 import { supabase } from '../../lib/supabase.js'
-import areaMapping          from '../../../data/areaMapping.json'
-import ncsQuestions         from '../../../data/ncs-questions.json'
 import foodServiceQuestions from '../../../data/food-service-questions.json'
+import { buildJcMissionAreas } from '../../lib/jobCommonAreas.js'
+import { buildNcs2026Areas } from '../../lib/ncs2026.js'
+import { RECRUIT_WRITTEN_TRACKS, buildRecruitWrittenAreas } from '../../lib/recruitWritten.js'
+import {
+  INTERVIEW_AREAS,
+  PERSONALITY_AREAS,
+  guidedQuestionIds,
+} from '../../lib/guidedSubjectContent.js'
 
 const MISSION_TYPES = ['이번시간', '오늘', '이번주', '중간고사', '기말고사', '인증평가']
 
-// NCS 영역 목록
-const NCS_AREAS = (() => {
-  const map = {}
-  for (const q of ncsQuestions) {
-    if (!q.excludeFromQuiz && q.area) {
-      if (!map[q.area]) map[q.area] = { id: q.area, displayName: q.area, totalQuestions: 0 }
-      map[q.area].totalQuestions++
-    }
-  }
-  return Object.values(map).sort((a, b) => b.totalQuestions - a.totalQuestions)
-})()
+// 교육부·대한상의 직업공통능력 인증 5영역 — 자율학습·모의평가와 동일 소스
+const JOB_AREAS = buildJcMissionAreas()
+
+// 교사 미션도 NCS 26v1 공식 7영역만 출제한다.
+const NCS_AREAS = buildNcs2026Areas()
+const RECRUIT_AREAS = RECRUIT_WRITTEN_TRACKS.flatMap(track =>
+  buildRecruitWrittenAreas(track.id).map(area => ({
+    ...area,
+    displayName: `${track.label} · ${area.displayName}`,
+  }))
+)
 
 // 식음료서비스 장별 목록 (단원만, 모의평가 제외)
 const FOOD_SERVICE_AREAS = (() => {
@@ -49,14 +56,14 @@ export default function MissionCreateScreen({ classId, className, onBack }) {
     // 교사에게 배정된 과목 조회 (없으면 전체 subject 표시)
     supabase.from('teacher_subjects').select('subject_id, subjects(id, name, description)')
       .then(({ data }) => {
-        if (data && data.length > 0) {
-          const subs = data.map(r => r.subjects)
-          setAvailableSubjects(subs)
+        const subs = (data ?? []).map(r => r.subjects).filter(Boolean)
+        if (subs.length > 0) {
+          setAvailableSubjects(filterActiveSubjects(subs))
           setSubjectId(subs[0].id)
         } else {
           // 배정 없으면 전체 subjects 표시
           supabase.from('subjects').select('id, name, description').then(({ data: all }) => {
-            setAvailableSubjects(all ?? [])
+            setAvailableSubjects(filterActiveSubjects(all))
             setSubjectId((all ?? [])[0]?.id ?? 'job-common')
           })
         }
@@ -74,9 +81,9 @@ export default function MissionCreateScreen({ classId, className, onBack }) {
     setSelectedAreas(prev =>
       prev.includes(areaId) ? prev.filter(a => a !== areaId) : [...prev, areaId]
     )
-    if (subjectId === 'job-common') {
+    if (subjectId === 'job-common' || subjectId === 'interview') {
       setSelectedLessons(prev => {
-        const areaLessons = areaMapping.areas.find(a => a.id === areaId)?.lessons.map(l => l.id) ?? []
+        const areaLessons = visibleAreas.find(a => a.id === areaId)?.lessons?.map(l => l.id) ?? []
         if (selectedAreas.includes(areaId)) {
           return prev.filter(l => !areaLessons.includes(l))
         }
@@ -104,16 +111,19 @@ export default function MissionCreateScreen({ classId, className, onBack }) {
     let areaIds = [...selectedAreas]
 
     if (subjectId === 'job-common') {
-      const allLessonIds = areaMapping.areas.flatMap(a => {
-        if (selectedAreas.includes(a.id)) return a.lessons.map(l => l.id)
-        return a.lessons.filter(l => selectedLessons.includes(l.id)).map(l => l.id)
+      const allQuestionIds = JOB_AREAS.flatMap(a => {
+        if (selectedAreas.includes(a.id)) return a.lessons.flatMap(l => l.questionIds)
+        return a.lessons.filter(l => selectedLessons.includes(l.id)).flatMap(l => l.questionIds)
       })
-      questionIds = allLessonIds.map(lid => `${lid}-Q*`)
-      if (areaIds.length === 0) areaIds = allLessonIds
+      questionIds = [...new Set(allQuestionIds)]
+      if (areaIds.length === 0) areaIds = [...selectedLessons]
     } else if (subjectId === 'food-service') {
       // 식음료서비스: lessonId(C01, C02...) 기반
       questionIds = selectedAreas   // e.g. ["C01", "C03"]
       areaIds = selectedAreas
+    } else if (subjectId === 'interview' || subjectId === 'personality') {
+      questionIds = [...new Set(guidedQuestionIds(subjectId, selectedAreas, selectedLessons))]
+      areaIds = selectedAreas.length > 0 ? selectedAreas : selectedLessons
     } else {
       // NCS: area 이름 기반
       questionIds = selectedAreas.map(a => `area:${a}`)
@@ -121,7 +131,7 @@ export default function MissionCreateScreen({ classId, className, onBack }) {
     }
 
     setLoading(true)
-    const { error: err } = await supabase.rpc('rpc_create_mission', {
+    const { data: missionId, error: err } = await supabase.rpc('rpc_create_mission', {
       p_class_id: classId,
       p_title: title.trim(),
       p_mission_type: missionType,
@@ -133,15 +143,12 @@ export default function MissionCreateScreen({ classId, className, onBack }) {
       p_due_at: dueDate ? new Date(dueDate).toISOString() : null,
     })
 
-    // subject_id 별도 업데이트 (rpc는 subject_id 파라미터 없음)
-    if (!err && subjectId !== 'job-common') {
-      // 방금 생성된 미션의 subject_id 업데이트 (최신 draft 미션)
-      await supabase.from('missions')
+    // subject_id 별도 업데이트 — rpc가 반환한 mission id로 정확히 갱신(최신 draft 추정 금지)
+    if (!err && missionId && subjectId !== 'job-common') {
+      const { error: upErr } = await supabase.from('missions')
         .update({ subject_id: subjectId })
-        .eq('class_id', classId)
-        .eq('status', 'draft')
-        .order('created_at', { ascending: false })
-        .limit(1)
+        .eq('id', missionId)
+      if (upErr) { setLoading(false); setError('과목 지정 실패: ' + upErr.message); return }
     }
 
     setLoading(false)
@@ -151,8 +158,16 @@ export default function MissionCreateScreen({ classId, className, onBack }) {
   }
 
   const isNCS         = subjectId === 'ncs-basic'
+  const isRecruit     = subjectId === 'recruit-written'
+  const isInterview   = subjectId === 'interview'
+  const isPersonality = subjectId === 'personality'
   const isFoodService = subjectId === 'food-service'
-  const visibleAreas  = isNCS ? NCS_AREAS : isFoodService ? FOOD_SERVICE_AREAS : areaMapping.areas
+  const visibleAreas  = isNCS ? NCS_AREAS
+    : isRecruit ? RECRUIT_AREAS
+      : isInterview ? INTERVIEW_AREAS
+        : isPersonality ? PERSONALITY_AREAS
+          : isFoodService ? FOOD_SERVICE_AREAS
+            : JOB_AREAS
 
   return (
     <div className="screen">
@@ -174,7 +189,7 @@ export default function MissionCreateScreen({ classId, className, onBack }) {
                   style={{ flex: 1, padding: '10px 8px', fontSize: 13, flexDirection: 'column', height: 'auto' }}
                   onClick={() => switchSubject(s.id)}>
                   <span style={{ fontWeight: 700 }}>{s.name}</span>
-                  <span style={{ fontSize: 11, opacity: 0.75, marginTop: 2 }}>{s.desc}</span>
+                  <span style={{ fontSize: 11, opacity: 0.75, marginTop: 2 }}>{s.description ?? s.desc}</span>
                 </button>
               ))}
             </div>
@@ -201,8 +216,18 @@ export default function MissionCreateScreen({ classId, className, onBack }) {
 
           <div className="form-group">
             <label className="form-label">출제 영역 선택</label>
+            {isPersonality && (
+              <p className="mission-source-note">
+                인성검사는 정답·오답을 매기지 않습니다. 학생의 응답 완료와 요인별 경향을 상담 자료로 확인합니다.
+              </p>
+            )}
+            {visibleAreas.length === 0 && (
+              <div style={{ padding: '20px 0', textAlign: 'center', color: 'var(--text-muted)', fontSize: 13 }}>
+                선택 가능한 영역이 없습니다.
+              </div>
+            )}
             {visibleAreas.map(area => (
-              <div key={area.id || area.displayName} style={{ marginBottom: isNCS ? 6 : 12 }}>
+              <div key={area.id || area.displayName} style={{ marginBottom: (isNCS || isRecruit) ? 6 : 12 }}>
                 <label style={{
                   display: 'flex', alignItems: 'center', gap: 10,
                   padding: '10px 14px',
@@ -215,10 +240,11 @@ export default function MissionCreateScreen({ classId, className, onBack }) {
                     checked={selectedAreas.includes(area.id || area.displayName)}
                     onChange={() => toggleArea(area.id || area.displayName)} />
                   <span style={{ fontWeight: 700 }}>{area.displayName}</span>
+                  {area.description && <span className="mission-area-desc">{area.description}</span>}
                   <span style={{ marginLeft: 'auto', fontSize: 12, color: 'var(--text-muted)' }}>{area.totalQuestions}문항</span>
                 </label>
                 {/* 직업공통능력만 단원 세부 선택 가능 */}
-                {!isNCS && !isFoodService && !selectedAreas.includes(area.id) && (
+                {(subjectId === 'job-common' || isInterview) && !selectedAreas.includes(area.id) && area.lessons?.length > 0 && (
                   <div style={{ paddingLeft: 16, marginTop: 4 }}>
                     {area.lessons.map(lesson => (
                       <label key={lesson.id} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px', cursor: 'pointer', fontSize: 13 }}>

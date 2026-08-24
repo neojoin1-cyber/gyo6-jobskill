@@ -9,3 +9,48 @@ android/app/google-services.json
 android/app/*.jks
 android/keystore.properties
 .env
+.env.production
+
+# 로컬 관리 스크립트 (Supabase 토큰 포함)
+scripts/*.cjs
+supabase/.temp/
+.cache/
+scripts/loadtest/.token
+
+# 로컬 작업·검증 산출물
+.supabase-push/
+release/
+output/
+qa/
+ebooks/
+design-source.png
+*.aab
+scripts/__pycache__/
+supabase/snippets/
+
+# 콘텐츠 생성 과정의 백업·중간 파일 (앱은 최종 JSON만 사용)
+data/**/*.bak
+data/_*/
+data/*-batch*.json
+data/*-batches/
+data/*-audit/
+data/*-fix.json
+data/*-patch.json
+data/audit-*.json
+data/validation-*.json
+data/iv_*.json
+data/iv_unit_*.json
+data/new-questions.json
+data/jc-new-questions.json
+data/sample-question-length-cue.json
+data/*-block*.json
+data/block-quiz-map-*.json
+data/deepen-*.txt
+data/qm-verify/
+scripts/*-output.json
+
+# 자격증명 — 확장자가 아니라 성격으로 막는다.
+# scripts/*.cjs 로 막던 것은 우연히 가려진 것뿐이라 확장자만 바뀌어도 뚫린다.
+.mgmt-token
+*.token
+**/keystore.properties

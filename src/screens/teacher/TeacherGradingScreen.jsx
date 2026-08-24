@@ -8,13 +8,16 @@
  */
 import { useState, useEffect, useMemo } from 'react'
 import { supabase } from '../../lib/supabase.js'
+import { getPassSpec } from '../../lib/passExam.js'
 import jobQuestions         from '../../../data/questions.json'
-import ncsQuestions         from '../../../data/ncs-questions.json'
-import foodServiceQuestions from '../../../data/food-service-questions.json'
+import { ncs2026Questions as ncsQuestions } from '../../lib/ncs2026.js'
+import { recruitWrittenQuestions } from '../../lib/recruitWritten.js'
+import foodServiceQuestions from '../../lib/foodServiceBank.js'
 
 const QUESTION_POOLS = {
   'job-common':   jobQuestions,
   'ncs-basic':    ncsQuestions,
+  'recruit-written': recruitWrittenQuestions,
   'food-service': foodServiceQuestions,
 }
 
@@ -24,34 +27,83 @@ function getQuestion(subjectId, qId) {
 }
 
 export default function TeacherGradingScreen({ onBack }) {
-  const [pending,  setPending]  = useState([])   // 채점 대기 submission 목록
-  const [loading,  setLoading]  = useState(true)
-  const [grades,   setGrades]   = useState({})   // { submissionId: { qId: 'O'|'X' } }
-  const [saving,   setSaving]   = useState({})   // { submissionId: true } 저장 중 표시
-  const [saved,    setSaved]    = useState({})   // { submissionId: true } 저장 완료 표시
-  const [selected, setSelected] = useState(null) // 현재 채점 중인 qId
+  const [pending,      setPending]      = useState([])   // 채점 대기 submission 목록
+  const [loading,      setLoading]      = useState(true)
+  const [grades,       setGrades]       = useState({})   // { submissionId: { qId: 'O'|'X' } }
+  const [saving,       setSaving]       = useState({})   // { submissionId: true } 저장 중 표시
+  const [saved,        setSaved]        = useState({})   // { submissionId: true } 저장 완료 표시
+  const [selected,     setSelected]     = useState(null) // 현재 채점 중인 qId
+  const [passResults,  setPassResults]  = useState([])   // 합격 판정 이력
+  const [showPassHist, setShowPassHist] = useState(false)
 
   useEffect(() => { load() }, [])
 
   async function load() {
     setLoading(true)
-    const { data } = await supabase
-      .from('submissions')
-      .select(`
-        id, typed_answers, score, total_questions, completed_at,
-        student:profiles!submissions_student_id_fkey(id, display_name),
-        mission:missions!submissions_mission_id_fkey(
-          id, title, subject_id, class_id,
-          class:classes!missions_class_id_fkey(name)
-        )
-      `)
-      .eq('grading_status', 'pending')
-      .order('completed_at', { ascending: true })
+    const [{ data: subs }, { data: mocks }, { data: tc }] = await Promise.all([
+      supabase
+        .from('submissions')
+        .select(`
+          id, typed_answers, score, total_questions, completed_at,
+          student:profiles!submissions_student_id_fkey(id, display_name),
+          mission:missions!submissions_mission_id_fkey(
+            id, title, subject_id, class_id,
+            class:classes!missions_class_id_fkey(name)
+          )
+        `)
+        .eq('grading_status', 'pending')
+        .order('completed_at', { ascending: true }),
+      supabase
+        .from('mock_assessments')
+        .select('id, typed_answers, subject_id, class_id, title, created_at, student:profiles!mock_assessments_student_id_fkey(display_name), classes(name)')
+        .eq('grading_status', 'pending')
+        .order('created_at', { ascending: true }),
+      supabase.from('teacher_classes').select('class_id'),
+    ])
 
-    const { data: tc } = await supabase.from('teacher_classes').select('class_id')
     const myClassIds = new Set((tc ?? []).map(r => r.class_id))
-    const mine = (data ?? []).filter(r => myClassIds.has(r.mission?.class_id))
-    setPending(mine)
+
+    const subMine = (subs ?? [])
+      .filter(r => myClassIds.has(r.mission?.class_id))
+      .map(r => ({ ...r, source: 'mission' }))
+
+    // 모의평가를 submission과 동일 형태로 정규화
+    const mockMine = (mocks ?? [])
+      .filter(r => myClassIds.has(r.class_id))
+      .map(r => ({
+        id: r.id,
+        typed_answers: r.typed_answers,
+        source: 'mock',
+        student: r.student,
+        mission: {
+          subject_id: r.subject_id,
+          class_id:   r.class_id,
+          title:      `🧪 ${r.title}`,
+          class:      r.classes,
+        },
+      }))
+
+    setPending([...subMine, ...mockMine])
+
+    // 합격 판정 이력 — RLS가 소속 학생만 반환
+    // student_id FK가 auth.users를 참조하므로 profiles 조인을 별도 쿼리로 처리
+    const { data: passRaw } = await supabase
+      .from('pass_exam_results')
+      .select('id, student_id, subject_id, paper_no, passed_count, verdict, weak_units, created_at')
+      .order('created_at', { ascending: false })
+      .limit(50)
+    if (passRaw?.length) {
+      const sids = [...new Set(passRaw.map(r => r.student_id))]
+      const { data: profs } = await supabase
+        .from('profiles')
+        .select('id, display_name')
+        .in('id', sids)
+      const profMap = Object.fromEntries((profs ?? []).map(p => [p.id, p]))
+      setPassResults(passRaw.map(r => ({ ...r, student: profMap[r.student_id] ?? null })))
+    } else {
+      setPassResults([])
+    }
+
     setLoading(false)
   }
 
@@ -73,6 +125,7 @@ export default function TeacherGradingScreen({ onBack }) {
         }
         map[qId].answers.push({
           submissionId:  sub.id,
+          source:        sub.source ?? 'mission',
           studentName:   sub.student?.display_name ?? '학생',
           typedText,
           className:     sub.mission?.class?.name ?? '',
@@ -84,8 +137,13 @@ export default function TeacherGradingScreen({ onBack }) {
     return map
   }, [pending])
 
+  // 채점 완료로 해당 문항이 questionMap에서 사라지면 목록으로 자동 복귀
+  useEffect(() => {
+    if (selected && !questionMap[selected]) setSelected(null)
+  }, [selected, questionMap])
+
   // ── 채점 기록 + 자동 저장 ─────────────────────────────────────────────────
-  function markGrade(submissionId, qId, grade, allQIds) {
+  function markGrade(submissionId, qId, grade, allQIds, source) {
     const prevSub   = grades[submissionId] ?? {}
     const newSub    = { ...prevSub, [qId]: grade }
     const newGrades = { ...grades, [submissionId]: newSub }
@@ -93,16 +151,15 @@ export default function TeacherGradingScreen({ onBack }) {
 
     // 해당 제출물의 모든 문항 채점 완료 → 자동 저장
     if (allQIds.every(q => newSub[q])) {
-      autoSave(submissionId, newSub)
+      autoSave(submissionId, newSub, source)
     }
   }
 
-  async function autoSave(submissionId, subGrades) {
+  async function autoSave(submissionId, subGrades, source) {
     setSaving(prev => ({ ...prev, [submissionId]: true }))
-    const { error } = await supabase.rpc('rpc_grade_submission', {
-      p_submission_id: submissionId,
-      p_grades:        subGrades,
-    })
+    const { error } = source === 'mock'
+      ? await supabase.rpc('rpc_grade_mock_assessment', { p_mock_id: submissionId, p_grades: subGrades })
+      : await supabase.rpc('rpc_grade_submission', { p_submission_id: submissionId, p_grades: subGrades })
     setSaving(prev => ({ ...prev, [submissionId]: false }))
     if (!error) {
       setSaved(prev => ({ ...prev, [submissionId]: true }))
@@ -123,7 +180,7 @@ export default function TeacherGradingScreen({ onBack }) {
   // ── 문항별 채점 상세 ────────────────────────────────────────────────────
   if (selected) {
     const entry = questionMap[selected]
-    if (!entry) { setSelected(null); return null }
+    if (!entry) return null  // useEffect가 selected를 null로 초기화함
     const q = entry.question
     const { graded, total } = progress(selected)
 
@@ -177,10 +234,10 @@ export default function TeacherGradingScreen({ onBack }) {
         </div>
 
         {/* ── 학생 답안 목록 (스크롤) ── */}
-        <div style={{ flex: 1, overflowY: 'auto', padding: '12px 16px' }}>
+        <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', padding: '12px 16px' }}>
           <p className="section-title" style={{ marginTop: 0 }}>학생 답안 ({total}명)</p>
 
-          {entry.answers.map(({ submissionId, studentName, typedText, className, allQIds }) => {
+          {entry.answers.map(({ submissionId, source, studentName, typedText, className, allQIds }) => {
             const grade     = grades[submissionId]?.[selected]
             const isSaving  = saving[submissionId]
             const isSaved   = saved[submissionId]
@@ -239,7 +296,7 @@ export default function TeacherGradingScreen({ onBack }) {
                       { val: 'X', label: '오답 ✗', color: 'var(--danger)'  },
                     ].map(({ val, label, color }) => (
                       <button key={val} disabled={isSaving}
-                        onClick={() => markGrade(submissionId, selected, val, allQIds)}
+                        onClick={() => markGrade(submissionId, selected, val, allQIds, source)}
                         style={{
                           flex: 1, padding: '11px 0', borderRadius: 10,
                           cursor: isSaving ? 'default' : 'pointer',
@@ -374,6 +431,79 @@ export default function TeacherGradingScreen({ onBack }) {
             })}
           </>
         )}
+
+        {/* ── 합격 판정 이력 ───────────────────────────────────────── */}
+        <div style={{ marginTop: 24 }}>
+          <button
+            onClick={() => setShowPassHist(v => !v)}
+            style={{
+              width: '100%', display: 'flex', justifyContent: 'space-between',
+              alignItems: 'center', background: 'var(--card)',
+              border: '1px solid var(--border)', borderRadius: 10,
+              padding: '12px 16px', cursor: 'pointer',
+            }}>
+            <span style={{ fontWeight: 700, fontSize: 14 }}>
+              🎯 합격 판정 이력
+              {passResults.length > 0 && (
+                <span style={{
+                  marginLeft: 8, background: 'var(--primary)', color: '#fff',
+                  borderRadius: 10, padding: '1px 7px', fontSize: 12,
+                }}>{passResults.length}</span>
+              )}
+            </span>
+            <span style={{ color: 'var(--text-muted)', fontSize: 13 }}>{showPassHist ? '▲' : '▼'}</span>
+          </button>
+
+          {showPassHist && (
+            <div style={{ marginTop: 8 }}>
+              {passResults.length === 0 ? (
+                <p style={{ fontSize: 13, color: 'var(--text-muted)', textAlign: 'center', padding: '16px 0' }}>
+                  아직 합격 판정 기록이 없습니다.
+                </p>
+              ) : passResults.map(r => {
+                const verdictIcon = r.verdict === 'pass' ? '🎉' : r.verdict === 'fail' ? '⚠️' : '📝'
+                const verdictText = r.verdict === 'pass' ? '합격' : r.verdict === 'fail' ? '불합격' : '미정'
+                const verdictColor = r.verdict === 'pass' ? 'var(--success)' : r.verdict === 'fail' ? 'var(--danger)' : 'var(--text-muted)'
+                const date = new Date(r.created_at).toLocaleDateString('ko-KR', { month: 'numeric', day: 'numeric' })
+                return (
+                  <div key={r.id} className="card" style={{
+                    marginBottom: 8, display: 'flex', alignItems: 'center', gap: 12,
+                    borderLeft: `4px solid ${verdictColor}`,
+                  }}>
+                    <span style={{ fontSize: 22 }}>{verdictIcon}</span>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <span style={{ fontWeight: 700, fontSize: 14 }}>
+                          {r.student?.display_name ?? '학생'}
+                        </span>
+                        <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>{date}</span>
+                      </div>
+                      <div style={{ display: 'flex', gap: 8, marginTop: 4, alignItems: 'center' }}>
+                        <span style={{ fontWeight: 700, color: verdictColor, fontSize: 13 }}>
+                          {verdictText}
+                        </span>
+                        <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>
+                          {r.passed_count ?? 0}/{getPassSpec(r.subject_id).units.length} 영역 통과
+                          {r.paper_no ? ` · ${r.paper_no}회` : ''}
+                        </span>
+                      </div>
+                      {(r.weak_units ?? []).length > 0 && (
+                        <div style={{ marginTop: 6, display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+                          {r.weak_units.map(u => (
+                            <span key={u} style={{
+                              background: '#fff3cd', color: '#856404',
+                              borderRadius: 6, padding: '2px 7px', fontSize: 11, fontWeight: 600,
+                            }}>{u}</span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )

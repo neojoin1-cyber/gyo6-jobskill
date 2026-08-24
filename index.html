@@ -14,6 +14,10 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="설탕과소금" />
   <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+  <!-- 브라우저는 선언이 없으면 /favicon.ico 를 스스로 찾다가 404 를 남긴다.
+       탭 아이콘도 기본값으로 뜬다. 이미 있는 아이콘을 가리켜 둔다. -->
+  <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="/icons/icon-512.png" />
 
   <title>설탕과소금 - 달콤한 취업 성공을 위한 짭짤한 실력 준비</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -22,6 +26,7 @@
 </head>
 <body>
   <div id="root"></div>
+  <script type="module" src="/marketing-subjects.js"></script>
   <script type="module" src="/src/main.jsx"></script>
 </body>
 </html>

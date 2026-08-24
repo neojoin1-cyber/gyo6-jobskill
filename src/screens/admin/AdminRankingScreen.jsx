@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { filterActiveSubjects } from '../../lib/subjectCatalog.js'
 import { supabase } from '../../lib/supabase.js'
 
 export default function AdminRankingScreen() {
@@ -9,7 +10,7 @@ export default function AdminRankingScreen() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    supabase.from('subjects').select('id, name').then(({ data }) => setSubjects(data ?? []))
+    supabase.from('subjects').select('id, name').then(({ data }) => setSubjects(filterActiveSubjects(data)))
   }, [])
 
   useEffect(() => { load() }, [viewType, subjectId])

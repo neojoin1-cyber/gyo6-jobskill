@@ -1,5 +1,10 @@
 import { useState, useEffect } from 'react'
+import { filterActiveSubjects } from '../../lib/subjectCatalog.js'
 import { supabase } from '../../lib/supabase.js'
+import AdminClassesScreen from './AdminClassesScreen.jsx'
+import { SUBJECT_CATALOG } from '../../lib/subjectCatalog.js'
+
+const SUBJECT_ORDER = Object.fromEntries(SUBJECT_CATALOG.map((s, i) => [s.id, i]))
 
 const EDUCATION_OFFICES = [
   '서울특별시교육청', '부산광역시교육청', '대구광역시교육청', '인천광역시교육청',
@@ -33,6 +38,11 @@ export default function SchoolsScreen() {
   const [quotaModal,      setQuotaModal]       = useState(null)
   const [quotaForm,       setQuotaForm]        = useState({ max_members: 500, max_teachers: 30 })
   const [quotaSaving,     setQuotaSaving]      = useState(false)
+  const [editModal,       setEditModal]        = useState(null)
+  const [editForm,        setEditForm]         = useState({ name: '', region: '', education_office: '' })
+  const [editSaving,      setEditSaving]       = useState(false)
+  const [classMgmt,       setClassMgmt]        = useState(null)   // 학급관리 대상 학교
+  const [moreOpen,        setMoreOpen]         = useState(null)   // 부가 동작을 펼친 학교
 
   useEffect(() => { load() }, [])
 
@@ -47,12 +57,13 @@ export default function SchoolsScreen() {
     ] = await Promise.all([
       supabase.from('schools').select('id, name, region, education_office, national_ranking_opt_in, max_members, max_teachers, created_at').order('name'),
       supabase.from('profiles').select('id, display_name, school_id').in('role', ['school_admin']),
-      supabase.from('courses').select('id, name').order('sort_order'),
-      supabase.from('school_courses').select('school_id, course_id'),
+      supabase.from('subjects').select('id, name'),
+      supabase.from('school_subjects').select('school_id, subject_id'),
       supabase.from('school_member_counts').select('*'),
     ])
     setSchools(schoolData ?? [])
-    setAllCourses(subsData ?? [])
+    // 과목은 subjects 테이블 기준(추가되면 자동 표시). 앱 카탈로그 순서로 정렬.
+    setAllCourses([...filterActiveSubjects(subsData)].sort((a, b) => (SUBJECT_ORDER[a.id] ?? 99) - (SUBJECT_ORDER[b.id] ?? 99)))
 
     const adminMap = {}
     for (const a of adminData ?? []) {
@@ -64,7 +75,7 @@ export default function SchoolsScreen() {
     const ssMap = {}
     for (const ss of ssData ?? []) {
       if (!ssMap[ss.school_id]) ssMap[ss.school_id] = new Set()
-      ssMap[ss.school_id].add(ss.course_id)
+      ssMap[ss.school_id].add(ss.subject_id)
     }
     setSchoolCourses(ssMap)
 
@@ -75,22 +86,22 @@ export default function SchoolsScreen() {
     setLoading(false)
   }
 
-  // ── 교과목 배정 토글 ────────────────────────────────────────────────────────
-  async function toggleSchoolCourse(schoolId, courseId) {
-    const key = `${schoolId}-${courseId}`
+  // ── 교과목 배정 토글 (subjects/school_subjects 기준) ──────────────────────────
+  async function toggleSchoolCourse(schoolId, subjectId) {
+    const key = `${schoolId}-${subjectId}`
     setCourseSaving(key)
-    const has = schoolCourses[schoolId]?.has(courseId)
+    const has = schoolCourses[schoolId]?.has(subjectId)
     if (has) {
-      await supabase.from('school_courses').delete().eq('school_id', schoolId).eq('course_id', courseId)
+      await supabase.from('school_subjects').delete().eq('school_id', schoolId).eq('subject_id', subjectId)
       setSchoolCourses(prev => {
         const next = { ...prev, [schoolId]: new Set(prev[schoolId]) }
-        next[schoolId].delete(courseId)
+        next[schoolId].delete(subjectId)
         return next
       })
     } else {
-      await supabase.from('school_courses').insert({ school_id: schoolId, course_id: courseId })
+      await supabase.from('school_subjects').insert({ school_id: schoolId, subject_id: subjectId })
       setSchoolCourses(prev => ({
-        ...prev, [schoolId]: new Set([...(prev[schoolId] ?? []), courseId])
+        ...prev, [schoolId]: new Set([...(prev[schoolId] ?? []), subjectId])
       }))
     }
     setCourseSaving(null)
@@ -153,6 +164,28 @@ export default function SchoolsScreen() {
     setQuotaModal(null)
   }
 
+  // ── 학교 정보 수정 ──────────────────────────────────────────────────────────
+  async function saveSchoolEdit(e) {
+    e.preventDefault()
+    if (!editForm.name.trim()) { alert('학교명을 입력하세요.'); return }
+    setEditSaving(true)
+    const { error: err } = await supabase.from('schools')
+      .update({
+        name:             editForm.name.trim(),
+        region:           editForm.region.trim() || null,
+        education_office: editForm.education_office || null,
+      })
+      .eq('id', editModal.id)
+    setEditSaving(false)
+    if (err) { alert('수정 오류: ' + err.message); return }
+    setSchools(prev => prev.map(s =>
+      s.id === editModal.id
+        ? { ...s, name: editForm.name.trim(), region: editForm.region.trim() || null, education_office: editForm.education_office || null }
+        : s
+    ))
+    setEditModal(null)
+  }
+
   // ── 학교관리자 지정 ─────────────────────────────────────────────────────────
   async function assignSchoolAdmin(e) {
     e.preventDefault()
@@ -181,6 +214,10 @@ export default function SchoolsScreen() {
     load()
   }
 
+  if (classMgmt) {
+    return <AdminClassesScreen school={classMgmt} onBack={() => setClassMgmt(null)} />
+  }
+
   if (loading) return <div className="loading-screen"><div className="spinner" /></div>
 
   return (
@@ -188,7 +225,8 @@ export default function SchoolsScreen() {
 
       {/* 쿼터 수정 모달 */}
       {quotaModal && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: 24 }}>
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: 24 }}
+          onClick={e => { if (e.target === e.currentTarget) setQuotaModal(null) }}>
           <div className="card" style={{ width: '100%', maxWidth: 360 }}>
             <p style={{ fontWeight: 700, marginBottom: 4 }}>회원 쿼터 수정</p>
             <p style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 16 }}>{quotaModal.name}</p>
@@ -214,9 +252,44 @@ export default function SchoolsScreen() {
         </div>
       )}
 
+      {/* 학교 정보 수정 모달 */}
+      {editModal && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: 24 }}
+          onClick={e => { if (e.target === e.currentTarget) setEditModal(null) }}>
+          <div className="card" style={{ width: '100%', maxWidth: 380 }}>
+            <p style={{ fontWeight: 700, marginBottom: 16 }}>학교 정보 수정</p>
+            <div className="form-group">
+              <label className="form-label">학교명 *</label>
+              <input className="form-input" value={editForm.name}
+                onChange={e => setEditForm(f => ({ ...f, name: e.target.value }))} placeholder="○○고등학교" />
+            </div>
+            <div className="form-group">
+              <label className="form-label">교육청</label>
+              <select className="form-input" value={editForm.education_office}
+                onChange={e => setEditForm(f => ({ ...f, education_office: e.target.value }))}>
+                <option value="">교육청 선택</option>
+                {EDUCATION_OFFICES.map(o => <option key={o} value={o}>{o}</option>)}
+              </select>
+            </div>
+            <div className="form-group">
+              <label className="form-label">지역 (상세)</label>
+              <input className="form-input" value={editForm.region}
+                onChange={e => setEditForm(f => ({ ...f, region: e.target.value }))} placeholder="예: 경상북도 경주시" />
+            </div>
+            <div style={{ display: 'flex', gap: 8 }}>
+              <button className="btn btn-ghost" style={{ flex: 1 }} onClick={() => setEditModal(null)}>취소</button>
+              <button className="btn btn-primary" style={{ flex: 1 }} onClick={saveSchoolEdit} disabled={editSaving}>
+                {editSaving ? '저장 중...' : '저장'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* 학교관리자 지정 모달 */}
       {assignModal && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: 24 }}>
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: 24 }}
+          onClick={e => { if (e.target === e.currentTarget) setAssignModal(null) }}>
           <div className="card" style={{ width: '100%', maxWidth: 380 }}>
             <p style={{ fontWeight: 700, marginBottom: 4 }}>학교관리자 지정</p>
             <p style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 16 }}>{assignModal.name}</p>
@@ -330,8 +403,9 @@ export default function SchoolsScreen() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <p style={{ fontWeight: 700 }}>{s.name}</p>
-                <p style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 2 }}>
-                  {s.education_office || s.region || '교육청 미설정'}
+                <p style={{ fontSize: 12, color: s.education_office ? 'var(--text-muted)' : 'var(--danger)', marginTop: 2 }}>
+                  {s.education_office ? `🏛 ${s.education_office}` : '⚠️ 교육청 미설정 (✏️ 수정)'}
+                  {s.education_office && s.region ? ` · ${s.region}` : ''}
                 </p>
                 {admins.length > 0 && (
                   <p style={{ fontSize: 12, color: 'var(--success)', marginTop: 4 }}>
@@ -344,10 +418,16 @@ export default function SchoolsScreen() {
                   </p>
                 )}
               </div>
-              <button onClick={() => deleteSchool(s.id, s.name)}
-                style={{ background: 'none', border: 'none', color: 'var(--danger)', cursor: 'pointer', fontSize: 18, padding: 4 }}>
-                🗑
-              </button>
+              <div style={{ display: 'flex', gap: 4 }}>
+                <button onClick={() => { setEditModal(s); setEditForm({ name: s.name, region: s.region || '', education_office: s.education_office || '' }) }}
+                  style={{ background: 'none', border: 'none', color: 'var(--primary)', cursor: 'pointer', fontSize: 18, padding: 4, minHeight: 44, minWidth: 44 }}>
+                  ✏️
+                </button>
+                <button onClick={() => deleteSchool(s.id, s.name)}
+                  style={{ background: 'none', border: 'none', color: 'var(--danger)', cursor: 'pointer', fontSize: 18, padding: 4, minHeight: 44, minWidth: 44 }}>
+                  🗑
+                </button>
+              </div>
             </div>
 
             {/* 쿼터 게이지 */}
@@ -358,31 +438,46 @@ export default function SchoolsScreen() {
               </div>
             )}
 
-            {/* 버튼 행 */}
-            <div style={{ marginTop: 10, display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-              <button className="btn btn-primary" style={{ flex: 1, padding: '7px 8px', fontSize: 12, minWidth: 90 }}
+            {/* 버튼 행 — 자주 쓰는 둘만 노출하고 나머지는 접는다.
+                카드마다 버튼이 7개면 무엇이 중요한지 알 수 없다. */}
+            <div style={{ marginTop: 10, display: 'flex', gap: 6 }}>
+              <button className="btn btn-primary" style={{ flex: 1, padding: '9px 8px', fontSize: 13 }}
                 onClick={() => { setAssignModal(s); setAssignError('') }}>
                 👤 관리자 지정
               </button>
-              <button className="btn btn-ghost" style={{ flex: 1, padding: '7px 8px', fontSize: 12, minWidth: 90 }}
-                onClick={() => {
-                  setQuotaModal(s)
-                  setQuotaForm({ max_members: s.max_members, max_teachers: s.max_teachers })
-                }}>
-                📊 쿼터 수정
-              </button>
-              <button className="btn btn-ghost" style={{
-                flex: 1, padding: '7px 8px', fontSize: 12, minWidth: 90,
-                color: s.national_ranking_opt_in ? 'var(--success)' : 'var(--text-muted)',
-              }}
-                onClick={() => toggleRanking(s)}>
-                {s.national_ranking_opt_in ? '🌐 전국랭킹 ON' : '🔒 전국랭킹 OFF'}
-              </button>
-              <button className="btn btn-ghost" style={{ flex: 1, padding: '7px 8px', fontSize: 12, minWidth: 90 }}
+              <button className="btn btn-ghost" style={{ flex: 1, padding: '9px 8px', fontSize: 13 }}
                 onClick={() => setExpandedCourses(expandedCourses === s.id ? null : s.id)}>
                 📚 과목배정 {expandedCourses === s.id ? '▲' : '▼'}
               </button>
+              <button className="btn btn-ghost" aria-label="부가 기능"
+                style={{ minWidth: 48, padding: '9px 10px', fontSize: 16, lineHeight: 1 }}
+                onClick={() => setMoreOpen(moreOpen === s.id ? null : s.id)}>
+                ⋯
+              </button>
             </div>
+
+            {moreOpen === s.id && (
+              <div style={{ marginTop: 8, display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                <button className="btn btn-ghost" style={{ flex: 1, padding: '8px', fontSize: 12, minWidth: 100 }}
+                  onClick={() => {
+                    setQuotaModal(s)
+                    setQuotaForm({ max_members: s.max_members, max_teachers: s.max_teachers })
+                  }}>
+                  📊 쿼터 수정
+                </button>
+                <button className="btn btn-ghost" style={{ flex: 1, padding: '8px', fontSize: 12, minWidth: 100 }}
+                  onClick={() => setClassMgmt(s)}>
+                  🏫 학급관리
+                </button>
+                <button className="btn btn-ghost" style={{
+                  flex: 1, padding: '8px', fontSize: 12, minWidth: 100,
+                  color: s.national_ranking_opt_in ? 'var(--success)' : 'var(--text-muted)',
+                }}
+                  onClick={() => toggleRanking(s)}>
+                  {s.national_ranking_opt_in ? '🌐 전국랭킹 ON' : '🔒 전국랭킹 OFF'}
+                </button>
+              </div>
+            )}
 
             {/* 교과목 배정 패널 */}
             {expandedCourses === s.id && (

@@ -1,0 +1,993 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-24T01:43:13.602Z",
+  "provider": "ElevenLabs",
+  "delivery": "pre-generated-static-audio",
+  "model": "eleven_v3",
+  "strategy": "native-ko-and-american-dialogue",
+  "voices": {
+    "korean": {
+      "id": "uyVNoMrnUku1dZyVEXwD",
+      "name": "Anna Kim",
+      "locale": "ko-KR",
+      "provenance": "ElevenLabs native Korean voice library"
+    },
+    "english": [
+      {
+        "id": "21m00Tcm4TlvDq8ikWAM",
+        "name": "Rachel",
+        "locale": "en-US"
+      },
+      {
+        "id": "pNInz6obpgDQGcFmaJgB",
+        "name": "Adam",
+        "locale": "en-US"
+      }
+    ]
+  },
+  "files": [
+    {
+      "questionId": "ENG-dialog-D01",
+      "file": "ENG-dialog-D01.mp3",
+      "bytes": 67753,
+      "sha256": "6b6b4c9d0e4317ac6972698cb05596e15bf3e2aaa0872fd9b9c1e1bc3655afb9",
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 96
+    },
+    {
+      "questionId": "ENG-dialog-D02",
+      "file": "ENG-dialog-D02.mp3",
+      "bytes": 125431,
+      "sha256": "d4ceb31eaa0414298061aac62541a3f18f6a00648f9492d106bcb1055b0b1816",
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 158
+    },
+    {
+      "questionId": "ENG-dialog-D03",
+      "file": "ENG-dialog-D03.mp3",
+      "bytes": 118744,
+      "sha256": "e6fe80a5f0d13c8b0e5f10e61fd86a6dfece1b3f6ef1b3e529b514137706e088",
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 131
+    },
+    {
+      "questionId": "ENG-dialog-D04",
+      "file": "ENG-dialog-D04.mp3",
+      "bytes": 88233,
+      "sha256": "0ce2f1445b96a82a7ac692965c49c9bab5fb96a7e59ff3ecafe9959c404d81bb",
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 103
+    },
+    {
+      "questionId": "ENG-dialog-basic-01",
+      "file": "ENG-dialog-basic-01.mp3",
+      "bytes": 70261,
+      "sha256": "ea98db9233c9865be9127f7d6b4e545fdb5f2d08374f6b0ff701691e1e72b9b5",
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 98
+    },
+    {
+      "questionId": "ENG-dialog-basic-02",
+      "file": "ENG-dialog-basic-02.mp3",
+      "bytes": 137970,
+      "sha256": "ecea8d743935ab9ad86f71b4a644b5ed1ad9208b965d5c1a1b39c89c61ab6f4b",
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 133
+    },
+    {
+      "questionId": "ENG-dialog-basic-03",
+      "file": "ENG-dialog-basic-03.mp3",
+      "bytes": 62319,
+      "sha256": "4a997431760c9a89122acd78c2a50dafbe62a3ed4f8295ccda5079342834275e",
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 90
+    },
+    {
+      "questionId": "ENG-dialog-basic-04",
+      "file": "ENG-dialog-basic-04.mp3",
+      "bytes": 67753,
+      "sha256": "d035d737233797ab1417af6d139de471492d599aa01b7d5565516967cba69bae",
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 88
+    },
+    {
+      "questionId": "ENG-dialog-basic-05",
+      "file": "ENG-dialog-basic-05.mp3",
+      "bytes": 81546,
+      "sha256": "aa4b8465c98a97a9f38e856f2fc5bb2c1e8a0c9a8573ec349adfaee1a7af5dee",
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 78
+    },
+    {
+      "questionId": "ENG-dialog-basic-06",
+      "file": "ENG-dialog-basic-06.mp3",
+      "bytes": 135462,
+      "sha256": "42abe98e6bae0b839e45fe3cdd33165c46a8093da0562bfad22945fcf32c672b",
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 138
+    },
+    {
+      "questionId": "ENG-dialog-basic-07",
+      "file": "ENG-dialog-basic-07.mp3",
+      "bytes": 62319,
+      "sha256": "51b7d88922acea638b7a18feafbcd8cffcb4a68466dcad81a20624f2557365bf",
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 84
+    },
+    {
+      "questionId": "ENG-dialog-basic-08",
+      "file": "ENG-dialog-basic-08.mp3",
+      "bytes": 72768,
+      "sha256": "7754c9842c7c737d4735823e41559cf217671f27edabb66f1f8974cddbd2e34f",
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 110
+    },
+    {
+      "questionId": "ENG-dialog-basic-09",
+      "file": "ENG-dialog-basic-09.mp3",
+      "bytes": 93248,
+      "sha256": "d8254442c90f161fafff388225dbe0cdaf121e6cf61b4e9457283523e15bd0c7",
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 103
+    },
+    {
+      "questionId": "ENG-dialog-basic-10",
+      "file": "ENG-dialog-basic-10.mp3",
+      "bytes": 80292,
+      "sha256": "0b8c559d0d782f8b66b9952a21f79871ed0ce600378afd82bea9de091ef0ff54",
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 88
+    },
+    {
+      "questionId": "ENG-dialog-std-01",
+      "file": "ENG-dialog-std-01.mp3",
+      "bytes": 173915,
+      "sha256": "990239d9b240e292c997803b061bf570f589f5954ff8d46d579094395a154eb8",
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 186
+    },
+    {
+      "questionId": "ENG-dialog-std-02",
+      "file": "ENG-dialog-std-02.mp3",
+      "bytes": 114982,
+      "sha256": "da3df1510818adc25295d362aaa690401fb82ed8e792c5ec968a52677d540d2d",
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 123
+    },
+    {
+      "questionId": "ENG-dialog-std-03",
+      "file": "ENG-dialog-std-03.mp3",
+      "bytes": 180184,
+      "sha256": "dbe47cba6cf20748b6b0492acf7574b25e0e0ef20db21ba6a26574fc3f56b4d8",
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 194
+    },
+    {
+      "questionId": "ENG-dialog-std-04",
+      "file": "ENG-dialog-std-04.mp3",
+      "bytes": 82799,
+      "sha256": "40e83024b248fa5d2e31fe98e9036574207407e6d93c1240e6c2eea622cba4fa",
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 88
+    },
+    {
+      "questionId": "ENG-dialog-std-05",
+      "file": "ENG-dialog-std-05.mp3",
+      "bytes": 191887,
+      "sha256": "d3de294b75677e8ecbe64176ccac5123e79b8e17fe03925593ca474165afb899",
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 200
+    },
+    {
+      "questionId": "ENG-dialog-std-06",
+      "file": "ENG-dialog-std-06.mp3",
+      "bytes": 116236,
+      "sha256": "17dfc514fd8ab8dbb182e4a0af402c06d80e5eedfc44ef27a7f0db52cc45d8db",
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 154
+    },
+    {
+      "questionId": "ENG-dialog-std-07",
+      "file": "ENG-dialog-std-07.mp3",
+      "bytes": 175168,
+      "sha256": "ba036c4e8569e8b911b555beaee03fcd3a2acd80b8973cba17189247004ce0c0",
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 187
+    },
+    {
+      "questionId": "ENG-dialog-std-08",
+      "file": "ENG-dialog-std-08.mp3",
+      "bytes": 152181,
+      "sha256": "c8920fca05e1811667b25008df42dad70fe1bf6d5d66ecc1f46378354c96c893",
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 169
+    },
+    {
+      "questionId": "ENG-dialog-std-09",
+      "file": "ENG-dialog-std-09.mp3",
+      "bytes": 81546,
+      "sha256": "dbf6c0f84b55caf12cd27f8aeb226612454b2810120ad0f17c3738c1b4902237",
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 106
+    },
+    {
+      "questionId": "ENG-dialog-std-10",
+      "file": "ENG-dialog-std-10.mp3",
+      "bytes": 216128,
+      "sha256": "bc9f3653cddb798be733758d4f1dae7850a8b7e6a1099e1b10bb0f00cd640524",
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 235
+    },
+    {
+      "questionId": "JC26-KO-LISTEN-01",
+      "file": "JC26-KO-LISTEN-01.mp3",
+      "bytes": 213621,
+      "sha256": "2ebcadb1c6e32b1b38e282a085e8ffa947b682875fa0e4a25fd09d7176ab8dd9",
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 94
+    },
+    {
+      "questionId": "JC26-KO-LISTEN-02",
+      "file": "JC26-KO-LISTEN-02.mp3",
+      "bytes": 172661,
+      "sha256": "4975b45d1045182d4f5358e77affab1d1d3555cdd1f6aa89ba6220d946c3aa3d",
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 69
+    },
+    {
+      "questionId": "JC26-KO-LISTEN-03",
+      "file": "JC26-KO-LISTEN-03.mp3",
+      "bytes": 209859,
+      "sha256": "741650c7b9733f062d59e7d8270823a69d0f1779fe4f69ed813ff553d86d80ee",
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 83
+    },
+    {
+      "questionId": "JC26-KO-LISTEN-04",
+      "file": "JC26-KO-LISTEN-04.mp3",
+      "bytes": 224906,
+      "sha256": "c8948e8ebe3398aa4440587f49db37e3539bae960acb7f2d4092d01270acd3a7",
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 92
+    },
+    {
+      "questionId": "JC26-KO-LISTEN-05",
+      "file": "JC26-KO-LISTEN-05.mp3",
+      "bytes": 214875,
+      "sha256": "f40d76c992c0d788e7f956e9e25700cc2b4ef67cecb3140d18822f1892a9d7ab",
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 85
+    },
+    {
+      "questionId": "JC26-KO-LISTEN-06",
+      "file": "JC26-KO-LISTEN-06.mp3",
+      "bytes": 216128,
+      "sha256": "6d6b70b043a5534d065118249898fdf4fd3326a7985ab4d09bbac309023c4f92",
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 88
+    },
+    {
+      "questionId": "JC26-KO-LISTEN-07",
+      "file": "JC26-KO-LISTEN-07.mp3",
+      "bytes": 199410,
+      "sha256": "ded4250271e26b27f71582a209976bdc87c3efa1df8ed2682a783e87e59cb52d",
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 92
+    },
+    {
+      "questionId": "JC26-KO-LISTEN-08",
+      "file": "JC26-KO-LISTEN-08.mp3",
+      "bytes": 204426,
+      "sha256": "4a4de8019d6deb9acfb7b931729080c6c039f98a6162edf0c142afa851cb30e0",
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 79
+    },
+    {
+      "questionId": "JC26-KO-LISTEN-09",
+      "file": "JC26-KO-LISTEN-09.mp3",
+      "bytes": 236608,
+      "sha256": "bf6c8ab2f80d4c94f40173e8630399a312d9bab05241c0606bc043a618c45105",
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 96
+    },
+    {
+      "questionId": "JC26-KO-LISTEN-10",
+      "file": "JC26-KO-LISTEN-10.mp3",
+      "bytes": 211113,
+      "sha256": "e48975b47d9373a14322c2493160a19fb8a0113b17e89cdb7691c3e75a2be977",
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 86
+    },
+    {
+      "questionId": "JC26-KO-LISTEN-11",
+      "file": "JC26-KO-LISTEN-11.mp3",
+      "bytes": 219890,
+      "sha256": "f7e6063e056f97d886d097b31a111c3215b1de757a42a97ea90344b2657d95b4",
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 92
+    },
+    {
+      "questionId": "JC26-KO-LISTEN-12",
+      "file": "JC26-KO-LISTEN-12.mp3",
+      "bytes": 232847,
+      "sha256": "cfdfbd3666a22769ee2db3cfa8fc7b060ce2ae9ad4007a465137678dcb719357",
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 94
+    },
+    {
+      "questionId": "JC26-KO-LISTEN-13",
+      "file": "JC26-KO-LISTEN-13.mp3",
+      "bytes": 207351,
+      "sha256": "e4910af395961b1a2815b2794fdab8ede18549856c32bb24ec7399fa9646fc19",
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 85
+    },
+    {
+      "questionId": "JC26-KO-LISTEN-14",
+      "file": "JC26-KO-LISTEN-14.mp3",
+      "bytes": 207351,
+      "sha256": "dcc841c1f3e35662bb77b0596ab7998cb05e18053014795a27591c49cbf9bb57",
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 84
+    },
+    {
+      "questionId": "JC26-KO-LISTEN-15",
+      "file": "JC26-KO-LISTEN-15.mp3",
+      "bytes": 245386,
+      "sha256": "68ea69765ccb2cfe81469d1d3d8272e71cd53685d6b53bee848f67ef22b226fb",
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 95
+    },
+    {
+      "questionId": "JC26-KO-LISTEN-16",
+      "file": "JC26-KO-LISTEN-16.mp3",
+      "bytes": 216128,
+      "sha256": "2d7e40f092b49b9b7e1698ba7521d9b88e5a7718d6e3ab7939c6819e5634f98d",
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 86
+    },
+    {
+      "questionId": "JC26-KO-LISTEN-17",
+      "file": "JC26-KO-LISTEN-17.mp3",
+      "bytes": 275061,
+      "sha256": "0189cb098848b3a7a8f89f53ba2ba11a98e9887f1a960f22113e3d872c744abb",
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 104
+    },
+    {
+      "questionId": "JC26-KO-LISTEN-18",
+      "file": "JC26-KO-LISTEN-18.mp3",
+      "bytes": 248311,
+      "sha256": "037106c90a75bdcb97c398913440374fa56cab796a29f601ed4d7e0e177a0cf8",
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 106
+    },
+    {
+      "questionId": "JC26-KO-LISTEN-19",
+      "file": "JC26-KO-LISTEN-19.mp3",
+      "bytes": 217382,
+      "sha256": "b8fb6916e6fb40d43d8afd77614ba20493ec655fd1c282227040e60b555e1222",
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 89
+    },
+    {
+      "questionId": "JC26-KO-LISTEN-20",
+      "file": "JC26-KO-LISTEN-20.mp3",
+      "bytes": 234101,
+      "sha256": "5863eb615b9a4ec9ee2029bc939306c019c833aa3a57e199a16b5ae00191b4ca",
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 94
+    },
+    {
+      "questionId": "JC26-KO-LISTEN-21",
+      "file": "JC26-KO-LISTEN-21.mp3",
+      "bytes": 249565,
+      "sha256": "aa86950b35bd5029a1c3269df9401864acccc13ff7cdd37fe721d761d5100dea",
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 103
+    },
+    {
+      "questionId": "JC26-KO-LISTEN-22",
+      "file": "JC26-KO-LISTEN-22.mp3",
+      "bytes": 213621,
+      "sha256": "336e51a6774e365cd7da63c654f26a57d274b82fc2ba8a216016b0b2f8100f1e",
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 90
+    },
+    {
+      "questionId": "JC26-KO-LISTEN-23",
+      "file": "JC26-KO-LISTEN-23.mp3",
+      "bytes": 245386,
+      "sha256": "e21dab058624fec0b4c003deb901e45790f32e4288830a9450022792cd158304",
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 103
+    },
+    {
+      "questionId": "JC26-KO-LISTEN-24",
+      "file": "JC26-KO-LISTEN-24.mp3",
+      "bytes": 224906,
+      "sha256": "58356c1b61f39563935c4965f530e4c38a9d5adc8282f91b1999021a445c2ce9",
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 94
+    },
+    {
+      "questionId": "JC26-KO-LISTEN-25",
+      "file": "JC26-KO-LISTEN-25.mp3",
+      "bytes": 211113,
+      "sha256": "9e964e6c4c3064464ab8061ac28ec0c55625e837e87721cb1b776c2850e6ec55",
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 88
+    },
+    {
+      "questionId": "JC26-KO-LISTEN-26",
+      "file": "JC26-KO-LISTEN-26.mp3",
+      "bytes": 236608,
+      "sha256": "d0dd57ba664730b969e6889f9c49dd65a420c43d00679da8bb1005a9c5c19958",
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 93
+    },
+    {
+      "questionId": "JC26-KO-LISTEN-27",
+      "file": "JC26-KO-LISTEN-27.mp3",
+      "bytes": 204426,
+      "sha256": "fdd75efaeaa9b5c2e2a29585f49214b2ec9a82c734d40573aeebf160f002ef28",
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 89
+    }
+  ]
+}

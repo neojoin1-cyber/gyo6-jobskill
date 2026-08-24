@@ -5,7 +5,7 @@
     {
       "id": "a01",
       "displayName": "의사소통능력",
-      "totalQuestions": 43,
+      "totalQuestions": 70,
       "lessons": [
         {
           "id": "C01-0",
@@ -41,13 +41,20 @@
           "level": "심화",
           "questionCount": 9,
           "isAGradeLesson": true
+        },
+        {
+          "id": "COM",
+          "title": "다양한 유형 보충 문항 (OX·복수선택·연결형·단답형)",
+          "level": "보충",
+          "questionCount": 28,
+          "isAGradeLesson": false
         }
       ]
     },
     {
       "id": "a02",
       "displayName": "수리능력",
-      "totalQuestions": 40,
+      "totalQuestions": 77,
       "lessons": [
         {
           "id": "C02-1",
@@ -83,13 +90,20 @@
           "level": "심화",
           "questionCount": 8,
           "isAGradeLesson": true
+        },
+        {
+          "id": "NUM",
+          "title": "다양한 유형 보충 문항 (OX·복수선택·연결형·단답형)",
+          "level": "보충",
+          "questionCount": 37,
+          "isAGradeLesson": false
         }
       ]
     },
     {
       "id": "a03",
       "displayName": "문제해결능력",
-      "totalQuestions": 41,
+      "totalQuestions": 78,
       "lessons": [
         {
           "id": "C03-2",
@@ -125,13 +139,20 @@
           "level": "심화",
           "questionCount": 9,
           "isAGradeLesson": true
+        },
+        {
+          "id": "PSV",
+          "title": "다양한 유형 보충 문항 (OX·복수선택·연결형·단답형)",
+          "level": "보충",
+          "questionCount": 37,
+          "isAGradeLesson": false
         }
       ]
     },
     {
       "id": "a04",
       "displayName": "자기개발능력",
-      "totalQuestions": 18,
+      "totalQuestions": 87,
       "lessons": [
         {
           "id": "C28-27",
@@ -146,13 +167,20 @@
           "level": "심화",
           "questionCount": 9,
           "isAGradeLesson": true
+        },
+        {
+          "id": "SDE",
+          "title": "다양한 유형 보충 문항 (OX·복수선택·연결형·단답형)",
+          "level": "보충",
+          "questionCount": 69,
+          "isAGradeLesson": false
         }
       ]
     },
     {
       "id": "a05",
       "displayName": "자원관리능력",
-      "totalQuestions": 18,
+      "totalQuestions": 87,
       "lessons": [
         {
           "id": "C04-3",
@@ -174,13 +202,20 @@
           "level": "표준",
           "questionCount": 8,
           "isAGradeLesson": true
+        },
+        {
+          "id": "RSM",
+          "title": "다양한 유형 보충 문항 (OX·복수선택·연결형·단답형)",
+          "level": "보충",
+          "questionCount": 69,
+          "isAGradeLesson": false
         }
       ]
     },
     {
       "id": "a06",
       "displayName": "정보능력",
-      "totalQuestions": 36,
+      "totalQuestions": 87,
       "lessons": [
         {
           "id": "C05-4",
@@ -216,13 +251,20 @@
           "level": "심화",
           "questionCount": 9,
           "isAGradeLesson": true
+        },
+        {
+          "id": "INF",
+          "title": "다양한 유형 보충 문항 (OX·복수선택·연결형·단답형)",
+          "level": "보충",
+          "questionCount": 51,
+          "isAGradeLesson": false
         }
       ]
     },
     {
       "id": "a07",
       "displayName": "기술능력",
-      "totalQuestions": 46,
+      "totalQuestions": 87,
       "lessons": [
         {
           "id": "C06-5",
@@ -265,13 +307,20 @@
           "level": "종합",
           "questionCount": 9,
           "isAGradeLesson": true
+        },
+        {
+          "id": "TEC",
+          "title": "다양한 유형 보충 문항 (OX·복수선택·연결형·단답형)",
+          "level": "보충",
+          "questionCount": 41,
+          "isAGradeLesson": false
         }
       ]
     },
     {
       "id": "a08",
       "displayName": "조직이해능력",
-      "totalQuestions": 35,
+      "totalQuestions": 81,
       "lessons": [
         {
           "id": "C07-6",
@@ -307,13 +356,20 @@
           "level": "종합",
           "questionCount": 9,
           "isAGradeLesson": true
+        },
+        {
+          "id": "ORG",
+          "title": "다양한 유형 보충 문항 (OX·복수선택·연결형·단답형)",
+          "level": "보충",
+          "questionCount": 47,
+          "isAGradeLesson": false
         }
       ]
     },
     {
       "id": "a09",
       "displayName": "직업윤리",
-      "totalQuestions": 34,
+      "totalQuestions": 85,
       "lessons": [
         {
           "id": "C08-7",
@@ -349,6 +405,13 @@
           "level": "종합",
           "questionCount": 8,
           "isAGradeLesson": true
+        },
+        {
+          "id": "ETH",
+          "title": "다양한 유형 보충 문항 (OX·복수선택·연결형·단답형)",
+          "level": "보충",
+          "questionCount": 51,
+          "isAGradeLesson": false
         }
       ]
     }

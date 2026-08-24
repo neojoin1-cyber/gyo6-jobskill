@@ -1,0 +1,789 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-24T01:43:13.169Z",
+  "provider": "ElevenLabs",
+  "model": "eleven_v3",
+  "outputFormat": "mp3_44100_128",
+  "strategy": "native-ko-and-american-dialogue",
+  "voices": {
+    "korean": {
+      "id": "uyVNoMrnUku1dZyVEXwD",
+      "name": "Anna Kim",
+      "locale": "ko-KR",
+      "provenance": "ElevenLabs native Korean voice library"
+    },
+    "english": [
+      {
+        "id": "21m00Tcm4TlvDq8ikWAM",
+        "name": "Rachel",
+        "locale": "en-US"
+      },
+      {
+        "id": "pNInz6obpgDQGcFmaJgB",
+        "name": "Adam",
+        "locale": "en-US"
+      }
+    ]
+  },
+  "files": {
+    "ENG-dialog-basic-01": {
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 98
+    },
+    "ENG-dialog-basic-02": {
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 133
+    },
+    "ENG-dialog-basic-03": {
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 90
+    },
+    "ENG-dialog-basic-04": {
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 88
+    },
+    "ENG-dialog-basic-05": {
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 78
+    },
+    "ENG-dialog-basic-06": {
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 138
+    },
+    "ENG-dialog-basic-07": {
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 84
+    },
+    "ENG-dialog-basic-08": {
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 110
+    },
+    "ENG-dialog-basic-09": {
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 103
+    },
+    "ENG-dialog-basic-10": {
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 88
+    },
+    "ENG-dialog-std-01": {
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 186
+    },
+    "ENG-dialog-std-02": {
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 123
+    },
+    "ENG-dialog-std-03": {
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 194
+    },
+    "ENG-dialog-std-04": {
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 88
+    },
+    "ENG-dialog-std-05": {
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 200
+    },
+    "ENG-dialog-std-06": {
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 154
+    },
+    "ENG-dialog-std-07": {
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 187
+    },
+    "ENG-dialog-std-08": {
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 169
+    },
+    "ENG-dialog-std-09": {
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 106
+    },
+    "ENG-dialog-std-10": {
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 235
+    },
+    "ENG-dialog-D01": {
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 96
+    },
+    "ENG-dialog-D02": {
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 158
+    },
+    "ENG-dialog-D03": {
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 131
+    },
+    "ENG-dialog-D04": {
+      "locale": "en-US",
+      "mode": "multi-speaker-dialogue",
+      "voices": [
+        {
+          "id": "21m00Tcm4TlvDq8ikWAM",
+          "name": "Rachel",
+          "locale": "en-US"
+        },
+        {
+          "id": "pNInz6obpgDQGcFmaJgB",
+          "name": "Adam",
+          "locale": "en-US"
+        }
+      ],
+      "characters": 103
+    },
+    "JC26-KO-LISTEN-01": {
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 94
+    },
+    "JC26-KO-LISTEN-02": {
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 69
+    },
+    "JC26-KO-LISTEN-03": {
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 83
+    },
+    "JC26-KO-LISTEN-04": {
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 92
+    },
+    "JC26-KO-LISTEN-05": {
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 85
+    },
+    "JC26-KO-LISTEN-06": {
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 88
+    },
+    "JC26-KO-LISTEN-07": {
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 92
+    },
+    "JC26-KO-LISTEN-08": {
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 79
+    },
+    "JC26-KO-LISTEN-09": {
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 96
+    },
+    "JC26-KO-LISTEN-10": {
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 86
+    },
+    "JC26-KO-LISTEN-11": {
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 92
+    },
+    "JC26-KO-LISTEN-12": {
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 94
+    },
+    "JC26-KO-LISTEN-13": {
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 85
+    },
+    "JC26-KO-LISTEN-14": {
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 84
+    },
+    "JC26-KO-LISTEN-15": {
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 95
+    },
+    "JC26-KO-LISTEN-16": {
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 86
+    },
+    "JC26-KO-LISTEN-17": {
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 104
+    },
+    "JC26-KO-LISTEN-18": {
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 106
+    },
+    "JC26-KO-LISTEN-19": {
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 89
+    },
+    "JC26-KO-LISTEN-20": {
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 94
+    },
+    "JC26-KO-LISTEN-21": {
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 103
+    },
+    "JC26-KO-LISTEN-22": {
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 90
+    },
+    "JC26-KO-LISTEN-23": {
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 103
+    },
+    "JC26-KO-LISTEN-24": {
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 94
+    },
+    "JC26-KO-LISTEN-25": {
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 88
+    },
+    "JC26-KO-LISTEN-26": {
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 93
+    },
+    "JC26-KO-LISTEN-27": {
+      "locale": "ko-KR",
+      "mode": "single-speaker",
+      "voices": [
+        {
+          "id": "uyVNoMrnUku1dZyVEXwD",
+          "name": "Anna Kim",
+          "locale": "ko-KR",
+          "provenance": "ElevenLabs native Korean voice library"
+        }
+      ],
+      "characters": 89
+    }
+  }
+}

@@ -47,8 +47,15 @@ for (const { d, size, fgSize } of DENSITIES) {
   // ic_launcher.png
   await sharp(svg).resize(size, size).png().toFile(join(dir, 'ic_launcher.png'))
 
-  // ic_launcher_round.png (동일 이미지 — launcher가 원형 마스크 적용)
-  await sharp(svg).resize(size, size).png().toFile(join(dir, 'ic_launcher_round.png'))
+  // Android 7.x 이하 런처도 실제 원형 실루엣을 받도록 알파 마스크 적용
+  const roundBase = await sharp(svg).resize(size, size).png().toBuffer()
+  const roundMask = Buffer.from(
+    `<svg width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg"><circle cx="${size / 2}" cy="${size / 2}" r="${size / 2}" fill="white"/></svg>`,
+  )
+  await sharp(roundBase)
+    .composite([{ input: roundMask, blend: 'dest-in' }])
+    .png()
+    .toFile(join(dir, 'ic_launcher_round.png'))
 
   // ic_launcher_foreground.png — 중앙 60% 영역에 아이콘, 외곽 투명
   const contentSize = Math.round(fgSize * 0.6)

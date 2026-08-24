@@ -1,0 +1,1575 @@
+{
+ "_note": "차시(lessonId) → 과목·영역 매핑. ncs-extracted-bank.json 의 areaHint 가 전부 비어 있어 영역별 학습·진단이 불가능했다. ncs-lesson-extras.json 이 차시별 area 를 갖고 있어 이를 조인 키로 쓴다. 문항 파일은 건드리지 않는다.",
+ "_기준": "NCS 26v1 = ncs.go.kr 공식 개편표(2025.12). 자원관리·기술능력·조직이해는 26v1 에서 삭제·통합돼 대응 영역이 없다(area26v1=null).",
+ "_생성": "2026-08-20",
+ "map": {
+  "C001": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "업무 공지문의 핵심 내용 파악하기"
+  },
+  "C002": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "고객 문의 메일의 요구사항 파악하기"
+  },
+  "C003": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "회의록에서 결정사항 찾기"
+  },
+  "C004": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "업무 매뉴얼의 핵심 절차 파악하기"
+  },
+  "C005": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "문서의 핵심 정보 찾기"
+  },
+  "C006": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "업무 지시사항 세부내용 이해"
+  },
+  "C007": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "공지사항의 구체적 내용 파악"
+  },
+  "C008": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "고객 요청사항 세부내용 분석"
+  },
+  "C009": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "글의 주제 파악하기"
+  },
+  "C010": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "글의 요지 파악하기"
+  },
+  "C011": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "글의 제목 추론하기"
+  },
+  "C012": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "글의 빈칸 추론하기"
+  },
+  "C013": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "문단의 중심내용과 뒷받침 문장 구분하기"
+  },
+  "C014": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "글의 전개방식 파악하기"
+  },
+  "C015": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "문단 간의 논리적 연결관계 이해하기"
+  },
+  "C016": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "접속어와 지시어를 통한 글의 흐름 파악하기"
+  },
+  "C017": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "업무 메모 및 지시사항 독해"
+  },
+  "C018": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "회의록 및 보고서 분석"
+  },
+  "C019": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "업무 매뉴얼 및 절차서 이해"
+  },
+  "C020": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "공문서 및 계약서 해석"
+  },
+  "C021": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "한글 맞춤법 기초 - 소리와 표기"
+  },
+  "C022": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "띄어쓰기 규칙과 활용"
+  },
+  "C023": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "문장 부호와 표기법"
+  },
+  "C024": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "외래어 표기법과 로마자 표기법"
+  },
+  "C025": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "경청의 기본 자세와 태도"
+  },
+  "C026": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "효과적인 경청 기법"
+  },
+  "C027": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "경청 시 비언어적 표현"
+  },
+  "C028": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "경청 후 적절한 반응과 피드백"
+  },
+  "C029": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "문서작성 시 문체와 어조 구분하기"
+  },
+  "C030": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "회의 진행 시 핵심 내용 파악하기"
+  },
+  "C031": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "업무 지시사항 정확히 이해하기"
+  },
+  "C032": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "프레젠테이션 자료 구성하기"
+  },
+  "C033": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "복합 텍스트의 핵심 논증 구조 파악"
+  },
+  "C034": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "암시적 메시지와 화자의 숨은 의도 파악"
+  },
+  "C035": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "상반된 관점의 통합적 핵심 도출"
+  },
+  "C036": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "전문 영역 텍스트의 핵심 개념 추상화"
+  },
+  "C037": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "복합적 정보의 핵심 요소 추출"
+  },
+  "C038": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "암시적 정보의 명시화"
+  },
+  "C039": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "조건부 정보의 정확한 해석"
+  },
+  "C040": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "수치 및 데이터 기반 세부정보 분석"
+  },
+  "C041": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "복합적 맥락에서의 숨겨진 의도 파악"
+  },
+  "C042": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "상황적 맥락을 통한 함축 의미 도출"
+  },
+  "C043": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "논리적 관계성을 통한 결론 도출"
+  },
+  "C044": {
+   "legacyArea": "의사소통",
+   "subject": "ncs-basic",
+   "area26v1": "의사소통능력",
+   "vol": 1,
+   "title": "종합적 정보 분석을 통한 미래 예측"
+  },
+  "C045": {
+   "legacyArea": "수리",
+   "subject": "ncs-basic",
+   "area26v1": "수리능력",
+   "vol": 1,
+   "title": "사칙연산의 기본 원리와 순서"
+  },
+  "C046": {
+   "legacyArea": "수리",
+   "subject": "ncs-basic",
+   "area26v1": "수리능력",
+   "vol": 1,
+   "title": "분수의 기본 연산과 통분"
+  },
+  "C047": {
+   "legacyArea": "수리",
+   "subject": "ncs-basic",
+   "area26v1": "수리능력",
+   "vol": 1,
+   "title": "소수의 기본 연산과 자릿수"
+  },
+  "C048": {
+   "legacyArea": "수리",
+   "subject": "ncs-basic",
+   "area26v1": "수리능력",
+   "vol": 1,
+   "title": "백분율과 비율의 기본 계산"
+  },
+  "C049": {
+   "legacyArea": "수리",
+   "subject": "ncs-basic",
+   "area26v1": "수리능력",
+   "vol": 1,
+   "title": "막대그래프 데이터 읽기"
+  },
+  "C050": {
+   "legacyArea": "수리",
+   "subject": "ncs-basic",
+   "area26v1": "수리능력",
+   "vol": 1,
+   "title": "원그래프 비율 계산"
+  },
+  "C051": {
+   "legacyArea": "수리",
+   "subject": "ncs-basic",
+   "area26v1": "수리능력",
+   "vol": 1,
+   "title": "꺾은선그래프 변화량 분석"
+  },
+  "C052": {
+   "legacyArea": "수리",
+   "subject": "ncs-basic",
+   "area26v1": "수리능력",
+   "vol": 1,
+   "title": "표 데이터 통계 계산"
+  },
+  "C053": {
+   "legacyArea": "수리",
+   "subject": "ncs-basic",
+   "area26v1": "수리능력",
+   "vol": 1,
+   "title": "표본과 모집단의 이해"
+  },
+  "C054": {
+   "legacyArea": "수리",
+   "subject": "ncs-basic",
+   "area26v1": "수리능력",
+   "vol": 1,
+   "title": "도수분포표 작성과 해석"
+  },
+  "C055": {
+   "legacyArea": "수리",
+   "subject": "ncs-basic",
+   "area26v1": "수리능력",
+   "vol": 1,
+   "title": "대푯값의 이해(평균, 중앙값, 최빈값)"
+  },
+  "C056": {
+   "legacyArea": "수리",
+   "subject": "ncs-basic",
+   "area26v1": "수리능력",
+   "vol": 1,
+   "title": "산포도의 기초(범위, 분산)"
+  },
+  "C057": {
+   "legacyArea": "수리",
+   "subject": "ncs-basic",
+   "area26v1": "수리능력",
+   "vol": 1,
+   "title": "등차수열의 일반항 찾기"
+  },
+  "C058": {
+   "legacyArea": "수리",
+   "subject": "ncs-basic",
+   "area26v1": "수리능력",
+   "vol": 1,
+   "title": "등비수열의 일반항 찾기"
+  },
+  "C059": {
+   "legacyArea": "수리",
+   "subject": "ncs-basic",
+   "area26v1": "수리능력",
+   "vol": 1,
+   "title": "피보나치형 수열 규칙 찾기"
+  },
+  "C060": {
+   "legacyArea": "수리",
+   "subject": "ncs-basic",
+   "area26v1": "수리능력",
+   "vol": 1,
+   "title": "계차수열을 이용한 규칙 찾기"
+  },
+  "C061": {
+   "legacyArea": "수리",
+   "subject": "ncs-basic",
+   "area26v1": "수리능력",
+   "vol": 1,
+   "title": "업무용 백분율 계산"
+  },
+  "C062": {
+   "legacyArea": "수리",
+   "subject": "ncs-basic",
+   "area26v1": "수리능력",
+   "vol": 1,
+   "title": "비율과 비례식 활용"
+  },
+  "C063": {
+   "legacyArea": "수리",
+   "subject": "ncs-basic",
+   "area26v1": "수리능력",
+   "vol": 1,
+   "title": "손익계산과 원가분석"
+  },
+  "C064": {
+   "legacyArea": "수리",
+   "subject": "ncs-basic",
+   "area26v1": "수리능력",
+   "vol": 1,
+   "title": "단위 환산과 측정"
+  },
+  "C065": {
+   "legacyArea": "수리",
+   "subject": "ncs-basic",
+   "area26v1": "수리능력",
+   "vol": 1,
+   "title": "복합 그래프 데이터 분석 및 추세 예측"
+  },
+  "C066": {
+   "legacyArea": "수리",
+   "subject": "ncs-basic",
+   "area26v1": "수리능력",
+   "vol": 1,
+   "title": "3차원 데이터 테이블 교차분석"
+  },
+  "C067": {
+   "legacyArea": "수리",
+   "subject": "ncs-basic",
+   "area26v1": "수리능력",
+   "vol": 1,
+   "title": "시계열 데이터 변화율 심화분석"
+  },
+  "C068": {
+   "legacyArea": "수리",
+   "subject": "ncs-basic",
+   "area26v1": "수리능력",
+   "vol": 1,
+   "title": "다중 도표 통합해석 및 논리적 추론"
+  },
+  "C069": {
+   "legacyArea": "수리",
+   "subject": "ncs-basic",
+   "area26v1": "수리능력",
+   "vol": 1,
+   "title": "다중 그래프 연계 분석"
+  },
+  "C070": {
+   "legacyArea": "수리",
+   "subject": "ncs-basic",
+   "area26v1": "수리능력",
+   "vol": 1,
+   "title": "통계표와 그래프 융합 해석"
+  },
+  "C071": {
+   "legacyArea": "수리",
+   "subject": "ncs-basic",
+   "area26v1": "수리능력",
+   "vol": 1,
+   "title": "시계열 데이터 다층 분석"
+  },
+  "C072": {
+   "legacyArea": "수리",
+   "subject": "ncs-basic",
+   "area26v1": "수리능력",
+   "vol": 1,
+   "title": "다차원 비교 분석"
+  },
+  "C073": {
+   "legacyArea": "수리",
+   "subject": "ncs-basic",
+   "area26v1": "수리능력",
+   "vol": 1,
+   "title": "분수의 사칙연산 오답집중"
+  },
+  "C074": {
+   "legacyArea": "수리",
+   "subject": "ncs-basic",
+   "area26v1": "수리능력",
+   "vol": 1,
+   "title": "백분율과 비례 오답집중"
+  },
+  "C075": {
+   "legacyArea": "수리",
+   "subject": "ncs-basic",
+   "area26v1": "수리능력",
+   "vol": 1,
+   "title": "도형의 넓이와 부피 오답집중"
+  },
+  "C076": {
+   "legacyArea": "수리",
+   "subject": "ncs-basic",
+   "area26v1": "수리능력",
+   "vol": 1,
+   "title": "일차방정식과 연립방정식 오답집중"
+  },
+  "C077": {
+   "legacyArea": "문제해결",
+   "subject": "ncs-basic",
+   "area26v1": "문제해결능력",
+   "vol": 2,
+   "title": "논리적 추론과 패턴 인식"
+  },
+  "C078": {
+   "legacyArea": "문제해결",
+   "subject": "ncs-basic",
+   "area26v1": "문제해결능력",
+   "vol": 2,
+   "title": "순서와 우선순위 판단"
+  },
+  "C079": {
+   "legacyArea": "문제해결",
+   "subject": "ncs-basic",
+   "area26v1": "문제해결능력",
+   "vol": 2,
+   "title": "원인과 결과 분석"
+  },
+  "C080": {
+   "legacyArea": "문제해결",
+   "subject": "ncs-basic",
+   "area26v1": "문제해결능력",
+   "vol": 2,
+   "title": "조건 분석과 분류"
+  },
+  "C081": {
+   "legacyArea": "문제해결",
+   "subject": "ncs-basic",
+   "area26v1": "문제해결능력",
+   "vol": 2,
+   "title": "기본 조건문 이해하기"
+  },
+  "C082": {
+   "legacyArea": "문제해결",
+   "subject": "ncs-basic",
+   "area26v1": "문제해결능력",
+   "vol": 2,
+   "title": "논리 연결사 활용하기"
+  },
+  "C083": {
+   "legacyArea": "문제해결",
+   "subject": "ncs-basic",
+   "area26v1": "문제해결능력",
+   "vol": 2,
+   "title": "대우와 역의 관계"
+  },
+  "C084": {
+   "legacyArea": "문제해결",
+   "subject": "ncs-basic",
+   "area26v1": "문제해결능력",
+   "vol": 2,
+   "title": "삼단논법 기초"
+  },
+  "C085": {
+   "legacyArea": "문제해결",
+   "subject": "ncs-basic",
+   "area26v1": "문제해결능력",
+   "vol": 2,
+   "title": "직장 내 갈등 상황 해결"
+  },
+  "C086": {
+   "legacyArea": "문제해결",
+   "subject": "ncs-basic",
+   "area26v1": "문제해결능력",
+   "vol": 2,
+   "title": "고객 불만 처리 상황 판단"
+  },
+  "C087": {
+   "legacyArea": "문제해결",
+   "subject": "ncs-basic",
+   "area26v1": "문제해결능력",
+   "vol": 2,
+   "title": "업무 우선순위 결정 상황"
+  },
+  "C088": {
+   "legacyArea": "문제해결",
+   "subject": "ncs-basic",
+   "area26v1": "문제해결능력",
+   "vol": 2,
+   "title": "팀워크 저해 요소 해결"
+  },
+  "C089": {
+   "legacyArea": "문제해결",
+   "subject": "ncs-basic",
+   "area26v1": "문제해결능력",
+   "vol": 2,
+   "title": "업무 우선순위 결정하기"
+  },
+  "C090": {
+   "legacyArea": "문제해결",
+   "subject": "ncs-basic",
+   "area26v1": "문제해결능력",
+   "vol": 2,
+   "title": "고객 불만 대응 방안 선택"
+  },
+  "C091": {
+   "legacyArea": "문제해결",
+   "subject": "ncs-basic",
+   "area26v1": "문제해결능력",
+   "vol": 2,
+   "title": "예산 배분 의사결정"
+  },
+  "C092": {
+   "legacyArea": "문제해결",
+   "subject": "ncs-basic",
+   "area26v1": "문제해결능력",
+   "vol": 2,
+   "title": "신규 프로젝트 참여 여부 결정"
+  },
+  "C093": {
+   "legacyArea": "문제해결",
+   "subject": "ncs-basic",
+   "area26v1": "문제해결능력",
+   "vol": 2,
+   "title": "복합조건 논리추론 - 다중 전제 분석"
+  },
+  "C094": {
+   "legacyArea": "문제해결",
+   "subject": "ncs-basic",
+   "area26v1": "문제해결능력",
+   "vol": 2,
+   "title": "가정법 추론 - 반대사실 조건분석"
+  },
+  "C095": {
+   "legacyArea": "문제해결",
+   "subject": "ncs-basic",
+   "area26v1": "문제해결능력",
+   "vol": 2,
+   "title": "귀납적 조건추론 - 패턴기반 예측"
+  },
+  "C096": {
+   "legacyArea": "문제해결",
+   "subject": "ncs-basic",
+   "area26v1": "문제해결능력",
+   "vol": 2,
+   "title": "모순검증 추론 - 논리적 일관성 판단"
+  },
+  "C097": {
+   "legacyArea": "문제해결",
+   "subject": "ncs-basic",
+   "area26v1": "문제해결능력",
+   "vol": 2,
+   "title": "복합적 갈등상황에서의 우선순위 판단"
+  },
+  "C098": {
+   "legacyArea": "문제해결",
+   "subject": "ncs-basic",
+   "area26v1": "문제해결능력",
+   "vol": 2,
+   "title": "위기상황에서의 신속한 의사결정"
+  },
+  "C099": {
+   "legacyArea": "문제해결",
+   "subject": "ncs-basic",
+   "area26v1": "문제해결능력",
+   "vol": 2,
+   "title": "윤리적 딜레마 상황의 판단기준"
+  },
+  "C100": {
+   "legacyArea": "문제해결",
+   "subject": "ncs-basic",
+   "area26v1": "문제해결능력",
+   "vol": 2,
+   "title": "조직변화 상황에서의 적응적 사고"
+  },
+  "C101": {
+   "legacyArea": "문제해결",
+   "subject": "ncs-basic",
+   "area26v1": "문제해결능력",
+   "vol": 2,
+   "title": "문제 정의 오답 집중 훈련"
+  },
+  "C102": {
+   "legacyArea": "문제해결",
+   "subject": "ncs-basic",
+   "area26v1": "문제해결능력",
+   "vol": 2,
+   "title": "원인 분석 오답 집중 훈련"
+  },
+  "C103": {
+   "legacyArea": "문제해결",
+   "subject": "ncs-basic",
+   "area26v1": "문제해결능력",
+   "vol": 2,
+   "title": "대안 개발 오답 집중 훈련"
+  },
+  "C104": {
+   "legacyArea": "문제해결",
+   "subject": "ncs-basic",
+   "area26v1": "문제해결능력",
+   "vol": 2,
+   "title": "계획 수립 오답 집중 훈련"
+  },
+  "C105": {
+   "legacyArea": "자원관리",
+   "subject": "ncs-basic",
+   "area26v1": null,
+   "vol": 2,
+   "title": "시간관리의 기본 개념과 중요성"
+  },
+  "C106": {
+   "legacyArea": "자원관리",
+   "subject": "ncs-basic",
+   "area26v1": null,
+   "vol": 2,
+   "title": "우선순위 설정과 시간배분 원칙"
+  },
+  "C107": {
+   "legacyArea": "자원관리",
+   "subject": "ncs-basic",
+   "area26v1": null,
+   "vol": 2,
+   "title": "시간계획 수립과 일정관리 도구 활용"
+  },
+  "C108": {
+   "legacyArea": "자원관리",
+   "subject": "ncs-basic",
+   "area26v1": null,
+   "vol": 2,
+   "title": "시간낭비 요소 파악과 개선방안"
+  },
+  "C109": {
+   "legacyArea": "자원관리",
+   "subject": "ncs-basic",
+   "area26v1": null,
+   "vol": 2,
+   "title": "기본 예산 편성의 이해"
+  },
+  "C110": {
+   "legacyArea": "자원관리",
+   "subject": "ncs-basic",
+   "area26v1": null,
+   "vol": 2,
+   "title": "직접비와 간접비 구분"
+  },
+  "C111": {
+   "legacyArea": "자원관리",
+   "subject": "ncs-basic",
+   "area26v1": null,
+   "vol": 2,
+   "title": "단위당 비용 계산"
+  },
+  "C112": {
+   "legacyArea": "자원관리",
+   "subject": "ncs-basic",
+   "area26v1": null,
+   "vol": 2,
+   "title": "예산 대비 실적 분석"
+  },
+  "C113": {
+   "legacyArea": "자원관리",
+   "subject": "ncs-basic",
+   "area26v1": null,
+   "vol": 2,
+   "title": "자원의 종류와 특성 이해"
+  },
+  "C114": {
+   "legacyArea": "자원관리",
+   "subject": "ncs-basic",
+   "area26v1": null,
+   "vol": 2,
+   "title": "자원배분의 기본 원칙"
+  },
+  "C115": {
+   "legacyArea": "자원관리",
+   "subject": "ncs-basic",
+   "area26v1": null,
+   "vol": 2,
+   "title": "인적자원 배분 계획 수립"
+  },
+  "C116": {
+   "legacyArea": "자원관리",
+   "subject": "ncs-basic",
+   "area26v1": null,
+   "vol": 2,
+   "title": "물적자원 배분 및 관리"
+  },
+  "C117": {
+   "legacyArea": "조직이해",
+   "subject": "ncs-basic",
+   "area26v1": null,
+   "vol": 2,
+   "title": "기업의 개념과 형태"
+  },
+  "C118": {
+   "legacyArea": "조직이해",
+   "subject": "ncs-basic",
+   "area26v1": null,
+   "vol": 2,
+   "title": "경영환경의 이해"
+  },
+  "C119": {
+   "legacyArea": "조직이해",
+   "subject": "ncs-basic",
+   "area26v1": null,
+   "vol": 2,
+   "title": "경영자의 역할과 기능"
+  },
+  "C120": {
+   "legacyArea": "조직이해",
+   "subject": "ncs-basic",
+   "area26v1": null,
+   "vol": 2,
+   "title": "기업의 사회적 책임"
+  },
+  "C121": {
+   "legacyArea": "조직이해",
+   "subject": "ncs-basic",
+   "area26v1": null,
+   "vol": 2,
+   "title": "조직의 기본 구조와 부서별 역할 이해"
+  },
+  "C122": {
+   "legacyArea": "조직이해",
+   "subject": "ncs-basic",
+   "area26v1": null,
+   "vol": 2,
+   "title": "업무 프로세스와 의사결정 체계"
+  },
+  "C123": {
+   "legacyArea": "조직이해",
+   "subject": "ncs-basic",
+   "area26v1": null,
+   "vol": 2,
+   "title": "조직 내 의사소통 체계와 정보 전달"
+  },
+  "C124": {
+   "legacyArea": "조직이해",
+   "subject": "ncs-basic",
+   "area26v1": null,
+   "vol": 2,
+   "title": "조직문화와 규정·규칙 체계"
+  },
+  "C125": {
+   "legacyArea": "직업윤리",
+   "subject": "ncs-basic",
+   "area26v1": "직업윤리",
+   "vol": 2,
+   "title": "근로자의 기본 자세와 태도"
+  },
+  "C126": {
+   "legacyArea": "직업윤리",
+   "subject": "ncs-basic",
+   "area26v1": "직업윤리",
+   "vol": 2,
+   "title": "시간관리와 출근윤리"
+  },
+  "C127": {
+   "legacyArea": "직업윤리",
+   "subject": "ncs-basic",
+   "area26v1": "직업윤리",
+   "vol": 2,
+   "title": "직장 내 의사소통과 협업"
+  },
+  "C128": {
+   "legacyArea": "직업윤리",
+   "subject": "ncs-basic",
+   "area26v1": "직업윤리",
+   "vol": 2,
+   "title": "근로자의 권리와 의무"
+  },
+  "C129": {
+   "legacyArea": "직업윤리",
+   "subject": "ncs-basic",
+   "area26v1": "직업윤리",
+   "vol": 2,
+   "title": "공동체 의식과 소속감"
+  },
+  "C130": {
+   "legacyArea": "직업윤리",
+   "subject": "ncs-basic",
+   "area26v1": "직업윤리",
+   "vol": 2,
+   "title": "상호부조와 협력정신"
+  },
+  "C131": {
+   "legacyArea": "직업윤리",
+   "subject": "ncs-basic",
+   "area26v1": "직업윤리",
+   "vol": 2,
+   "title": "공동체 규범과 질서"
+  },
+  "C132": {
+   "legacyArea": "직업윤리",
+   "subject": "ncs-basic",
+   "area26v1": "직업윤리",
+   "vol": 2,
+   "title": "다양성 존중과 포용"
+  },
+  "C133": {
+   "legacyArea": "대인관계",
+   "subject": "ncs-basic",
+   "area26v1": "대인관계능력",
+   "vol": 2,
+   "title": "팀워크의 기본 개념과 중요성"
+  },
+  "C134": {
+   "legacyArea": "대인관계",
+   "subject": "ncs-basic",
+   "area26v1": "대인관계능력",
+   "vol": 2,
+   "title": "효과적인 의사소통과 경청"
+  },
+  "C135": {
+   "legacyArea": "대인관계",
+   "subject": "ncs-basic",
+   "area26v1": "대인관계능력",
+   "vol": 2,
+   "title": "갈등 상황 이해와 기본 대응"
+  },
+  "C136": {
+   "legacyArea": "대인관계",
+   "subject": "ncs-basic",
+   "area26v1": "대인관계능력",
+   "vol": 2,
+   "title": "리더십의 기초와 팔로워십"
+  },
+  "C137": {
+   "legacyArea": "대인관계",
+   "subject": "ncs-basic",
+   "area26v1": "대인관계능력",
+   "vol": 2,
+   "title": "고객 불만 접수 및 초기 대응"
+  },
+  "C138": {
+   "legacyArea": "대인관계",
+   "subject": "ncs-basic",
+   "area26v1": "대인관계능력",
+   "vol": 2,
+   "title": "갈등 상황에서의 경청과 공감"
+  },
+  "C139": {
+   "legacyArea": "대인관계",
+   "subject": "ncs-basic",
+   "area26v1": "대인관계능력",
+   "vol": 2,
+   "title": "문제 해결을 위한 협상 전략"
+  },
+  "C140": {
+   "legacyArea": "대인관계",
+   "subject": "ncs-basic",
+   "area26v1": "대인관계능력",
+   "vol": 2,
+   "title": "갈등 해결 후 관계 회복"
+  },
+  "C141": {
+   "legacyArea": "정보능력",
+   "subject": "ncs-basic",
+   "area26v1": "디지털능력",
+   "vol": 2,
+   "title": "운영체제의 기본 개념과 종류"
+  },
+  "C142": {
+   "legacyArea": "정보능력",
+   "subject": "ncs-basic",
+   "area26v1": "디지털능력",
+   "vol": 2,
+   "title": "파일 관리 시스템과 확장자"
+  },
+  "C143": {
+   "legacyArea": "정보능력",
+   "subject": "ncs-basic",
+   "area26v1": "디지털능력",
+   "vol": 2,
+   "title": "인터넷과 네트워크 기초"
+  },
+  "C144": {
+   "legacyArea": "정보능력",
+   "subject": "ncs-basic",
+   "area26v1": "디지털능력",
+   "vol": 2,
+   "title": "정보보안과 개인정보보호"
+  },
+  "C145": {
+   "legacyArea": "기술능력",
+   "subject": "ncs-basic",
+   "area26v1": null,
+   "vol": 2,
+   "title": "기본 공구의 종류와 용도 이해"
+  },
+  "C146": {
+   "legacyArea": "기술능력",
+   "subject": "ncs-basic",
+   "area26v1": null,
+   "vol": 2,
+   "title": "기계요소의 기본 구조와 기능"
+  },
+  "C147": {
+   "legacyArea": "기술능력",
+   "subject": "ncs-basic",
+   "area26v1": null,
+   "vol": 2,
+   "title": "전기회로의 기본 개념과 법칙"
+  },
+  "C148": {
+   "legacyArea": "기술능력",
+   "subject": "ncs-basic",
+   "area26v1": null,
+   "vol": 2,
+   "title": "재료의 기본 특성과 분류"
+  },
+  "C149": {
+   "legacyArea": "자기개발",
+   "subject": "ncs-basic",
+   "area26v1": "자기관리능력",
+   "vol": 2,
+   "title": "자신의 가치관과 흥미 파악하기"
+  },
+  "C150": {
+   "legacyArea": "자기개발",
+   "subject": "ncs-basic",
+   "area26v1": "자기관리능력",
+   "vol": 2,
+   "title": "개인의 강점과 약점 분석"
+  },
+  "C151": {
+   "legacyArea": "자기개발",
+   "subject": "ncs-basic",
+   "area26v1": "자기관리능력",
+   "vol": 2,
+   "title": "직업 목표 설정과 경력 경로 탐색"
+  },
+  "C152": {
+   "legacyArea": "자기개발",
+   "subject": "ncs-basic",
+   "area26v1": "자기관리능력",
+   "vol": 2,
+   "title": "경력개발 실행 계획 수립"
+  },
+  "C153": {
+   "legacyArea": "NCS통합",
+   "subject": "ncs-basic",
+   "area26v1": null,
+   "vol": 3,
+   "title": "비례와 반비례 관계 문제해결"
+  },
+  "C154": {
+   "legacyArea": "NCS통합",
+   "subject": "ncs-basic",
+   "area26v1": null,
+   "vol": 3,
+   "title": "확률과 통계 종합 문제해결"
+  },
+  "C155": {
+   "legacyArea": "NCS통합",
+   "subject": "ncs-basic",
+   "area26v1": null,
+   "vol": 3,
+   "title": "함수와 그래프 해석 문제해결"
+  },
+  "C156": {
+   "legacyArea": "NCS통합",
+   "subject": "ncs-basic",
+   "area26v1": null,
+   "vol": 3,
+   "title": "도형과 측정 종합 문제해결"
+  },
+  "C157": {
+   "legacyArea": "NCS통합",
+   "subject": "ncs-basic",
+   "area26v1": null,
+   "vol": 3,
+   "title": "의사소통능력 + 수리능력 통합 오답문제"
+  },
+  "C158": {
+   "legacyArea": "NCS통합",
+   "subject": "ncs-basic",
+   "area26v1": null,
+   "vol": 3,
+   "title": "문제해결능력 + 조직이해능력 통합 오답문제"
+  },
+  "C159": {
+   "legacyArea": "NCS통합",
+   "subject": "ncs-basic",
+   "area26v1": null,
+   "vol": 3,
+   "title": "자원관리능력 + 정보능력 통합 오답문제"
+  },
+  "C160": {
+   "legacyArea": "NCS통합",
+   "subject": "ncs-basic",
+   "area26v1": null,
+   "vol": 3,
+   "title": "기술능력 + 대인관계능력 통합 오답문제"
+  },
+  "C161": {
+   "legacyArea": "금융상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "금융시장의 개념과 분류"
+  },
+  "C162": {
+   "legacyArea": "금융상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "은행의 종류와 역할"
+  },
+  "C163": {
+   "legacyArea": "금융상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "비은행 금융기관의 종류"
+  },
+  "C164": {
+   "legacyArea": "금융상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "금융감독기구와 예금보호제도"
+  },
+  "C165": {
+   "legacyArea": "금융상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "예금상품의 종류와 특징"
+  },
+  "C166": {
+   "legacyArea": "금융상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "주식투자의 기본 개념"
+  },
+  "C167": {
+   "legacyArea": "금융상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "채권투자의 기초"
+  },
+  "C168": {
+   "legacyArea": "금융상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "펀드와 ETF의 이해"
+  },
+  "C169": {
+   "legacyArea": "금융상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "환율의 기본 개념과 표시방법"
+  },
+  "C170": {
+   "legacyArea": "금융상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "환율 변동의 경제적 영향"
+  },
+  "C171": {
+   "legacyArea": "금융상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "외환시장과 환율 결정요인"
+  },
+  "C172": {
+   "legacyArea": "금융상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "국제수지와 외환보유액"
+  },
+  "C173": {
+   "legacyArea": "금융상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "은행의 기본 업무와 역할"
+  },
+  "C174": {
+   "legacyArea": "금융상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "수신업무의 종류와 특징"
+  },
+  "C175": {
+   "legacyArea": "금융상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "여신업무의 유형과 심사기준"
+  },
+  "C176": {
+   "legacyArea": "금융상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "부대업무와 은행 수익구조"
+  },
+  "C177": {
+   "legacyArea": "경제상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "수요와 공급의 기초 개념"
+  },
+  "C178": {
+   "legacyArea": "경제상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "시장균형과 가격결정"
+  },
+  "C179": {
+   "legacyArea": "경제상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "수요·공급의 변화와 시장 영향"
+  },
+  "C180": {
+   "legacyArea": "경제상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "탄력성의 개념과 활용"
+  },
+  "C181": {
+   "legacyArea": "경제상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "GDP의 개념과 측정방법"
+  },
+  "C182": {
+   "legacyArea": "경제상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "물가지수와 인플레이션"
+  },
+  "C183": {
+   "legacyArea": "경제상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "고용지표와 실업률"
+  },
+  "C184": {
+   "legacyArea": "경제상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "국제수지와 환율"
+  },
+  "C185": {
+   "legacyArea": "경제상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "경기변동의 개념과 순환과정"
+  },
+  "C186": {
+   "legacyArea": "경제상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "재정정책의 이해와 효과"
+  },
+  "C187": {
+   "legacyArea": "경제상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "통화정책의 수단과 파급효과"
+  },
+  "C188": {
+   "legacyArea": "경제상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "경제정책의 효과와 한계"
+  },
+  "C213": {
+   "legacyArea": "금융상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "화폐의 기능과 금융기관의 역할"
+  },
+  "C214": {
+   "legacyArea": "금융상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "금리와 투자의사결정"
+  },
+  "C215": {
+   "legacyArea": "금융상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "재무제표 분석과 경영지표"
+  },
+  "C216": {
+   "legacyArea": "금융상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "시장구조와 기업전략"
+  },
+  "C189": {
+   "legacyArea": "경영상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "기업의 경영전략 수립과정"
+  },
+  "C190": {
+   "legacyArea": "경영상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "조직구조의 유형과 특징"
+  },
+  "C191": {
+   "legacyArea": "경영상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "리더십과 의사결정"
+  },
+  "C192": {
+   "legacyArea": "경영상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "조직문화와 변화관리"
+  },
+  "C193": {
+   "legacyArea": "경영상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "마케팅 믹스 4P 전략의 이해"
+  },
+  "C194": {
+   "legacyArea": "경영상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "시장세분화와 표적시장 선정"
+  },
+  "C195": {
+   "legacyArea": "경영상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "기업의 조직구조와 경영관리 기능"
+  },
+  "C196": {
+   "legacyArea": "경영상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "소비자 행동과 구매의사결정 과정"
+  },
+  "C197": {
+   "legacyArea": "일반상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "경제성장률과 GDP의 이해"
+  },
+  "C198": {
+   "legacyArea": "일반상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "물가지수와 인플레이션"
+  },
+  "C199": {
+   "legacyArea": "일반상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "금리와 통화정책"
+  },
+  "C200": {
+   "legacyArea": "일반상식",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "고용지표와 실업률"
+  },
+  "C201": {
+   "legacyArea": "인적성",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "문단 요약 및 주제 파악"
+  },
+  "C202": {
+   "legacyArea": "인적성",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "논리적 관계 및 추론"
+  },
+  "C203": {
+   "legacyArea": "인적성",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "빈칸 추론 및 문맥 파악"
+  },
+  "C204": {
+   "legacyArea": "인적성",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "글의 구조 및 전개 방식"
+  },
+  "C209": {
+   "legacyArea": "인적성",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "명제와 논리기호 기초"
+  },
+  "C210": {
+   "legacyArea": "인적성",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "조건문과 삼단논법"
+  },
+  "C211": {
+   "legacyArea": "인적성",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "관계추론과 순서배열"
+  },
+  "C212": {
+   "legacyArea": "인적성",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "참거짓 추론과 모순 찾기"
+  },
+  "C217": {
+   "legacyArea": "문제해결",
+   "subject": "ncs-basic",
+   "area26v1": "문제해결능력",
+   "vol": 3,
+   "title": "복합적 의사결정 상황에서의 최적해 도출"
+  },
+  "C218": {
+   "legacyArea": "문제해결",
+   "subject": "ncs-basic",
+   "area26v1": "문제해결능력",
+   "vol": 3,
+   "title": "불확실성 환경에서의 위험 기반 의사결정"
+  },
+  "C219": {
+   "legacyArea": "문제해결",
+   "subject": "ncs-basic",
+   "area26v1": "문제해결능력",
+   "vol": 3,
+   "title": "이해관계자 갈등 상황의 합리적 의사결정"
+  },
+  "C220": {
+   "legacyArea": "문제해결",
+   "subject": "ncs-basic",
+   "area26v1": "문제해결능력",
+   "vol": 3,
+   "title": "전략적 의사결정의 실행 가능성 검증"
+  },
+  "C205": {
+   "legacyArea": "인적성",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "비례와 비율 계산"
+  },
+  "C206": {
+   "legacyArea": "인적성",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "백분율과 증감률 계산"
+  },
+  "C207": {
+   "legacyArea": "인적성",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "평균과 가중평균 계산"
+  },
+  "C208": {
+   "legacyArea": "인적성",
+   "subject": "recruit-written",
+   "area26v1": null,
+   "vol": 3,
+   "title": "단리와 복리 계산"
+  },
+  "C221": {
+   "legacyArea": "수리",
+   "subject": "ncs-basic",
+   "area26v1": "수리능력",
+   "vol": 3,
+   "title": "혼합계산 순서와 괄호처리"
+  },
+  "C222": {
+   "legacyArea": "수리",
+   "subject": "ncs-basic",
+   "area26v1": "수리능력",
+   "vol": 3,
+   "title": "분수와 소수의 혼합연산"
+  },
+  "C223": {
+   "legacyArea": "수리",
+   "subject": "ncs-basic",
+   "area26v1": "수리능력",
+   "vol": 3,
+   "title": "백분율과 비율 계산 실무"
+  },
+  "C224": {
+   "legacyArea": "수리",
+   "subject": "ncs-basic",
+   "area26v1": "수리능력",
+   "vol": 3,
+   "title": "단위환산과 근삿값 계산"
+  }
+ }
+}

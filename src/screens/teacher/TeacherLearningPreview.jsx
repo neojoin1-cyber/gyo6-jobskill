@@ -1,0 +1,91 @@
+import { useMemo, useState } from 'react'
+import {
+  ArrowLeft,
+  Bell,
+  Buildings,
+  ChartLineUp,
+  Compass,
+  House,
+  UserCircle,
+} from '@phosphor-icons/react'
+import StudentCampusHome from '../student/StudentCampusHome.jsx'
+import CourseListScreen from '../student/CourseListScreen.jsx'
+import WrongAnswerScreen from '../student/WrongAnswerScreen.jsx'
+import NotificationsScreen from '../student/NotificationsScreen.jsx'
+import RankingScreen from '../student/RankingScreen.jsx'
+import { campusCourseTarget } from '../../lib/studentCampusRoutes.js'
+
+export default function TeacherLearningPreview({ profile, initialSubject = null, onBack, onOpenMessages }) {
+  const initialLink = useMemo(() => campusCourseTarget(initialSubject), [initialSubject])
+  const [tab, setTab] = useState(initialLink ? 'study' : 'home')
+  const [deepLink, setDeepLink] = useState(initialLink)
+
+  function openStudy(subject) {
+    setDeepLink(campusCourseTarget(subject))
+    setTab('study')
+  }
+
+  const tabs = [
+    { id: 'home', label: '홈', icon: House, onClick: () => setTab('home') },
+    { id: 'study', label: '탐험', icon: Compass, onClick: () => { setDeepLink(null); setTab('study') } },
+    { id: 'growth', label: '성장', icon: ChartLineUp, onClick: () => setTab('growth') },
+    { id: 'messages', label: '소식', icon: Bell, onClick: () => setTab('messages') },
+    { id: 'ranking', label: '나', icon: UserCircle, onClick: () => setTab('ranking') },
+  ]
+
+  return (
+    <div className="screen teacher-learning-preview">
+      <header className="teacher-preview-context">
+        <button type="button" className="teacher-preview-back" onClick={onBack} aria-label="교사 캠퍼스로 돌아가기">
+          <ArrowLeft weight="bold" />
+        </button>
+        <span className="teacher-preview-mark"><Buildings weight="fill" /></span>
+        <div><small>STUDENT VIEW</small><b>학생 화면 그대로 보기</b></div>
+        <button type="button" className="teacher-preview-exit" onClick={onBack}>교사 도구</button>
+      </header>
+
+      <div className="teacher-preview-body">
+        {tab === 'home' && (
+          <StudentCampusHome
+            profile={profile}
+            demo
+            teacherPreview
+            onOpenMission={() => openStudy(null)}
+            onGoStudy={openStudy}
+            onGoWrong={() => setTab('growth')}
+            onGoMessages={() => setTab('messages')}
+          />
+        )}
+        {tab === 'study' && (
+          <CourseListScreen
+            key={deepLink ? `${deepLink.subject}:teacher-preview` : 'teacher-preview-browse'}
+            deepLink={deepLink}
+            onBack={() => { setDeepLink(null); setTab('home') }}
+          />
+        )}
+        {tab === 'growth' && <WrongAnswerScreen profile={profile} />}
+        {tab === 'messages' && <NotificationsScreen />}
+        {tab === 'ranking' && <RankingScreen />}
+      </div>
+
+      <nav className="bottom-tab teacher-preview-tabs" aria-label="학생 화면 미리보기 메뉴">
+        {tabs.map(item => {
+          const Icon = item.icon
+          const active = tab === item.id
+          return (
+            <button key={item.id} className={`tab-item ${active ? 'active' : ''}`} onClick={item.onClick}>
+              <span className="tab-icon"><Icon weight={active ? 'fill' : 'regular'} /></span>
+              {item.label}
+            </button>
+          )
+        })}
+      </nav>
+
+      {tab === 'messages' && (
+        <button className="teacher-preview-message-link" onClick={() => onOpenMessages?.()}>
+          교사 메시지함 열기
+        </button>
+      )}
+    </div>
+  )
+}

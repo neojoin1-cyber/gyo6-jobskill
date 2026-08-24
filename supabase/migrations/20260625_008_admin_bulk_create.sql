@@ -48,7 +48,7 @@ BEGIN
   v_instance_id := COALESCE(v_instance_id, '00000000-0000-0000-0000-000000000000');
 
   v_user_id      := gen_random_uuid();
-  v_encrypted_pw := crypt(p_password, gen_salt('bf'));
+  v_encrypted_pw := extensions.crypt(p_password, extensions.gen_salt('bf'));
 
   -- auth.users 직접 삽입
   INSERT INTO auth.users (

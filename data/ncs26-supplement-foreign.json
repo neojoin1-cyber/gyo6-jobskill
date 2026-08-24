@@ -1,0 +1,506 @@
+{
+  "_source": "NCS 직업기초능력 표준(2025.12 개편, 26v1) 15쪽 · 외국어소통능력 상황(C)·지식(K)·기술(S)",
+  "_ability": "외국어소통능력",
+  "_elements": [
+    "외국어 이해능력",
+    "외국어 표현능력",
+    "외국어 상황대응능력"
+  ],
+  "questions": [
+    {
+      "id": "NCS26-SUP-FOR-01",
+      "area": "의사소통능력",
+      "ncsAbility": "외국어소통능력",
+      "ncsElement": "외국어 이해능력",
+      "lessonId": "NCS26-외국어소통능력",
+      "lessonTitle": "직무 외국어 이해 · 표현 · 상황대응",
+      "level": "기초",
+      "context": "해외 협력사에서 다음 이메일이 도착했다.",
+      "stem": "\"We regret to inform you that the shipment has been delayed by two weeks due to a customs issue.\" 이 메일의 핵심 내용은?",
+      "choices": [
+        "통관 문제로 선적이 2주 지연된다는 통보",
+        "선적 수량을 2주분만큼 줄이겠다는 통보",
+        "통관 절차를 2주 안에 끝내 달라는 요청",
+        "통관 비용을 2주 뒤에 청구하겠다는 안내"
+      ],
+      "answer": "A",
+      "explanation": "delayed by two weeks는 '2주만큼 지연되었다', due to a customs issue는 '통관 문제 때문에'라는 뜻입니다. We regret to inform you는 나쁜 소식을 전할 때 쓰는 정중한 표현입니다.",
+      "answerSource": "authored_from_26v1_definition"
+    },
+    {
+      "id": "NCS26-SUP-FOR-02",
+      "area": "의사소통능력",
+      "ncsAbility": "외국어소통능력",
+      "ncsElement": "외국어 이해능력",
+      "lessonId": "NCS26-외국어소통능력",
+      "lessonTitle": "직무 외국어 이해 · 표현 · 상황대응",
+      "level": "기초",
+      "context": "수입 장비의 영문 매뉴얼에 다음 문장이 있다.",
+      "stem": "\"Do not operate the device while the indicator is blinking red.\" 이 지시에 맞는 행동은?",
+      "choices": [
+        "표시등이 꺼져 있을 때만 장비를 점검한다",
+        "표시등이 빨갛게 깜박이는 동안에는 장비를 작동하지 않는다",
+        "표시등 색이 빨간색이 될 때까지 장비를 작동시킨다",
+        "표시등이 빨갛게 깜박이면 즉시 장비를 작동시킨다"
+      ],
+      "answer": "B",
+      "explanation": "Do not operate는 '작동시키지 말라'는 금지 지시이고, while ~ is blinking은 '~가 깜박이는 동안'입니다. 매뉴얼의 금지문은 안전과 직결되므로 부정어를 놓치면 안 됩니다.",
+      "answerSource": "authored_from_26v1_definition"
+    },
+    {
+      "id": "NCS26-SUP-FOR-03",
+      "area": "의사소통능력",
+      "ncsAbility": "외국어소통능력",
+      "ncsElement": "외국어 이해능력",
+      "lessonId": "NCS26-외국어소통능력",
+      "lessonTitle": "직무 외국어 이해 · 표현 · 상황대응",
+      "level": "표준",
+      "context": "거래처 담당자가 보낸 메일의 마지막 문장이다.",
+      "stem": "\"Kindly find attached the revised quotation for your review.\" 담당자가 나에게 기대하는 행동은?",
+      "choices": [
+        "견적서를 새로 작성해 보낸다",
+        "견적 금액을 즉시 입금한다",
+        "첨부된 수정 견적서를 검토한다",
+        "첨부파일 없이 회신부터 보낸다"
+      ],
+      "answer": "C",
+      "explanation": "find attached는 '첨부한 것을 확인하라', revised quotation은 '수정 견적서', for your review는 '검토용으로'라는 뜻입니다. 상대는 검토와 회신을 기대하고 있습니다.",
+      "answerSource": "authored_from_26v1_definition"
+    },
+    {
+      "id": "NCS26-SUP-FOR-04",
+      "area": "의사소통능력",
+      "ncsAbility": "외국어소통능력",
+      "ncsElement": "외국어 이해능력",
+      "lessonId": "NCS26-외국어소통능력",
+      "lessonTitle": "직무 외국어 이해 · 표현 · 상황대응",
+      "level": "고급",
+      "context": "오전에 다음 메시지를 받았다.",
+      "stem": "\"The meeting has been moved up to 2 p.m.\" 회의 시간은 어떻게 바뀌었는가?",
+      "choices": [
+        "원래보다 미뤄져 오후 2시가 되었다",
+        "오후 2시에 취소되었다",
+        "오후 2시간 동안 연장되었다",
+        "원래보다 앞당겨져 오후 2시가 되었다"
+      ],
+      "answer": "D",
+      "explanation": "move up은 일정을 '앞당기다'입니다. 미루는 것은 push back 또는 postpone입니다. 두 표현을 반대로 알아들으면 회의에 늦으므로 업무에서 특히 주의해야 하는 관용 표현입니다.",
+      "answerSource": "authored_from_26v1_definition"
+    },
+    {
+      "id": "NCS26-SUP-FOR-05",
+      "area": "의사소통능력",
+      "ncsAbility": "외국어소통능력",
+      "ncsElement": "외국어 이해능력",
+      "lessonId": "NCS26-외국어소통능력",
+      "lessonTitle": "직무 외국어 이해 · 표현 · 상황대응",
+      "level": "표준",
+      "context": "외국인 고객의 전화를 받았다.",
+      "stem": "\"Could you put me through to the person in charge of after-sales service?\" 고객이 요청한 것은?",
+      "choices": [
+        "사후관리 담당자에게 전화를 연결해 달라는 것",
+        "사후관리 비용을 알려 달라는 것",
+        "사후관리 서비스를 즉시 제공해 달라는 것",
+        "사후관리 담당자의 이름을 적어 달라는 것"
+      ],
+      "answer": "A",
+      "explanation": "put me through to는 '~에게 전화를 연결해 달라'는 전화 관용 표현이고, the person in charge of는 '~ 담당자'입니다.",
+      "answerSource": "authored_from_26v1_definition"
+    },
+    {
+      "id": "NCS26-SUP-FOR-06",
+      "area": "의사소통능력",
+      "ncsAbility": "외국어소통능력",
+      "ncsElement": "외국어 이해능력",
+      "lessonId": "NCS26-외국어소통능력",
+      "lessonTitle": "직무 외국어 이해 · 표현 · 상황대응",
+      "level": "표준",
+      "context": "해외 공장 견학 중 통로에 붙은 안내문이다.",
+      "stem": "\"Visitors must be accompanied by a staff member at all times beyond this point.\" 방문객이 지켜야 할 것은?",
+      "choices": [
+        "이 지점부터는 방문객만 따로 이동해야 한다",
+        "이 지점부터는 항상 직원과 함께 이동해야 한다",
+        "이 지점까지만 직원이 동행할 수 있다",
+        "이 지점에서 직원에게 신분증을 맡겨야 한다"
+      ],
+      "answer": "B",
+      "explanation": "be accompanied by는 '~의 동행을 받다', beyond this point는 '이 지점 너머로'입니다. must와 at all times가 붙어 예외 없는 의무임을 나타냅니다.",
+      "answerSource": "authored_from_26v1_definition"
+    },
+    {
+      "id": "NCS26-SUP-FOR-07",
+      "area": "의사소통능력",
+      "ncsAbility": "외국어소통능력",
+      "ncsElement": "외국어 이해능력",
+      "lessonId": "NCS26-외국어소통능력",
+      "lessonTitle": "직무 외국어 이해 · 표현 · 상황대응",
+      "level": "고급",
+      "context": "영문 계약서의 한 조항이다.",
+      "stem": "\"This agreement shall remain in effect until either party gives 30 days' written notice.\" 계약 종료 조건은?",
+      "choices": [
+        "30일이 지나면 자동으로 종료된다",
+        "30일 안에 구두로 통지해야 종료된다",
+        "어느 한쪽이 30일 전에 서면으로 통지하면 종료된다",
+        "양쪽이 모두 동의해야만 30일 뒤 종료된다"
+      ],
+      "answer": "C",
+      "explanation": "either party는 '양 당사자 중 어느 한쪽'이므로 일방 통지로 종료됩니다. both parties(양쪽 모두)와 구분해야 합니다. written notice는 서면 통지여서 구두 통지로는 효력이 없습니다.",
+      "answerSource": "authored_from_26v1_definition"
+    },
+    {
+      "id": "NCS26-SUP-FOR-08",
+      "area": "의사소통능력",
+      "ncsAbility": "외국어소통능력",
+      "ncsElement": "외국어 이해능력",
+      "lessonId": "NCS26-외국어소통능력",
+      "lessonTitle": "직무 외국어 이해 · 표현 · 상황대응",
+      "level": "고급",
+      "context": "설비 이력 문서에서 모르는 단어를 만났다.",
+      "stem": "\"Line 3 was decommissioned last year, so no spare parts are stocked for it.\" 문맥으로 볼 때 decommissioned의 뜻으로 가장 알맞은 것은?",
+      "choices": [
+        "새로 증설되어 가동을 시작했다",
+        "다른 공장으로 소유권이 넘어갔다",
+        "정기 점검을 받고 성능이 향상되었다",
+        "가동을 중단하고 폐기 절차에 들어갔다"
+      ],
+      "answer": "D",
+      "explanation": "뒤 문장 'so no spare parts are stocked(그래서 예비부품을 보유하지 않는다)'가 단서입니다. 앞으로 쓰지 않을 설비이기 때문에 부품을 두지 않는 것이므로 '가동 중단·폐기'로 추론합니다. 모르는 어휘는 인과관계를 나타내는 so, because, therefore 뒤 문장에서 단서를 찾습니다.",
+      "answerSource": "authored_from_26v1_definition"
+    },
+    {
+      "id": "NCS26-SUP-FOR-09",
+      "area": "의사소통능력",
+      "ncsAbility": "외국어소통능력",
+      "ncsElement": "외국어 표현능력",
+      "lessonId": "NCS26-외국어소통능력",
+      "lessonTitle": "직무 외국어 이해 · 표현 · 상황대응",
+      "level": "표준",
+      "context": "자료 제출 기한을 사흘 미뤄야 하는 상황이다.",
+      "stem": "해외 거래처에 보낼 표현으로 가장 적절한 것은?",
+      "choices": [
+        "Would it be possible to extend the deadline to Friday?",
+        "Why did you give me such a short deadline?",
+        "You must wait until Friday because I am busy.",
+        "I will send it on Friday. That is my decision."
+      ],
+      "answer": "A",
+      "explanation": "Would it be possible to ~?는 상대에게 결정권을 남기는 정중한 요청 형식입니다. 나머지는 통보·명령·항의여서 거래 관계에 부적절합니다. 요청할 때는 이유와 새 기한을 함께 제시하면 더 좋습니다.",
+      "answerSource": "authored_from_26v1_definition"
+    },
+    {
+      "id": "NCS26-SUP-FOR-10",
+      "area": "의사소통능력",
+      "ncsAbility": "외국어소통능력",
+      "ncsElement": "외국어 표현능력",
+      "lessonId": "NCS26-외국어소통능력",
+      "lessonTitle": "직무 외국어 이해 · 표현 · 상황대응",
+      "level": "표준",
+      "context": "거래처의 추가 할인 요구를 받아들일 수 없다.",
+      "stem": "거절 표현으로 가장 적절한 것은?",
+      "choices": [
+        "That is a ridiculous request.",
+        "Maybe. I will think about it someday.",
+        "Unfortunately, we are unable to offer a further discount at this time.",
+        "No. We cannot do that."
+      ],
+      "answer": "C",
+      "explanation": "Unfortunately + be unable to는 거절을 완충해 관계를 유지하는 표준 표현입니다. 4번은 지나치게 단정적이고, 1번은 무례하며, 3번은 답을 미루기만 해 상대가 다음 행동을 정할 수 없습니다.",
+      "answerSource": "authored_from_26v1_definition",
+      "choiceOrderBalanced": true
+    },
+    {
+      "id": "NCS26-SUP-FOR-11",
+      "area": "의사소통능력",
+      "ncsAbility": "외국어소통능력",
+      "ncsElement": "외국어 표현능력",
+      "lessonId": "NCS26-외국어소통능력",
+      "lessonTitle": "직무 외국어 이해 · 표현 · 상황대응",
+      "level": "고급",
+      "context": "우리 측 실수로 불량품이 배송되었다.",
+      "stem": "사과 메일로 가장 적절한 것은?",
+      "choices": [
+        "We are sorry, but the defect may have been caused by your handling.",
+        "We sincerely apologize for the defect. A replacement will be shipped today at no cost.",
+        "The defect is a common issue and usually not a problem.",
+        "Please contact the manufacturer directly about the defect."
+      ],
+      "answer": "B",
+      "explanation": "업무 사과는 ① 사과 ② 구체적 조치 ③ 시점을 함께 밝혀야 신뢰가 회복됩니다. 1번은 책임 전가, 2번은 문제 축소, 4번은 책임 회피여서 모두 부적절합니다.",
+      "answerSource": "authored_from_26v1_definition",
+      "choiceOrderBalanced": true
+    },
+    {
+      "id": "NCS26-SUP-FOR-12",
+      "area": "의사소통능력",
+      "ncsAbility": "외국어소통능력",
+      "ncsElement": "외국어 표현능력",
+      "lessonId": "NCS26-외국어소통능력",
+      "lessonTitle": "직무 외국어 이해 · 표현 · 상황대응",
+      "level": "기초",
+      "context": "상대의 요청 내용 중 수량 단위가 불분명하다.",
+      "stem": "확인을 요청하는 표현으로 가장 적절한 것은?",
+      "choices": [
+        "Could you clarify whether 500 refers to units or boxes?",
+        "Your email is confusing. Please rewrite it.",
+        "I do not understand your email at all.",
+        "I will assume 500 boxes and proceed."
+      ],
+      "answer": "A",
+      "explanation": "clarify whether A or B는 모호한 지점만 짚어 확인하는 표현입니다. 확인 없이 임의로 가정하는 C는 오배송으로 이어집니다. 불명확한 지시는 추측하지 말고 되묻는 것이 업무의 기본입니다.",
+      "answerSource": "authored_from_26v1_definition",
+      "choiceOrderBalanced": true
+    },
+    {
+      "id": "NCS26-SUP-FOR-13",
+      "area": "의사소통능력",
+      "ncsAbility": "외국어소통능력",
+      "ncsElement": "외국어 표현능력",
+      "lessonId": "NCS26-외국어소통능력",
+      "lessonTitle": "직무 외국어 이해 · 표현 · 상황대응",
+      "level": "기초",
+      "context": "주문 내용을 정리해 회신하려 한다.",
+      "stem": "주문 확인 표현으로 가장 적절한 것은?",
+      "choices": [
+        "We think maybe 300 units around March.",
+        "You said 300 units, so it is your responsibility.",
+        "300 units. March 15. OK?",
+        "To confirm, we will deliver 300 units by March 15."
+      ],
+      "answer": "D",
+      "explanation": "To confirm으로 시작해 수량과 날짜를 명시하면 상대가 오류를 즉시 잡아낼 수 있습니다. 확인 회신은 추측 표현(maybe, around)을 쓰지 않고 숫자와 날짜를 확정형으로 적습니다.",
+      "answerSource": "authored_from_26v1_definition",
+      "choiceOrderBalanced": true
+    },
+    {
+      "id": "NCS26-SUP-FOR-14",
+      "area": "의사소통능력",
+      "ncsAbility": "외국어소통능력",
+      "ncsElement": "외국어 표현능력",
+      "lessonId": "NCS26-외국어소통능력",
+      "lessonTitle": "직무 외국어 이해 · 표현 · 상황대응",
+      "level": "표준",
+      "context": "3월 15일 납기 지연을 알리는 메일을 쓴다.",
+      "stem": "제목으로 가장 적절한 것은?",
+      "choices": [
+        "Important!!! Please read this email now!!!",
+        "About the thing we discussed last time",
+        "Delivery Delay Notice - Order #A1023 (New ETA: Mar 22)",
+        "Hello"
+      ],
+      "answer": "C",
+      "explanation": "업무 메일 제목은 ① 무슨 일인지 ② 어느 건인지 ③ 상대가 알아야 할 핵심 값을 담습니다. 주문번호와 새 예정일(ETA)이 있으면 상대가 열지 않고도 조치를 시작할 수 있습니다.",
+      "answerSource": "authored_from_26v1_definition",
+      "choiceOrderBalanced": true
+    },
+    {
+      "id": "NCS26-SUP-FOR-15",
+      "area": "의사소통능력",
+      "ncsAbility": "외국어소통능력",
+      "ncsElement": "외국어 표현능력",
+      "lessonId": "NCS26-외국어소통능력",
+      "lessonTitle": "직무 외국어 이해 · 표현 · 상황대응",
+      "level": "고급",
+      "context": "생산 차질로 납기가 일주일 늦어진다.",
+      "stem": "고객에게 보낼 통지로 가장 적절한 것은?",
+      "choices": [
+        "Delivery is delayed because our supplier is incompetent.",
+        "Due to a production issue, delivery will be delayed by one week. The new date is March 22. We will cover the express shipping cost.",
+        "Delivery may or may not be delayed. We will see.",
+        "Delivery will be late. Sorry."
+      ],
+      "answer": "B",
+      "explanation": "나쁜 소식은 ① 사실 ② 원인 ③ 새 일정 ④ 보완 조치를 함께 전해야 상대가 자기 일정을 다시 짤 수 있습니다. 4번은 정보가 없고, 2번은 불확실만 남기며, 1번은 협력사를 비난해 신뢰를 잃습니다.",
+      "answerSource": "authored_from_26v1_definition",
+      "choiceOrderBalanced": true
+    },
+    {
+      "id": "NCS26-SUP-FOR-16",
+      "area": "의사소통능력",
+      "ncsAbility": "외국어소통능력",
+      "ncsElement": "외국어 표현능력",
+      "lessonId": "NCS26-외국어소통능력",
+      "lessonTitle": "직무 외국어 이해 · 표현 · 상황대응",
+      "level": "표준",
+      "context": "즉답이 어려운 질문을 받았다.",
+      "stem": "가장 적절한 응답은?",
+      "choices": [
+        "Let me check with our technical team and get back to you by tomorrow.",
+        "Probably yes, but I am not sure.",
+        "Please ask someone else.",
+        "I do not know anything about that."
+      ],
+      "answer": "A",
+      "explanation": "모를 때는 ① 확인하겠다 ② 누구에게 확인할지 ③ 언제까지 회신할지를 밝히면 신뢰가 유지됩니다. C처럼 확실하지 않은 답을 주면 상대가 잘못된 결정을 내릴 수 있어 더 위험합니다.",
+      "answerSource": "authored_from_26v1_definition",
+      "choiceOrderBalanced": true
+    },
+    {
+      "id": "NCS26-SUP-FOR-17",
+      "area": "의사소통능력",
+      "ncsAbility": "외국어소통능력",
+      "ncsElement": "외국어 상황대응능력",
+      "lessonId": "NCS26-외국어소통능력",
+      "lessonTitle": "직무 외국어 이해 · 표현 · 상황대응",
+      "level": "표준",
+      "context": "외국인 고객이 매장에서 \"This doesn't work.\"라며 제품을 내민다.",
+      "stem": "첫 대응으로 가장 적절한 것은?",
+      "choices": [
+        "사용법을 잘못 익혔을 것이라고 먼저 설명한다",
+        "본사에 직접 문의하라고 안내한다",
+        "영어를 잘하는 직원이 올 때까지 기다리게 한다",
+        "증상을 구체적으로 묻고 제품 상태를 함께 확인한다"
+      ],
+      "answer": "D",
+      "explanation": "외국어 상황대응의 출발점은 사실 확인입니다. doesn't work는 고장·설정·전원 등 원인이 다양하므로 What happens when you turn it on? 같은 질문으로 증상을 좁혀야 합니다. 원인을 단정하거나 응대를 미루면 불만이 커집니다.",
+      "answerSource": "authored_from_26v1_definition",
+      "choiceOrderBalanced": true
+    },
+    {
+      "id": "NCS26-SUP-FOR-18",
+      "area": "의사소통능력",
+      "ncsAbility": "외국어소통능력",
+      "ncsElement": "외국어 상황대응능력",
+      "lessonId": "NCS26-외국어소통능력",
+      "lessonTitle": "직무 외국어 이해 · 표현 · 상황대응",
+      "level": "기초",
+      "context": "전화 상대의 말이 너무 빨라 알아듣기 어렵다.",
+      "stem": "가장 적절한 대응은?",
+      "choices": [
+        "\"Your English is too fast for me.\"라고 지적한다",
+        "말없이 전화를 끊는다",
+        "Sorry, could you speak a little more slowly, please?",
+        "알아들은 척하고 \"Yes, yes.\"라고 답한다"
+      ],
+      "answer": "C",
+      "explanation": "천천히 말해 달라는 요청은 무례하지 않으며 오히려 정확한 업무 처리를 위한 태도입니다. 알아듣지 못한 채 Yes라고 답하면 잘못된 약속이 되고, 상대의 영어를 지적하는 표현은 관계를 해칩니다.",
+      "answerSource": "authored_from_26v1_definition",
+      "choiceOrderBalanced": true
+    },
+    {
+      "id": "NCS26-SUP-FOR-19",
+      "area": "의사소통능력",
+      "ncsAbility": "외국어소통능력",
+      "ncsElement": "외국어 상황대응능력",
+      "lessonId": "NCS26-외국어소통능력",
+      "lessonTitle": "직무 외국어 이해 · 표현 · 상황대응",
+      "level": "표준",
+      "context": "약속 없이 찾아온 외국인 방문객이 담당자를 찾는다.",
+      "stem": "안내 데스크 직원의 대응으로 가장 적절한 것은?",
+      "choices": [
+        "담당자 자리로 직접 안내한다",
+        "방문 목적과 소속을 확인한 뒤 담당자에게 연락해 면담 가능 여부를 묻는다",
+        "담당자의 휴대전화 번호를 알려 준다",
+        "약속이 없으므로 돌려보낸다"
+      ],
+      "answer": "B",
+      "explanation": "약속 없는 방문은 거절도 즉시 안내도 아닌 '확인 후 연결'이 원칙입니다. 무단 안내는 보안 위반이고, 담당자 개인 연락처를 외부인에게 알려 주는 것은 개인정보 보호 위반입니다.",
+      "answerSource": "authored_from_26v1_definition",
+      "choiceOrderBalanced": true
+    },
+    {
+      "id": "NCS26-SUP-FOR-20",
+      "area": "의사소통능력",
+      "ncsAbility": "외국어소통능력",
+      "ncsElement": "외국어 상황대응능력",
+      "lessonId": "NCS26-외국어소통능력",
+      "lessonTitle": "직무 외국어 이해 · 표현 · 상황대응",
+      "level": "고급",
+      "context": "출장 중 공항에서 다음 안내 방송을 들었다.",
+      "stem": "\"Passengers for Flight KE702 to Seoul, please note the boarding gate has been changed from Gate 14 to Gate 27.\" 취해야 할 행동은?",
+      "choices": [
+        "탑승이 취소되었으므로 창구로 간다",
+        "27번 게이트로 이동한다",
+        "14번 게이트에서 계속 기다린다",
+        "702번 게이트를 찾아간다"
+      ],
+      "answer": "B",
+      "explanation": "changed from A to B는 'A에서 B로 바뀌었다'이므로 최종 목적지는 B입니다. from 뒤 숫자를 답으로 고르는 것이 대표적인 함정입니다. 안내 방송은 변경 전후 순서를 놓치지 않는 것이 핵심입니다.",
+      "answerSource": "authored_from_26v1_definition",
+      "choiceOrderBalanced": true
+    },
+    {
+      "id": "NCS26-SUP-FOR-21",
+      "area": "의사소통능력",
+      "ncsAbility": "외국어소통능력",
+      "ncsElement": "외국어 상황대응능력",
+      "lessonId": "NCS26-외국어소통능력",
+      "lessonTitle": "직무 외국어 이해 · 표현 · 상황대응",
+      "level": "표준",
+      "context": "해외 박람회 부스에서 기술 사양을 질문받았으나 정확한 수치를 모른다.",
+      "stem": "가장 적절한 대응은?",
+      "choices": [
+        "경쟁사 제품이 더 나을 것이라고 안내한다",
+        "대략적인 수치를 기억나는 대로 말해 준다",
+        "명함을 받아 두고 정확한 자료를 이메일로 보내겠다고 약속한다",
+        "모른다고만 말하고 대화를 끝낸다"
+      ],
+      "answer": "C",
+      "explanation": "부정확한 사양을 말하면 계약 분쟁의 원인이 됩니다. 연락처를 확보해 후속 회신하는 방식은 정확성과 영업 기회를 동시에 지킵니다.",
+      "answerSource": "authored_from_26v1_definition",
+      "choiceOrderBalanced": true
+    },
+    {
+      "id": "NCS26-SUP-FOR-22",
+      "area": "의사소통능력",
+      "ncsAbility": "외국어소통능력",
+      "ncsElement": "외국어 상황대응능력",
+      "lessonId": "NCS26-외국어소통능력",
+      "lessonTitle": "직무 외국어 이해 · 표현 · 상황대응",
+      "level": "고급",
+      "context": "현장에서 외국인 근로자가 손을 다쳤다. 응급 상황이다.",
+      "stem": "영어로 가장 먼저 확인할 내용은?",
+      "choices": [
+        "Why were you not wearing gloves?",
+        "Did you report this to your team leader?",
+        "Do you have insurance?",
+        "Are you okay? Where does it hurt?"
+      ],
+      "answer": "D",
+      "explanation": "응급 상황의 우선순위는 상태 확인과 응급조치입니다. 원인 추궁·보고 절차·보험 확인은 안전이 확보된 뒤의 일입니다. 생명 존중이 산업안전보건의 첫 번째 가치입니다.",
+      "answerSource": "authored_from_26v1_definition",
+      "choiceOrderBalanced": true
+    },
+    {
+      "id": "NCS26-SUP-FOR-23",
+      "area": "의사소통능력",
+      "ncsAbility": "외국어소통능력",
+      "ncsElement": "외국어 상황대응능력",
+      "lessonId": "NCS26-외국어소통능력",
+      "lessonTitle": "직무 외국어 이해 · 표현 · 상황대응",
+      "level": "고급",
+      "context": "외국 거래처가 내 권한을 넘는 특별 조건을 요구한다.",
+      "stem": "가장 적절한 대응은?",
+      "choices": [
+        "권한 밖임을 밝히고 상급자 검토 후 회신하겠다고 안내한다",
+        "요구가 무리라고 그 자리에서 단정해 거절한다",
+        "답을 하지 않고 연락을 피한다",
+        "일단 가능하다고 답하고 나중에 조정한다"
+      ],
+      "answer": "A",
+      "explanation": "권한 범위를 정확히 알리는 것은 신뢰를 떨어뜨리지 않습니다. 지킬 수 없는 약속(4번)은 계약 위반으로 이어지고, 임의 거절(1번)은 협상 여지를 없애며, 회피(2번)는 관계를 끊습니다.",
+      "answerSource": "authored_from_26v1_definition",
+      "choiceOrderBalanced": true
+    },
+    {
+      "id": "NCS26-SUP-FOR-24",
+      "area": "의사소통능력",
+      "ncsAbility": "외국어소통능력",
+      "ncsElement": "외국어 상황대응능력",
+      "lessonId": "NCS26-외국어소통능력",
+      "lessonTitle": "직무 외국어 이해 · 표현 · 상황대응",
+      "level": "고급",
+      "context": "고객이 강한 어조의 항의 메일을 보냈다.",
+      "stem": "회신의 첫 문장으로 가장 적절한 것은?",
+      "choices": [
+        "This is not our fault.",
+        "Thank you for letting us know. I understand how frustrating this must be.",
+        "Please calm down first.",
+        "Your email was rude and unnecessary."
+      ],
+      "answer": "B",
+      "explanation": "항의 응대는 감정을 먼저 인정한 뒤 사실과 조치를 설명하는 순서가 효과적입니다. 반박(3번·1번)이나 감정 통제 요구(2번)로 시작하면 갈등이 커집니다.",
+      "answerSource": "authored_from_26v1_definition",
+      "choiceOrderBalanced": true
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { filterActiveSubjects } from '../../lib/subjectCatalog.js'
 import { supabase } from '../../lib/supabase.js'
 
 export default function TeacherRankingScreen() {
@@ -25,7 +26,7 @@ export default function TeacherRankingScreen() {
     ])
     const cls = (tc ?? []).map(r => r.classes)
     setClasses(cls)
-    setSubjects(subs ?? [])
+    setSubjects(filterActiveSubjects(subs))
     if (cls.length > 0) setSelectedClass(cls[0].id)
   }
 
@@ -53,7 +54,7 @@ export default function TeacherRankingScreen() {
           <button key={s.id ?? 'all'}
             style={{
               padding: '6px 14px', borderRadius: 20, border: '1.5px solid',
-              fontSize: 12, fontWeight: 700, whiteSpace: 'nowrap', cursor: 'pointer',
+              fontSize: 12, fontWeight: 700, whiteSpace: 'nowrap', cursor: 'pointer', minHeight: 44,
               background: subjectId === s.id ? 'var(--primary)' : 'transparent',
               color: subjectId === s.id ? '#fff' : 'var(--text-muted)',
               borderColor: subjectId === s.id ? 'var(--primary)' : 'var(--border)',
@@ -70,7 +71,7 @@ export default function TeacherRankingScreen() {
           {classes.map(c => (
             <button key={c.id}
               style={{
-                padding: '7px 14px', borderRadius: 8, border: '1.5px solid', fontSize: 13,
+                padding: '7px 14px', minHeight: 44, borderRadius: 8, border: '1.5px solid', fontSize: 13,
                 whiteSpace: 'nowrap', cursor: 'pointer', fontWeight: 700,
                 background: selectedClass === c.id ? 'var(--primary)' : 'var(--card)',
                 color: selectedClass === c.id ? '#fff' : 'var(--text)',

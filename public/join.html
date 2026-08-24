@@ -159,11 +159,7 @@
     <!-- 학습 과목 -->
     <div class="glass">
       <p class="section-label">학습 과목</p>
-      <div class="feature"><span class="fi">🏅</span> 직업공통능력 — 교육부 인증평가 대비</div>
-      <div class="feature"><span class="fi">📖</span> 직업기초능력 — 공채 필기시험 (311문항)</div>
-      <div class="feature"><span class="fi">🍽️</span> 도제학교 외부평가 — 식음료서비스 (560문항)</div>
-      <div class="feature"><span class="fi">⚙️</span> 도제학교 외부평가 — 품질경영</div>
-      <div class="feature"><span class="fi">🎤</span> 고졸취업 면접스킬</div>
+      <div id="marketing-subjects"></div>
     </div>
 
     <!-- 앱 기능 -->
@@ -187,5 +183,18 @@
     </div>
 
   </div>
+  <script src="marketing-subjects.js"></script>
+  <script>
+    const subjectList = document.getElementById('marketing-subjects')
+    for (const subject of globalThis.SUGAR_SALT_MARKETING_SUBJECTS || []) {
+      const row = document.createElement('div')
+      row.className = 'feature'
+      const icon = document.createElement('span')
+      icon.className = 'fi'
+      icon.textContent = subject.icon
+      row.append(icon, document.createTextNode(`${subject.name} — ${subject.desc}`))
+      subjectList.append(row)
+    }
+  </script>
 </body>
 </html>

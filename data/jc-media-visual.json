@@ -1,0 +1,383 @@
+{
+  "questions": [
+    {
+      "id": "JC26-MATH-VIS-01",
+      "visual": {
+        "type": "table",
+        "caption": "주간 생산 실적",
+        "columns": [
+          "요일",
+          "계획(개)",
+          "실적(개)"
+        ],
+        "rows": [
+          [
+            "월",
+            120,
+            114
+          ],
+          [
+            "화",
+            150,
+            156
+          ],
+          [
+            "수",
+            130,
+            130
+          ],
+          [
+            "목",
+            140,
+            147
+          ]
+        ]
+      },
+      "stem": "계획보다 실적이 가장 많이 초과한 요일은?",
+      "choices": [
+        "목요일",
+        "월요일",
+        "화요일",
+        "수요일"
+      ],
+      "answer": "A",
+      "explanation": "계획 대비 차이는 월 -6, 화 +6, 수 0, 목 +7이므로 목요일이 가장 큽니다.",
+      "area": "수리활용",
+      "officialArea": "수리활용",
+      "lessonId": "JC26-MATH-VISUAL",
+      "lessonTitle": "표·그래프 수리활용",
+      "level": "기초",
+      "mediaType": "visual",
+      "questionMode": "mcq",
+      "answerSource": "app-authored-blueprint-supplement",
+      "alignmentStatus": "teenup-2026-practice-alignment",
+      "choiceOrderBalanced": true
+    },
+    {
+      "id": "JC26-MATH-VIS-02",
+      "visual": {
+        "type": "bar",
+        "caption": "부서별 불량 건수",
+        "items": [
+          {
+            "label": "조립",
+            "value": 12
+          },
+          {
+            "label": "포장",
+            "value": 8
+          },
+          {
+            "label": "검수",
+            "value": 5
+          },
+          {
+            "label": "출하",
+            "value": 3
+          }
+        ],
+        "note": "단위: 건"
+      },
+      "stem": "조립과 포장 부서의 불량 건수를 합하면?",
+      "choices": [
+        "15건",
+        "20건",
+        "18건",
+        "23건"
+      ],
+      "answer": "B",
+      "explanation": "조립 12건과 포장 8건을 더하면 20건입니다.",
+      "area": "수리활용",
+      "officialArea": "수리활용",
+      "lessonId": "JC26-MATH-VISUAL",
+      "lessonTitle": "표·그래프 수리활용",
+      "level": "기초",
+      "mediaType": "visual",
+      "questionMode": "mcq",
+      "answerSource": "app-authored-blueprint-supplement",
+      "alignmentStatus": "teenup-2026-practice-alignment",
+      "choiceOrderBalanced": true
+    },
+    {
+      "id": "JC26-MATH-VIS-03",
+      "visual": {
+        "type": "table",
+        "caption": "배송 차량 운행 정보",
+        "columns": [
+          "차량",
+          "운행 거리(km)",
+          "연료(L)"
+        ],
+        "rows": [
+          [
+            "A",
+            180,
+            15
+          ],
+          [
+            "B",
+            210,
+            21
+          ],
+          [
+            "C",
+            240,
+            24
+          ]
+        ]
+      },
+      "stem": "연료 1L당 운행 거리가 가장 긴 차량은?",
+      "choices": [
+        "B 차량",
+        "C 차량",
+        "A 차량",
+        "모두 같다"
+      ],
+      "answer": "C",
+      "explanation": "A는 12km/L, B와 C는 각각 10km/L이므로 A 차량의 연비가 가장 높습니다.",
+      "area": "수리활용",
+      "officialArea": "수리활용",
+      "lessonId": "JC26-MATH-VISUAL",
+      "lessonTitle": "표·그래프 수리활용",
+      "level": "기초",
+      "mediaType": "visual",
+      "questionMode": "mcq",
+      "answerSource": "app-authored-blueprint-supplement",
+      "alignmentStatus": "teenup-2026-practice-alignment",
+      "choiceOrderBalanced": true
+    },
+    {
+      "id": "JC26-MATH-VIS-04",
+      "visual": {
+        "type": "table",
+        "caption": "제품별 판매량과 단가",
+        "columns": [
+          "제품",
+          "판매량",
+          "단가(원)"
+        ],
+        "rows": [
+          [
+            "A",
+            30,
+            4000
+          ],
+          [
+            "B",
+            20,
+            5500
+          ],
+          [
+            "C",
+            25,
+            4800
+          ]
+        ]
+      },
+      "stem": "매출액이 가장 큰 제품은?",
+      "choices": [
+        "A 제품만 가장 크다",
+        "B 제품만 가장 크다",
+        "A와 B 제품이 같다",
+        "A와 C 제품이 같다"
+      ],
+      "answer": "D",
+      "explanation": "1번은 120,000원, 2번은 110,000원, 3번은 120,000원으로 1번과 3번이 같습니다.",
+      "area": "수리활용",
+      "officialArea": "수리활용",
+      "lessonId": "JC26-MATH-VISUAL",
+      "lessonTitle": "표·그래프 수리활용",
+      "level": "표준",
+      "mediaType": "visual",
+      "questionMode": "mcq",
+      "answerSource": "app-authored-blueprint-supplement",
+      "alignmentStatus": "teenup-2026-practice-alignment",
+      "fourChoice": "공식 인증진단 형식(4지선다)에 맞춰 오답을 다시 씀"
+    },
+    {
+      "id": "JC26-MATH-VIS-05",
+      "visual": {
+        "type": "bar",
+        "caption": "월별 고객 문의",
+        "items": [
+          {
+            "label": "1월",
+            "value": 80
+          },
+          {
+            "label": "2월",
+            "value": 100
+          },
+          {
+            "label": "3월",
+            "value": 120
+          },
+          {
+            "label": "4월",
+            "value": 90
+          }
+        ],
+        "note": "단위: 건"
+      },
+      "stem": "2월 대비 3월 문의 건수의 증가율은?",
+      "choices": [
+        "20%",
+        "10%",
+        "25%",
+        "40%"
+      ],
+      "answer": "A",
+      "explanation": "100건에서 120건으로 20건 증가했으므로 증가율은 20%입니다.",
+      "area": "수리활용",
+      "officialArea": "수리활용",
+      "lessonId": "JC26-MATH-VISUAL",
+      "lessonTitle": "표·그래프 수리활용",
+      "level": "표준",
+      "mediaType": "visual",
+      "questionMode": "mcq",
+      "answerSource": "app-authored-blueprint-supplement",
+      "alignmentStatus": "teenup-2026-practice-alignment",
+      "choiceOrderBalanced": true
+    },
+    {
+      "id": "JC26-MATH-VIS-06",
+      "visual": {
+        "type": "table",
+        "caption": "작업별 소요 시간",
+        "columns": [
+          "작업",
+          "1개당 시간(분)",
+          "수량"
+        ],
+        "rows": [
+          [
+            "검수",
+            3,
+            20
+          ],
+          [
+            "포장",
+            2,
+            30
+          ],
+          [
+            "라벨",
+            1,
+            40
+          ]
+        ]
+      },
+      "stem": "세 작업을 모두 마치는 데 필요한 총시간은?",
+      "choices": [
+        "120분",
+        "160분",
+        "140분",
+        "180분"
+      ],
+      "answer": "B",
+      "explanation": "검수 60분, 포장 60분, 라벨 40분으로 총 160분입니다.",
+      "area": "수리활용",
+      "officialArea": "수리활용",
+      "lessonId": "JC26-MATH-VISUAL",
+      "lessonTitle": "표·그래프 수리활용",
+      "level": "표준",
+      "mediaType": "visual",
+      "questionMode": "mcq",
+      "answerSource": "app-authored-blueprint-supplement",
+      "alignmentStatus": "teenup-2026-practice-alignment",
+      "choiceOrderBalanced": true
+    },
+    {
+      "id": "JC26-MATH-VIS-07",
+      "visual": {
+        "type": "bar",
+        "caption": "분기별 매출",
+        "items": [
+          {
+            "label": "1분기",
+            "value": 240
+          },
+          {
+            "label": "2분기",
+            "value": 300
+          },
+          {
+            "label": "3분기",
+            "value": 270
+          },
+          {
+            "label": "4분기",
+            "value": 330
+          }
+        ],
+        "note": "단위: 백만원"
+      },
+      "stem": "분기 평균 매출은?",
+      "choices": [
+        "270백만원",
+        "280백만원",
+        "285백만원",
+        "300백만원"
+      ],
+      "answer": "C",
+      "explanation": "(240+300+270+330)÷4 = 285백만원입니다.",
+      "area": "수리활용",
+      "officialArea": "수리활용",
+      "lessonId": "JC26-MATH-VISUAL",
+      "lessonTitle": "표·그래프 수리활용",
+      "level": "심화",
+      "mediaType": "visual",
+      "questionMode": "mcq",
+      "answerSource": "app-authored-blueprint-supplement",
+      "alignmentStatus": "teenup-2026-practice-alignment"
+    },
+    {
+      "id": "JC26-MATH-VIS-08",
+      "visual": {
+        "type": "table",
+        "caption": "재고 현황",
+        "columns": [
+          "품목",
+          "현재 재고",
+          "안전 재고"
+        ],
+        "rows": [
+          [
+            "볼트",
+            450,
+            300
+          ],
+          [
+            "너트",
+            280,
+            300
+          ],
+          [
+            "와셔",
+            510,
+            400
+          ]
+        ]
+      },
+      "stem": "안전 재고보다 현재 재고가 부족한 품목과 부족 수량은?",
+      "choices": [
+        "볼트 150개",
+        "와셔 110개",
+        "너트 80개",
+        "너트 20개"
+      ],
+      "answer": "D",
+      "explanation": "너트는 현재 280개로 안전 재고 300개보다 20개 부족합니다.",
+      "area": "수리활용",
+      "officialArea": "수리활용",
+      "lessonId": "JC26-MATH-VISUAL",
+      "lessonTitle": "표·그래프 수리활용",
+      "level": "심화",
+      "mediaType": "visual",
+      "questionMode": "mcq",
+      "answerSource": "app-authored-blueprint-supplement",
+      "alignmentStatus": "teenup-2026-practice-alignment",
+      "choiceOrderBalanced": true
+    }
+  ]
+}

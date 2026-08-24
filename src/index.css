@@ -16,8 +16,17 @@
   --shadow: 0 1px 3px rgba(0,0,0,0.1);
   --shadow-md: 0 4px 12px rgba(0,0,0,0.12);
   --font: 'Noto Sans KR', -apple-system, sans-serif;
-  --safe-top: env(safe-area-inset-top, 0px);
-  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  /* 안전영역은 두 곳에서 온다. iOS 는 브라우저가 env() 로 주고, 안드로이드
+     Capacitor 는 **CSS 변수** --safe-area-inset-* 를 직접 주입한다(SystemBars).
+     env() 만 읽으면 안드로이드에서 0 이 되어, targetSdk 35+ 의 강제
+     edge-to-edge 화면에서 하단 탭바가 시스템 내비게이션 바 밑으로 들어간다.
+     학생이 홈 버튼을 누르려다 우리 탭을 누르게 되는 그 문제다.
+     둘 중 큰 값을 쓴다 — 한쪽만 값을 주는 기기에서도 맞는다. */
+  --safe-top: max(env(safe-area-inset-top, 0px), var(--safe-area-inset-top, 0px));
+  --safe-bottom: max(env(safe-area-inset-bottom, 0px), var(--safe-area-inset-bottom, 0px));
+  /* 제스처 내비게이션은 화면 맨 아래 24~48dp 를 자기 영역으로 쓴다. 인셋이
+     0 으로 보고되는 기기에서도 손가락이 겹치지 않도록 최소 여백을 둔다. */
+  --tabbar-gap: max(var(--safe-bottom), 6px);
 }
 
 /* ── 다크모드 ── */
@@ -68,6 +77,7 @@ body {
 
 .screen-body {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   padding: 16px;
@@ -91,6 +101,7 @@ body {
   user-select: none;
 }
 .btn:active { opacity: 0.82; transform: scale(0.97); }
+.btn:focus-visible { outline: 3px solid var(--primary); outline-offset: 2px; }
 .btn-primary { background: var(--primary); color: #fff; }
 .btn-primary:hover:not(:disabled) { background: var(--primary-dark); box-shadow: 0 4px 12px rgba(79,70,229,0.35); }
 .btn-secondary { background: var(--primary-light); color: var(--primary); }
@@ -147,7 +158,11 @@ body {
   color: #fff;
   font-size: 22px;
   cursor: pointer;
-  padding: 4px;
+  display: inline-grid;
+  place-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
   line-height: 1;
 }
 
@@ -249,7 +264,7 @@ body {
   display: flex;
   background: var(--card);
   border-top: 1px solid var(--border);
-  padding-bottom: var(--safe-bottom);
+  padding-bottom: var(--tabbar-gap);
   flex-shrink: 0;
   box-shadow: 0 -2px 8px rgba(0,0,0,0.06);
 }
@@ -278,3 +293,907 @@ body {
   border-radius: 0 0 3px 3px;
 }
 .tab-icon { font-size: 22px; }
+
+/* ── 반응형: PC / 태블릿 (640px+) ───────────────────────────────────────── */
+/* 기본 스타일보다 뒤에 배치해야 cascading이 올바르게 적용됨                  */
+@media (min-width: 640px) {
+  html {
+    background: #D1D5DB;
+    height: auto;
+    min-height: 100%;
+  }
+  html[data-theme="dark"] { background: #374151; }
+  @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) { background: #374151; } }
+
+  body {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    background: transparent;
+    overflow: auto;
+    height: auto;
+    min-height: 100%;
+  }
+
+  /* 데스크톱에서도 모바일과 동일하게 '고정 높이 폰 프레임 + 내부 스크롤'로 통일.
+     (height:auto로 두면 .screen의 height:100%가 모호해져 overflow:hidden이 콘텐츠를
+      잘라버리고 스크롤이 막힘 — 웹 스크롤 버그의 공통 원인이었음.) */
+  #root {
+    width: 480px;
+    max-width: 480px;
+    height: min(900px, 100vh);
+    overflow: hidden;
+    box-shadow: 0 0 40px rgba(0,0,0,0.22);
+    border-radius: 0;
+    background: var(--bg);
+  }
+
+  /* 교사 앱은 폰 프레임을 벗는다.
+
+     학생은 폰으로 쓰니 큰 화면에서도 폰 폭으로 보여 주는 것이 맞다. 그런데
+     교사는 태블릿을 프로젝터에 물리거나 PC 에 연결해 수업에 쓴다. 1920px
+     화면 한가운데 480px 기둥이 서 있으면 수업 도구가 되지 못한다. */
+  /* **가로를 골랐을 때만** 벗는다. 세로를 골랐으면 학생 앱과 같은 폰
+     폭으로 돌아가야 한다 — 세로인데 카드가 1248px 로 늘어나면 그게 바로
+     「옆으로 늘린 화면」이고, 교사가 세로를 고른 뜻과 정반대다. */
+  html.teacher-mode[data-teacher-view='wide'] #root {
+    width: 100vw; max-width: none; height: 100vh;
+    box-shadow: none;
+  }
+
+  /* 수업 모드는 폰 프레임을 벗는다. 학생 앱은 큰 화면에서도 폰 폭으로
+     보여 주는 것이 맞지만, 교사가 프로젝터에 띄우는 화면까지 480px 안에
+     가둘 이유가 없다. 영역·단원을 고르는 동안에도 화면을 다 쓴다. */
+  html.classroom-mode #root {
+    width: 100vw; max-width: none; height: 100vh;
+    box-shadow: none;
+  }
+}
+
+/* ── 반응형: 데스크톱 (1024px+) ─────────────────────────────────────────── */
+@media (min-width: 1024px) {
+  body {
+    align-items: center;
+    min-height: 100vh;
+    padding: 24px 0;
+  }
+  #root {
+    border-radius: 20px;
+    min-height: min(900px, 92vh);
+    height: min(900px, 92vh);
+    overflow: hidden;
+  }
+}
+
+/* 앱바는 보라 배경(--primary)인데 .btn-ghost 는 밝은 배경 전제로
+   회색 글자·회색 테두리를 쓴다. 그대로 두면 대비 1.3:1 로 거의 안 보인다.
+   앱바 안에서만 흰색 계열로 바꾸고, 헤더 조작요소의 탭 영역도 확보한다. */
+.appbar .btn-ghost {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.14);
+}
+.appbar .btn-ghost:hover:not(:disabled) {
+  color: #fff;
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.24);
+}
+.appbar .btn,
+.appbar .appbar-back { min-height: 44px; }
+
+/* 버튼 탭 영역 하한. 관리자 화면의 .btn 일부가 32~33px 였다.
+   학교 삭제처럼 되돌리기 어려운 동작이 작은 버튼에 붙어 있어 오탭 위험이 컸다. */
+.btn { min-height: 44px; }
+
+/* 시간 제한이 걸린 실전 시험 중에는 아래 탭바를 감춘다.
+   실제 인증진단은 화면을 벗어날 수 없고, 잘못 눌러 나가면 답이 날아간다.
+   MissionScreen 이 body 에 이 클래스를 붙였다 뗀다. */
+body.exam-mode .bottom-tab { display: none !important; }
+
+/* ── 수업 모드 (프로젝터 투사) ─────────────────────────────────────
+   교실 뒤에서도 읽혀야 한다. 글자를 화면 크기에 비례해 키우고(clamp),
+   장식을 걷어낸다. 교실 조명 아래 프로젝터는 대비가 약해지므로 배경을
+   어둡게 두고 글자를 밝게 쓴다 — 밝은 배경은 화면이 하얗게 날아간다. */
+.classroom {
+  position: fixed; inset: 0; z-index: 2000;
+  display: flex; flex-direction: column;
+  background: #0f172a; color: #f8fafc;
+  font-size: clamp(18px, 2.2vw, 34px);
+  overflow: hidden;
+}
+.classroom-bar,
+.classroom-nav {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 20px; background: #1e293b; flex: 0 0 auto;
+}
+.classroom-nav { justify-content: space-between; }
+.classroom-btn {
+  background: #334155; color: #f8fafc; border: 0; border-radius: 10px;
+  padding: 10px 18px; font-size: 0.6em; cursor: pointer; white-space: nowrap;
+  /* 손가락으로 눌리는 최소 크기. 웹 버튼 크기로 두면 수업 중에 헛누른다. */
+  min-height: 44px; -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.classroom-btn:not(:disabled):active { background: #475569; transform: scale(0.97); }
+@media (prefers-reduced-motion: reduce) { .classroom-btn:active { transform: none; } }
+.classroom-btn:disabled { opacity: 0.35; cursor: default; }
+.classroom-btn kbd {
+  background: #0f172a; border-radius: 4px; padding: 1px 6px;
+  margin-left: 6px; font-size: 0.85em;
+}
+.classroom-progress { font-size: 0.6em; color: #94a3b8; }
+.classroom-body {
+  flex: 1 1 auto; overflow-y: auto; padding: clamp(16px, 3vw, 48px);
+  display: flex; flex-direction: column; gap: clamp(12px, 1.6vw, 28px);
+}
+.classroom-context {
+  background: #1e293b; border-left: 6px solid #6366f1;
+  padding: clamp(12px, 1.6vw, 24px); border-radius: 10px;
+  font-size: 0.78em; line-height: 1.7; white-space: pre-wrap; color: #cbd5e1;
+}
+.classroom-stem { font-size: 1.05em; line-height: 1.5; margin: 0; font-weight: 700; }
+.classroom-choices { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(8px, 1vw, 16px); }
+.classroom-choices li {
+  display: flex; gap: 16px; align-items: flex-start;
+  background: #1e293b; border: 3px solid transparent;
+  border-radius: 12px; padding: clamp(10px, 1.2vw, 20px); line-height: 1.5;
+}
+/* 정답은 색만으로 표시하지 않는다 — 색각 이상 학생과 대비가 약한 프로젝터를
+   함께 고려해 테두리와 글자 굵기로도 드러낸다. */
+.classroom-choices li.is-answer {
+  border-color: #22c55e; background: #14532d; font-weight: 700;
+}
+.classroom-choices li.is-answer .classroom-num { background: #22c55e; color: #052e16; }
+.classroom-num {
+  flex: 0 0 auto; width: 1.7em; height: 1.7em; border-radius: 50%;
+  background: #334155; color: #e2e8f0;
+  display: grid; place-items: center; font-size: 0.85em; font-weight: 700;
+}
+.classroom-exp {
+  background: #1e293b; border-radius: 12px; padding: clamp(12px, 1.4vw, 20px);
+  font-size: 0.72em; line-height: 1.7; color: #cbd5e1;
+}
+.classroom-exp p { margin: 12px 0 0; white-space: pre-wrap; }
+.classroom-empty { margin: auto; color: #94a3b8; }
+
+/* ── 수업 모드의 가로 배치 ──────────────────────────────────────────
+   교실 화면은 거의 전부 16:9 다. 세로용을 그냥 회전시키면 좌우가 비고
+   글씨는 그대로 작다. 가로에서는 **읽을 것과 고를 것을 좌우로 나눈다** —
+   학생 시선이 왼쪽에서 오른쪽으로 자연스럽게 흐르고, 지문이 길어도
+   선택지가 화면 밖으로 밀려나지 않는다.
+
+   글자는 vw(화면 너비)에 걸어 둔다. 큰 화면에 연결하면 그만큼 커져서
+   교실 맨 뒷자리에서도 읽힌다.
+   ────────────────────────────────────────────────────────────────── */
+.classroom.is-wide { font-size: clamp(20px, 1.9vw, 40px); }
+
+.classroom.is-wide .classroom-body {
+  flex-direction: row; align-items: flex-start;
+  gap: clamp(20px, 2.5vw, 44px);
+}
+/* 왼쪽(자료·발문)이 조금 더 넓다. 지문은 길고 선택지는 짧다. */
+.classroom.is-wide .classroom-main { flex: 1.15 1 0; min-width: 0; }
+.classroom.is-wide .classroom-side { flex: 1 1 0; min-width: 0; }
+
+/* 각 단이 따로 스크롤된다. 지문이 길어도 선택지는 늘 제자리에 있다. */
+.classroom.is-wide .classroom-main,
+.classroom.is-wide .classroom-side {
+  max-height: 100%; overflow-y: auto;
+  display: flex; flex-direction: column; gap: clamp(12px, 1.4vw, 24px);
+}
+.classroom.is-wide .classroom-body { overflow: hidden; }
+
+/* 선택지가 4개일 때만 2×2 로 편다. 5개(멀티체크형)는 세로로 둔다 —
+   2+2+1 로 떨어지면 마지막 하나가 튀어 보여서 답을 짐작하게 된다. */
+.classroom.is-wide .classroom-choices { grid-template-columns: 1fr; }
+.classroom.is-wide .classroom-choices:has(> li:nth-child(4):last-child) {
+  grid-template-columns: 1fr 1fr;
+}
+
+/* 세로에서는 두 단이 그냥 위아래로 이어진다(기본 flex-direction: column). */
+.classroom-main, .classroom-side {
+  display: flex; flex-direction: column; gap: clamp(12px, 1.6vw, 28px);
+}
+
+.classroom-timer {
+  font-size: 0.7em; font-weight: 700; color: #fbbf24;
+  background: #422006; border-radius: 8px; padding: 6px 14px; min-width: 3.5em;
+  text-align: center;
+}
+.classroom-picked {
+  font-size: 0.85em; font-weight: 700; color: #0f172a;
+  background: #fbbf24; border-radius: 12px;
+  padding: clamp(10px, 1.2vw, 18px); text-align: center;
+}
+.classroom-oneline {
+  font-size: 0.95em; font-weight: 700; line-height: 1.5; margin: 0;
+  color: #fde68a; border-left: 6px solid #f59e0b;
+  padding: clamp(12px, 1.4vw, 22px); background: #1e293b; border-radius: 10px;
+}
+/* 교사 참고는 학생에게 보여 줄 것이 아니다 — 화면 맨 아래에 작게 둔다. */
+.classroom-note {
+  flex: 0 0 auto; background: #1e293b; color: #94a3b8;
+  font-size: 0.5em; padding: 10px 20px; border-top: 1px solid #334155;
+}
+/* ── 교사 앱의 배치 — 교사가 고른 대로 ────────────────────────────
+   창 폭(@media)만 보고 정하지 않는다. 태블릿을 세로로 든 채 HDMI 로
+   프로젝터에 물린 교사는 기기가 세로여도 나가는 화면이 가로다. 반대로
+   PC 창을 반만 열어 둔 교사는 창이 가로여도 좁다. 그래서 교사가 고르고,
+   CSS 는 그 표시(data-teacher-view)를 본다.
+   ────────────────────────────────────────────────────────────────── */
+.view-switch { display: flex; border: 1px solid var(--border, #cbd5e1); border-radius: 8px; overflow: hidden; }
+.view-switch button {
+  background: transparent; border: 0; cursor: pointer;
+  padding: 5px 10px; font-size: 12px; color: var(--text-muted, #64748b);
+  white-space: nowrap;
+}
+.view-switch button.is-on { background: var(--primary, #4f46e5); color: #fff; font-weight: 700; }
+
+/* 수업 스튜디오 준비 화면. 기존 screen-header/classroom-entry는 마크업만 있고
+   실제 스타일이 없어 브라우저 기본 H1·select·button으로 노출되고 있었다. */
+.screen-header {
+  min-height: 78px; display: flex; align-items: center; gap: 12px;
+  padding: 14px clamp(16px, 3vw, 34px); border-bottom: 1px solid var(--border);
+  background: var(--card); flex: 0 0 auto;
+}
+.screen-header > h1, .screen-header-copy h1 {
+  min-width: 0; margin: 0; font-size: clamp(18px, 2vw, 25px); line-height: 1.25;
+  letter-spacing: 0; overflow-wrap: anywhere;
+}
+.screen-header-copy { min-width: 0; display: grid; gap: 2px; }
+.screen-header-copy > span { color: #1769f6; font-size: 9px; font-weight: 900; letter-spacing: .08em; }
+.icon-btn {
+  width: 42px; height: 42px; flex: 0 0 auto; display: grid; place-items: center;
+  border: 1px solid var(--border); border-radius: 8px; background: var(--card);
+  color: var(--text); cursor: pointer;
+}
+.icon-btn svg { width: 20px; height: 20px; }
+.classroom-project-button {
+  min-height: 42px; display: inline-flex; align-items: center; gap: 7px;
+  padding: 0 14px; border: 0; border-radius: 8px; background: #1769f6;
+  color: #fff; font-size: 12px; font-weight: 800; cursor: pointer; white-space: nowrap;
+}
+.classroom-project-button svg { width: 18px; height: 18px; }
+.classroom-intro {
+  display: grid; gap: 4px; margin: 16px clamp(16px, 3vw, 34px) 14px;
+  padding: 14px 16px; border-left: 4px solid #16a085; background: #edf9f6;
+  color: #28465a;
+}
+.classroom-intro b { font-size: 14px; }
+.classroom-intro span { font-size: 12px; line-height: 1.6; }
+.classroom-pick { padding: 0 clamp(16px, 3vw, 34px) 28px; display: grid; gap: 10px; }
+.classroom-pick.is-wide { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.classroom-entry {
+  width: 100%; min-height: 72px; display: flex; align-items: center; gap: 12px;
+  margin: 0; padding: 14px 16px; border: 1px solid var(--border); border-radius: 8px;
+  background: var(--card); color: var(--text); text-align: left; cursor: pointer;
+}
+.classroom-entry:hover:not(:disabled) { border-color: #9fc0ff; background: #f6f9ff; }
+.classroom-entry:disabled { opacity: .46; cursor: default; }
+.classroom-entry b { display: block; margin-bottom: 3px; font-size: 14px; }
+.screen-header + .classroom-pick, .screen-header ~ .classroom-pick { padding-top: 16px; }
+.screen select {
+  min-height: 42px; padding: 0 36px 0 12px; border: 1px solid var(--border);
+  border-radius: 7px; background: var(--card); color: var(--text); font: inherit;
+}
+.mission-source-note {
+  margin: 0 0 10px; padding: 10px 12px; border-left: 3px solid #16a085;
+  background: #edf9f6; color: #276556; font-size: 12px; line-height: 1.6;
+}
+.mission-area-desc { color: var(--text-muted); font-size: 11px; }
+.classroom-talk-question ol { display: grid; gap: 6px; margin: 10px 0 0; padding-left: 24px; }
+
+@media (max-width: 720px) {
+  .view-switch button { padding-inline: 8px; }
+  .view-switch button svg { width: 16px; }
+  .classroom-pick.is-wide { grid-template-columns: 1fr; }
+  .screen-header { min-height: 66px; padding: 10px 12px; }
+  .classroom-project-button { padding-inline: 10px; }
+}
+
+/* 세로를 고르면 학생 앱과 같은 한 칸으로 되돌린다. */
+html.teacher-mode[data-teacher-view='tall'] .teacher-grid { display: block; }
+
+/* ── 가로 ──────────────────────────────────────────────────────── */
+html.teacher-mode[data-teacher-view='wide'] .screen > .appbar,
+html.teacher-mode[data-teacher-view='wide'] .screen > .screen-header {
+  padding-inline: clamp(20px, 4vw, 64px);
+}
+html.teacher-mode[data-teacher-view='wide'] .screen-body {
+  padding-inline: clamp(20px, 4vw, 64px);
+}
+
+/* 넓어진 폭은 **줄을 늘리는 데가 아니라 칸을 나누는 데** 쓴다. 카드 하나가
+   1920px 로 늘어나면 오히려 못 읽는다. 한 칸을 320~460px 로 묶어 두면
+   화면이 넓어질수록 칸 수가 늘고 각 카드는 읽기 좋은 폭을 지킨다. */
+html.teacher-mode[data-teacher-view='wide'] .teacher-grid {
+  display: grid; gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  align-items: start;
+}
+/* 그리드 칸에서는 카드가 스스로 아래 여백을 만들지 않는다 — gap 이 맡는다. */
+html.teacher-mode[data-teacher-view='wide'] .teacher-grid > .card { margin-bottom: 0 !important; }
+
+/* 줄이 긴 표(성적·명단)는 칸을 나누지 않는다 — 가로로 길어야 읽힌다. */
+html.teacher-mode[data-teacher-view='wide'] .teacher-wide { max-width: 1400px; }
+
+/* 하단 탭이 1920px 양끝으로 흩어지면 누르러 손이 멀리 간다. 가운데로 모은다. */
+html.teacher-mode[data-teacher-view='wide'] .bottom-tab {
+  justify-content: center; gap: clamp(24px, 6vw, 96px);
+}
+html.teacher-mode[data-teacher-view='wide'] .bottom-tab > * { flex: 0 0 auto; min-width: 92px; }
+
+/* ── 교사 작업대 (가로) ────────────────────────────────────────────
+   왼쪽 메뉴는 늘 있고, 오른쪽만 바뀐다. 카드 목록을 세 칸으로 쪼개는 것과
+   달리 **지금 어디에 있는지가 사라지지 않는다.**
+   ────────────────────────────────────────────────────────────────── */
+.tw {
+  flex: 1 1 auto; min-height: 0;
+  display: grid; grid-template-columns: clamp(210px, 19vw, 280px) 1fr;
+  background: var(--bg);
+}
+/* 안전장치 — 폭이 모자라면 두 칸을 포기하고 위아래로 쌓는다.
+   실제로는 가로를 골랐을 때만 그리지만, 어떤 경로로든 좁은 폭에서 그려지면
+   왼쪽 240px 을 뺀 나머지에 제목이 「3 학 년 1 반」처럼 세로로 쪼개진다. */
+@media (max-width: 720px) {
+  .tw { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+  .tw-rail {
+    border-right: 0; border-bottom: 1px solid var(--border, #e2e8f0);
+    flex-direction: row; flex-wrap: wrap; align-items: center; gap: 6px;
+  }
+  .tw-rail .tw-me, .tw-rail .tw-label { display: none; }
+  .tw-menu, .tw-actions, .tw-classes { flex-direction: row; flex-wrap: wrap; }
+  .tw-menu button, .tw-classes button, .tw-go, .tw-sub { width: auto; }
+}
+
+/* ── 왼쪽 ─────────────────────────────────────────────────────── */
+.tw-rail {
+  display: flex; flex-direction: column; min-height: 0;
+  background: var(--surface, #fff);
+  border-right: 1px solid var(--border, #e2e8f0);
+  padding: 12px 10px calc(12px + var(--safe-bottom, 0px));
+  gap: 10px; overflow-y: auto;
+}
+.tw-me { display: flex; align-items: center; gap: 8px; padding: 4px 6px 10px; }
+.tw-me-icon { font-size: 20px; }
+.tw-me-name { font-weight: 800; font-size: 14px; }
+
+.tw-menu { display: flex; flex-direction: column; gap: 2px; }
+.tw-menu button, .tw-classes button {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  background: transparent; border: 0; cursor: pointer;
+  padding: 10px 10px; border-radius: 10px; text-align: left;
+  color: var(--text, #0f172a); font-size: 14px;
+  min-height: 44px;                     /* 손가락으로 눌리는 크기 */
+  -webkit-tap-highlight-color: transparent;
+}
+.tw-menu button:active, .tw-classes button:active { background: var(--bg-soft, #f1f5f9); }
+.tw-menu button.is-on, .tw-classes button.is-on {
+  background: var(--primary, #4f46e5); color: #fff; font-weight: 700;
+}
+.tw-menu .ic { font-size: 16px; }
+.tw-menu .tx { flex: 1; }
+.tw-menu .bg {
+  background: var(--danger, #dc2626); color: #fff; border-radius: 999px;
+  padding: 1px 7px; font-size: 11px; font-weight: 800;
+}
+
+.tw-actions { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; }
+.tw-go, .tw-sub {
+  border: 0; border-radius: 10px; cursor: pointer; min-height: 44px;
+  font-size: 13.5px; text-align: left; padding: 0 12px;
+  -webkit-tap-highlight-color: transparent;
+}
+.tw-go  { background: var(--primary, #4f46e5); color: #fff; font-weight: 800; }
+.tw-sub { background: var(--bg-soft, #f1f5f9); color: var(--text, #0f172a); }
+.tw-go:active, .tw-sub:active { filter: brightness(0.94); }
+
+.tw-label {
+  margin: 8px 6px 2px; font-size: 11.5px; font-weight: 800;
+  color: var(--text-muted, #64748b); letter-spacing: 0.06em;
+}
+.tw-classes { display: flex; flex-direction: column; gap: 2px; }
+.tw-classes .nm { flex: 1; font-weight: 600; }
+.tw-classes .cd {
+  font-size: 11px; letter-spacing: 1px; opacity: 0.7; font-variant-numeric: tabular-nums;
+}
+.tw-empty { color: var(--text-muted, #64748b); font-size: 13px; padding: 6px; }
+
+/* ── 오른쪽 ───────────────────────────────────────────────────── */
+.tw-main { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+.tw-blank {
+  flex: 1; display: grid; place-items: center; color: var(--text-muted, #64748b);
+}
+.tw-head {
+  flex: 0 0 auto; display: flex; align-items: baseline; gap: 12px;
+  padding: 14px clamp(16px, 2vw, 28px) 10px;
+}
+.tw-head h1 { font-size: 20px; font-weight: 800; margin: 0; }
+.tw-code { font-size: 12px; color: var(--text-muted, #64748b); }
+.tw-code b { color: var(--primary, #4f46e5); letter-spacing: 1px; }
+.tw-hbtn { min-height: 40px; font-size: 13px; }
+
+/* 숫자가 먼저다 — 교사가 학급을 열어 보는 이유가 이것이다. */
+.tw-stats {
+  flex: 0 0 auto; display: flex; flex-wrap: wrap; gap: 10px;
+  padding: 0 clamp(16px, 2vw, 28px) 12px;
+}
+.tw-stat {
+  background: var(--surface, #fff); border: 1px solid var(--border, #e2e8f0);
+  border-radius: 12px; padding: 10px 16px; min-width: 108px;
+}
+.tw-stat b { display: block; font-size: 22px; font-weight: 800; line-height: 1.15; }
+.tw-stat span { font-size: 11.5px; color: var(--text-muted, #64748b); }
+/* 손볼 것이 있는 숫자만 색이 붙는다. 전부 색칠하면 아무것도 안 띈다. */
+.tw-stat.is-warn { border-color: #f59e0b; background: #fffbeb; }
+.tw-stat.is-warn b { color: #b45309; }
+
+.tw-tabs {
+  flex: 0 0 auto; display: flex; gap: 4px; overflow-x: auto;
+  padding: 0 clamp(16px, 2vw, 28px);
+  border-bottom: 1px solid var(--border, #e2e8f0);
+}
+.tw-tabs button {
+  background: transparent; border: 0; cursor: pointer; white-space: nowrap;
+  padding: 10px 14px; min-height: 44px; font-size: 13.5px;
+  color: var(--text-muted, #64748b);
+  border-bottom: 3px solid transparent; margin-bottom: -1px;
+  -webkit-tap-highlight-color: transparent;
+}
+.tw-tabs button.is-on {
+  color: var(--primary, #4f46e5); font-weight: 800;
+  border-bottom-color: var(--primary, #4f46e5);
+}
+.tw-tabs button:not(.is-on):active { background: var(--bg-soft, #f1f5f9); }
+
+/* 안에 들어가는 화면은 스스로 스크롤한다. 왼쪽 메뉴는 따라 움직이지 않는다. */
+.tw-pane { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
+.tw-pane .screen { height: auto; min-height: 100%; }
+/* 안에 들어간 화면은 자기 제목줄을 접는다 — 학급 이름이 이미 위에 있고,
+   왼쪽 메뉴가 늘 있으니 뒤로 갈 곳도 사라지지 않는다. 화면마다 쓰는
+   이름이 달라(.appbar / .screen-header) 둘 다 잡는다. */
+.tw-pane .screen > .appbar,
+.tw-pane .screen > .screen-header { display: none; }
+/* 제목줄을 접으면 위가 붙어 보인다. 대신 여백을 준다. */
+.tw-pane .screen > .screen-body { padding-top: 12px; }
+
+.tw-missions { list-style: none; margin: 0; padding: 12px clamp(16px, 2vw, 28px); }
+.tw-missions li {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border-radius: 10px; margin-bottom: 6px;
+  background: var(--surface, #fff); border: 1px solid var(--border, #e2e8f0);
+}
+.tw-missions .ti { flex: 1; font-weight: 600; }
+.tw-missions .ty { font-size: 12px; color: var(--text-muted, #64748b); }
+.tw-missions .st {
+  font-size: 11px; font-weight: 800; border-radius: 999px; padding: 2px 9px;
+  background: var(--bg-soft, #f1f5f9); color: var(--text-muted, #64748b);
+}
+.tw-missions .st.is-active { background: #dcfce7; color: #15803d; }
+
+@media (prefers-color-scheme: dark) {
+  .tw-stat.is-warn { background: #422006; }
+  .tw-stat.is-warn b { color: #fbbf24; }
+}
+
+/* ── 수업 덱 투사 ──────────────────────────────────────────────────
+   교실 화면은 16:9 다. 세로용 상자를 옆으로 늘리면 아래 60%가 빈 채로
+   남는다. 그래서 두 가지를 바꾼다.
+
+   ① 글자를 **너비와 높이 둘 다** 보고 정한다. vw 만 보면 낮고 넓은
+      화면에서 글자만 커지고 내용이 잘린다. min(vw, vh) 로 묶는다.
+   ② 조각마다 배치를 다르게 준다. 표지·인용·암기는 화면 한가운데 크게,
+      설명은 읽기 좋은 폭으로, 발문·문항은 좌우로 나눈다.
+   ────────────────────────────────────────────────────────────────── */
+.classroom.is-deck { font-size: clamp(18px, min(1.7vw, 3.1vh), 44px); }
+.classroom.is-deck .classroom-body {
+  display: block; padding: 0; overflow: hidden; gap: 0;
+}
+
+/* 한 장(stage)이 본문 영역을 통째로 차지하고, 내용은 세로 가운데에 선다. */
+.deck-stage {
+  height: 100%; width: 100%; overflow-y: auto;
+  display: flex; flex-direction: column; justify-content: center;
+  gap: calc(clamp(10px, 1.4vh, 24px) * var(--fit, 1));
+  padding: clamp(16px, 2.4vh, 40px) clamp(20px, 4vw, 80px);
+  /* 분량에 맞춰 글자를 키운다(useAutoFit). 짧은 장은 크게, 긴 장은 작게 —
+     어느 장을 넘겨도 화면이 차고, 교실 뒤에서 읽을 수 있는 가장 큰 글씨가 된다. */
+  font-size: calc(1em * var(--fit, 1));
+}
+/* 내용이 화면보다 길면 가운데 정렬을 포기하고 위에서부터 흘린다.
+   (가운데 정렬 상태로 넘치면 위쪽이 잘려 읽을 수 없다.) */
+.deck-stage { justify-content: safe center; }
+
+.deck-stage h3 { font-size: 0.92em; margin: 0 0 0.5em; font-weight: 800; color: #e2e8f0; }
+.deck-stage ul, .deck-stage ol { margin: 0; padding-left: 1.3em; line-height: 1.65; }
+.deck-stage li { margin-bottom: 0.42em; }
+.deck-stage b, .deck-stage strong { color: #fde68a; }
+.deck-stage p { margin: 0 0 0.55em; line-height: 1.65; }
+
+/* ── 설명 계열 — 읽기 좋은 폭으로 가운데 ────────────────────────── */
+.deck-block {
+  background: #1e293b; border-radius: 14px;
+  padding: clamp(16px, 2vh, 32px) clamp(18px, 2vw, 36px);
+  font-size: 0.66em; line-height: 1.7;
+  /* 글줄이 너무 길면 눈이 다음 줄을 못 찾는다. 38em(대략 한 줄 38자)이
+     읽기 좋은 폭이고, 좁을수록 줄이 늘어 화면 높이도 함께 찬다. */
+  width: 100%; max-width: 38em; margin-inline: auto;
+}
+.deck-goals { list-style: none; padding: 0; }
+.deck-goals li { padding-left: 1.4em; position: relative; }
+.deck-goals li::before { content: '▸'; position: absolute; left: 0; color: #818cf8; }
+.deck-why { color: #cbd5e1; margin-top: 0.7em; }
+
+/* ── 표지 — 화면 전체를 쓰는 한 장 ──────────────────────────────── */
+.deck-stage[data-kind='title'] { text-align: center; align-items: center; }
+.deck-title { max-width: 24em; }
+.deck-unit { color: #94a3b8; font-size: 0.5em; margin: 0 0 1em; letter-spacing: 0.08em; }
+.deck-title h2 { font-size: 1.7em; line-height: 1.3; margin: 0 0 0.5em; font-weight: 800; }
+.deck-step { color: #818cf8; font-size: 0.5em; margin: 0 0 1.2em; }
+.deck-stage[data-kind='title'] .deck-goals { display: inline-block; text-align: left; font-size: 0.6em; }
+
+/* ── 인용 — 큰 글씨 한가운데 ────────────────────────────────────── */
+.deck-stage[data-kind='quote'] { text-align: center; align-items: center; }
+.deck-quote { max-width: 22em; border: 0; background: none; padding: 0; }
+.deck-quote blockquote {
+  margin: 0; font-size: 1.25em; font-weight: 700; line-height: 1.45; color: #fde68a;
+}
+.deck-quote blockquote::before { content: '“'; opacity: 0.5; }
+.deck-quote blockquote::after  { content: '”'; opacity: 0.5; }
+.deck-quote cite {
+  display: block; margin-top: 0.9em; color: #94a3b8; font-size: 0.5em; font-style: normal;
+}
+.deck-link {
+  margin: 1.4em auto 0; color: #cbd5e1; font-size: 0.52em; max-width: 26em;
+  border-top: 1px solid #334155; padding-top: 1em;
+}
+
+/* ── 발문·문항 — 가로에서는 좌우로 나눈다 ──────────────────────── */
+.deck-ask, .deck-quiz { display: flex; flex-direction: column; gap: clamp(12px, 1.6vh, 26px); }
+.classroom.is-wide .deck-ask,
+.classroom.is-wide .deck-quiz {
+  flex-direction: row; align-items: stretch; gap: clamp(18px, 2.4vw, 44px);
+}
+.classroom.is-wide .deck-q { flex: 1 1 0; min-width: 0; }
+.classroom.is-wide .deck-a { flex: 1 1 0; min-width: 0; overflow-y: auto; }
+.deck-q, .deck-a { display: flex; flex-direction: column; justify-content: center; gap: 0.7em; }
+
+.deck-tag {
+  align-self: flex-start; background: #4338ca; color: #e0e7ff;
+  border-radius: 999px; padding: 0.25em 0.9em; font-size: 0.44em;
+  font-weight: 800; letter-spacing: 0.06em;
+}
+.deck-ask-q { font-size: 0.95em !important; line-height: 1.45; color: #e0e7ff; margin: 0; }
+.deck-think { color: #a5b4fc; font-size: 0.5em; margin: 0; }
+
+.deck-answer {
+  background: #14532d; border-left: 5px solid #22c55e; border-radius: 12px;
+  padding: clamp(12px, 1.6vh, 22px); font-size: 0.62em; line-height: 1.65;
+}
+.deck-trap {
+  background: #450a0a; border-left: 5px solid #ef4444; border-radius: 12px;
+  padding: clamp(12px, 1.6vh, 22px); font-size: 0.62em; line-height: 1.65;
+}
+.deck-answer b, .deck-trap b { display: block; margin-bottom: 0.4em; color: inherit; opacity: 0.8; }
+
+/* 가려진 자리를 비워 두지 않는다 — 교사가 「자료가 없나」 하고 헤매지 않게. */
+.deck-hidden {
+  color: #64748b; font-size: 0.5em; margin: 0; text-align: center; line-height: 2;
+  border: 2px dashed #334155; border-radius: 14px;
+  padding: clamp(18px, 3vh, 40px) 1em;
+}
+.deck-hidden kbd {
+  background: #1e293b; border: 1px solid #475569; border-radius: 6px;
+  padding: 0.15em 0.7em; color: #94a3b8;
+}
+
+/* 문항 선택지 — 좌우로 나눴으니 한 줄에 하나씩이 읽기 좋다. */
+.classroom.is-wide .deck-a .classroom-choices { grid-template-columns: 1fr; }
+.deck-a .classroom-choices { font-size: 0.62em; }
+
+/* ── 판서 — 칠판에 적어 줄 것. 화면 한가운데 크게. ─────────────── */
+.deck-stage[data-kind='board'] { align-items: center; }
+.deck-board {
+  background: #052e16; border: 3px solid #22c55e; border-radius: 16px;
+  padding: clamp(18px, 2.6vh, 40px) clamp(20px, 2.6vw, 48px);
+  font-size: 0.72em; line-height: 2; max-width: 30em;
+}
+
+/* ── 암기 — 한 줄을 크게 ────────────────────────────────────────── */
+.deck-stage[data-kind='memorize'] { align-items: center; text-align: center; }
+.deck-memo {
+  background: #422006; border: 3px solid #f59e0b; border-radius: 16px;
+  padding: clamp(18px, 2.6vh, 40px) clamp(20px, 2.6vw, 48px);
+  font-size: 0.62em; max-width: 30em;
+}
+.deck-keyline {
+  font-size: 1.5em; font-weight: 800; color: #fde68a;
+  margin: 0 0 0.7em; letter-spacing: 0.02em; line-height: 1.35;
+}
+.deck-memo ul { display: inline-block; text-align: left; }
+
+/* ── 시험 팁 · 시나리오 ─────────────────────────────────────────── */
+.deck-tip { border-left: 5px solid #f59e0b; }
+.deck-example {
+  margin-top: 1em; background: #0f172a; border-radius: 12px;
+  padding: clamp(12px, 1.6vh, 22px);
+}
+.deck-example-stem { font-weight: 700; margin-bottom: 0.5em; }
+.deck-doc {
+  background: #0f172a; border: 1px solid #334155; border-radius: 12px;
+  padding: clamp(12px, 1.6vh, 22px); font-size: 0.95em; line-height: 1.65;
+  overflow: auto; max-height: 46vh;
+}
+.deck-doc-title { color: #94a3b8; font-size: 0.9em; margin-bottom: 0.5em; }
+.deck-stage[data-kind='scenario'] .deck-block { max-width: 54em; }
+
+/* 지목한 학생 이름은 본문 위에 겹쳐 띄운다 — 장 배치를 밀지 않는다. */
+.deck-picked {
+  position: absolute; left: 50%; bottom: clamp(12px, 2vh, 28px);
+  transform: translateX(-50%); z-index: 5;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+}
+.classroom.is-deck .classroom-body { position: relative; }
+
+/* ── 앱답게 ────────────────────────────────────────────────────────
+   버튼만 있으면 웹 페이지다. 앱에서 장을 넘기는 방법은 미는 것이고,
+   발표 앱에서는 화면 가장자리를 툭 치는 것이다. 교사는 태블릿을 들고
+   교실을 도는 사람이라 아래쪽 작은 버튼을 겨누게 하면 안 된다.
+   ────────────────────────────────────────────────────────────────── */
+.deck-tap {
+  position: absolute; top: 0; bottom: 0; width: 16%;
+  min-width: 56px;            /* 손가락이 닿는 최소 폭 */
+  border: 0; background: transparent; cursor: pointer; z-index: 3;
+  -webkit-tap-highlight-color: transparent;
+}
+.deck-tap.is-prev { left: 0; }
+.deck-tap.is-next { right: 0; }
+.deck-tap:disabled { cursor: default; }
+/* 눌리는 순간에만 살짝 밝아진다 — 앱의 터치 피드백. hover 는 쓰지 않는다
+   (손가락에는 hover 가 없고, 마우스에서만 반응하면 기기마다 달라진다). */
+.deck-tap:not(:disabled):active {
+  background: linear-gradient(to right, rgba(148,163,184,0.16), transparent);
+}
+.deck-tap.is-next:not(:disabled):active {
+  background: linear-gradient(to left, rgba(148,163,184,0.16), transparent);
+}
+
+/* 장이 바뀔 때 툭 끊기지 않게. 아주 짧아야 수업 흐름을 방해하지 않는다. */
+@keyframes deckIn {
+  from { opacity: 0; transform: translateY(8px) scale(0.995); }
+  to   { opacity: 1; transform: none; }
+}
+.deck-stage { animation: deckIn 180ms cubic-bezier(0.22, 0.61, 0.36, 1); }
+@media (prefers-reduced-motion: reduce) { .deck-stage { animation: none; } }
+
+/* ── 문항 투사도 화면을 채운다 ─────────────────────────────────────
+   덱에는 자동 맞춤을 넣었는데 문항 화면에는 안 넣어, 지문이 짧으면 화면
+   아래 60%가 빈 채로 남고 글씨는 교실 뒤에서 안 읽혔다. 같은 처리를 한다.
+   ────────────────────────────────────────────────────────────────── */
+.classroom.is-quiz .classroom-body { display: block; padding: 0; overflow: hidden; gap: 0; }
+
+.quiz-stage {
+  height: 100%; width: 100%; overflow-y: auto;
+  display: flex; flex-direction: column; justify-content: safe center;
+  gap: calc(clamp(12px, 1.6vh, 26px) * var(--fit, 1));
+  padding: clamp(16px, 2.4vh, 40px) clamp(20px, 4vw, 72px);
+  font-size: calc(1em * var(--fit, 1));
+}
+/* 가로에서는 왼쪽 자료·발문 / 오른쪽 선택지. 세로에서는 위아래. */
+.classroom.is-wide .quiz-stage {
+  flex-direction: row; align-items: stretch;
+  gap: calc(clamp(18px, 2.4vw, 44px) * var(--fit, 1));
+}
+.classroom.is-wide .quiz-stage > .classroom-main { flex: 1.1 1 0; min-width: 0; }
+.classroom.is-wide .quiz-stage > .classroom-side { flex: 1 1 0; min-width: 0; }
+/* ★ 안쪽 상자에 overflow 를 주면 안 된다.
+   그러면 넘치는 내용을 안쪽이 삼켜 버려 바깥(quiz-stage)의 scrollHeight 가
+   늘지 않는다. 자동 맞춤은 그걸 보고 「다 들어갔다」고 판단해 글자를 상한까지
+   키우고, 실제로는 내용의 7분의 1만 보이게 된다(실측: 4060px 중 549px).
+   넘침은 바깥 하나만 재고, 나머지는 그 판단을 따른다. */
+.quiz-stage > .classroom-main,
+.quiz-stage > .classroom-side {
+  display: flex; flex-direction: column; justify-content: safe center;
+  gap: calc(clamp(10px, 1.4vh, 22px) * var(--fit, 1));
+  min-height: 0; min-width: 0;
+  /* 덱용으로 만든 `.classroom.is-wide .classroom-main { overflow-y: auto }`
+     가 여기까지 걸린다. 그대로 두면 안쪽이 넘침을 삼켜 자동 맞춤이 속는다.
+     명시적으로 끈다 — 넘침은 quiz-stage 하나만 잰다. */
+  overflow: visible !important;
+  max-height: none !important;
+}
+
+/* 지문·발문·선택지를 교실 뒤에서 읽히는 크기로. 자동 맞춤이 여기에 곱해진다. */
+.classroom.is-quiz .classroom-context { font-size: 0.62em; }
+.classroom.is-quiz .classroom-stem    { font-size: 0.92em; }
+.classroom.is-quiz .classroom-choices { font-size: 0.66em; }
+/* 선택지가 4개일 때만 2×2. 5개(멀티체크형)는 2+2+1 로 떨어져 마지막 하나가
+   튀어 보이고, 그걸로 답을 짐작하게 된다. */
+.classroom.is-wide.is-quiz .classroom-choices { grid-template-columns: 1fr; }
+.classroom.is-wide.is-quiz .classroom-choices:has(> li:nth-child(4):last-child) {
+  grid-template-columns: 1fr 1fr;
+}
+/* 듣기 상자는 학생 폰 크기로 만들어져 있다. 교실용으로 키운다. */
+.classroom.is-quiz .quiz-stage > .classroom-main > div:first-child { font-size: 0.6em; }
+
+/* 수업 모드 안에 학생 화면 부품을 그대로 넣는다. 그 부품들은 폰에서
+   손가락으로 쓰라고 만든 크기라, 교실 뒤에서 보이도록 키운다. */
+.classroom-embed { font-size: 0.6em; }
+.classroom-embed * { max-width: 100%; }
+.classroom-embed button { pointer-events: none; }   /* 읽기 전용 — 눌러도 안 바뀐다 */
+
+.classroom-model-answer {
+  background: #14532d; border-left: 5px solid #22c55e; border-radius: 12px;
+  padding: clamp(12px, 1.6vh, 24px); font-size: 0.62em; line-height: 1.7;
+}
+.classroom-model-answer b { display: block; margin-bottom: 0.4em; opacity: 0.8; }
+.classroom-model-answer p { margin: 0; white-space: pre-wrap; }
+.classroom-keyterms { margin-top: 0.8em !important; color: #86efac; font-size: 0.9em; }
+
+/* ── 진행 막대 — 34장 중 어디인지 한눈에, 눌러서 건너뛴다 ──────── */
+.deck-rail {
+  flex: 0 0 auto; display: flex; gap: 2px; padding: 0 clamp(12px, 2vw, 28px);
+  background: #1e293b; touch-action: manipulation;
+}
+/* 눈금은 6px 로 얇게 보이지만 **누르는 영역은 위아래로 넓다.** 6px 짜리
+   과녁을 손가락으로 맞히라고 할 수는 없다. 보이는 것과 닿는 것을 나눈다. */
+.deck-rail button {
+  flex: 1 1 0; min-width: 0; padding: 11px 0; border: 0; cursor: pointer;
+  background: transparent; -webkit-tap-highlight-color: transparent;
+  position: relative;
+}
+.deck-rail button::after {
+  content: ''; display: block; height: 6px; border-radius: 3px;
+  background: #334155; transition: background 0.12s, height 0.12s;
+}
+.deck-rail button.is-done::after { background: #4f46e5; }
+.deck-rail button.is-now::after  { background: #a5b4fc; height: 10px; }
+.deck-rail button:not(:disabled):active::after { background: #94a3b8; }
+@media (prefers-reduced-motion: reduce) { .deck-rail button::after { transition: none; } }
+
+/* 지금 어느 차시·꼭지인지. 학생이 맥락을 잃지 않게 늘 보인다. */
+.deck-crumb {
+  flex: 0 0 auto; padding: 6px clamp(12px, 2vw, 28px);
+  background: #1e293b; color: #94a3b8; font-size: 12.5px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.deck-crumb b { color: #e2e8f0; font-weight: 700; }
+
+/* 수업 중 학급 현황 — 도구줄 바로 아래에 얹는다. 투사 화면을 가리지 않게
+   높이를 제한하고, 길면 패널만 스크롤한다. */
+.classroom-live {
+  flex: 0 0 auto; background: #172033; border-bottom: 1px solid #334155;
+  padding: 12px 20px; max-height: 45vh; overflow-y: auto;
+  /* 투사 글자(0.6em)를 그대로 쓰면 폰에서 10.8px 이 나와 교사가 못 읽는다.
+     이 패널은 교실 뒤가 아니라 교사 손에서 읽히므로 따로 정한다. */
+  font-size: clamp(13px, 0.9vw + 10px, 19px);
+}
+/* ── 참여 상태 ─────────────────────────────────────────────────────
+   「지금 앱을 보고 있나」. 교사가 실습을 지시한 뒤 가장 먼저 보는 줄이라
+   패널 맨 위에 두고, 색으로 한눈에 갈리게 한다. */
+.classroom-presence {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+  padding: 10px 12px; margin-bottom: 10px;
+  background: #0f172a; border: 1px solid #334155; border-radius: 10px;
+}
+.classroom-presence-stats { display: flex; flex-wrap: wrap; gap: 16px; }
+.classroom-presence-stats b { font-size: 1.3em; margin-left: 4px; }
+.classroom-presence-stats .ok   { color: #86efac; }
+.classroom-presence-stats .away { color: #fbbf24; }
+.classroom-presence-stats .lost { color: #fca5a5; }
+.classroom-presence-stats .off  { color: #94a3b8; }
+.classroom-btn.is-go   { background: #15803d; }
+.classroom-btn.is-stop { background: #7f1d1d; }
+
+.classroom-presence-list {
+  list-style: none; margin: 0 0 10px; padding: 0; display: grid; gap: 4px;
+}
+.classroom-presence-list li {
+  display: flex; gap: 10px; align-items: baseline;
+  padding: 6px 10px; border-radius: 8px; background: #1e293b;
+  border-left: 4px solid transparent;
+}
+.classroom-presence-list .nm { flex: 0 0 6em; font-weight: 700; }
+.classroom-presence-list .st { font-weight: 700; }
+.classroom-presence-list .ct { color: #94a3b8; font-size: 0.9em; }
+/* 색만으로 구분하지 않는다 — 왼쪽 띠 두께와 글자로도 갈린다. */
+.classroom-presence-list li.ok   { border-left-color: #22c55e; }
+.classroom-presence-list li.ok   .st { color: #86efac; }
+.classroom-presence-list li.away { border-left-color: #f59e0b; background: #422006; }
+.classroom-presence-list li.away .st { color: #fbbf24; }
+.classroom-presence-list li.lost { border-left-color: #ef4444; background: #450a0a; }
+.classroom-presence-list li.lost .st { color: #fca5a5; }
+.classroom-presence-list li.off  { border-left-color: #475569; }
+.classroom-presence-list li.off  .st { color: #94a3b8; }
+.classroom.is-wide .classroom-presence-list { grid-template-columns: 1fr 1fr; }
+
+/* 지문을 접었을 때 남기는 한 줄. 자리를 비워 두면 교사가 「자료가 없나」
+   하고 헤매므로, 접었다는 사실을 분명히 알린다. */
+.classroom-context-folded {
+  background: #1e293b; border-left: 5px dashed #64748b; border-radius: 10px;
+  padding: 0.7em 1em; color: #94a3b8; font-size: 0.5em; margin: 0;
+}
+
+/* ── 「학생 앱에서 여기」 주소줄 ─────────────────────────────────────
+   교실 뒷자리에서 투사 글씨가 안 보이는 문제는 글자를 키우는 것만으로는
+   끝까지 못 푼다. 지문이 긴 문항은 아무리 키워도 부족하다.
+
+   그런데 학생은 **자기 손에 같은 앱**을 들고 있다. 「지금 어디」만 알려
+   주면 읽는 것은 각자 기기에서 한다. 그래서 이 줄이 늘 보인다. */
+.classroom-address {
+  flex: 0 0 auto; display: flex; align-items: center; gap: 8px;
+  padding: 8px clamp(12px, 2vw, 28px);
+  background: #1e1b4b; border-bottom: 1px solid #4338ca;
+  font-size: 13px; color: #c7d2fe;
+}
+.classroom-address .ic { font-size: 14px; }
+.classroom-address .tx { flex: 1; min-width: 0; }
+.classroom-address b { color: #fff; font-weight: 800; }
+.classroom-address .sync {
+  flex: 0 0 auto; font-size: 11.5px; color: #a5b4fc;
+  border: 1px solid #4338ca; border-radius: 999px; padding: 2px 10px;
+}
+
+/* 학생 띠의 따라가기 */
+.class-session-bar .cs-txt { flex: 1; min-width: 0; }
+.class-session-bar .cs-follow {
+  flex: 0 0 auto; border: 0; border-radius: 999px; cursor: pointer;
+  background: #f0fdf4; color: #15803d; font-weight: 800; font-size: 12px;
+  padding: 5px 12px; min-height: 32px; -webkit-tap-highlight-color: transparent;
+}
+.class-session-bar .cs-follow:active { background: #bbf7d0; }
+
+/* 학생 화면의 수업 중 띠 — 모르게 보지 않는다는 약속을 화면으로 지킨다. */
+.class-session-bar {
+  flex: 0 0 auto; display: flex; align-items: center; gap: 8px;
+  padding: 7px 14px; background: #15803d; color: #f0fdf4;
+  font-size: 12.5px; font-weight: 600;
+}
+.class-session-bar .dot {
+  width: 8px; height: 8px; border-radius: 50%; background: #bbf7d0;
+  animation: sessionPulse 2s ease-in-out infinite;
+}
+@keyframes sessionPulse { 0%, 100% { opacity: 1 } 50% { opacity: 0.3 } }
+@media (prefers-reduced-motion: reduce) {
+  .class-session-bar .dot { animation: none; }
+}
+
+.classroom-live-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.classroom-live-head b { font-size: 1.1em; }
+.classroom-live-stats {
+  display: flex; flex-wrap: wrap; gap: 18px; align-items: baseline;
+  font-size: 1.05em; color: #cbd5e1;
+}
+.classroom-live-stats b { color: #f8fafc; font-size: 1.35em; }
+.classroom-live-stats .is-warn { color: #fbbf24; }
+.classroom-live-stats .is-warn b { color: #fbbf24; }
+.classroom-live-note { margin: 10px 0 0; color: #94a3b8; }
+.classroom-live-list { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 5px; }
+.classroom-live-list li {
+  display: flex; gap: 12px; align-items: baseline;
+  padding: 7px 10px; background: #1e293b; border-radius: 8px;
+}
+.classroom-live-list li.is-idle { background: #422006; }
+.classroom-live-list .nm { flex: 0 0 6em; font-weight: 700; }
+.classroom-live-list .n  { color: #cbd5e1; }
+.classroom-live-list .w  { color: #fca5a5; }
+.classroom-live-list .o  { color: #94a3b8; }
+.classroom-live-list .i  { color: #fbbf24; font-weight: 700; }
+/* 가로에서는 명단을 2단으로 — 30명이 한눈에 들어온다. */
+.classroom.is-wide .classroom-live-list { grid-template-columns: 1fr 1fr; }
+
+.classroom-hint {
+  margin: 0; padding: 10px 20px; background: #422006; color: #fde68a;
+  font-size: 13px;
+}
+
+/* 고르는 화면들도 가로에서 2단으로 펼친다. 수업을 시작할 때부터 끝낼
+   때까지 기기를 세로로 되돌릴 일이 없어야 한다. */
+
+/* 이름줄과 XP 를 한 덩어리로 묶은 홈 상단. 두 칸이 한 칸이 되어 첫 화면에
+   들어오는 내용이 늘고, 스크롤을 덜 하게 된다. */
+.appbar-profile { display: block; padding-bottom: 10px; }
+.appbar-profile .appbar-row {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 8px;
+}
+.appbar-profile .appbar-title { flex: 1; }

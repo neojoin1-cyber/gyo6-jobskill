@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { supabase } from '../../lib/supabase.js'
-import * as XLSX from 'xlsx'
+import { readSheet } from 'read-excel-file/browser'
+import writeXlsxFile from 'write-excel-file/browser'
 
 const ROLE_MAP = {
   '학생': 'student',
@@ -86,17 +87,17 @@ export default function BulkRegisterModal({
     if (pasteText.trim()) setRows(parseRows(pasteText, allClasses))
   }, [allClasses])
 
-  function downloadTemplate() {
-    const wb  = XLSX.utils.book_new()
-    const ws  = XLSX.utils.aoa_to_sheet([
+  async function downloadTemplate() {
+    const data = [
       ['이름', '이메일', '비밀번호', '역할', '학과', '학년', '학반', '닉네임'],
       ['홍길동', 'hong@school.hs.kr', 'pass1234', '학생', '경영과', '1', '1', '홍길동짱'],
       ['이영희', 'lee@school.hs.kr',  'pass1234', '학생', '관광과', '2', '3', ''],
       ['김선생', 'kim@school.hs.kr',  'pass1234', '교사', '', '', '', ''],
-    ])
-    ws['!cols'] = [10, 26, 12, 10, 10, 6, 6, 14].map(wch => ({ wch }))
-    XLSX.utils.book_append_sheet(wb, ws, '회원등록')
-    XLSX.writeFile(wb, '회원등록양식.xlsx')
+    ]
+    await writeXlsxFile(data, {
+      sheet: '회원등록',
+      columns: [10, 26, 12, 10, 10, 6, 6, 14].map(width => ({ width })),
+    }).toFile('회원등록양식.xlsx')
   }
 
   function applyText(text) {
@@ -104,17 +105,18 @@ export default function BulkRegisterModal({
     setRows(parseRows(text, allClasses))
   }
 
-  function handleFile(e) {
+  async function handleFile(e) {
     const file = e.target.files[0]; if (!file) return
     e.target.value = ''
-    const reader = new FileReader()
-    reader.onload = evt => {
-      const wb   = XLSX.read(evt.target.result, { type: 'binary' })
-      const ws   = wb.Sheets[wb.SheetNames[0]]
-      const tsv  = XLSX.utils.sheet_to_csv(ws, { FS: '\t' })
+    try {
+      const sheet = await readSheet(file)
+      const tsv = sheet
+        .map(row => row.map(cell => String(cell ?? '').replace(/[\t\r\n]+/g, ' ')).join('\t'))
+        .join('\n')
       applyText(tsv)
+    } catch {
+      window.alert('엑셀 파일을 읽지 못했습니다. .xlsx 형식인지 확인해 주세요.')
     }
-    reader.readAsBinaryString(file)
   }
 
   async function register() {
@@ -158,8 +160,9 @@ export default function BulkRegisterModal({
   }
 
   return (
-    <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.55)', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', zIndex: 1100 }}>
-      <div style={{ width: '100%', maxWidth: 560, background: 'var(--card-bg, #fff)', borderRadius: '16px 16px 0 0', maxHeight: '92vh', overflowY: 'auto', padding: 20 }}>
+    <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.55)', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', zIndex: 1100 }}
+      onClick={e => { if (e.target === e.currentTarget) onClose() }}>
+      <div style={{ width: '100%', maxWidth: 560, background: 'var(--card)', borderRadius: '16px 16px 0 0', maxHeight: '92vh', overflowY: 'auto', padding: 20 }}>
 
         {/* 헤더 */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
@@ -197,7 +200,7 @@ export default function BulkRegisterModal({
             onClick={() => fileRef.current?.click()}>
             📁 파일 업로드
           </button>
-          <input ref={fileRef} type="file" accept=".xlsx,.xls,.csv" style={{ display: 'none' }}
+          <input ref={fileRef} type="file" accept=".xlsx" style={{ display: 'none' }}
             onChange={handleFile} />
           {rows.length > 0 && (
             <button className="btn btn-ghost" style={{ fontSize: 12, marginLeft: 'auto', color: 'var(--text-muted)' }}

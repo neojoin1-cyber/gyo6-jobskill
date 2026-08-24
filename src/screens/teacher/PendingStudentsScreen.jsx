@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../../lib/supabase.js'
+import { formatDate } from '../../lib/dateUtils.js'
 
 export default function PendingStudentsScreen({ onBack }) {
   const [pending, setPending] = useState([])
@@ -37,17 +38,17 @@ export default function PendingStudentsScreen({ onBack }) {
     setLoading(false)
   }
 
+  // 직접 update/delete는 RLS로 0행 처리(무반응 실사고) — 서버 검증 RPC 사용 + 실패를 화면에 표시
   async function approveStudent(id) {
-    await supabase.from('profiles').update({ approved: true }).eq('id', id)
+    const { error } = await supabase.rpc('rpc_approve_student', { p_student: id })
+    if (error) { alert('승인 실패: ' + error.message); return }
     load()
   }
 
   async function rejectStudent(id, name) {
     if (!window.confirm(`${name} 학생 신청을 거절할까요?`)) return
-    // student_classes에서 제거 (계정은 유지)
-    await supabase.from('student_classes').delete()
-      .eq('student_id', id)
-    await supabase.from('profiles').delete().eq('id', id)
+    const { error } = await supabase.rpc('rpc_reject_student', { p_student: id })
+    if (error) { alert('거절 실패: ' + error.message); return }
     load()
   }
 
@@ -74,7 +75,7 @@ export default function PendingStudentsScreen({ onBack }) {
               <div>
                 <p style={{ fontWeight: 700 }}>{s.display_name}</p>
                 <p style={{ fontSize: 12, color: 'var(--text-muted)' }}>
-                  {s.class_name} · {new Date(s.created_at).toLocaleDateString('ko')} 신청
+                  {s.class_name} · {formatDate(s.created_at)} 신청
                 </p>
               </div>
               <span className="badge badge-yellow">대기</span>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../../App.jsx'
 import { supabase } from '../../lib/supabase.js'
+import { formatDate } from '../../lib/dateUtils.js'
 
 export default function PendingTeachersScreen() {
   const { profile } = useAuth()
@@ -55,7 +56,7 @@ export default function PendingTeachersScreen() {
             <div>
               <p style={{ fontWeight: 700 }}>{t.display_name}</p>
               <p style={{ fontSize: 12, color: 'var(--text-muted)' }}>
-                신청: {new Date(t.created_at).toLocaleDateString('ko')}
+                신청: {formatDate(t.created_at)}
               </p>
             </div>
             <span className="badge badge-yellow">대기중</span>

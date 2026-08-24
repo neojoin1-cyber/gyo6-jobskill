@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react'
+import { MoonStars, Sun } from '@phosphor-icons/react'
 
 const ThemeCtx = createContext(null)
 
@@ -32,11 +33,15 @@ export function ThemeToggle() {
       style={{
         background: 'rgba(255,255,255,0.15)',
         border: 'none', cursor: 'pointer',
-        borderRadius: 8, padding: '4px 8px',
+        borderRadius: 8, padding: '4px 10px',
+        // 학생·교사·관리자 앱바에 공통으로 놓이는 버튼이다.
+        // 25px 이던 것을 모바일 탭 기준 44px 로 맞춘다.
+        minHeight: 44, minWidth: 44,
+        display: 'inline-grid', placeItems: 'center',
         fontSize: 17, lineHeight: 1,
         color: '#fff',
       }}>
-      {dark ? '☀️' : '🌙'}
+      {dark ? <Sun size={20} weight="fill" /> : <MoonStars size={20} weight="fill" />}
     </button>
   )
 }

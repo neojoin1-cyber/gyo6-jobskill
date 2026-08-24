@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useAuth } from '../../App.jsx'
 import { supabase } from '../../lib/supabase.js'
 
-export default function SchoolClassesScreen() {
+export default function SchoolClassesScreen({ onNavigate }) {
   const { profile } = useAuth()
   const [classes, setClasses] = useState([])
   const [loading, setLoading] = useState(true)
@@ -45,7 +45,16 @@ export default function SchoolClassesScreen() {
                 {c.grade ? `${c.grade}학년` : ''} · 코드: <b style={{ letterSpacing: 2 }}>{c.class_code}</b>
               </p>
             </div>
-            <span className="badge badge-blue">학급</span>
+            <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
+              <button className="btn btn-secondary" style={{ padding: '7px 12px', fontSize: 12.5 }}
+                onClick={() => onNavigate?.('class-progress', { classId: c.id, className: c.name })}>
+                📈 진행율
+              </button>
+              <button className="btn btn-secondary" style={{ padding: '7px 12px', fontSize: 12.5 }}
+                onClick={() => onNavigate?.('class-weakness', { classId: c.id, className: c.name })}>
+                📉 약점
+              </button>
+            </div>
           </div>
         </div>
       ))}

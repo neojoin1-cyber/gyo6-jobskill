@@ -1,0 +1,128 @@
+import { existsSync, statSync } from 'node:fs'
+import studySummaries from '../data/study-summaries.json'
+import abilitySummaries from '../data/ability-summaries.json'
+import {
+  buildLearningMistakes,
+  buildLearningPoints,
+  buildQuestionDrivenSummary,
+} from '../src/lib/learningExperience.js'
+import { buildJcOfficialAreas, jcLessonMatches, jcStudyQuestions } from '../src/lib/jobCommonAreas.js'
+import { buildNcs2026Areas, ncs2026Questions } from '../src/lib/ncs2026.js'
+import {
+  RECRUIT_WRITTEN_TRACKS,
+  buildRecruitWrittenAreas,
+  recruitAreaId,
+  recruitLessonTitle,
+  recruitWrittenQuestions,
+} from '../src/lib/recruitWritten.js'
+import { studyQuestions, studyQuestionsById } from '../src/lib/assessmentPartition.js'
+import interviewStudy from '../data/interview-study.json'
+import interviewQuizData from '../data/interview-quiz.json'
+import { buildInterviewLearningQuestions } from '../src/lib/interviewLearning.js'
+
+const failures = []
+const metrics = {
+  units: 0, points: 0, covered: 0, visuals: 0, mistakes: 0, special: 0,
+  courses: { 직업공통: 0, NCS: 0, 채용심화: 0, 면접: 0 },
+}
+
+function auditSummary(scope, summary, questions, { requireMistakes = true } = {}) {
+  if (!summary) {
+    failures.push(`${scope}: 개념 학습 없음`)
+    return
+  }
+  metrics.units += 1
+  const course = Object.keys(metrics.courses).find(name => scope.startsWith(`${name}/`))
+  if (course) metrics.courses[course] += 1
+  const points = buildLearningPoints(summary, questions)
+  if (!points.length) failures.push(`${scope}: 핵심 개념 카드 없음`)
+  if (scope.startsWith('면접/') && !points.some(point => point?.sampleQuestion?.isInterview)) {
+    failures.push(`${scope}: 실제 면접 질문·모범답변 연결 없음`)
+  }
+  points.forEach((point, index) => {
+    if (!point || typeof point !== 'object') return
+    metrics.points += 1
+    if (point.visual?.src) metrics.visuals += 1
+    const sample = point.sampleQuestion
+    if (sample?.stem) metrics.covered += 1
+    else failures.push(`${scope} 핵심 ${index + 1}: 실제 문항 연결 없음`)
+    if (!sample?.thinkingSteps?.length) failures.push(`${scope} 핵심 ${index + 1}: 풀이 순서 없음`)
+    if (!point.visual?.src) failures.push(`${scope} 핵심 ${index + 1}: 상황 삽화 없음`)
+  })
+  const mistakes = buildLearningMistakes(summary, questions)
+  metrics.mistakes += mistakes.filter(mistake => mistake.wrongChoice && mistake.correctChoice?.length).length
+  if (requireMistakes && !mistakes.some(mistake => mistake.wrongChoice && mistake.correctChoice?.length)) {
+    failures.push(`${scope}: 실제 오답 선택·교정 카드 없음`)
+  }
+}
+
+const jcQuestions = jcStudyQuestions()
+for (const area of buildJcOfficialAreas()) {
+  for (const lesson of area.lessons || []) {
+    if (lesson.kind === 'self-report') {
+      metrics.special += 1
+      continue
+    }
+    const questions = jcQuestions.filter(question => !question.excludeFromQuiz && jcLessonMatches(question, lesson.id))
+    const summary = studySummaries[lesson.id] || buildQuestionDrivenSummary({
+      title: lesson.label,
+      questions,
+      courseKind: 'education-certification',
+    })
+    auditSummary(`직업공통/${lesson.id}`, summary, questions)
+  }
+}
+
+const ncsStudyQuestions = studyQuestions(ncs2026Questions)
+for (const area of buildNcs2026Areas(ncsStudyQuestions)) {
+  for (const lesson of area.lessons || []) {
+    const summary = studySummaries[lesson.id] || abilitySummaries[lesson.id]
+    const questions = ncsStudyQuestions.filter(question =>
+      !question.excludeFromQuiz && question.area === area.id && question.ncsAbility === lesson.id)
+    auditSummary(`NCS/${lesson.id}`, summary || buildQuestionDrivenSummary({
+      title: lesson.label,
+      questions,
+      courseKind: 'ncs',
+    }), questions)
+  }
+}
+
+const recruitStudyQuestions = studyQuestions(recruitWrittenQuestions)
+for (const track of RECRUIT_WRITTEN_TRACKS) {
+  for (const area of buildRecruitWrittenAreas(track.id, recruitStudyQuestions)) {
+    for (const lesson of area.lessons || []) {
+      const questions = recruitStudyQuestions.filter(question =>
+        !question.excludeFromQuiz &&
+        question.recruitmentTrack === track.id &&
+        recruitAreaId(question.area) === area.id &&
+        recruitLessonTitle(question) === lesson.id)
+      const summary = studySummaries[lesson.id] || abilitySummaries[lesson.id] || buildQuestionDrivenSummary({
+        title: lesson.label,
+        questions,
+        courseKind: 'recruitment',
+      })
+      auditSummary(`채용심화/${track.id}/${lesson.id}`, summary, questions)
+    }
+  }
+}
+
+const interviewQuiz = studyQuestionsById(interviewQuizData.questions || [])
+for (const lesson of interviewStudy.lessons || []) {
+  const summary = studySummaries[`iv:${lesson.id}`]
+  const questions = buildInterviewLearningQuestions(lesson, interviewQuiz)
+  auditSummary(`면접/${lesson.id}`, summary ? { ...summary, courseKind: 'interview' } : null, questions)
+}
+
+for (const name of ['documents', 'data', 'teamwork', 'interview', 'reflection']) {
+  const path = `public/images/learning/workplace-${name}.webp`
+  if (!existsSync(path) || statSync(path).size < 40_000) failures.push(`학습 삽화 누락 또는 저용량: ${path}`)
+}
+
+if (failures.length) {
+  console.error(`[학습경험] 실패 ${failures.length}건`)
+  failures.slice(0, 40).forEach(failure => console.error(`  - ${failure}`))
+  process.exit(1)
+}
+
+console.log(`[학습경험] 통과 — ${metrics.units}학습단원 + 특수진단 ${metrics.special}개 · 핵심 ${metrics.points}개 · 실제 문항 ${metrics.covered}개 · 실제 오답 ${metrics.mistakes}개 · 상황 삽화 ${metrics.visuals}개`)
+console.log(`  직업공통 ${metrics.courses.직업공통}학습+진단 ${metrics.special} · NCS ${metrics.courses.NCS} · 채용필기 심화 ${metrics.courses.채용심화} · 고졸면접 ${metrics.courses.면접}`)

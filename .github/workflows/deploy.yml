@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [master, main]
+    tags: ['web-v*']
   workflow_dispatch:
 
 permissions:
@@ -33,6 +33,16 @@ jobs:
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
           VITE_VAPID_PUBLIC_KEY: ${{ secrets.VITE_VAPID_PUBLIC_KEY }}
         run: npm run build
+
+      - name: Verify production role flows
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+          DEMO_PASSWORD: sugarsalt2026
+          DEMO_STUDENT_EMAIL: demo.student@sugarsalt.kr
+          DEMO_TEACHER_EMAIL: demo.teacher@sugarsalt.kr
+          DEMO_ADMIN_EMAIL: demo.admin@sugarsalt.kr
+        run: npm run verify:production-flows
 
       - uses: actions/upload-pages-artifact@v3
         with:
