@@ -307,13 +307,13 @@ export default function TeacherShell() {
       {/* 가로에서는 왼쪽 메뉴가 그 일을 하므로 하단 탭을 숨긴다. */}
       {layout.effective !== 'wide' && (
         <nav className="bottom-tab teacher-main-tabs" aria-label="교사 주요 메뉴">
-          <button className={`tab-item ${tab === 'dashboard' ? 'active' : ''}`} onClick={() => setTab('dashboard')}><span className="tab-icon"><House weight={tab === 'dashboard' ? 'fill' : 'regular'} /></span>홈</button>
-          <button className="tab-item" onClick={() => navigate('student-campus')}><span className="tab-icon"><Compass /></span>학습</button>
-          <button className="tab-item teacher-class-tab" onClick={() => navigate('classroom')}><span className="tab-icon"><Buildings weight="fill" /></span>수업</button>
-          <button className="tab-item" onClick={() => wsClasses[0]
+          <button aria-label="홈" className={`tab-item ${tab === 'dashboard' ? 'active' : ''}`} onClick={() => setTab('dashboard')}><span className="tab-icon"><House weight={tab === 'dashboard' ? 'fill' : 'regular'} /></span>홈</button>
+          <button aria-label="학습" className="tab-item" onClick={() => navigate('student-campus')}><span className="tab-icon"><Compass /></span>학습</button>
+          <button aria-label="수업" className="tab-item teacher-class-tab" onClick={() => navigate('classroom')}><span className="tab-icon"><Buildings weight="fill" /></span>수업</button>
+          <button aria-label="학생" className="tab-item" onClick={() => wsClasses[0]
             ? navigate('class-progress', { classId: wsClasses[0].id, className: wsClasses[0].name })
             : navigate('pending-students')}><span className="tab-icon"><Student /></span>학생</button>
-          <button className="tab-item" onClick={() => navigate('messages')}><span className="tab-icon"><ChatCircleDots /></span>소통</button>
+          <button aria-label="소통" className="tab-item" onClick={() => navigate('messages')}><span className="tab-icon"><ChatCircleDots /></span>소통</button>
         </nav>
       )}
     </div>

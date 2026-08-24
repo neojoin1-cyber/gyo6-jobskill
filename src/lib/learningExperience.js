@@ -63,6 +63,9 @@ function questionScore(point, question) {
   if (question.context) score += 2
   if (question.visual) score += 2
   if (Array.isArray(question.choices) && question.choices.length >= 4) score += 1
+  const type = question.type || question.questionMode
+  const hasScreenChoices = Array.isArray(question.choices) && question.choices.length >= 2
+  score += hasScreenChoices || type === 'ox' ? 12 : -20
   return score
 }
 
@@ -123,7 +126,7 @@ function toSampleQuestion(question, point) {
     : answerLetter(question.answer)
   const sourceChoices = question.choices?.length ? question.choices : (isOx ? ['O', 'X'] : [])
   const choices = sourceChoices.map((choice, index) => ({
-    value: isOx ? String(choice) : String.fromCharCode(65 + index),
+    value: isOx ? (index === 0 ? 'O' : 'X') : String.fromCharCode(65 + index),
     text: plain(typeof choice === 'object' ? (choice.text ?? choice.label ?? choice.value) : choice),
   }))
   return {
@@ -131,6 +134,9 @@ function toSampleQuestion(question, point) {
     context: plain(question.context),
     choices,
     answer,
+    type: question.type || question.questionMode || (isOx ? 'ox' : 'choice'),
+    blanks: question.blanks,
+    table: question.table,
     explanation: plain(question.explanation),
     format: formatLabel(question),
     thinkingSteps: strategyFor(`${point.topic ?? ''} ${point.learn ?? ''}`),
@@ -182,12 +188,10 @@ export function buildLearningPoints(summary, questions = []) {
     const sampleQuestion = providedInterview
       ? toInterviewSample(point.sampleQuestion, point)
       : providedObject
-      ? {
+      ? toSampleQuestion({
           ...point.sampleQuestion,
-          format: point.sampleQuestion.format || (point.sampleQuestion.isInterview ? '면접 질문형' : '선택형'),
-          thinkingSteps: point.sampleQuestion.thinkingSteps || strategyFor(`${point.topic ?? ''} ${point.learn ?? ''}`),
           explanation: point.sampleQuestion.explanation || plain(point.example),
-        }
+        }, point)
       : toSampleQuestion(picked, point)
     const visual = learningVisualFor(`${summary?.title ?? ''} ${point.topic ?? ''} ${point.learn ?? ''}`)
     const situation = point.situation || sampleQuestion?.context || sampleQuestion?.stem
@@ -298,16 +302,9 @@ function evidenceFrom(value) {
 
 function conceptText(question) {
   const source = plain(question.teachingNote || question.explanation || question.modelAnswer)
-  const choices = questionChoices(question)
-  const indexes = answerIndexes(question)
-  const correct = indexes.map(index => choices[index]).filter(Boolean)
   const lines = []
-  if (correct.length) {
-    const labels = indexes.map(index => String.fromCharCode(65 + index)).join(', ')
-    lines.push(`결론｜${labels}. ${correct.map(noteStyle).join(' · ')}`)
-  }
   const evidence = evidenceFrom(source)
-  lines.push(`근거｜${evidence ? noteStyle(evidence) : '자료의 수치·조건이 결론과 일치'}`)
+  lines.push(`핵심｜${evidence ? noteStyle(evidence) : '자료의 수치·조건을 판단 기준과 대조'}`)
   const equation = equationFrom(source)
   if (equation) lines.push(`계산｜${equation}`)
   const check = strategyFor(`${question.area ?? ''} ${question.lessonTitle ?? ''} ${question.stem ?? ''}`)[0]

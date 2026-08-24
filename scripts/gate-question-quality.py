@@ -202,6 +202,10 @@ def choice_pairs(c):
 # 붙으면 보기 글자가 아니다 — "정답은 C제품만" 의 C 가 그런 경우다.
 _ANS_CLAIM = [
     re.compile(r"정답(?:은|이|[:：])\s*([1-5])\s*번"),
+    re.compile(r"정답\s*\(\s*([1-5])\s*번\s*\)"),
+    re.compile(r"정답\s*\(\s*([1-5])\s*\)"),
+    re.compile(r"정답(?:은|이|[:：])\s*([①②③④⑤])"),
+    re.compile(r"정답\s*\(\s*([①②③④⑤])\s*\)"),
     # "3번은 정답이 있는 선택형과 혼동한 것" 의 3번은 오답 설명이다. 뒤가 서술로
     # 끝나는 단언만 정답 지목으로 본다 — 이 구분이 없어 멀쩡한 문항 2개를
     # 파손으로 잡았다.
@@ -228,7 +232,9 @@ def explanation_answer_conflict(q: dict) -> str | None:
         if not m:
             continue
         tok = m.group(1)
-        idx = "ABCDE".index(tok) if tok.isalpha() else int(tok) - 1
+        idx = ("ABCDE".index(tok) if tok.isalpha()
+               else "①②③④⑤".index(tok) if tok in "①②③④⑤"
+               else int(tok) - 1)
         if not 0 <= idx < len(ch):
             return None
         if idx != ai:

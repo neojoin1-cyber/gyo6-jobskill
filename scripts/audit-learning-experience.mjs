@@ -46,6 +46,31 @@ function auditSummary(scope, summary, questions, { requireMistakes = true } = {}
     const sample = point.sampleQuestion
     if (sample?.stem) metrics.covered += 1
     else failures.push(`${scope} 핵심 ${index + 1}: 실제 문항 연결 없음`)
+    if (sample && !sample.isInterview) {
+      const type = sample.type || 'choice'
+      const choices = Array.isArray(sample.choices) ? sample.choices : []
+      const values = choices.map(choice => choice?.value).filter(Boolean)
+      const answers = Array.isArray(sample.answer) ? sample.answer : [sample.answer]
+      const sourceLabel = sample.sourceQuestion?.id || sample.stem || 'id 없음'
+      if (type === 'pulldown') {
+        const blanks = sample.blanks || []
+        if (!blanks.length) failures.push(`${scope} 핵심 ${index + 1}: 풀다운 빈칸 누락 (${sourceLabel})`)
+        if (blanks.some(blank => !Array.isArray(blank.options) || blank.options.length < 2 || !Number.isInteger(blank.answer) || !blank.options[blank.answer])) {
+          failures.push(`${scope} 핵심 ${index + 1}: 풀다운 선택지·정답 연결 오류 (${sourceLabel})`)
+        }
+      } else {
+        if (choices.length < 2) failures.push(`${scope} 핵심 ${index + 1}: 선택형 문항 보기 누락 (${sourceLabel})`)
+        if (choices.some(choice => !choice?.value || !choice?.text)) {
+          failures.push(`${scope} 핵심 ${index + 1}: 화면용 보기 값·본문 누락`)
+        }
+        if (!answers.length || answers.some(answer => !values.includes(answer))) {
+          failures.push(`${scope} 핵심 ${index + 1}: 정답이 화면 보기와 연결되지 않음 (${answers.join(', ')} / ${sourceLabel})`)
+        }
+      }
+    }
+    if (/결론\s*[｜|:]\s*[A-E](?:\b|[.])/i.test(String(point.learn || ''))) {
+      failures.push(`${scope} 핵심 ${index + 1}: 선택 전 정답 문자 노출`)
+    }
     if (!sample?.thinkingSteps?.length) failures.push(`${scope} 핵심 ${index + 1}: 풀이 순서 없음`)
     if (!point.visual?.src) failures.push(`${scope} 핵심 ${index + 1}: 상황 삽화 없음`)
   })

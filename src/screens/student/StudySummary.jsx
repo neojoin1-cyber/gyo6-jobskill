@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect } from 'react'
 import QuestionMedia from './QuestionMedia.jsx'
+import PulldownForm from './PulldownForm.jsx'
 import { buildLearningMistakes, buildLearningPoints, learningVisualFor } from '../../lib/learningExperience.js'
 import CompactText from '../../components/CompactText.jsx'
 
@@ -29,6 +30,101 @@ function LearnLines({ text }) {
   )
 }
 
+function SampleQuestionCard({ sample, example, isOpen, selected, onSelect, onChange, onOpen }) {
+  if (sample.isInterview) {
+    return isOpen ? (
+      <div data-learning-question="interview" style={{ marginTop: 10, background: '#FFFDE7', border: '1.5px solid #FFE082', borderRadius: 10, padding: '12px 14px' }}>
+        <p style={{ fontSize: 12, fontWeight: 800, color: '#B45309', marginBottom: 8 }}>{sample.format || '면접 질문형'}</p>
+        <p style={{ fontSize: 'clamp(13px, 3.85vw, 14.5px)', fontWeight: 600, lineHeight: 1.75, color: 'var(--text)', marginBottom: 10 }}>{sample.stem}</p>
+        <div style={{ background: '#e8f5e9', borderRadius: 8, padding: '10px 12px', border: '1px solid var(--success)' }}>
+          <p style={{ fontSize: 12, fontWeight: 800, color: 'var(--success)', marginBottom: 5 }}>
+            {sample.modelAnswer ? '모범 답변 핵심' : '직접 답해 볼 차례'}
+          </p>
+          {sample.modelAnswer ? (
+            <p style={{ fontSize: 'clamp(12.5px, 3.7vw, 13.5px)', lineHeight: 1.72, whiteSpace: 'pre-wrap', color: '#1b5e20' }}>{sample.modelAnswer}</p>
+          ) : (
+            <p style={{ fontSize: 12.5, lineHeight: 1.7, color: '#1b5e20' }}>읽는 순서로 답의 뼈대 구성 · 자신의 경험과 행동 추가</p>
+          )}
+          {sample.answerPoints?.length > 0 && <ul className="learning-answer-points">{sample.answerPoints.map((point, index) => <li key={index}>{point}</li>)}</ul>}
+        </div>
+      </div>
+    ) : (
+      <button onClick={onOpen} style={{ marginTop: 10, width: '100%', padding: '10px', borderRadius: 10, border: '1.5px dashed #D97706', background: 'transparent', color: '#B45309', fontWeight: 800, fontSize: 13, cursor: 'pointer' }}>
+        면접에서는 어떻게 물을까?
+      </button>
+    )
+  }
+
+  if (sample.type === 'pulldown') {
+    const blanks = sample.blanks || sample.sourceQuestion?.blanks || []
+    const filled = Object.values(selected || {}).filter(value => value != null).length
+    return (
+      <div data-learning-question="pulldown" style={{ marginTop: 10, background: '#FFFDE7', border: '1.5px solid #FFE082', borderRadius: 10, padding: '12px 14px' }}>
+        <p style={{ fontSize: 12, fontWeight: 800, color: '#B45309', marginBottom: 8 }}>실제 출제형 · 풀다운형</p>
+        {sample.context && <p style={{ fontSize: 12.5, lineHeight: 1.75, whiteSpace: 'pre-wrap', marginBottom: 10 }}>{sample.context}</p>}
+        <p style={{ fontSize: 'clamp(13px, 3.85vw, 14.5px)', fontWeight: 700, lineHeight: 1.75, color: 'var(--text)', marginBottom: 10 }}>{sample.stem}</p>
+        <PulldownForm q={sample.sourceQuestion || sample} checked={isOpen} value={selected} onChange={onChange} />
+        {!isOpen && (
+          <button type="button" disabled={filled < blanks.length} onClick={onOpen} style={{ width: '100%', padding: '10px', borderRadius: 8, border: 0, background: filled < blanks.length ? '#E5E7EB' : '#4F46E5', color: filled < blanks.length ? '#6B7280' : '#fff', fontWeight: 800, cursor: filled < blanks.length ? 'default' : 'pointer' }}>
+            {filled < blanks.length ? `빈칸 채우기 ${filled}/${blanks.length}` : '정답·근거 확인'}
+          </button>
+        )}
+        {isOpen && sample.explanation && <div className="learning-evidence"><p className="learning-block-label">정답 근거</p><ExpandableText text={sample.explanation} style={{ fontSize: 12.5, lineHeight: 1.72 }} /></div>}
+      </div>
+    )
+  }
+
+  const answers = new Set(Array.isArray(sample.answer) ? sample.answer : [sample.answer])
+  return (
+    <div data-learning-question="choice" style={{ marginTop: 10, background: '#FFFDE7', border: '1.5px solid #FFE082', borderRadius: 10, padding: '12px 14px' }}>
+      <p style={{ fontSize: 12, fontWeight: 800, color: '#B45309', marginBottom: 8 }}>실제 출제형 · {sample.format || '선택형'}</p>
+      {sample.sourceQuestion && <QuestionMedia q={sample.sourceQuestion} />}
+      {sample.context && (
+        <div style={{ background: '#f0f4ff', border: '1px solid #c7d7f5', borderRadius: 8, padding: '9px 11px', marginBottom: 10 }}>
+          <p style={{ fontSize: 12, fontWeight: 800, color: '#3b5bdb', marginBottom: 5 }}>지문 / 상황</p>
+          <p style={{ fontSize: 'clamp(12px, 3.5vw, 13px)', lineHeight: 1.85, whiteSpace: 'pre-wrap', color: '#1a237e' }}>{sample.context}</p>
+        </div>
+      )}
+      <p style={{ fontSize: 'clamp(13px, 3.85vw, 14.5px)', fontWeight: 700, lineHeight: 1.75, color: 'var(--text)', marginBottom: 10 }}>{sample.stem}</p>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+        {(sample.choices || []).map(choice => {
+          const isCorrect = answers.has(choice.value)
+          const isSelected = selected === choice.value
+          const resultColor = isCorrect ? '#15803D' : '#B91C1C'
+          return (
+            <button
+              type="button"
+              data-learning-choice={choice.value}
+              data-correct={isOpen ? String(isCorrect) : undefined}
+              key={choice.value}
+              onClick={() => onSelect(choice.value)}
+              style={{
+                display: 'flex', gap: 8, alignItems: 'flex-start', width: '100%', textAlign: 'left',
+                padding: '9px 10px', borderRadius: 8, cursor: 'pointer',
+                background: isOpen && isCorrect ? '#E8F5E9' : isOpen && isSelected ? '#FEF2F2' : '#fff',
+                border: isOpen && (isCorrect || isSelected) ? `1.5px solid ${resultColor}` : isSelected ? '1.5px solid #4F46E5' : '1px solid var(--border)',
+              }}
+            >
+              <span style={{ fontWeight: 800, fontSize: 13, color: isOpen && (isCorrect || isSelected) ? resultColor : 'var(--text-muted)', flexShrink: 0, minWidth: 18 }}>{choice.value}</span>
+              <span style={{ fontSize: 'clamp(12.5px, 3.7vw, 13.5px)', lineHeight: 1.65, color: 'var(--text)', fontWeight: isOpen && isCorrect ? 700 : 500, flex: 1 }}>{choice.text}</span>
+              {isOpen && isCorrect && <span aria-label="정답" style={{ flexShrink: 0, fontSize: 13, color: '#15803D', fontWeight: 800 }}>정답</span>}
+              {isOpen && isSelected && !isCorrect && <span aria-label="내 선택" style={{ flexShrink: 0, fontSize: 13, color: '#B91C1C', fontWeight: 800 }}>내 선택</span>}
+            </button>
+          )
+        })}
+      </div>
+      {!isOpen && <p data-learning-answer-state="hidden" style={{ margin: '8px 0 0', fontSize: 12, color: '#92400E', fontWeight: 700 }}>선지 선택 → 정답·근거 확인</p>}
+      {isOpen && (
+        <div data-learning-answer-state="revealed">
+          {example && <div style={{ marginTop: 10, borderTop: '1px solid #FFE082', paddingTop: 8 }}><p style={{ fontSize: 12, color: '#B45309', fontWeight: 700, marginBottom: 4 }}>출제 포인트</p><CompactText text={example} maxItemChars={70} style={{ fontSize: 12, color: 'var(--text-muted)' }} /></div>}
+          {sample.thinkingSteps?.length > 0 && <div className="learning-reasoning"><p className="learning-block-label">문제를 읽는 순서</p><ol>{sample.thinkingSteps.map((step, index) => <li key={index}>{step}</li>)}</ol></div>}
+          {sample.explanation && <div className="learning-evidence"><p className="learning-block-label">정답 근거</p><ExpandableText text={sample.explanation} style={{ fontSize: 12.5, lineHeight: 1.72 }} /></div>}
+        </div>
+      )}
+    </div>
+  )
+}
+
 export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, onStartQuiz, initialStep = 0, onStepChange }) {
   const { title, intro, keyPoints = [], mustRemember = [], terms = [], tips = [] } = summary || {}
   const learningPoints = useMemo(() => buildLearningPoints(summary, questions), [summary, questions])
@@ -49,10 +145,11 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, onS
 
   const [step, setStep]         = useState(initialStep)
   const [revealed, setRevealed] = useState({})  // stepIndex → true
+  const [sampleSelections, setSampleSelections] = useState({})
   const [known, setKnown]       = useState({})   // 용어 자기평가
 
   // 단원이 바뀌면 처음부터
-  useEffect(() => { setStep(initialStep); setRevealed({}); setKnown({}) }, [summary, questions]) // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { setStep(initialStep); setRevealed({}); setSampleSelections({}); setKnown({}) }, [summary, questions]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { onStepChange?.(step) }, [step, onStepChange])
 
   if (!summary || cards.length === 0) return null
@@ -60,10 +157,14 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, onS
   const card    = cards[step]
   const isOpen  = !!revealed[step]
   const open    = () => setRevealed(r => ({ ...r, [step]: true }))
+  const selectSample = value => {
+    setSampleSelections(current => ({ ...current, [step]: value }))
+    open()
+  }
   const total   = cards.length
   const next    = () => setStep(s => Math.min(total - 1, s + 1))
   const prev    = () => setStep(s => Math.max(0, s - 1))
-  const restart = () => { setStep(0); setRevealed({}); setKnown({}) }
+  const restart = () => { setStep(0); setRevealed({}); setSampleSelections({}); setKnown({}) }
 
   // 핵심 포인트: '— 확인:' / '(확인:' 뒤(또는 두 번째 문장)를 가렸다 공개
   function splitPoint(text) {
@@ -182,100 +283,15 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, onS
               {/* 외부평가 출제 예시: sampleQuestion(object/string) 또는 example(string) */}
               {p.sampleQuestion ? (
                 typeof p.sampleQuestion === 'object' ? (
-                  // 새 포맷: { stem, choices, answer, context?, isInterview?, modelAnswer? }
-                  isOpen ? (
-                    <div style={{ marginTop: 10, background: '#FFFDE7', border: '1.5px solid #FFE082', borderRadius: 10, padding: '12px 14px' }}>
-                      <p style={{ fontSize: 12, fontWeight: 800, color: '#B45309', marginBottom: 8 }}>
-                        {p.sampleQuestion.isInterview ? p.sampleQuestion.format || '면접 질문형' : `실제 출제형 · ${p.sampleQuestion.format || '선택형'}`}
-                      </p>
-                      {p.sampleQuestion.sourceQuestion && <QuestionMedia q={p.sampleQuestion.sourceQuestion} />}
-                      {p.sampleQuestion.context && (
-                        <div style={{ background: '#f0f4ff', border: '1px solid #c7d7f5', borderRadius: 8, padding: '9px 11px', marginBottom: 10 }}>
-                          <p style={{ fontSize: 12, fontWeight: 800, color: '#3b5bdb', marginBottom: 5 }}>📋 지문 / 상황</p>
-                          <p style={{ fontSize: 'clamp(12px, 3.5vw, 13px)', lineHeight: 1.85, whiteSpace: 'pre-wrap', color: '#1a237e' }}>
-                            {p.sampleQuestion.context}
-                          </p>
-                        </div>
-                      )}
-                      {p.sampleQuestion.stem && (
-                        <p style={{ fontSize: 'clamp(13px, 3.85vw, 14.5px)', fontWeight: 600, lineHeight: 1.75, color: 'var(--text)', marginBottom: 10 }}>
-                          {p.sampleQuestion.stem}
-                        </p>
-                      )}
-                      {p.sampleQuestion.isInterview ? (
-                        <div style={{ background: '#e8f5e9', borderRadius: 8, padding: '10px 12px', border: '1px solid var(--success)' }}>
-                          <p style={{ fontSize: 12, fontWeight: 800, color: 'var(--success)', marginBottom: 5 }}>
-                            {p.sampleQuestion.modelAnswer ? '모범 답변 핵심' : '직접 답해 볼 차례'}
-                          </p>
-                          {p.sampleQuestion.modelAnswer ? (
-                            <p style={{ fontSize: 'clamp(12.5px, 3.7vw, 13.5px)', lineHeight: 1.72, whiteSpace: 'pre-wrap', color: '#1b5e20' }}>
-                              {p.sampleQuestion.modelAnswer}
-                            </p>
-                          ) : (
-                            <p style={{ fontSize: 12.5, lineHeight: 1.7, color: '#1b5e20' }}>
-                              아래 읽는 순서로 답의 뼈대를 잡은 뒤, 자신의 경험과 행동을 넣어 말해 보세요.
-                            </p>
-                          )}
-                          {p.sampleQuestion.answerPoints?.length > 0 && (
-                            <ul className="learning-answer-points">
-                              {p.sampleQuestion.answerPoints.map((point, index) => <li key={index}>{point}</li>)}
-                            </ul>
-                          )}
-                        </div>
-                      ) : (
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                          {(p.sampleQuestion.choices || []).map(c => {
-                            const isCorrect = Array.isArray(p.sampleQuestion.answer)
-                              ? p.sampleQuestion.answer.includes(c.value)
-                              : c.value === p.sampleQuestion.answer
-                            return (
-                              <div key={c.value} style={{
-                                display: 'flex', gap: 8, alignItems: 'flex-start',
-                                padding: '7px 10px', borderRadius: 8,
-                                background: isCorrect ? '#e8f5e9' : 'var(--bg)',
-                                border: isCorrect ? '1.5px solid var(--success)' : '1px solid var(--border)',
-                              }}>
-                                <span style={{ fontWeight: 800, fontSize: 13, color: isCorrect ? 'var(--success)' : 'var(--text-muted)', flexShrink: 0, minWidth: 18 }}>
-                                  {c.value}
-                                </span>
-                                <p style={{ fontSize: 'clamp(12.5px, 3.7vw, 13.5px)', lineHeight: 1.65, color: isCorrect ? '#1b5e20' : 'var(--text-muted)', fontWeight: isCorrect ? 700 : 400, margin: 0 }}>
-                                  {c.text}
-                                </p>
-                                {isCorrect && <span style={{ flexShrink: 0, fontSize: 14 }}>✅</span>}
-                              </div>
-                            )
-                          })}
-                        </div>
-                      )}
-                      {p.example && (
-                        <div style={{ marginTop: 10, borderTop: '1px solid #FFE082', paddingTop: 8 }}>
-                          <p style={{ fontSize: 12, color: '#B45309', fontWeight: 700, marginBottom: 4 }}>📌 출제 포인트</p>
-                          <CompactText text={p.example} maxItemChars={70} style={{ fontSize: 12, color: 'var(--text-muted)' }} />
-                        </div>
-                      )}
-                      {p.sampleQuestion.thinkingSteps?.length > 0 && (
-                        <div className="learning-reasoning">
-                          <p className="learning-block-label">문제를 읽는 순서</p>
-                          <ol>
-                            {p.sampleQuestion.thinkingSteps.map((step, index) => <li key={index}>{step}</li>)}
-                          </ol>
-                        </div>
-                      )}
-                      {p.sampleQuestion.explanation && (
-                        <div className="learning-evidence">
-                          <p className="learning-block-label">정답 근거</p>
-                          <ExpandableText text={p.sampleQuestion.explanation} maxChars={360} style={{ fontSize: 12.5, lineHeight: 1.72 }} />
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    <button onClick={open}
-                      style={{ marginTop: 10, width: '100%', padding: '10px', borderRadius: 10,
-                        border: '1.5px dashed #D97706', background: 'transparent', color: '#B45309',
-                        fontWeight: 800, fontSize: 13, cursor: 'pointer' }}>
-                      {p.sampleQuestion.isInterview ? '면접에서는 어떻게 물을까?' : '실제 시험에서는 어떻게 나올까?'}
-                    </button>
-                  )
+                  <SampleQuestionCard
+                    sample={p.sampleQuestion}
+                    example={p.example}
+                    isOpen={isOpen}
+                    selected={sampleSelections[step]}
+                    onSelect={selectSample}
+                    onChange={value => setSampleSelections(current => ({ ...current, [step]: value }))}
+                    onOpen={open}
+                  />
                 ) : (
                   // 구 포맷: sampleQuestion이 string — 텍스트로 그대로 표시
                   isOpen ? (
