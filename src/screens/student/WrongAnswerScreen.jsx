@@ -3,21 +3,21 @@
  * MCQ/OX: submissions.answers를 questions.json과 비교해 오답 자동 추출
  * selfcheck: typed_answers 표시 + 모범답안 비교 (자가 점검)
  */
-import { useState, useEffect, useMemo, lazy, Suspense } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { RETIRED_SUBJECT_IDS, WRONG_NOTE_FILTERS } from '../../lib/subjectCatalog.js'
 import { resolveWrongAnswer, reviewWrongAnswer } from '../../lib/wrongAnswers.js'
+import { buildWrongAttemptCounts, countRepeatedQuestions } from '../../lib/wrongRepeat.js'
 import { supabase } from '../../lib/supabase.js'
 import { formatDate } from '../../lib/dateUtils.js'
 import CompactText from '../../components/CompactText.jsx'
+import PriorityReviewScreen from './PriorityReviewScreen.jsx'
 
-const PriorityReviewScreen = lazyChunk(() => import('./PriorityReviewScreen.jsx'), 'PriorityReviewScreen')
 import jobQuestions         from '../../../data/questions.json'
 import { ncs2026Questions as ncsQuestions } from '../../lib/ncs2026.js'
 import { recruitWrittenQuestions } from '../../lib/recruitWritten.js'
 import { COMMON_ABILITY_COURSES } from '../../lib/officialStandards.js'
 import foodServiceQuestions from '../../lib/foodServiceBank.js'  // 통합뱅크(기출·예상·LM 포함)
 import qualityPracticeData  from '../../../data/quality-mgmt-practice.json'
-import { lazyChunk } from '../../lib/lazyChunk.js'
 import { JC_AREA_MAP } from '../../lib/jobCommonAreas.js'
 
 const qualityQuestions = qualityPracticeData.units.flatMap(u => u.questions ?? [])
@@ -152,7 +152,7 @@ export default function WrongAnswerScreen({ profile }) {
         .order('completed_at', { ascending: false }),
       supabase
         .from('wrong_answers')
-        .select('question_id, course_id, question_text, correct_answer, user_answer, status, created_at, area')
+        .select('question_id, course_id, question_text, correct_answer, user_answer, status, created_at, area, wrong_count, review_streak')
         .eq('student_id', profile.id)
         .eq('status', 'open')
         .order('created_at', { ascending: false }),
@@ -207,6 +207,7 @@ export default function WrongAnswerScreen({ profile }) {
       return {
         qId: r.question_id, question: q, myIdx: answerIdx(r.user_answer), correctIdx: answerIdx(q.answer),
         type: 'mcq', source: 'self', subjectId, missionId: mid, submittedAt: r.created_at, missionTitle: '🔁 자율학습 오답',
+        wrongCount: r.wrong_count,
       }
     }
     return {
@@ -214,6 +215,7 @@ export default function WrongAnswerScreen({ profile }) {
       submittedAt: r.created_at, missionTitle: '🔁 자율학습 오답',
       typedText: r.user_answer ? `내가 고른 답: ${r.user_answer}` : '(자율학습에서 틀린 문항)',
       storedStem: r.question_text, storedCorrect: r.correct_answer,
+      wrongCount: r.wrong_count,
     }
   }), [selfWrong])
 
@@ -234,14 +236,9 @@ export default function WrongAnswerScreen({ profile }) {
     return list.filter(w => !clearedIds.has(w.qId))
   }, [subs, selfItems, clearedIds])
 
-  // 반복 오답 계산 (같은 qId가 2회 이상)
-  const repeatCounts = useMemo(() => {
-    const counts = {}
-    for (const w of allWrong) {
-      counts[w.qId] = (counts[w.qId] ?? 0) + 1
-    }
-    return counts
-  }, [allWrong])
+  // 서버의 누적 오답 횟수가 기준이다. 서버 행이 없는 옛 미션 기록만
+  // 동일 문항의 제출 횟수로 보완한다.
+  const repeatCounts = useMemo(() => buildWrongAttemptCounts(allWrong), [allWrong])
 
   // 영역별 취약 분석 (MCQ 오답만, 누적)
   const areaStats = useMemo(() => {
@@ -280,14 +277,12 @@ export default function WrongAnswerScreen({ profile }) {
 
   if (loading) return <div className="loading-screen"><div className="spinner" /></div>
 
-  const repeatCount = Object.values(repeatCounts).filter(c => c >= 2).length
+  const repeatCount = countRepeatedQuestions(repeatCounts)
   const selfCheckCount = allWrong.filter(w => w.type === 'selfcheck').length
 
   if (showReview) {
     return (
-      <Suspense fallback={<div className="screen" style={{ alignItems: 'center', justifyContent: 'center' }}><div className="spinner" /></div>}>
-        <PriorityReviewScreen onBack={() => { setShowReview(false); load() }} />
-      </Suspense>
+      <PriorityReviewScreen onBack={() => { setShowReview(false); load() }} />
     )
   }
 
@@ -386,12 +381,18 @@ export default function WrongAnswerScreen({ profile }) {
         </div>
 
         {/* 반복오답 토글 */}
-        <label style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16, cursor: 'pointer', fontSize: 13 }}>
-          <input type="checkbox" checked={repeatOnly} onChange={e => setRepeatOnly(e.target.checked)} />
-          <span style={{ fontWeight: 700, color: repeatOnly ? '#e65100' : 'var(--text-muted)' }}>
-            🔴 반복 오답만 보기 ({repeatCount}개)
-          </span>
-        </label>
+        {repeatCount > 0 ? (
+          <label style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16, cursor: 'pointer', fontSize: 13 }}>
+            <input type="checkbox" checked={repeatOnly} onChange={e => setRepeatOnly(e.target.checked)} />
+            <span style={{ fontWeight: 700, color: repeatOnly ? '#e65100' : 'var(--text-muted)' }}>
+              🔴 반복 오답만 보기 ({repeatCount}개)
+            </span>
+          </label>
+        ) : (
+          <p style={{ marginBottom: 16, fontSize: 12.5, color: 'var(--text-muted)', fontWeight: 700 }}>
+            반복 오답 없음 · 새로 틀린 문항부터 복습
+          </p>
+        )}
 
         {/* 조회 오류 — 빈 상태(축하)와 구분 */}
         {loadError && (
@@ -435,7 +436,16 @@ export default function WrongAnswerScreen({ profile }) {
                 onToggle={() => setExpandedId(
                   expandedId === `${item.qId}-${gi}-${ii}` ? null : `${item.qId}-${gi}-${ii}`
                 )}
-                onCleared={qId => setClearedIds(prev => new Set(prev).add(qId))}
+                onCleared={qId => {
+                  setClearedIds(prev => new Set(prev).add(qId))
+                  setRepeatOnly(false)
+                }}
+                onReviewed={(qId, correct) => {
+                  if (correct) return
+                  setSelfWrong(rows => rows.map(row => row.question_id === qId
+                    ? { ...row, wrong_count: Math.max(1, Number(row.wrong_count) || 1) + 1, review_streak: 0 }
+                    : row))
+                }}
               />
             ))}
           </div>
@@ -451,9 +461,10 @@ export default function WrongAnswerScreen({ profile }) {
             <p style={{ fontWeight: 700, fontSize: 13, color: 'var(--primary)', marginBottom: 4 }}>
               💡 시험 임박 학습 팁
             </p>
-            <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.7 }}>
-              반복 오답 {repeatCount}개를 집중 복습하세요. 한 번 틀린 문제는 다시 틀리기 쉽습니다.
-              "반복 오답만 보기"를 켜서 핵심만 빠르게 정리하세요.
+            <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.7, whiteSpace: 'pre-line' }}>
+              {repeatCount > 0
+                ? `반복 오답 ${repeatCount}개 우선\n빈출 × 오답 횟수 순으로 집중 복습`
+                : '반복 오답 없음\n미해결 오답 중 빈출 문항부터 복습'}
             </p>
           </div>
         )}
@@ -474,7 +485,7 @@ function StatCard({ label, value, color }) {
   )
 }
 
-function WrongItem({ item, isRepeat, repeatCount, expanded, onToggle, onCleared }) {
+function WrongItem({ item, isRepeat, repeatCount, expanded, onToggle, onCleared, onReviewed }) {
   const q = item.question
   // 오답노트가 '읽고 마는 목록'에 머물러 있었다. 틀린 문제를 다시 풀 수도,
   // 이해했다고 표시해 목록에서 뺄 수도 없어서 오답은 계속 쌓이기만 했다.
@@ -491,6 +502,7 @@ function WrongItem({ item, isRepeat, repeatCount, expanded, onToggle, onCleared 
     // 화면에서 임의로 지우면 서버와 어긋난다.
     const status = await reviewWrongAnswer(item.qId, ok)
     setBusy(false)
+    if (status) onReviewed?.(item.qId, ok)
     if (ok && status === 'resolved') onCleared?.(item.qId)
   }
 

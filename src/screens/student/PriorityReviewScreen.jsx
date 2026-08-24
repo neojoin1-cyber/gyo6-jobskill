@@ -84,6 +84,11 @@ export default function PriorityReviewScreen({ onBack, onDone, source = 'wrong' 
       return
     }
     reviewWrongAnswer(cur.q.id, ok).then(status => {
+      if (!ok && status) {
+        setQueue(items => items.map((item, index) => index === i
+          ? { ...item, wrong_count: item.wrong_count + 1, streak: 0 }
+          : item))
+      }
       if (ok && status === 'resolved') setMastered(m => m + 1)
     })
   }

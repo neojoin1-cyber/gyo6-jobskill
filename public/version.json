@@ -1,6 +1,6 @@
 {
-  "version": "4.2.1",
+  "version": "4.2.2",
   "channel": "web-release",
-  "releasedAt": "2026-08-24",
+  "releasedAt": "2026-08-25",
   "supabaseResponseCache": false
 }

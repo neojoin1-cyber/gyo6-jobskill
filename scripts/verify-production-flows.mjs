@@ -27,6 +27,7 @@ const clients = {}
 let classId = null
 const createdMissionIds = []
 const createdUserIds = []
+const repeatQuestionId = `RELEASE-REPEAT-${Date.now()}`
 
 try {
   for (const [expectedRole, email] of Object.entries(accounts)) {
@@ -68,6 +69,36 @@ try {
     check(`${role} bootstrap`, !error && !data?.error, error?.message || data?.error)
     report.metrics[`${role}BootstrapKeys`] = data ? Object.keys(data).sort() : []
   }
+
+  const repeatParams = {
+    p_question_id: repeatQuestionId,
+    p_course_id: 1,
+    p_question_text: '반복 오답 운영 검증 문항',
+    p_correct_answer: 'B',
+    p_user_answer: 'A',
+    p_area: '운영 검증',
+  }
+  const { error: firstWrongError } = await student.client.rpc('rpc_save_wrong_answer', repeatParams)
+  const { data: firstWrong } = await student.client.from('wrong_answers')
+    .select('wrong_count').eq('question_id', repeatQuestionId).single()
+  check('first wrong answer count', !firstWrongError && firstWrong?.wrong_count === 1,
+    firstWrongError?.message || String(firstWrong?.wrong_count))
+
+  const { error: secondWrongError } = await student.client.rpc('rpc_save_wrong_answer', repeatParams)
+  const { data: secondWrong } = await student.client.from('wrong_answers')
+    .select('wrong_count').eq('question_id', repeatQuestionId).single()
+  check('repeated study wrong answer count', !secondWrongError && secondWrong?.wrong_count === 2,
+    secondWrongError?.message || String(secondWrong?.wrong_count))
+
+  const { data: reviewStatus, error: reviewWrongError } = await student.client.rpc('rpc_review_wrong', {
+    p_question_id: repeatQuestionId,
+    p_correct: false,
+  })
+  const { data: reviewedWrong } = await student.client.from('wrong_answers')
+    .select('wrong_count, review_streak, status').eq('question_id', repeatQuestionId).single()
+  check('wrong-note retry increments repeat count', !reviewWrongError && reviewStatus === 'open'
+    && reviewedWrong?.wrong_count === 3 && reviewedWrong?.review_streak === 0,
+  reviewWrongError?.message || JSON.stringify(reviewedWrong))
 
   const { data: viewable, error: viewableError } = await teacher.client.rpc('rpc_my_viewable_subjects')
   check('teacher viewable subjects resolver', !viewableError && Array.isArray(viewable), viewableError?.message)
@@ -264,6 +295,9 @@ try {
   check('teacher cannot create unassigned class', teacherForbidden?.error || teacherForbidden == null, JSON.stringify(teacherForbidden))
 } finally {
   if (clients.student) {
+    const { error: repeatCleanupError } = await clients.student.client.from('wrong_answers')
+      .delete().eq('question_id', repeatQuestionId)
+    check('repeat wrong-answer check cleaned up', !repeatCleanupError, repeatCleanupError?.message)
     const { error } = await clients.student.client.from('notifications')
       .delete().like('title', '[출시검증 %')
     check('student release-test messages cleaned up', !error, error?.message)
