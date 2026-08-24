@@ -19,6 +19,7 @@ import { getWeeklyBest } from '../../lib/speedQuiz.js'
 import { isReviewReminderEnabled, setReviewReminderEnabled } from '../../lib/reminders.js'
 import { lazyChunk } from '../../lib/lazyChunk.js'
 import { getBootstrap, sync as syncProgress } from '../../lib/localFirst.js'
+import CompactText from '../../components/CompactText.jsx'
 
 const MISSION_STATUS_COLOR = { active: 'badge-green', closed: 'badge-gray', draft: 'badge-yellow' }
 const MISSION_STATUS_LABEL = { active: '진행중', closed: '마감', draft: '대기' }
@@ -174,7 +175,7 @@ function DailyChallengeOverlay({ challenge, onClose }) {
         {isChecked && q.explanation && (
           <div style={{ background: '#F0F9FF', border: '1px solid #BAE6FD', borderRadius: 10,
             padding: '10px 12px', marginBottom: 14, fontSize: 12, color: '#0369A1', lineHeight: 1.65 }}>
-            💡 {q.explanation}
+            <CompactText text={q.explanation} maxItemChars={68} />
           </div>
         )}
 

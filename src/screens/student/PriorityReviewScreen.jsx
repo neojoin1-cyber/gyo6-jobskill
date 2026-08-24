@@ -4,6 +4,7 @@ import { findQuestion, priorityWeight } from '../../lib/questionIndex.js'
 import { getDueItems, recordReview } from '../../lib/srs.js'
 import { learningModeOf } from '../../lib/learningMode.js'
 import { addXp } from '../../lib/xp.js'
+import CompactText from '../../components/CompactText.jsx'
 
 // 두 가지 복습이 있다. 고르는 기준도, 끝나는 조건도 다르다.
 //
@@ -182,7 +183,7 @@ export default function PriorityReviewScreen({ onBack, onDone, source = 'wrong' 
             <p style={{ fontWeight: 800, color: correct ? '#047857' : '#B91C1C', marginBottom: 6 }}>
               {correct ? '정답! 잘했어요' : `정답은 ${correctIdx + 1}번`}
             </p>
-            {cur.q.explanation && <p style={{ fontSize: 13.5, color: '#374151', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>{cur.q.explanation}</p>}
+            {cur.q.explanation && <CompactText text={cur.q.explanation} maxItemChars={72} style={{ fontSize: 13.5, color: '#374151' }} />}
           </div>
         )}
         {answered && <button onClick={next} style={{ ...primaryBtn, marginTop: 16 }}>{i + 1 < queue.length ? '다음 →' : '복습 완료'}</button>}

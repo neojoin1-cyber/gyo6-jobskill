@@ -6,6 +6,7 @@ import { addXp } from '../../lib/xp.js'
 import { recordReview } from '../../lib/srs.js'
 import { noteStudied } from '../../lib/dailyChallenge.js'
 import { learningModeOf } from '../../lib/learningMode.js'
+import CompactText from '../../components/CompactText.jsx'
 
 /**
  * 인출 퀴즈 — 완전교재 학습 후 검증문항을 선택형으로 풀이.
@@ -185,7 +186,7 @@ export default function QuizRunner({ questions, subjectId, courseId, unitId, onC
               <p style={{ fontSize: 13, fontWeight: 800, color: sel === correctIdx ? '#065f46' : '#c2410c', marginBottom: 6 }}>
                 {sel === correctIdx ? '정답입니다! ✓' : `정답: ${String.fromCharCode(65 + correctIdx)}`}
               </p>
-              {q.explanation && <p style={{ fontSize: 13, lineHeight: 1.75, color: 'var(--text)' }}>{q.explanation}</p>}
+              {q.explanation && <CompactText text={q.explanation} maxItemChars={72} style={{ fontSize: 13, color: 'var(--text)' }} />}
             </div>
             <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-muted)', marginBottom: 8, textAlign: 'center' }}>
               이 개념, 얼마나 확실했나요? <span style={{ fontWeight: 400 }}>(복습 주기가 조정돼요)</span>

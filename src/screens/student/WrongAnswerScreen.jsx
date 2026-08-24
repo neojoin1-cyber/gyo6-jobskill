@@ -8,6 +8,7 @@ import { RETIRED_SUBJECT_IDS, WRONG_NOTE_FILTERS } from '../../lib/subjectCatalo
 import { resolveWrongAnswer, reviewWrongAnswer } from '../../lib/wrongAnswers.js'
 import { supabase } from '../../lib/supabase.js'
 import { formatDate } from '../../lib/dateUtils.js'
+import CompactText from '../../components/CompactText.jsx'
 
 const PriorityReviewScreen = lazyChunk(() => import('./PriorityReviewScreen.jsx'), 'PriorityReviewScreen')
 import jobQuestions         from '../../../data/questions.json'
@@ -576,7 +577,7 @@ function WrongItem({ item, isRepeat, repeatCount, expanded, onToggle, onCleared 
                   padding: '8px 12px', marginTop: 10,
                 }}>
                   <p style={{ fontSize: 12, color: 'var(--primary)', fontWeight: 700, marginBottom: 3 }}>💡 해설</p>
-                  <p style={{ fontSize: 12, color: 'var(--text)', lineHeight: 1.7 }}>{q.explanation}</p>
+                  <CompactText text={q.explanation} maxItemChars={68} style={{ fontSize: 12, color: 'var(--text)' }} />
                 </div>
               )}
             </>
@@ -601,9 +602,7 @@ function WrongItem({ item, isRepeat, repeatCount, expanded, onToggle, onCleared 
                 </div>
               )}
               {q?.explanation && (
-                <p style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 8, fontStyle: 'italic' }}>
-                  💡 {q.explanation}
-                </p>
+                <CompactText text={q.explanation} maxItemChars={68} style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 8 }} />
               )}
             </>
           )}

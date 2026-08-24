@@ -4,6 +4,7 @@
  */
 import { useState, useMemo, useRef, useEffect } from 'react'
 import { pushBack, popBack } from '../../lib/backButton.js'
+import CompactText from '../../components/CompactText.jsx'
 import {
   loadQuestProgress, initQuestProgress, getAreaState,
   isAreaUnlocked, markLearnDone, recordExamScore, resetQuestProgress,
@@ -550,7 +551,7 @@ function LearnView({ areaIdx, progress, char, onDone, onBack }) {
                     <p style={{ fontSize: 12, fontWeight: 700, color: '#92400E', marginBottom: 2 }}>
                       🔑 {h.label}
                     </p>
-                    <p style={{ fontSize: 12, color: '#78350F', lineHeight: 1.6 }}>{h.text}</p>
+                    <CompactText text={h.text} maxItemChars={68} style={{ fontSize: 12, color: '#78350F' }} />
                   </div>
                 ))}
               </div>

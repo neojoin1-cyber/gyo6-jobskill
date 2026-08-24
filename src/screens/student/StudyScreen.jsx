@@ -43,6 +43,7 @@ import { jcLessonMatches, jcOrderInLesson } from '../../lib/jobCommonAreas.js'
 import MatchingBoard, { isMatchingCorrect } from './MatchingBoard.jsx'
 import PulldownForm, { isPulldownCorrect } from './PulldownForm.jsx'
 import { studyQuestions } from '../../lib/assessmentPartition.js'
+import CompactText from '../../components/CompactText.jsx'
 
 const fsChaptersMap = new Map(fsChapters.map(c => [c.lessonId, c]))
 const ncsExtrasMap  = new Map(ncsExtras.map(e => [e.lessonId, e]))
@@ -359,18 +360,14 @@ export default function StudyScreen({ initialSubject, initialArea, initialLesson
           {subjectId === 'ncs-basic' && (
             <div style={{ background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 12, padding: '11px 13px', marginBottom: 12 }}>
               <p style={{ fontSize: 12, fontWeight: 800, color: '#1d4ed8', marginBottom: 4 }}>고용노동부·한국산업인력공단 NCS 26v1</p>
-              <p style={{ fontSize: 12.5, color: 'var(--text)', lineHeight: 1.55 }}>
-                현행 <b>7개 영역·21개 능력</b>에 맞춘 학습 과정입니다. 영역의 표시 순서는 공식 체계 순서이며 임의의 출제 비중 순위가 아닙니다.
-              </p>
+              <CompactText text={'현행 7개 영역·21개 능력 기준\n공식 체계 순서로 표시\n임의 출제 비중 순위 아님'} maxItemChars={68} style={{ fontSize: 12.5, color: 'var(--text)' }} />
             </div>
           )}
           {subjectId === 'recruit-written' && !trackId && (
             <>
               <div style={{ background: '#fff7ed', border: '1px solid #fed7aa', borderRadius: 12, padding: '11px 13px', marginBottom: 12 }}>
                 <p style={{ fontSize: 12, fontWeight: 800, color: '#9a3412', marginBottom: 4 }}>NCS 공식 평가와 분리된 채용 확장 교재</p>
-                <p style={{ fontSize: 12.5, color: 'var(--text)', lineHeight: 1.55 }}>
-                  지원하려는 기관 유형을 고르면 해당 채용에서 자주 요구되는 추가 필기영역을 학습합니다. 실제 출제 범위는 반드시 채용공고를 확인하세요.
-                </p>
+                <CompactText text={'지원 기관 유형별 추가 필기영역 학습\n실제 출제 범위는 채용공고에서 최종 확인'} maxItemChars={68} style={{ fontSize: 12.5, color: 'var(--text)' }} />
               </div>
               {RECRUIT_WRITTEN_TRACKS.map(track => {
                 const trackAreas = buildRecruitWrittenAreas(track.id, subject?.questions ?? [])
@@ -574,7 +571,7 @@ export default function StudyScreen({ initialSubject, initialArea, initialLesson
               {ch.plainSummary && (
                 <div style={{ background: 'var(--card)', borderRadius: 8, padding: '10px 12px', border: '1px solid var(--border)' }}>
                   <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--primary)', marginBottom: 4 }}>핵심 한 줄 요약</p>
-                  <p style={{ fontSize: 13, lineHeight: 1.8, color: 'var(--text)' }}>{ch.plainSummary}</p>
+                  <CompactText text={ch.plainSummary} maxItemChars={72} style={{ fontSize: 13, color: 'var(--text)' }} />
                 </div>
               )}
             </div>
@@ -585,7 +582,7 @@ export default function StudyScreen({ initialSubject, initialArea, initialLesson
               {ch.criteria.map((c, i) => (
                 <div key={i} style={{ display: 'flex', gap: 8, marginBottom: 6, alignItems: 'flex-start' }}>
                   <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--primary)', flexShrink: 0, marginTop: 3 }}>•</span>
-                  <p style={{ fontSize: 13, lineHeight: 1.75, color: 'var(--text)' }}>{c}</p>
+                  <CompactText text={c} maxItemChars={72} style={{ fontSize: 13, color: 'var(--text)' }} />
                 </div>
               ))}
             </div>
@@ -596,7 +593,7 @@ export default function StudyScreen({ initialSubject, initialArea, initialLesson
               {block.items.map((item, ii) => (
                 <div key={ii} style={{ display: 'flex', gap: 8, marginBottom: 5, alignItems: 'flex-start' }}>
                   <span style={{ fontSize: 12, fontWeight: 700, color: '#6a1b9a', flexShrink: 0, marginTop: 3 }}>•</span>
-                  <p style={{ fontSize: 13, lineHeight: 1.75 }}>{item}</p>
+                  <CompactText text={item} maxItemChars={72} style={{ fontSize: 13 }} />
                 </div>
               ))}
             </div>
@@ -1127,7 +1124,7 @@ function WrongItemResult({ w }) {
           {q.teachingNote && (
             <div style={{ background: '#f3e5f5', borderRadius: 8, padding: '8px 12px', marginTop: 8, border: '1px solid #ce93d8' }}>
               <p style={{ fontSize: 12, fontWeight: 700, color: '#6a1b9a', marginBottom: 3 }}>⭐ 학습 포인트</p>
-              <p style={{ fontSize: 12, color: '#4a148c', lineHeight: 1.7 }}>{q.teachingNote}</p>
+              <CompactText text={q.teachingNote} maxItemChars={68} style={{ fontSize: 12, color: '#4a148c' }} />
             </div>
           )}
         </div>
@@ -1168,24 +1165,7 @@ function parseStem(stem) {
 
 // ── 개조식 해설 렌더링 ────────────────────────────────────────────────────────
 function ExplanationBullets({ text }) {
-  if (!text) return null
-  const parts = text
-    .split(/(?<=[가-힣])\.(?=\s+[가-힣])/)
-    .flatMap(s => s.split(/\n/))
-    .map(s => s.trim())
-    .filter(s => s.length > 2)
-  if (parts.length <= 1)
-    return <p style={{ fontSize: 13, lineHeight: 1.8, whiteSpace: 'pre-wrap' }}>{text}</p>
-  return (
-    <ul style={{ paddingLeft: 0, margin: 0, listStyle: 'none' }}>
-      {parts.map((p, i) => (
-        <li key={i} style={{ fontSize: 13, lineHeight: 1.8, paddingLeft: 18, marginBottom: 4, position: 'relative' }}>
-          <span style={{ position: 'absolute', left: 0, color: 'var(--primary)', fontWeight: 900 }}>•</span>
-          {p}
-        </li>
-      ))}
-    </ul>
-  )
+  return <CompactText text={text} maxItemChars={74} style={{ fontSize: 13 }} />
 }
 
 // ── NCS 레슨 보조 자료 ──────────────────────────────────────────────────────
@@ -1206,19 +1186,19 @@ function NCSLessonExtras({ extras }) {
           {studyPoints && (
             <div style={{ marginBottom: 10 }}>
               <p style={{ fontSize: 12, fontWeight: 700, color: '#6a1b9a', marginBottom: 4 }}>🔑 학습 포인트</p>
-              <p style={{ fontSize: 12, lineHeight: 1.8, whiteSpace: 'pre-wrap', color: '#4a148c' }}>{studyPoints}</p>
+              <CompactText text={studyPoints} maxItemChars={70} style={{ fontSize: 12, color: '#4a148c' }} />
             </div>
           )}
           {strategy && (
             <div style={{ marginBottom: 10 }}>
               <p style={{ fontSize: 12, fontWeight: 700, color: '#1565c0', marginBottom: 4 }}>🏆 고득점 전략</p>
-              <p style={{ fontSize: 12, lineHeight: 1.8, whiteSpace: 'pre-wrap', color: '#0d47a1' }}>{strategy}</p>
+              <CompactText text={strategy} maxItemChars={70} style={{ fontSize: 12, color: '#0d47a1' }} />
             </div>
           )}
           {supplement && (
             <div>
               <p style={{ fontSize: 12, fontWeight: 700, color: '#2e7d32', marginBottom: 4 }}>📚 수준별 보충 학습</p>
-              <p style={{ fontSize: 12, lineHeight: 1.8, whiteSpace: 'pre-wrap', color: '#1b5e20' }}>{supplement}</p>
+              <CompactText text={supplement} maxItemChars={70} style={{ fontSize: 12, color: '#1b5e20' }} />
             </div>
           )}
         </div>
@@ -1441,7 +1421,7 @@ function LearnCard({ q, qType, correctIdx, revealed, onReveal }) {
       {stemHint && (
         <div style={{ background: '#fff8df', borderRadius: 10, padding: '11px 14px', border: '1px solid #ffc107', marginBottom: 10 }}>
           <p style={{ fontSize: 12, fontWeight: 800, color: '#856404', marginBottom: 5 }}>💡 학습 포인트</p>
-          <p style={{ fontSize: 12, lineHeight: 1.8, whiteSpace: 'pre-wrap', color: '#3e3422' }}>{stemHint}</p>
+          <CompactText text={stemHint} maxItemChars={68} style={{ fontSize: 12, color: '#3e3422' }} />
         </div>
       )}
       {q?.explanation && !q?.teacherHints && (
@@ -1455,7 +1435,7 @@ function LearnCard({ q, qType, correctIdx, revealed, onReveal }) {
       {q?.teachingNote && (
         <div style={{ background: '#f3e5f5', borderRadius: 10, padding: '10px 14px', border: '1px solid #ce93d8' }}>
           <p style={{ fontSize: 12, fontWeight: 700, color: '#6a1b9a', marginBottom: 4 }}>⭐ 학습 포인트</p>
-          <p style={{ fontSize: 12, color: '#4a148c', lineHeight: 1.7 }}>{q.teachingNote}</p>
+          <CompactText text={q.teachingNote} maxItemChars={68} style={{ fontSize: 12, color: '#4a148c' }} />
         </div>
       )}
     </div>
@@ -1473,7 +1453,7 @@ function FullAnswerDetails({ q }) {
           {q.teacherHints.map((h, i) => (
             <div key={i} style={{ display: 'flex', gap: 8, marginBottom: 6 }}>
               <span style={{ fontSize: 12, fontWeight: 700, padding: '1px 7px', borderRadius: 999, background: 'var(--primary)', color: '#fff', flexShrink: 0, height: 'fit-content', marginTop: 2 }}>{h.label}</span>
-              <p style={{ fontSize: 12, lineHeight: 1.7, color: 'var(--text)' }}>{h.text}</p>
+              <CompactText text={h.text} maxItemChars={68} style={{ fontSize: 12, color: 'var(--text)' }} />
             </div>
           ))}
         </div>
@@ -1484,7 +1464,7 @@ function FullAnswerDetails({ q }) {
           {q.scoringPoints.map((pt, i) => (
             <div key={i} style={{ display: 'flex', gap: 8, marginBottom: 4 }}>
               <span style={{ color: '#1e6f5c', fontWeight: 700, flexShrink: 0 }}>•</span>
-              <p style={{ fontSize: 12, lineHeight: 1.7 }}>{pt}</p>
+              <CompactText text={pt} maxItemChars={68} style={{ fontSize: 12 }} />
             </div>
           ))}
         </div>
@@ -1493,7 +1473,7 @@ function FullAnswerDetails({ q }) {
         <div style={{ background: '#f8f4ff', borderRadius: 10, padding: '10px 14px', border: '1px solid #c5b3e8', marginBottom: 10 }}>
           <p style={{ fontSize: 12, fontWeight: 700, color: '#6a1b9a', marginBottom: 6 }}>📋 근거 수행준거</p>
           {q.sourceGuidance.criterion && (
-            <p style={{ fontSize: 12, lineHeight: 1.7, marginBottom: 8, color: '#4a148c' }}>{q.sourceGuidance.criterion}</p>
+            <CompactText text={q.sourceGuidance.criterion} maxItemChars={68} style={{ fontSize: 12, marginBottom: 8, color: '#4a148c' }} />
           )}
           {[
             { key: 'checkItems',     label: '✓ 확인할 것' },
@@ -1502,7 +1482,7 @@ function FullAnswerDetails({ q }) {
           ].filter(({ key }) => q.sourceGuidance[key]).map(({ key, label }) => (
             <div key={key} style={{ marginBottom: 6 }}>
               <p style={{ fontSize: 12, fontWeight: 700, color: '#6a1b9a', marginBottom: 2 }}>{label}</p>
-              <p style={{ fontSize: 12, lineHeight: 1.7, paddingLeft: 8 }}>{q.sourceGuidance[key]}</p>
+              <CompactText text={q.sourceGuidance[key]} maxItemChars={68} style={{ fontSize: 12, paddingLeft: 8 }} />
             </div>
           ))}
         </div>
@@ -1661,7 +1641,7 @@ function GameCard({ q, qType, selectedAnswer, checked, correctIdx, onSelect }) {
         {checked && q?.explanation && (
           <div style={{ background: 'var(--primary-light)', borderRadius: 10, padding: '10px 14px', border: '1px solid var(--primary)', marginTop: 10 }}>
             <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--primary)', marginBottom: 4 }}>💡 해설</p>
-            <p style={{ fontSize: 13, lineHeight: 1.8 }}>{q.explanation}</p>
+            <ExplanationBullets text={q.explanation} />
           </div>
         )}
       </div>
@@ -1776,7 +1756,7 @@ function GameCard({ q, qType, selectedAnswer, checked, correctIdx, onSelect }) {
       {checked && stemHint && (
         <div style={{ background: '#fff8df', borderRadius: 10, padding: '11px 14px', border: '1px solid #ffc107', marginTop: 8 }}>
           <p style={{ fontSize: 12, fontWeight: 800, color: '#856404', marginBottom: 5 }}>💡 학습 포인트</p>
-          <p style={{ fontSize: 12, lineHeight: 1.8, whiteSpace: 'pre-wrap', color: '#3e3422' }}>{stemHint}</p>
+          <CompactText text={stemHint} maxItemChars={68} style={{ fontSize: 12, color: '#3e3422' }} />
         </div>
       )}
     </div>

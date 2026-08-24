@@ -661,3 +661,61 @@
   .teacher-ready-greeting { grid-template-columns: 46px minmax(0,1fr); }
   .teacher-ready-avatar { width: 46px; height: 46px; }
 }
+.compact-copy {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: inherit;
+}
+
+.compact-copy li {
+  position: relative;
+  min-width: 0;
+  padding-left: 15px;
+  font-size: inherit;
+  line-height: 1.58;
+  overflow-wrap: anywhere;
+}
+
+.compact-copy li::before {
+  content: '';
+  position: absolute;
+  left: 1px;
+  top: 0.72em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--primary);
+}
+
+.compact-copy li strong {
+  display: inline-block;
+  margin-right: 6px;
+  color: var(--primary);
+  font-size: 0.88em;
+  font-weight: 900;
+}
+
+.compact-copy.is-ordered {
+  counter-reset: compact-copy;
+}
+
+.compact-copy.is-ordered li {
+  counter-increment: compact-copy;
+  padding-left: 25px;
+}
+
+.compact-copy.is-ordered li::before {
+  content: counter(compact-copy);
+  top: 0.12em;
+  width: 19px;
+  height: 19px;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 19px;
+  text-align: center;
+}

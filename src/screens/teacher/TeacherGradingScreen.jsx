@@ -13,6 +13,7 @@ import jobQuestions         from '../../../data/questions.json'
 import { ncs2026Questions as ncsQuestions } from '../../lib/ncs2026.js'
 import { recruitWrittenQuestions } from '../../lib/recruitWritten.js'
 import foodServiceQuestions from '../../lib/foodServiceBank.js'
+import CompactText from '../../components/CompactText.jsx'
 
 const QUESTION_POOLS = {
   'job-common':   jobQuestions,
@@ -227,9 +228,9 @@ export default function TeacherGradingScreen({ onBack }) {
             {q?.modelAnswer ?? q?.answer ?? '(모범답안 없음)'}
           </p>
           {q?.explanation && (
-            <p style={{ fontSize: 12, color: 'var(--text-muted)', fontStyle: 'italic' }}>
-              💡 {q.explanation}
-            </p>
+            <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>
+              <CompactText text={q.explanation} maxItemChars={76} />
+            </div>
           )}
         </div>
 

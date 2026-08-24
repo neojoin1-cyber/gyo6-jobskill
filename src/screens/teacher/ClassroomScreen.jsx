@@ -58,6 +58,7 @@ import {
 import { effectiveView, onViewChange } from '../../lib/teacherLayout.js'
 import ClassroomQuestion, { isProjectable } from './ClassroomQuestion.jsx'
 import DeckProjector, { loadDeckSubject } from './DeckProjector.jsx'
+import CompactText from '../../components/CompactText.jsx'
 import deckIndex from '../../../data/decks/index.json'
 import {
   RECRUIT_WRITTEN_TRACKS,
@@ -493,8 +494,8 @@ export default function ClassroomScreen({ onBack }) {
         </button>
       </header>
       <div className="classroom-intro">
-        <b>학생 화면과 같은 자료로 수업을 이어갑니다.</b>
-        <span>정답은 가린 채 시작하고, 전체 화면은 프로젝터·전자칠판에 연결할 때만 사용합니다.</span>
+        <b>학생 화면과 동일한 학습 자료</b>
+        <span>정답 기본 가림 · 전체 화면은 프로젝터·전자칠판 연결 시 사용</span>
       </div>
       {hint && <p className="classroom-hint">{hint}</p>}
 
@@ -514,7 +515,7 @@ export default function ClassroomScreen({ onBack }) {
           <span style={{ flex: 1 }}>
             <b>문항으로 수업</b>
             <span className="muted" style={{ display: 'block', fontSize: 12 }}>
-              공식 체계를 먼저 고른 뒤 영역·단원을 함께 풉니다
+              공식 체계 → 영역 → 단원 순서로 선택
             </span>
           </span><span className="muted">›</span>
         </button>
@@ -525,7 +526,7 @@ export default function ClassroomScreen({ onBack }) {
           <span style={{ flex: 1 }}>
             <b>우리 반 약한 영역</b>
             <span className="muted" style={{ display: 'block', fontSize: 12 }}>
-              많이 틀린 곳으로 바로 들어갑니다
+              학급 다빈도 오답으로 바로 수업
             </span>
           </span><span className="muted">›</span>
         </button>
@@ -535,7 +536,7 @@ export default function ClassroomScreen({ onBack }) {
           <span style={{ flex: 1 }}>
             <b>훈화 자료</b>
             <span className="muted" style={{ display: 'block', fontSize: 12 }}>
-              {MORNING_TALKS.length}편 · 주제로 골라 띄웁니다
+              {MORNING_TALKS.length}편 · 주제 선택
             </span>
           </span><span className="muted">›</span>
         </button>
@@ -545,7 +546,7 @@ export default function ClassroomScreen({ onBack }) {
           <span style={{ flex: 1 }}>
             <b>수업 덱</b>
             <span className="muted" style={{ display: 'block', fontSize: 12 }}>
-              출처 체계가 확인된 자료 {SAFE_DECK_INDEX.reduce((n, s2) => n + s2.lessonCount, 0)}차시
+              출처 확인 완료 · {SAFE_DECK_INDEX.reduce((n, s2) => n + s2.lessonCount, 0)}차시
             </span>
           </span><span className="muted">›</span>
         </button>
@@ -604,7 +605,7 @@ export default function ClassroomScreen({ onBack }) {
           <h1>수업 덱</h1>
         </header>
         <p className="muted" style={{ padding: '0 16px 8px' }}>
-          외부 사이트로 나가지 않습니다. 지목·타이머·우리 반 현황을 그대로 쓰면서 띄웁니다.
+          앱 안에서 바로 투사 · 지목·타이머·학급 현황 유지
         </p>
         <div className={pickCls}>
           {SAFE_DECK_INDEX.map(sub2 => (
@@ -870,7 +871,7 @@ export default function ClassroomScreen({ onBack }) {
       <div className="classroom-body">
         <div className="classroom-main">
           <h2 className="classroom-stem">{talk.title}</h2>
-          <div className="classroom-context">{talk.body}</div>
+          <div className="classroom-context"><CompactText text={talk.body} maxItemChars={88} /></div>
         </div>
         <div className="classroom-side">
           {talk.oneLine && <p className="classroom-oneline">“{talk.oneLine}”</p>}
@@ -962,7 +963,7 @@ export default function ClassroomScreen({ onBack }) {
               <button className="classroom-btn" onClick={() => setShowExp(v => !v)}>
                 {showExp ? '해설 접기' : '해설 펼치기'}
               </button>
-              {showExp && <p>{q.explanation}</p>}
+              {showExp && <CompactText text={q.explanation} maxItemChars={88} />}
             </div>
           )}
         </div>

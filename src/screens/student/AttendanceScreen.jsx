@@ -9,6 +9,7 @@
 import { useState } from 'react'
 import { todaysTalk, markAttendance, getAttendance } from '../../lib/morningTalk.js'
 import { addXp } from '../../lib/xp.js'
+import CompactText from '../../components/CompactText.jsx'
 
 const XP_BASE = 10
 const XP_BONUS = 10
@@ -63,7 +64,7 @@ export default function AttendanceScreen({ onBack, onDone }) {
       <div style={card}>
         <span style={chip}>{talk.theme}</span>
         <h2 style={{ fontSize: 19, fontWeight: 800, marginTop: 10, lineHeight: 1.5 }}>{talk.title}</h2>
-        <p style={{ fontSize: 14.5, lineHeight: 2, marginTop: 12, whiteSpace: 'pre-wrap' }}>{talk.body}</p>
+        <CompactText text={talk.body} maxItemChars={72} style={{ fontSize: 14.5, marginTop: 12 }} />
         <div style={{
           marginTop: 16, padding: '13px 15px', borderRadius: 10,
           background: 'var(--primary-light)', borderLeft: '3px solid var(--primary)',
@@ -113,7 +114,7 @@ export default function AttendanceScreen({ onBack, onDone }) {
               <p style={{ fontWeight: 800, marginBottom: 6, color: correct ? '#047857' : '#B91C1C' }}>
                 {correct ? `정답! +${XP_BASE + XP_BONUS} XP` : `정답은 ${correctIdx + 1}번 · 출석 +${XP_BASE} XP`}
               </p>
-              <p style={{ fontSize: 13.5, lineHeight: 1.8, color: '#374151' }}>{q.explanation}</p>
+              <CompactText text={q.explanation} maxItemChars={72} style={{ fontSize: 13.5, color: '#374151' }} />
             </div>
             <button onClick={() => setPhase('done')} style={primaryBtn}>출석 완료</button>
           </>

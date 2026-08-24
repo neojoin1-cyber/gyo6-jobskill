@@ -12,6 +12,7 @@ import { englishStudyQuestions, jobCommonMediaQuestions } from '../../lib/jobCom
 import ListeningPrompt from './ListeningPrompt.jsx'
 import QuestionMedia from './QuestionMedia.jsx'
 import DifficultyBadge from './DifficultyBadge.jsx'
+import CompactText from '../../components/CompactText.jsx'
 
 // 직업공통 풀 = 기존 문항 + 영어 + 2026 듣기·시각자료 보완 문항
 const QUESTION_POOLS = {
@@ -172,7 +173,7 @@ function AnswerFeedback({ q, correct }) {
         </p>
       )}
       {q.explanation && (
-        <p style={{ marginTop: 8, fontSize: 13, color: 'var(--text)', lineHeight: 1.75 }}>💡 {q.explanation}</p>
+        <CompactText text={q.explanation} maxItemChars={72} style={{ marginTop: 8, fontSize: 13, color: 'var(--text)' }} />
       )}
       <KeyTerms terms={q.keyTerms} />
     </div>
@@ -530,9 +531,7 @@ export default function MissionScreen({ mission, onBack, onViewWrongAnswers }) {
                 )}
 
                 {!isSelf && q.explanation && (
-                  <p style={{ marginTop: 6, fontSize: 12, color: 'var(--text-muted)', fontStyle: 'italic' }}>
-                    💡 {q.explanation}
-                  </p>
+                  <CompactText text={q.explanation} maxItemChars={68} style={{ marginTop: 6, fontSize: 12, color: 'var(--text-muted)' }} />
                 )}
                 <KeyTerms terms={q.keyTerms} />
               </div>
@@ -611,7 +610,7 @@ export default function MissionScreen({ mission, onBack, onViewWrongAnswers }) {
           <div className="card" style={{ textAlign: 'center', border: '2px solid var(--primary)', maxWidth: 360 }}>
             <div style={{ fontSize: 52, marginBottom: 12 }}>{info.icon}</div>
             <p style={{ fontWeight: 700, fontSize: 16, marginBottom: 10 }}>{info.title}</p>
-            <p style={{ fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.8, whiteSpace: 'pre-wrap', marginBottom: 20 }}>{info.body}</p>
+            <CompactText text={info.body} maxItemChars={68} style={{ fontSize: 14, color: 'var(--text-muted)', marginBottom: 20 }} />
             <button className="btn btn-primary btn-full" onClick={examPopup.onClose}>
               알겠어요, 학습 시작!
             </button>
@@ -857,9 +856,7 @@ export default function MissionScreen({ mission, onBack, onViewWrongAnswers }) {
                     {q.modelAnswer || (String(q.answer ?? '').length > 3 ? q.answer : (q.explanation || '해설을 참고해 주세요.'))}
                   </p>
                   {q.explanation && (
-                    <p style={{ marginTop: 8, fontSize: 12, color: 'var(--text-muted)', fontStyle: 'italic' }}>
-                      💡 {q.explanation}
-                    </p>
+                    <CompactText text={q.explanation} maxItemChars={68} style={{ marginTop: 8, fontSize: 12, color: 'var(--text-muted)' }} />
                   )}
                   <KeyTerms terms={q.keyTerms} />
                 </div>

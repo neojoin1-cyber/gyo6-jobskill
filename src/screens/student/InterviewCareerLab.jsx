@@ -30,6 +30,7 @@ import {
 import { pushBack, popBack } from '../../lib/backButton.js'
 import { supabase } from '../../lib/supabase.js'
 import { useAuth } from '../../App.jsx'
+import CompactText from '../../components/CompactText.jsx'
 import {
   COVER_LETTER_FIELDS,
   COVER_LETTER_QUESTION_LIBRARY,
@@ -147,10 +148,10 @@ function TrackDetail({ track, onBack }) {
           <div className="track-lesson-progress"><span>{module.lessons.map((item, index) => <i key={item.title} className={index <= lessonIndex ? 'is-on' : ''} />)}</span><b>{done.has(lessonKey) ? '학습 완료' : '학습 중'}</b></div>
           <section className="track-lesson-card">
             <header><span>핵심 {lessonIndex + 1}</span><h2>{lesson.title}</h2></header>
-            <div className="track-lesson-concept"><BookOpen weight="duotone" /><div><b>이렇게 이해함</b><p>{lesson.concept}</p></div></div>
+            <div className="track-lesson-concept"><BookOpen weight="duotone" /><div><b>이렇게 이해함</b><CompactText text={lesson.concept} maxItemChars={68} /></div></div>
             <div className="track-lesson-case"><b>실제 답변에서는</b><p>{lesson.example}</p></div>
-            <div className="track-lesson-trap"><WarningCircle weight="fill" /><div><b>이 답변은 피함</b><p>{lesson.trap}</p></div></div>
-            <div className="track-lesson-practice"><NotePencil weight="duotone" /><div><b>지금 말해 보기</b><p>{lesson.practice}</p></div></div>
+            <div className="track-lesson-trap"><WarningCircle weight="fill" /><div><b>이 답변은 피함</b><CompactText text={lesson.trap} maxItemChars={68} /></div></div>
+            <div className="track-lesson-practice"><NotePencil weight="duotone" /><div><b>지금 말해 보기</b><CompactText text={lesson.practice} maxItemChars={68} /></div></div>
           </section>
           <footer className="track-lesson-actions"><button onClick={() => setLessonIndex(value => Math.max(0, value - 1))} disabled={lessonIndex === 0}><ArrowLeft />이전 핵심</button><button onClick={completeLesson}>{lessonIndex === module.lessons.length - 1 ? <><CheckCircle weight="fill" />모듈 완료</> : <><PlayCircle weight="fill" />완료하고 다음</>}</button></footer>
         </div>
@@ -161,10 +162,10 @@ function TrackDetail({ track, onBack }) {
     <div className="screen interview-career-screen">
       <header className="appbar interview-career-appbar"><button className="appbar-back" onClick={onBack} aria-label="지원처별 면접 심화로 돌아가기"><ArrowLeft /></button><div><span className="interview-career-eyebrow">지원처별 심화</span><span className="appbar-title">{track.label}</span></div></header>
       <div className="screen-body interview-career-body">
-        <div className="interview-track-heading"><Icon size={28} weight="duotone" /><p>{track.description}</p></div>
+        <div className="interview-track-heading"><Icon size={28} weight="duotone" /><CompactText text={track.description} maxItemChars={72} /></div>
         <div className="track-completion-strip"><span>{done.size}/{track.modules.reduce((sum, item) => sum + item.lessons.length, 0)} 핵심 완료</span><div><i style={{ width: `${done.size / track.modules.reduce((sum, item) => sum + item.lessons.length, 0) * 100}%` }} /></div></div>
         <div className="interview-module-list">{track.modules.map((item, index) => { const completed = item.lessons.every((lesson, lessonNo) => done.has(`${item.id}:${lessonNo}`)); return <button key={item.id} className="interview-module-row" onClick={() => openModule(item.id)}><span>{completed ? <CheckCircle weight="fill" /> : index + 1}</span><div><h3>{item.title}</h3><p>{item.focus}</p><small>{item.lessons.length}개 핵심 · 실전 예시 · 답변 과제</small></div><CaretRight /></button> })}</div>
-        <section className="interview-practice-band"><h3>이 과정의 완료 기준</h3><p>{track.completion}</p><ul><li>분야 공통 4개 모듈을 모두 학습함</li><li>각 핵심의 말하기 과제를 자신의 경험으로 답함</li><li>기업·기관 연구소에서 실제 지원처 자료와 연결함</li></ul></section>
+        <section className="interview-practice-band"><h3>이 과정의 완료 기준</h3><CompactText text={track.completion} maxItemChars={68} /><ul><li>분야 공통 4개 모듈을 모두 학습함</li><li>각 핵심의 말하기 과제를 자신의 경험으로 답함</li><li>기업·기관 연구소에서 실제 지원처 자료와 연결함</li></ul></section>
       </div>
     </div>
   )
@@ -230,7 +231,7 @@ function OrganizationDetail({ organization, onBack, onOpenCover }) {
     <div className="screen interview-career-screen">
       <header className="appbar interview-career-appbar"><button className="appbar-back" onClick={onBack} aria-label="기업·기관 목록으로 돌아가기"><ArrowLeft /></button><div><span className="interview-career-eyebrow">{sectorLabel} · {organization.group}</span><span className="appbar-title">{organization.name}</span></div></header>
       <div className="screen-body interview-career-body">
-        <section className="interview-org-identity"><h2>한 문장으로 이해</h2><p>{organization.identity}</p></section>
+        <section className="interview-org-identity"><h2>핵심 정체성</h2><CompactText text={organization.identity} maxItemChars={72} /></section>
         <section className="interview-detail-section organization-course"><header><div><h3>이 지원처 면접 완성과정</h3><p className="interview-section-help">기관 이름만 외우지 않고 5개 결과물을 차례로 완성함.</p></div><b>{courseDone.size}/5</b></header>{organization.interviewCourse.map((stage, index) => <details key={stage.id} open={index === 0}><summary><span>{courseDone.has(stage.id) ? <CheckCircle weight="fill" /> : index + 1}</span><div><strong>{stage.title}</strong><small>{stage.goal}</small></div><CaretRight /></summary><div className="organization-course-body"><ul>{stage.tasks.map(task => <li key={task}>{task}</li>)}</ul><p><b>완성 결과물</b>{stage.output}</p><button className={courseDone.has(stage.id) ? 'is-done' : ''} onClick={() => toggleCourse(stage.id)}>{courseDone.has(stage.id) ? '완료 취소' : '이 단계 완료'}</button></div></details>)}</section>
         <section className="interview-detail-section"><h3>연결할 직무</h3><div className="interview-chip-row">{organization.roles.map(role => <span key={role}>{role}</span>)}</div></section>
         <section className="interview-detail-section organization-evidence"><h3>답변에서 증명할 기준과 실례</h3><p className="interview-section-help">가치 단어만 말하지 않고 아래와 같은 행동·결과로 증명함.</p>{organization.evidenceExamples.map(item => <article key={item.value}><header><CheckCircle size={18} weight="fill" /><strong>{item.value}</strong></header><ul>{item.examples.map(example => <li key={example}>{example}</li>)}</ul></article>)}</section>

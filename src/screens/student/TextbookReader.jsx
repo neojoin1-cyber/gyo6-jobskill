@@ -8,6 +8,7 @@ import { addXp } from '../../lib/xp.js'
 import { recordAnswer } from '../../lib/mastery.js'
 import { recordQuestion } from '../../lib/subjectProgress.js'
 import { lazyChunk } from '../../lib/lazyChunk.js'
+import CompactText from '../../components/CompactText.jsx'
 
 const QuizRunner = lazyChunk(() => import('./QuizRunner.jsx'), 'QuizRunner')
 
@@ -700,7 +701,7 @@ function InlineCheck({ q, mode = 'quiz', subjectId, courseId, unitId, onDone, on
                 : (pick === -1 ? `시간 초과 — 정답은 ${String.fromCharCode(65 + correctIdx)}번`
                               : `아쉬워요 — 정답은 ${String.fromCharCode(65 + correctIdx)}번`)}
             </p>
-            {q.explanation && <p style={{ fontSize: 13.5, color: '#374151', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>{q.explanation}</p>}
+            {q.explanation && <CompactText text={q.explanation} maxItemChars={72} style={{ fontSize: 13.5, color: '#374151' }} />}
             {!correct && <p style={{ fontSize: 12, color: '#B91C1C', marginTop: 6 }}>🔖 오답노트에 담았어요 — 나중에 다시 풀 수 있어요</p>}
           </div>
         )}

@@ -27,6 +27,7 @@
  */
 import { useEffect, useRef, useState } from 'react'
 import useAutoFit from '../../lib/useAutoFit.js'
+import { compactInstructionHtml, compactText } from '../../lib/compactCopy.js'
 
 function useSwipe(ref, onPrev, onNext) {
   useEffect(() => {
@@ -78,6 +79,7 @@ export function loadDeckSubject(id) {
 }
 
 const html = (s) => ({ __html: String(s ?? '') })
+const compactHtml = (s) => ({ __html: compactInstructionHtml(s) })
 
 /** 답을 들고 있는 조각. 넘길 때마다 다시 가려야 한다. */
 const HAS_ANSWER = new Set(['ask', 'quiz'])
@@ -96,7 +98,7 @@ function Beat({ b, reveal }) {
           <h2>{b.ctitle}</h2>
           {b.cno && b.ctotal && <p className="deck-step">{b.cno} / {b.ctotal}차시</p>}
           {b.goals?.length > 0 && (
-            <ul className="deck-goals">{b.goals.map((g, i) => <li key={i}>{g}</li>)}</ul>
+            <ul className="deck-goals">{b.goals.map((g, i) => <li key={i}>{compactText(g, { maxItemChars: 96 })}</li>)}</ul>
           )}
         </div>
       )
@@ -115,9 +117,9 @@ function Beat({ b, reveal }) {
         <div className="deck-block">
           <h3>학습 목표</h3>
           <ul className="deck-goals">
-            {(b.objectives ?? []).map((o, i) => <li key={i} dangerouslySetInnerHTML={html(o)} />)}
+            {(b.objectives ?? []).map((o, i) => <li key={i}>{compactText(o, { maxItemChars: 96 })}</li>)}
           </ul>
-          {b.why && <p className="deck-why" dangerouslySetInnerHTML={html(b.why)} />}
+          {b.why && <div className="deck-why" dangerouslySetInnerHTML={compactHtml(b.why)} />}
         </div>
       )
 
@@ -128,7 +130,7 @@ function Beat({ b, reveal }) {
       return (
         <div className="deck-block">
           {b.h && <h3>{b.h}</h3>}
-          <div dangerouslySetInnerHTML={html(b.html)} />
+          <div dangerouslySetInnerHTML={compactHtml(b.html)} />
         </div>
       )
 
@@ -146,12 +148,12 @@ function Beat({ b, reveal }) {
               <>
                 {b.answerHtml && (
                   <div className="deck-answer">
-                    <b>답</b><div dangerouslySetInnerHTML={html(b.answerHtml)} />
+                    <b>답</b><div dangerouslySetInnerHTML={compactHtml(b.answerHtml)} />
                   </div>
                 )}
                 {b.trapHtml && (
                   <div className="deck-trap">
-                    <b>함정</b><div dangerouslySetInnerHTML={html(b.trapHtml)} />
+                    <b>함정</b><div dangerouslySetInnerHTML={compactHtml(b.trapHtml)} />
                   </div>
                 )}
               </>
@@ -171,7 +173,7 @@ function Beat({ b, reveal }) {
       return (
         <div className="deck-block deck-tip">
           <h3>시험에 이렇게 나온다</h3>
-          <div dangerouslySetInnerHTML={html(b.html)} />
+          <div dangerouslySetInnerHTML={compactHtml(b.html)} />
           {b.example && (
             <div className="deck-example">
               <p className="deck-example-stem">{b.example.stem}</p>
@@ -194,7 +196,7 @@ function Beat({ b, reveal }) {
       return (
         <div className="deck-memo">
           {b.keyline && <p className="deck-keyline">{b.keyline}</p>}
-          <ul>{(b.memo ?? []).map((m, i) => <li key={i}>{m}</li>)}</ul>
+          <ul>{(b.memo ?? []).map((m, i) => <li key={i}>{compactText(m, { maxItemChars: 96 })}</li>)}</ul>
         </div>
       )
 
@@ -217,11 +219,11 @@ function Beat({ b, reveal }) {
             </ol>
             {reveal && b.explHtml && (
               <div className="deck-answer"><b>해설</b>
-                <div dangerouslySetInnerHTML={html(b.explHtml)} /></div>
+                <div dangerouslySetInnerHTML={compactHtml(b.explHtml)} /></div>
             )}
             {reveal && b.tipHtml && (
               <div className="deck-trap"><b>짚을 것</b>
-                <div dangerouslySetInnerHTML={html(b.tipHtml)} /></div>
+                <div dangerouslySetInnerHTML={compactHtml(b.tipHtml)} /></div>
             )}
             {!reveal && <p className="deck-hidden">정답은 가려져 있습니다<br /><kbd>Space</kbd></p>}
           </div>
@@ -234,7 +236,7 @@ function Beat({ b, reveal }) {
           <h3>{b.h ?? 'OX 확인'}</h3>
           <div dangerouslySetInnerHTML={html(b.qHtml)} />
           {reveal
-            ? <div className="deck-answer" dangerouslySetInnerHTML={html(b.aHtml)} />
+            ? <div className="deck-answer" dangerouslySetInnerHTML={compactHtml(b.aHtml)} />
             : <p className="deck-hidden">답은 가려져 있습니다 · Space</p>}
         </div>
       )
@@ -243,7 +245,7 @@ function Beat({ b, reveal }) {
       return (
         <div className="deck-block">
           <h3>다음 시간 · {b.h}</h3>
-          <ul className="deck-goals">{(b.previewList ?? []).map((p, i) => <li key={i}>{p}</li>)}</ul>
+          <ul className="deck-goals">{(b.previewList ?? []).map((p, i) => <li key={i}>{compactText(p, { maxItemChars: 96 })}</li>)}</ul>
           {b.homework && <p className="deck-why"><b>과제</b> — {b.homework}</p>}
         </div>
       )
@@ -251,7 +253,7 @@ function Beat({ b, reveal }) {
     default:
       // 새 조각이 생겨도 화면이 비지 않게 한다.
       return b.html
-        ? <div className="deck-block" dangerouslySetInnerHTML={html(b.html)} />
+        ? <div className="deck-block" dangerouslySetInnerHTML={compactHtml(b.html)} />
         : null
   }
 }

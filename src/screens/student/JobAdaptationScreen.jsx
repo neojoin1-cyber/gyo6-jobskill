@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { pushBack, popBack } from '../../lib/backButton.js'
+import CompactText from '../../components/CompactText.jsx'
 import {
   JOB_ADAPTATION_SCALE,
   buildJobAdaptationItems,
@@ -128,7 +129,7 @@ export default function JobAdaptationScreen({
           <div className="card ja-hero">
             <span className="ja-badge">{meta.badge}</span>
             <h2>{meta.title}</h2>
-            <p>{meta.description}</p>
+            <CompactText text={meta.description} maxItemChars={68} />
             <div className="ja-stats">
               <span><b>{items.length}</b>문항</span>
               <span><b>{meta.minutes}</b>분</span>

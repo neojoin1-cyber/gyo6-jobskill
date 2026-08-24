@@ -6,6 +6,7 @@ import { loadMySubjects } from '../../lib/subjectAccess.js'
 import { COMMON_ABILITY_COURSES } from '../../lib/officialStandards.js'
 import { ASSESS_GOALS, ASSESS_GOAL_LIST, getAssessGoal, setAssessGoal } from '../../lib/assessGoal.js'
 import { lazyChunk } from '../../lib/lazyChunk.js'
+import CompactText from '../../components/CompactText.jsx'
 
 // 과목별 청크 분리 — 해당 과목 선택 시에만 로드됨
 const StudyScreen             = lazyChunk(() => import('./StudyScreen.jsx'), 'StudyScreen')
@@ -255,6 +256,31 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
     const isPersonality = selected.type === 'personality'
     const mockReady = MOCK_SUPPORTED.has(course) || isPersonality
     const diagReady = DIAG_SUPPORTED.has(course) || isPersonality
+    const writtenGuide = course === 'ncs-basic'
+      ? '공공기관·금융권·대기업 필기 공통 중심축\n본과정 완료 후 채용필기 심화관에서 지원처별 영역 보완'
+      : 'NCS 공통 본과정과 함께 학습 필요\n지원 기관·업종별 추가 출제영역을 완성하는 심화 과정'
+    const diagnosticCopy = isPersonality
+      ? '48문항 · 약 13분 · 총 20회\n응답 경향·신뢰도 빠른 점검'
+      : course === 'job-common'
+        ? goal === 'cert'
+          ? '약한 영역 빠른 탐색\n앱 진단 40문항 또는 정밀 자가진단 215문항 선택'
+          : '자가진단 215문항 또는 앱 진단 40문항 선택\n목적에 맞춰 약점과 보완 순서 확인'
+        : course === 'ncs-basic'
+          ? '전체·영역·소단원 범위 선택\n5~40문항으로 약점·보완 순서 확인\n공식 합격 판정 아님'
+          : course === 'recruit-written'
+            ? '채용 트랙·세부 단원 범위 선택\n5~40문항으로 약점·보완 순서 확인\n실제 기관 합격 판정 아님'
+            : '전체·영역·소단원 범위 선택\n이해도 진단 후 보완학습 바로 연결'
+    const mockCopy = isPersonality
+      ? '190문항 · 약 51분 · 총 10회\n실전 응시 후 상세 결과 분석'
+      : mockReady
+        ? course === 'job-common'
+          ? goal === 'self'
+            ? '5영역 342문항 · 240분 인증진단 규모\n1·2학년은 진단평가부터 권장'
+            : '2026 공개 구성의 영역별 문항 수·시간 반영\n영역별 또는 342문항 전체 실전 가능'
+          : course === 'recruit-written'
+            ? '지원 분야·문항 수·제한시간 선택\n중간 해설 없는 실제 필기 방식'
+            : '영역·문항 수·제한시간 선택\n중간 해설 없는 실제 시험 방식'
+        : '과목별 모의고사 준비 중'
     return (
       <div className="screen">
         <div className="appbar">
@@ -265,9 +291,7 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
           {(course === 'ncs-basic' || course === 'recruit-written') && (
             <div className={`written-path-guide ${course === 'ncs-basic' ? 'core' : 'advanced'}`}>
               <strong>{course === 'ncs-basic' ? 'STEP 1 · 필기 공통 필수' : 'STEP 2 · 지원처 심화 필수'}</strong>
-              <p>{course === 'ncs-basic'
-                ? '공공기관·금융권·대기업 필기의 공통 중심축입니다. 이 본과정을 익힌 뒤 지원처별 추가 영역을 채용필기 심화·확장에서 보완합니다.'
-                : 'NCS 공통 본과정을 대체하지 않습니다. NCS를 바탕으로 지원 기관·업종별 추가 출제영역까지 함께 완성하는 심화 과정입니다.'}</p>
+              <CompactText text={writtenGuide} maxItemChars={68} />
             </div>
           )}
           {/* 세 학습 기능은 순서 강제 없이 목적에 따라 선택한다. */}
@@ -344,7 +368,7 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
                 <p style={{ fontWeight: 700, fontSize: 15, marginBottom: 3 }}>
                   <span style={stepBadge}>선택 · 익히기</span>학습방법
                 </p>
-                <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.5 }}>인성검사의 원리와 응답 전략을 익히는 가이드입니다. <strong style={{ color: 'var(--primary)' }}>먼저 여기부터!</strong></p>
+                <CompactText text={'검사 원리·응답 전략 학습\n처음이면 여기부터'} maxItemChars={68} style={{ fontSize: 12, color: 'var(--text-muted)' }} />
               </div>
               <span style={{ color: 'var(--text-muted)', fontSize: 20, flexShrink: 0 }}>›</span>
             </button>
@@ -363,7 +387,7 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
               <p style={{ fontWeight: 700, fontSize: 15, marginBottom: 3 }}>
                 <span style={stepBadge}>선택 · 학습</span>자율학습
               </p>
-              <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.5 }}>요점정리로 개념을 익히고 <strong>문제 풀이로 반복</strong>합니다. 틀린 문항은 오답노트로 복습. <strong style={{ color: 'var(--primary)' }}>처음이면 여기부터!</strong></p>
+              <CompactText text={'요점정리로 개념 학습\n문제 풀이로 반복\n오답노트로 복습 · 처음이면 여기부터'} maxItemChars={68} style={{ fontSize: 12, color: 'var(--text-muted)' }} />
             </div>
             <span style={{ color: 'var(--text-muted)', fontSize: 20, flexShrink: 0 }}>›</span>
           </button>
@@ -385,21 +409,7 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
                 <span style={{ ...stepBadge, background: '#E0E7FF', color: '#4338CA' }}>선택 · 진단</span>{isPersonality ? '인성 진단' : '진단평가'}
                 {course === 'job-common' && goal && ASSESS_GOALS[goal].recommend === 'diagnostic' && <span style={goalPick}>내 목표에 맞음</span>}
               </p>
-              <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.5 }}>
-                {isPersonality
-                  ? <><strong>48문항 · 약 13분 · 총 20회 반복 진단.</strong> 핵심 문항으로 내 응답 경향·신뢰도를 빠르게 점검합니다.</>
-                  : course === 'job-common'
-                    ? goal === 'cert'
-                      // 목표가 3학년인데 첫마디가 "1·2학년"이면 자기 것이 아니라고 읽힌다.
-                      // 학년이 아니라 **목적**을 먼저 말한다 — 실제로 3학년도 약점 점검에 쓴다.
-                      ? <><strong>약한 영역을 빠르게 찾는 단계</strong>입니다. 앱 빠른 진단 40문항, 더 촘촘히 보려면 215문항 자가진단도 고를 수 있어요.</>
-                      : <><strong>215문항 자가진단</strong>(1·2학년 규모) 또는 <strong>앱 빠른 진단 40문항</strong>을 목적에 따라 선택합니다.</>
-                    : course === 'ncs-basic'
-                      ? <>전체·영역·소단원 중 범위를 고르고 <strong>5~40문항</strong>으로 약점과 보완 순서를 찾습니다. 공식 합격 판정이 아닙니다.</>
-                      : course === 'recruit-written'
-                        ? <>채용 트랙·세부 단원 중 범위를 고르고 <strong>5~40문항</strong>으로 약점과 보완 순서를 찾습니다. 실제 기관 합격 판정이 아닙니다.</>
-                      : <>전체·영역·소단원을 골라 <strong>이해도와 부족한 부분</strong>을 진단하고 바로 보완학습으로 이동합니다.</>}
-              </p>
+              <CompactText text={diagnosticCopy} maxItemChars={68} style={{ fontSize: 12, color: 'var(--text-muted)' }} />
             </div>
             <span style={{ color: 'var(--text-muted)', fontSize: 20, flexShrink: 0 }}>›</span>
           </button>
@@ -421,19 +431,7 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
                 {course === 'job-common' && goal && ASSESS_GOALS[goal].recommend === 'mock' && <span style={goalPick}>내 목표에 맞음</span>}
                 {!mockReady && <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-muted)', marginLeft: 6 }}>준비 중</span>}
               </p>
-              <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.5 }}>
-                {isPersonality
-                  ? '190문항 · 약 51분 · 총 10회 반복 검사. 실전 규모로 응시하고 상세 결과 분석을 받습니다.'
-                  : mockReady
-                  ? course === 'job-common'
-                    ? goal === 'self'
-                      ? '5영역 342문항 · 240분 인증진단 규모입니다. 1·2학년이라면 위 진단평가부터 권합니다.'
-                      : '내 목표 규모입니다 — 공개된 2026 구성의 5영역 문항 수·제한시간을 반영해 영역별 또는 342문항 전체 실전을 연습합니다.'
-                    : course === 'recruit-written'
-                      ? '지원 분야를 고른 뒤 문항 수와 제한시간을 설정해 실제 필기처럼 응시합니다.'
-                    : '영역·문항 수·제한시간을 정하고, 중간 해설 없이 실제 시험처럼 응시합니다.'
-                  : '과목별 모의고사 형태로 곧 제공될 예정입니다.'}
-              </p>
+              <CompactText text={mockCopy} maxItemChars={68} style={{ fontSize: 12, color: 'var(--text-muted)' }} />
             </div>
             {mockReady && <span style={{ color: 'var(--text-muted)', fontSize: 20, flexShrink: 0 }}>›</span>}
           </button>

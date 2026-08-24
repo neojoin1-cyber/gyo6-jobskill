@@ -1,127 +1,31 @@
 import { useState, useMemo, useEffect } from 'react'
 import QuestionMedia from './QuestionMedia.jsx'
 import { buildLearningMistakes, buildLearningPoints, learningVisualFor } from '../../lib/learningExperience.js'
+import CompactText from '../../components/CompactText.jsx'
 
 const EMPTY_QUESTIONS = []
 
-// 긴 텍스트를 줄여 보이고 '더 보기' 탭으로 전체 공개
-function ExpandableText({ text, maxChars = 260, style }) {
-  const [expanded, setExpanded] = useState(false)
-  if (!text) return null
-  const chars = [...text]
-  const needsExpand = chars.length > maxChars
-  const shown = needsExpand && !expanded ? chars.slice(0, maxChars).join('').trimEnd() : text
-  return (
-    <span>
-      <span style={{ whiteSpace: 'pre-wrap', ...style }}>{shown}</span>
-      {needsExpand && !expanded && (
-        <>
-          <span style={{ color: 'var(--text-muted)' }}>…</span>
-          <br />
-          <button
-            onClick={() => setExpanded(true)}
-            style={{ marginTop: 8, padding: '5px 14px', borderRadius: 20, border: '1px solid var(--primary)',
-              background: 'transparent', color: 'var(--primary)', fontSize: 13, fontWeight: 700, cursor: 'pointer' }}>
-            더 보기 ▼
-          </button>
-        </>
-      )}
-      {needsExpand && expanded && (
-        <><br />
-          <button
-            onClick={() => setExpanded(false)}
-            style={{ marginTop: 8, padding: '5px 14px', borderRadius: 20, border: '1px solid var(--border)',
-              background: 'transparent', color: 'var(--text-muted)', fontSize: 12, fontWeight: 700, cursor: 'pointer' }}>
-            접기 ▲
-          </button>
-        </>
-      )}
-    </span>
-  )
+function ExpandableText({ text, style }) {
+  return <CompactText text={text} style={style} />
+}
+
+function readableScenario(value) {
+  return String(value ?? '')
+    .replace(/\s*•\s*/g, '\n• ')
+    .replace(/([.!?~])(?=[가-힣A-Za-z0-9【[])/g, '$1\n')
+    .replace(/,(?=(?:아래|다음|단,|그리고|하지만|반면))/g, ',\n')
+    .replace(/\^\^(?=[가-힣A-Za-z])/g, '^^\n')
+    .replace(/^\s+|\s+$/g, '')
 }
 
 // learn 텍스트를 줄 단위로 파싱해 구조별 스타일로 렌더링 (📋 헤더, ①②③ 번호목록, 📌💡✅ 등)
-function LearnLines({ text, maxLines = 6, maxChars = 420 }) {
-  const [expanded, setExpanded] = useState(false)
-  if (!text) return null
-  const lines = text.split('\n').map(l => l.trim()).filter(Boolean)
-  // A single long paragraph used to bypass the line-count expander. It then
-  // either filled the whole card or, when upstream text was clipped, ended in
-  // an ellipsis with no way to reveal the original. Keep its full source here.
-  if (lines.length <= maxLines && [...text].length > maxChars) {
-    return (
-      <p style={{ fontSize: 'clamp(13px, 3.85vw, 14.5px)', lineHeight: 1.78,
-        color: 'var(--text)', margin: 0 }}>
-        <ExpandableText text={text} maxChars={maxChars} />
-      </p>
-    )
-  }
-  const needsExpand = lines.length > maxLines
-  const shown = needsExpand && !expanded ? lines.slice(0, maxLines) : lines
-  function renderLine(line, i) {
-    const noteM = line.match(/^(결론|근거|계산|확인|오답)｜\s*(.+)/)
-    if (noteM) return (
-      <div key={i} style={{ display: 'grid', gridTemplateColumns: '42px minmax(0, 1fr)', gap: 8,
-        alignItems: 'start', padding: '3px 0' }}>
-        <span style={{ fontSize: 11, lineHeight: 1.7, fontWeight: 900,
-          color: noteM[1] === '결론' ? 'var(--primary)' : 'var(--text-muted)' }}>{noteM[1]}</span>
-        <p style={{ fontSize: 'clamp(13px, 3.85vw, 14.5px)', lineHeight: 1.7,
-          color: 'var(--text)', margin: 0, fontWeight: noteM[1] === '결론' ? 800 : 500 }}>
-          {noteM[2]}
-        </p>
-      </div>
-    )
-    // 📋 절차 헤더
-    if (/^📋/.test(line)) return (
-      <p key={i} style={{ fontSize: 12, fontWeight: 900, color: 'var(--primary)',
-        marginTop: i > 0 ? 10 : 2, marginBottom: 2 }}>{line}</p>
-    )
-    // ①②③④⑤⑥ 번호 항목
-    const circleM = line.match(/^([①②③④⑤⑥])\s*(.+)/)
-    if (circleM) return (
-      <div key={i} style={{ display: 'flex', gap: 7, alignItems: 'flex-start', marginBottom: 1 }}>
-        <span style={{ fontWeight: 900, color: 'var(--primary)', flexShrink: 0,
-          width: 20, fontSize: 15, lineHeight: 1.75 }}>{circleM[1]}</span>
-        <p style={{ fontSize: 'clamp(13px, 3.85vw, 14.5px)', lineHeight: 1.75,
-          color: 'var(--text)', margin: 0 }}>{circleM[2]}</p>
-      </div>
-    )
-    // 1. 2. 3. 번호 항목 (품질경영 실무 절차)
-    const numM = line.match(/^(\d+)\.\s+(.+)/)
-    if (numM) return (
-      <div key={i} style={{ display: 'flex', gap: 7, alignItems: 'flex-start', marginBottom: 1 }}>
-        <span style={{ fontWeight: 800, color: 'var(--primary)', flexShrink: 0,
-          width: 20, fontSize: 13, lineHeight: 1.78 }}>{numM[1]}.</span>
-        <p style={{ fontSize: 'clamp(13px, 3.85vw, 14.5px)', lineHeight: 1.75,
-          color: 'var(--text)', margin: 0 }}>{numM[2]}</p>
-      </div>
-    )
-    // 기타 (📌 💡 ✅ 💼 ☑️ · 등)
-    return <p key={i} style={{ fontSize: 'clamp(13px, 3.85vw, 14.5px)',
-      lineHeight: 1.78, color: 'var(--text)', margin: 0 }}>{line}</p>
-  }
+function LearnLines({ text }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-      {shown.map((line, i) => renderLine(line, i))}
-      {needsExpand && !expanded && (
-        <button onClick={() => setExpanded(true)}
-          style={{ marginTop: 6, padding: '5px 14px', borderRadius: 20,
-            border: '1px solid var(--primary)', background: 'transparent',
-            color: 'var(--primary)', fontSize: 13, fontWeight: 700,
-            cursor: 'pointer', alignSelf: 'flex-start' }}>
-          더 보기 ▼
-        </button>
-      )}
-      {needsExpand && expanded && (
-        <button onClick={() => setExpanded(false)}
-          style={{ marginTop: 4, padding: '5px 14px', borderRadius: 20,
-            border: '1px solid var(--border)', background: 'transparent',
-            color: 'var(--text-muted)', fontSize: 12, fontWeight: 700,
-            cursor: 'pointer', alignSelf: 'flex-start' }}>
-          접기 ▲
-        </button>
-      )}
-    </div>
+    <CompactText
+      text={text}
+      maxItemChars={76}
+      style={{ fontSize: 'clamp(13px, 3.85vw, 14.5px)', color: 'var(--text)' }}
+    />
   )
 }
 
@@ -213,7 +117,7 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, onS
             {intro && (
               <div style={{ background: 'var(--bg)', borderRadius: 10, padding: '12px 14px', border: '1px solid var(--border)' }}>
                 <p style={{ fontSize: 12, fontWeight: 800, color: 'var(--primary)', marginBottom: 6 }}>📌 이 단원에서 배우는 것</p>
-                <p style={{ fontSize: 'clamp(13px, 3.85vw, 14.5px)', color: 'var(--text)', lineHeight: 1.78, whiteSpace: 'pre-wrap' }}>{intro}</p>
+                <CompactText text={intro} maxItemChars={76} style={{ fontSize: 'clamp(13px, 3.85vw, 14.5px)', color: 'var(--text)' }} />
               </div>
             )}
             <p style={{ fontSize: 12, color: 'var(--primary)', marginTop: 14, fontWeight: 700, textAlign: 'center' }}>
@@ -249,7 +153,9 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, onS
               {p.situation && (
                 <div className="learning-situation">
                   <p className="learning-block-label">상황부터 이해하기</p>
-                  <ExpandableText text={p.situation} maxChars={220} style={{ fontSize: 'clamp(12.5px, 3.7vw, 14px)', lineHeight: 1.72 }} />
+                  <p style={{ fontSize: 'clamp(12.5px, 3.7vw, 14px)', lineHeight: 1.72, whiteSpace: 'pre-wrap' }}>
+                    {readableScenario(p.situation)}
+                  </p>
                 </div>
               )}
 
@@ -302,7 +208,7 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, onS
                             {p.sampleQuestion.modelAnswer ? '모범 답변 핵심' : '직접 답해 볼 차례'}
                           </p>
                           {p.sampleQuestion.modelAnswer ? (
-                            <p style={{ fontSize: 'clamp(12.5px, 3.7vw, 13.5px)', lineHeight: 1.7, color: '#1b5e20', whiteSpace: 'pre-wrap' }}>
+                            <p style={{ fontSize: 'clamp(12.5px, 3.7vw, 13.5px)', lineHeight: 1.72, whiteSpace: 'pre-wrap', color: '#1b5e20' }}>
                               {p.sampleQuestion.modelAnswer}
                             </p>
                           ) : (
@@ -344,7 +250,7 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, onS
                       {p.example && (
                         <div style={{ marginTop: 10, borderTop: '1px solid #FFE082', paddingTop: 8 }}>
                           <p style={{ fontSize: 12, color: '#B45309', fontWeight: 700, marginBottom: 4 }}>📌 출제 포인트</p>
-                          <p style={{ fontSize: 12, lineHeight: 1.7, color: 'var(--text-muted)', whiteSpace: 'pre-wrap' }}>{p.example}</p>
+                          <CompactText text={p.example} maxItemChars={70} style={{ fontSize: 12, color: 'var(--text-muted)' }} />
                         </div>
                       )}
                       {p.sampleQuestion.thinkingSteps?.length > 0 && (
@@ -375,7 +281,7 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, onS
                   isOpen ? (
                     <div style={{ marginTop: 10, background: '#FFFDE7', border: '1px solid #FFE082', borderRadius: 10, padding: '11px 13px' }}>
                       <p style={{ fontSize: 12, fontWeight: 800, color: '#B45309', marginBottom: 6 }}>📝 외부평가에서는 이렇게</p>
-                      <p style={{ fontSize: 'clamp(12.5px, 3.7vw, 14px)', lineHeight: 1.75, color: 'var(--text)', whiteSpace: 'pre-wrap' }}>{p.sampleQuestion}</p>
+                    <p style={{ fontSize: 'clamp(12.5px, 3.7vw, 14px)', lineHeight: 1.72, whiteSpace: 'pre-wrap', color: 'var(--text)' }}>{p.sampleQuestion}</p>
                     </div>
                   ) : (
                     <button onClick={open}
@@ -390,7 +296,7 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, onS
                 isOpen ? (
                   <div style={{ marginTop: 10, background: '#FFFDE7', border: '1px solid #FFE082', borderRadius: 10, padding: '11px 13px' }}>
                     <p style={{ fontSize: 12, fontWeight: 800, color: '#B45309', marginBottom: 6 }}>📝 외부평가에서는 이렇게</p>
-                    <p style={{ fontSize: 'clamp(12.5px, 3.7vw, 14px)', lineHeight: 1.75, color: 'var(--text)', whiteSpace: 'pre-wrap' }}>{p.example}</p>
+                    <p style={{ fontSize: 'clamp(12.5px, 3.7vw, 14px)', lineHeight: 1.72, whiteSpace: 'pre-wrap', color: 'var(--text)' }}>{p.example}</p>
                   </div>
                 ) : (
                   <button onClick={open}
@@ -408,12 +314,12 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, onS
           return (
             <div className="card" style={{ borderLeft: '4px solid var(--primary)' }}>
               <p style={{ fontSize: 12, fontWeight: 800, color: 'var(--primary)', marginBottom: 8 }}>✅ 핵심 {card.n}</p>
-              <p style={{ fontSize: 'clamp(13.5px, 4.05vw, 16px)', fontWeight: 600, lineHeight: 1.65 }}>{head}</p>
+              <CompactText text={head} maxItemChars={72} style={{ fontSize: 'clamp(13.5px, 4.05vw, 16px)', fontWeight: 600 }} />
               {tail && (
                 isOpen ? (
                   <div style={{ marginTop: 12, background: 'var(--primary-light)', borderRadius: 10, padding: '10px 12px' }}>
                     <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--primary)', marginBottom: 4 }}>{label}</p>
-                    <p style={{ fontSize: 'clamp(13px, 3.85vw, 15px)', lineHeight: 1.68, color: 'var(--text)' }}>{tail}</p>
+                    <CompactText text={tail} maxItemChars={72} style={{ fontSize: 'clamp(13px, 3.85vw, 15px)', color: 'var(--text)' }} />
                   </div>
                 ) : (
                   <button onClick={open}
@@ -446,7 +352,7 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, onS
             <p style={{ fontSize: 12, fontWeight: 800, color: 'var(--success)', marginBottom: 12, textAlign: 'center' }}>🧩 설명을 읽고 용어를 떠올려보세요</p>
             {/* 뜻(프롬프트) — 항상 표시 */}
             <div style={{ background: 'var(--bg)', borderRadius: 10, padding: '14px 16px', border: '1px solid var(--border)' }}>
-              <p style={{ fontSize: 'clamp(14px, 4vw, 16px)', lineHeight: 1.75, color: 'var(--text)' }}>{card.def}</p>
+              <CompactText text={card.def} maxItemChars={72} style={{ fontSize: 'clamp(14px, 4vw, 16px)', color: 'var(--text)' }} />
             </div>
             {isOpen ? (
               <>
@@ -481,7 +387,7 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, onS
           if (!mistake.wrongChoice) return (
             <div className="card learning-mistake-card">
               <p className="learning-mistake-title">자주 틀리는 점</p>
-              <p className="learning-mistake-point">{mistake.point}</p>
+              <CompactText className="learning-mistake-point" text={mistake.point} />
             </div>
           )
           return (
@@ -493,8 +399,8 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, onS
                 <p>{mistake.wrongChoice.text}</p>
               </div>
               <div className="learning-mistake-analysis">
-                <p><strong>왜 틀리나</strong>{mistake.trap}</p>
-                {mistake.whyWrong && <p>{mistake.whyWrong}</p>}
+                <strong>왜 틀리나</strong>
+                <CompactText text={`${mistake.trap || ''}\n${mistake.whyWrong || ''}`} maxItemChars={72} />
               </div>
               {mistake.correctChoice?.length > 0 && (
                 <div className="learning-correct-choice">
@@ -506,7 +412,7 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, onS
               )}
               <div className="learning-mistake-point">
                 <strong>다음부터 확인할 것</strong>
-                <p>{mistake.point}</p>
+                <CompactText text={mistake.point} maxItemChars={72} />
               </div>
               {mistake.checklist?.length > 0 && (
                 <ol className="learning-mistake-checklist">
@@ -522,9 +428,9 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, onS
           <div style={{ textAlign: 'center', padding: '20px 8px' }}>
             <div style={{ fontSize: 44, marginBottom: 10 }}>🎉</div>
             <p style={{ fontSize: 17, fontWeight: 800, marginBottom: 6 }}>요점 학습 완료!</p>
-            <p style={{ fontSize: 14, color: 'var(--text-muted)', lineHeight: 1.7, marginBottom: 18 }}>
-              핵심 {keyPoints.length}개 · 실제 오답 {learningMistakes.length}개를 확인했어요.<br />이제 도움 없이 적용해볼까요?
-            </p>
+            <div style={{ fontSize: 14, color: 'var(--text-muted)', marginBottom: 18, textAlign: 'left' }}>
+              <CompactText text={`핵심 ${keyPoints.length}개 확인 완료\n실제 오답 ${learningMistakes.length}개 교정 완료\n다음: 도움 없이 적용`} />
+            </div>
             {onStartQuiz && (
               <button className="btn btn-primary btn-full" style={{ marginBottom: 8 }} onClick={onStartQuiz}>
                 🎮 도전하기 — 채점받고 XP 받기 →

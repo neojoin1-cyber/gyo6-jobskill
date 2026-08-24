@@ -14,6 +14,7 @@ import { buildInterviewConceptChecks, buildInterviewLearningQuestions } from '..
 import { studyQuestionsById } from '../../lib/assessmentPartition.js'
 import { Buildings, CaretRight, CheckCircle, FileText, Target } from '@phosphor-icons/react'
 import InterviewCareerLab from './InterviewCareerLab.jsx'
+import CompactText from '../../components/CompactText.jsx'
 import {
   INTERVIEW_FOUNDATION_COURSES,
   interviewFoundationCategories,
@@ -403,7 +404,7 @@ function SectionBlock({ sec }) {
           borderLeft: '4px solid var(--primary)', background: '#edf9f3',
           padding: '10px 14px', margin: '10px 0', borderRadius: '0 8px 8px 0',
         }}>
-          <p style={{ fontSize: 13, lineHeight: 1.7, fontStyle: 'italic' }}>{sec.text}</p>
+          <CompactText text={sec.text} maxItemChars={68} style={{ fontSize: 13 }} />
         </div>
       )
     case 'pre':
@@ -453,7 +454,7 @@ function SectionBlock({ sec }) {
                 color: '#fff', fontSize: 12, fontWeight: 700, flexShrink: 0,
                 display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: 2,
               }}>{i + 1}</span>
-              <p style={{ fontSize: 13, lineHeight: 1.7 }}>{item}</p>
+              <CompactText text={item} maxItemChars={68} style={{ fontSize: 13 }} />
             </div>
           ))}
         </div>
@@ -614,7 +615,7 @@ function PracticeView({ questions, idx, setIdx, showModel, setShowModel, lessonI
               borderBottom: i < pq.hints.length - 1 ? '1px solid var(--border)' : 'none',
             }}>
               <span style={{ color: 'var(--primary)', fontWeight: 700, fontSize: 13 }}>•</span>
-              <p style={{ fontSize: 13, lineHeight: 1.6 }}>{h}</p>
+              <CompactText text={h} maxItemChars={68} style={{ fontSize: 13 }} />
             </div>
           ))}
         </div>
@@ -788,7 +789,7 @@ function ModelAnswerBlock({ pq }) {
           {pq.answerPoints.map((pt, i) => (
             <div key={i} style={{ display: 'flex', gap: 8, marginBottom: 6 }}>
               <span style={{ color: '#1e6f5c', fontWeight: 700, flexShrink: 0 }}>•</span>
-              <p style={{ fontSize: 12, lineHeight: 1.7 }}>{pt}</p>
+              <CompactText text={pt} maxItemChars={68} style={{ fontSize: 12 }} />
             </div>
           ))}
         </div>
@@ -1007,7 +1008,7 @@ function InterviewQuizView({ questions, lessonId, onMarkProgress, onReturnToTheo
             {correct ? '🎉 정답입니다!' : `❌ 오답 · 정답: ${q.answer}`}
           </p>
           {q.explanation && (
-            <p style={{ fontSize: 12, lineHeight: 1.7, color: 'var(--text)' }}>{q.explanation}</p>
+            <CompactText text={q.explanation} maxItemChars={70} style={{ fontSize: 12, color: 'var(--text)' }} />
           )}
         </div>
       )}

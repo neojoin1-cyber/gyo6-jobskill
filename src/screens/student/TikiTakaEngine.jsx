@@ -4,6 +4,7 @@
  */
 import { useState, useEffect, useRef, useMemo } from 'react'
 import { addXp } from '../../lib/xp.js'
+import CompactText from '../../components/CompactText.jsx'
 
 // ── 캐릭터 대사 ──────────────────────────────────────────────────────────────
 const MSGS = {
@@ -160,7 +161,7 @@ function ConceptRevealPanel({ card, quizExplanation, char, isCorrect }) {
       }}>
         <span style={{ fontSize:18 }}>{isCorrect ? '✅' : '❌'}</span>
         <p style={{ fontSize:13, fontWeight:700, color: isCorrect ? '#065F46' : '#991B1B' }}>
-          {isCorrect ? '정답! 핵심 개념을 정리해볼게요.' : '틀렸어요. 핵심 개념을 꼭 확인해봐요.'}
+          {isCorrect ? '정답 · 핵심 개념 확인' : '오답 · 핵심 개념 재확인'}
         </p>
       </div>
 
@@ -207,14 +208,14 @@ function ConceptRevealPanel({ card, quizExplanation, char, isCorrect }) {
                 return (
                   <div key={i} style={{ background:cfg.bg, borderRadius:8, padding:'8px 10px', borderLeft:`3px solid ${cfg.border}` }}>
                     <p style={{ fontSize: 12, fontWeight:700, color:cfg.color, marginBottom:3 }}>{cfg.label}</p>
-                    <p style={{ fontSize:12, lineHeight:1.65, color:'var(--text)' }}>{sec.text}</p>
+                    <CompactText text={sec.text} maxItemChars={68} style={{ fontSize: 12, color: 'var(--text)' }} />
                   </div>
                 )
               })}
             </div>
           ) : (
             <div style={{ background:`${char.color}08`, borderRadius:8, padding:'10px 12px', borderLeft:`3px solid ${char.color}` }}>
-              <p style={{ fontSize:13, lineHeight:1.75, color:'var(--text)' }}>{card.definition}</p>
+              <CompactText text={card.definition} maxItemChars={70} style={{ fontSize: 13, color: 'var(--text)' }} />
             </div>
           )}
         </div>
@@ -223,7 +224,7 @@ function ConceptRevealPanel({ card, quizExplanation, char, isCorrect }) {
         {quizExplanation && (
           <div style={{ background:'#FFFBEB', padding:'9px 14px', borderTop:'1px solid #FDE68A' }}>
             <p style={{ fontSize: 12, fontWeight:700, color:'#92400E', marginBottom:3 }}>💡 문제 해설</p>
-            <p style={{ fontSize:12, color:'#78350F', lineHeight:1.65 }}>{quizExplanation}</p>
+            <CompactText text={quizExplanation} maxItemChars={68} style={{ fontSize: 12, color: '#78350F' }} />
           </div>
         )}
 
@@ -231,7 +232,7 @@ function ConceptRevealPanel({ card, quizExplanation, char, isCorrect }) {
         {card.keyPoint && (
           <div style={{ background:`${char.color}06`, padding:'9px 14px', borderTop:`1px solid ${char.color}15` }}>
             <p style={{ fontSize: 12, fontWeight:700, color:char.color, marginBottom:3 }}>🔑 {card.label0 || '핵심 포인트'}</p>
-            <p style={{ fontSize:12, color:'var(--text)', lineHeight:1.65 }}>{card.keyPoint}</p>
+            <CompactText text={card.keyPoint} maxItemChars={68} style={{ fontSize: 12, color: 'var(--text)' }} />
           </div>
         )}
       </div>
@@ -545,9 +546,8 @@ function QuizView({ items, char, isRetry, onComplete }) {
             <p style={{ fontSize: 12, fontWeight:700, color: isCorrect ? char.color : '#92400E', marginBottom:3 }}>
               {isCorrect ? '💡 학습 포인트' : '💡 해설'}
             </p>
-            <p style={{ fontSize:13, color: isCorrect ? 'var(--text)' : '#78350F', lineHeight:1.65 }}>
-              {q.explanation || q.hint}
-            </p>
+            <CompactText text={q.explanation || q.hint} maxItemChars={70}
+              style={{ fontSize: 13, color: isCorrect ? 'var(--text)' : '#78350F' }} />
           </div>
         )}
 

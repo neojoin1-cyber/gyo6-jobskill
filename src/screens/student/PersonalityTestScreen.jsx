@@ -8,6 +8,7 @@ import { pushBack, popBack } from '../../lib/backButton.js'
 import { addXp } from '../../lib/xp.js'
 import { buildPersonalityItems, scorePersonality, SCALE, DIMENSIONS, paperCount } from '../../lib/personalityTest.js'
 import { savePersonalityResult } from '../../lib/personalityResults.js'
+import CompactText from '../../components/CompactText.jsx'
 
 // 제한시간 단일 기준: 리커트 5점 자기응답 1문항당 배정 시간(초).
 // 진단·모의 모두 이 값 하나로 산출해 문항당 페이스가 어긋나지 않게 한다.
@@ -102,7 +103,7 @@ export default function PersonalityTestScreen({ subjectName = '인성검사', mo
             <span className="ps-badge">{meta.badge} · {meta.role}</span>
             <h3>{subjectName} · {meta.title}</h3>
             <div className="ps-stat">{total}문항 · 약 {minutes}분 · 총 {rounds}회 {meta.repeat}</div>
-            <p>{meta.desc}</p>
+            <CompactText text={meta.desc} maxItemChars={68} />
             <ul>
               <li>문항 수: <b>{total}문항</b> (5점 척도)</li>
               <li><b>정답이 없습니다.</b> 평소의 나로, 솔직하고 일관되게 답하세요.</li>
@@ -223,14 +224,14 @@ function ResultView({ result, onRetake }) {
               <span className={'ps-dim-band ' + p.band}>{p.bandLabel} {p.score}</span>
             </div>
             <div className="ps-dim-track"><div className={'ps-dim-fill ' + p.band} style={{ width: `${p.score}%` }} /></div>
-            <p className="ps-dim-advice">{p.advice}</p>
+            <CompactText text={p.advice} maxItemChars={68} className="ps-dim-advice" />
           </div>
         ))}
       </div>
 
       <div className="card ps-summary">
         <p className="ps-summary-title">💡 종합 조언</p>
-        <p>{summary}</p>
+        <CompactText text={summary} maxItemChars={68} />
         <p className="ps-summary-note">실제 채용 인성검사는 200~360문항 규모입니다. 이 모의로 <b>일관·솔직·성실</b>한 응답 습관을 익히면 실전에서도 안정적으로 통과할 수 있습니다.</p>
       </div>
 
