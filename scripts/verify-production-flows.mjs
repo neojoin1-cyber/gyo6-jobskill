@@ -263,6 +263,16 @@ try {
   })
   check('teacher cannot create unassigned class', teacherForbidden?.error || teacherForbidden == null, JSON.stringify(teacherForbidden))
 } finally {
+  if (clients.student) {
+    const { error } = await clients.student.client.from('notifications')
+      .delete().like('title', '[출시검증 %')
+    check('student release-test messages cleaned up', !error, error?.message)
+  }
+  if (clients.teacher) {
+    const { error } = await clients.teacher.client.from('notifications')
+      .delete().like('title', '%답장: [출시검증 %')
+    check('teacher release-test replies cleaned up', !error, error?.message)
+  }
   if (createdMissionIds.length && clients.teacher) {
     const { error } = await clients.teacher.client.from('missions').delete().in('id', createdMissionIds)
     check('release-test missions cleaned up', !error, error?.message)
