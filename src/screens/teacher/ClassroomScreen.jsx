@@ -78,7 +78,23 @@ const LETTERS = ['A', 'B', 'C', 'D', 'E']
 const THINK_SECONDS = 60
 // 구 NCS 9영역으로 만든 job-common 덱은 교육부 인증진단 문항과 자동 연결하지
 // 않는다. 출처 체계가 명확한 공식 덱으로 다시 만들기 전까지 수업 목록에서 제외한다.
-const SAFE_DECK_INDEX = deckIndex.filter(subject => subject.id !== 'job-common')
+const DECK_PRESENTATION = {
+  interview: {
+    label: '고졸 공정채용 면접',
+    description: '면접 기초·유형별 답변·실전 모의',
+  },
+  'ncs-sense': {
+    label: '채용필기 상식·인적성',
+    description: '경영·경제·금융·일반상식·인적성·대인관계',
+  },
+  personality: {
+    label: '인성검사 이해',
+    description: '검사 구조·6요인·타당도·응답 원칙',
+  },
+}
+const SAFE_DECK_INDEX = deckIndex
+  .filter(subject => subject.id !== 'job-common')
+  .map(subject => ({ ...subject, ...DECK_PRESENTATION[subject.id] }))
 
 const RECRUIT_CLASSROOM_AREAS = RECRUIT_WRITTEN_TRACKS.map(track => ({
   id: `recruit-${track.id}`,
@@ -513,9 +529,9 @@ export default function ClassroomScreen({ onBack }) {
         <button className="card classroom-entry" onClick={() => { setQuizSystem(null); setMode('quiz') }}>
           <span className="classroom-entry-icon"><ClipboardText weight="fill" /></span>
           <span style={{ flex: 1 }}>
-            <b>문항으로 수업</b>
+            <b>문항으로 수업 · 함께 풀기</b>
             <span className="muted" style={{ display: 'block', fontSize: 12 }}>
-              공식 체계 → 영역 → 단원 순서로 선택
+              5개 전 영역 · 발문·선지·정답·해설 중심
             </span>
           </span><span className="muted">›</span>
         </button>
@@ -544,9 +560,9 @@ export default function ClassroomScreen({ onBack }) {
         <button className="card classroom-entry" onClick={() => setMode('deck')}>
           <span className="classroom-entry-icon"><Books weight="fill" /></span>
           <span style={{ flex: 1 }}>
-            <b>수업 덱</b>
+            <b>수업 덱 · 개념 설명</b>
             <span className="muted" style={{ display: 'block', fontSize: 12 }}>
-              출처 확인 완료 · {SAFE_DECK_INDEX.reduce((n, s2) => n + s2.lessonCount, 0)}차시
+              면접 12 · 채용필기 6 · 인성검사 1차시
             </span>
           </span><span className="muted">›</span>
         </button>
@@ -602,7 +618,7 @@ export default function ClassroomScreen({ onBack }) {
       <div ref={rootRef} className="screen">
         <header className="screen-header">
           <button className="icon-btn" onClick={() => setMode(null)}>←</button>
-          <h1>수업 덱</h1>
+          <h1>수업 덱 · 개념 설명</h1>
         </header>
         <p className="muted" style={{ padding: '0 16px 8px' }}>
           앱 안에서 바로 투사 · 지목·타이머·학급 현황 유지
@@ -610,7 +626,10 @@ export default function ClassroomScreen({ onBack }) {
         <div className={pickCls}>
           {SAFE_DECK_INDEX.map(sub2 => (
             <button key={sub2.id} className="card classroom-entry" onClick={() => openDeckSubject(sub2)}>
-              <span style={{ flex: 1, fontWeight: 700 }}>{sub2.label}</span>
+              <span style={{ flex: 1 }}>
+                <b>{sub2.label}</b>
+                <span className="muted" style={{ display: 'block', fontSize: 12 }}>{sub2.description}</span>
+              </span>
               <span className="muted">{sub2.lessonCount}차시 ›</span>
             </button>
           ))}

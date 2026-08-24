@@ -26,7 +26,14 @@ export default defineConfig({
           // 설치·업데이트마다 17MB 이상을 내려받는다. 교실에서 30명이
           // 동시에 설치하면 한 와이파이로 수백 MB 가 몰려 수업이 날아간다.
           // 큰 청크는 아래 runtimeCaching 으로 '열 때 받고 그 뒤 캐시'.
-          globPatterns: ['**/*.{css,html,ico,png,svg,woff2}', 'assets/index-*.js', 'registerSW.js'],
+          // 화면은 경량 WebP를 사용한다. 제작 원본 PNG까지 사전 캐시하면 첫 접속마다
+          // 약 15MB를 쓸데없이 내려받으므로, 앱 아이콘 PNG만 명시적으로 포함한다.
+          globPatterns: [
+            '**/*.{css,html,ico,svg,woff2,webp}',
+            'icons/icon-*.png',
+            'assets/index-*.js',
+            'registerSW.js',
+          ],
           globIgnores: ['join.html', 'assets/textbook-*.js', 'assets/*Screen-*.js', 'assets/jobCommonAreas-*.js', 'assets/block-inline-*.js'],
         // 런타임 캐시
           runtimeCaching: [

@@ -5,7 +5,6 @@ import { supabase } from './lib/supabase.js'
 import { ThemeProvider } from './lib/theme.jsx'
 import { initPushNotifications } from './lib/pushNotifications.js'
 import { scheduleReviewReminder } from './lib/reminders.js'
-import { refreshStudySummaries } from './lib/studySummaries.js'
 import LoginScreen from './screens/LoginScreen.jsx'
 const AdminShell = lazy(() => import('./screens/admin/AdminShell.jsx'))
 const SchoolAdminShell = lazy(() => import('./screens/schooladmin/SchoolAdminShell.jsx'))
@@ -227,8 +226,23 @@ function AppInner() {
     })()
   }, [])
 
-  // 학습(요점정리) 콘텐츠를 Supabase에서 최신화(앱 재빌드 없이 내용 갱신)
-  useEffect(() => { refreshStudySummaries() }, [])
+  // 번들에 최신 학습 요약이 들어 있으므로 첫 화면을 막으면서 서버 전체 자료를
+  // 받을 필요가 없다. 로그인 뒤 유휴 시간에 요청을 분산해 동시 접속 급증도 줄인다.
+  useEffect(() => {
+    if (!session) return undefined
+    let cancelled = false
+    const timer = window.setTimeout(() => {
+      import('./lib/studySummaries.js')
+        .then(({ refreshStudySummaries }) => {
+          if (!cancelled) refreshStudySummaries()
+        })
+        .catch(() => {})
+    }, 10_000 + Math.floor(Math.random() * 30_000))
+    return () => {
+      cancelled = true
+      window.clearTimeout(timer)
+    }
+  }, [session?.user?.id])
 
   const showSoftBanner = updateState === 'soft' && !bannerDismissed
 

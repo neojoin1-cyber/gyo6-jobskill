@@ -241,12 +241,6 @@ export default function TeacherWorkspace({
               <button className="teacher-refresh" onClick={loadLive} disabled={demo}><ArrowClockwise /> 새로고침</button>
             </header>
 
-            <button className="teacher-student-view-strip" onClick={() => onOpenStudentCampus?.()}>
-              <img src={campusAsset('skill-campus-map.webp')} alt="스킬캠퍼스 학습 지도" />
-              <span><small>학생과 같은 화면</small><b>학습 내용을 먼저 체험하고 수업으로 이어가기</b></span>
-              <strong>학생 화면 열기</strong><ArrowRight />
-            </button>
-
             <section className="teacher-campus-summary">
               <div className="summary-image"><img src={`${import.meta.env.BASE_URL}images/campus/skill-campus-map.webp`} alt="스킬캠퍼스 전경" /></div>
               <div className="summary-copy">
