@@ -14,6 +14,7 @@ import {
 } from '@phosphor-icons/react'
 import { useAuth } from '../../App.jsx'
 import { supabase } from '../../lib/supabase.js'
+import { REVIEW_COACH_ISSUES, REVIEW_RUBRIC } from '../../lib/coverLetterGuidance.js'
 import '../../styles/cover-letter-review.css'
 
 const STATUS = {
@@ -108,6 +109,24 @@ export default function CoverLetterReviewScreen({ onBack, initialClassId, demo =
     setNotice(null)
   }
 
+  function applyQuickIssue(issue) {
+    if (selection) {
+      setSelectionColor(issue.color)
+      setSelectionNote(issue.note)
+      return
+    }
+    const text = `${issue.label}: ${issue.action}`
+    setSummary(current => `${current}${current.trim() ? '\n' : ''}${text}`.slice(0, 500))
+  }
+
+  function setRubric(id, value) {
+    setFeedback(current => ({ ...current, rubric: { ...(current.rubric || {}), [id]: value } }))
+  }
+
+  function addSummaryFrame(text) {
+    setSummary(current => `${current}${current.trim() ? '\n' : ''}${text}`.slice(0, 500))
+  }
+
   async function save(decision) {
     if (!selected || summary.trim().length < 10 || saving) {
       setNotice({ ok: false, text: '전체 조언을 10자 이상 구체적으로 적어 주세요.' })
@@ -140,7 +159,7 @@ export default function CoverLetterReviewScreen({ onBack, initialClassId, demo =
     <main className="cover-review-screen">
       <header className="cover-review-head">
         <button onClick={onBack} aria-label="교사 캠퍼스로 돌아가기"><ArrowLeft /></button>
-        <div><span>TEACHER WRITING COACH</span><h1>자기소개서 첨삭함</h1><p>학생의 근거·직무·경험을 함께 보고 항목별로 조언함.</p></div>
+          <div><span>TEACHER WRITING COACH</span><h1>나를쓰다 첨삭실</h1><p>학생의 근거·직무·경험을 함께 보고 항목별로 조언함.</p></div>
         <div className="cover-review-summary"><b>{rows.filter(item => ['submitted', 'in_review'].includes(item.status)).length}</b><span>첨삭 대기</span></div>
       </header>
 
@@ -163,15 +182,17 @@ export default function CoverLetterReviewScreen({ onBack, initialClassId, demo =
             <header><div><span>{selected.student_name} 학생 · {selected.class_name}</span><h2>{selected.target_name}</h2><p>{selected.role_name} 지원 · {selected.revision_no}차 초안</p></div><em>{STATUS[selected.status]}</em></header>
             <p className="cover-review-select-help"><Highlighter weight="fill" />메모할 문장을 드래그하면 오른쪽 첨삭함에 선택됨.</p>
             {documentSections.map(item => <article key={item.title}><header className="cover-review-section-head"><h3>{item.title}</h3><button onClick={() => selectParagraph(item.title, item.body)}><Highlighter />문단 메모</button></header><p onMouseUp={() => captureSelection(item.title, item.body)}>{renderHighlightedText(item.body, highlights.filter(mark => mark.sectionTitle === item.title))}</p></article>)}
-            <details><summary>학생이 입력한 원본 근거 보기</summary>{Object.entries(selected.draft || {}).filter(([, value]) => typeof value === 'string' && value.trim()).map(([key, value]) => <div key={key}><b>{key}</b><p>{value}</p></div>)}</details>
+            <details><summary>학생이 입력한 원본 근거 보기</summary>{Object.entries(selected.draft || {}).filter(([, value]) => typeof value === 'string' && value.trim()).map(([key, value]) => <div key={key}><b>{key}</b><p>{value}</p></div>)}{Array.isArray(selected.draft?.evidenceBank) && selected.draft.evidenceBank.map(item => <div key={item.id}><b>근거 카드 · {item.title}</b><p>{[item.situation, item.task, item.action, item.result].filter(Boolean).join(' ')}</p></div>)}</details>
           </section>
 
           <aside className="cover-review-coach">
             <header><PencilLine weight="duotone" /><div><h2>첨삭 조언</h2><p>대신 써 주기보다 학생이 고칠 기준을 알려 줌.</p></div></header>
-            <section className={`cover-highlight-editor ${selection ? 'is-active' : ''}`}><header><Highlighter weight="fill" /><div><b>{selection ? selection.sectionTitle : '문장 형광펜 메모'}</b><p>{selection ? `“${selection.quote}”` : '왼쪽 문서에서 메모할 문장을 드래그함.'}</p></div></header>{selection && <><div className="cover-highlight-colors" aria-label="형광펜 색">{['#fef08a', '#bbf7d0', '#fecdd3'].map(color => <button key={color} className={selectionColor === color ? 'is-on' : ''} style={{ background: color }} onClick={() => setSelectionColor(color)} aria-label="형광펜 색 선택" />)}</div><textarea value={selectionNote} onChange={event => setSelectionNote(event.target.value)} placeholder="왜 고쳐야 하는지와 다음 행동을 적음" rows={3} /><button className="cover-add-highlight" onClick={addHighlight}><Highlighter />부분 메모 추가</button></>}</section>
+            <section className="cover-review-rubric"><header><ClipboardText /><div><b>빠른 평가</b><p>각 기준을 고르면 첨삭 이력에 함께 저장됨.</p></div></header>{REVIEW_RUBRIC.map(item => <div key={item.id}><span>{item.label}</span><div>{[{ value: 1, label: '보완' }, { value: 2, label: '확인' }, { value: 3, label: '좋음' }].map(option => <button key={option.value} className={feedback.rubric?.[item.id] === option.value ? 'is-on' : ''} onClick={() => setRubric(item.id, option.value)}>{option.label}</button>)}</div></div>)}</section>
+            <section className="cover-review-quick"><header><b>첨삭 유형 고르기</b><p>{selection ? '선택한 문장에 맞는 조언을 자동으로 준비함.' : '문장을 먼저 선택하면 부분 메모로, 지금 누르면 총평으로 들어감.'}</p></header><div>{REVIEW_COACH_ISSUES.map(issue => <button key={issue.id} onClick={() => applyQuickIssue(issue)} style={{ '--issue-color': issue.color }}>{issue.label}</button>)}</div></section>
+            <section className={`cover-highlight-editor ${selection ? 'is-active' : ''}`}><header><Highlighter weight="fill" /><div><b>{selection ? selection.sectionTitle : '문장 형광펜 메모'}</b><p>{selection ? `“${selection.quote}”` : '왼쪽 문서에서 메모할 문장을 드래그함.'}</p></div></header>{selection && <><div className="cover-highlight-legend"><span><i style={{ background: '#bbf7d0' }} />좋은 근거</span><span><i style={{ background: '#fef08a' }} />보완</span><span><i style={{ background: '#fecdd3' }} />오류·위험</span></div><div className="cover-highlight-colors" aria-label="형광펜 색">{['#bbf7d0', '#fef08a', '#fecdd3'].map(color => <button key={color} className={selectionColor === color ? 'is-on' : ''} style={{ background: color }} onClick={() => setSelectionColor(color)} aria-label="형광펜 색 선택" />)}</div><textarea value={selectionNote} onChange={event => setSelectionNote(event.target.value)} placeholder="위 첨삭 유형을 고르거나, 왜 고쳐야 하는지와 다음 행동을 적음" rows={3} /><button className="cover-add-highlight" onClick={addHighlight}><Highlighter />부분 메모 추가</button></>}</section>
             {highlights.length > 0 && <section className="cover-highlight-list"><b>부분 메모 {highlights.length}개</b>{highlights.map(mark => <article key={mark.id} style={{ '--mark-color': mark.color }}><span>“{mark.quote}”</span><p>{mark.note}</p><button onClick={() => setFeedback(current => ({ ...current, highlights: highlights.filter(item => item.id !== mark.id) }))} aria-label="부분 메모 삭제"><Trash /></button></article>)}</section>}
             {documentSections.map((item, index) => { const key = `section-${index}`; return <label key={key}><span>{item.title}</span><textarea value={feedback[key] || ''} onChange={event => setFeedback(current => ({ ...current, [key]: event.target.value }))} placeholder="좋은 점 1개와 다음 수정 행동 1개" rows={3} /></label> })}
-            <label className="cover-review-overall"><span>전체 조언 <small>{summary.length}/500</small></span><textarea value={summary} onChange={event => setSummary(event.target.value.slice(0, 500))} placeholder="좋아진 점 → 가장 먼저 고칠 점 → 다음 제출 전 확인할 일" rows={5} /></label>
+            <label className="cover-review-overall"><span>전체 조언 <small>{summary.length}/500</small></span><div className="cover-summary-starters"><button onClick={() => addSummaryFrame('좋은 점: 구체적인 행동 근거를 유지하세요.')}>강점 틀</button><button onClick={() => addSummaryFrame('우선 수정: 질문의 핵심 요구에 맞춰 행동과 결과를 보완하세요.')}>우선 수정 틀</button><button onClick={() => addSummaryFrame('재제출 전: 지원처명·블라인드 정보·글자 수를 마지막으로 확인하세요.')}>재제출 틀</button></div><textarea value={summary} onChange={event => setSummary(event.target.value.slice(0, 500))} placeholder="좋아진 점 → 가장 먼저 고칠 점 → 다음 제출 전 확인할 일" rows={5} /></label>
             {notice && <p className={notice.ok ? 'is-ok' : 'is-error'}>{notice.ok ? <CheckCircle weight="fill" /> : <WarningCircle weight="fill" />}{notice.text}</p>}
             <footer><button onClick={() => save('revision_requested')} disabled={saving}><PencilLine />수정 요청</button><button onClick={() => save('approved')} disabled={saving}><CheckCircle weight="fill" />첨삭 완료</button></footer>
           </aside>

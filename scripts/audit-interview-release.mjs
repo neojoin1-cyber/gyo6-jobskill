@@ -12,6 +12,12 @@ import {
   INTERVIEW_TRACKS,
 } from '../src/lib/interviewCareerContent.js'
 import { INTERVIEW_FOUNDATION_COURSES } from '../src/lib/interviewFoundationCourses.js'
+import {
+  COVER_EVIDENCE_MAJOR_GROUPS,
+  COVER_QUESTION_GUIDES,
+  REVIEW_COACH_ISSUES,
+  REVIEW_RUBRIC,
+} from '../src/lib/coverLetterGuidance.js'
 
 const ROOT = process.cwd()
 const failures = []
@@ -28,6 +34,7 @@ const screen = fs.readFileSync(path.join(ROOT, 'src/screens/student/InterviewStu
 const careerScreen = fs.readFileSync(path.join(ROOT, 'src/screens/student/InterviewCareerLab.jsx'), 'utf8')
 const teacherReviewScreen = fs.readFileSync(path.join(ROOT, 'src/screens/teacher/CoverLetterReviewScreen.jsx'), 'utf8')
 const coverMigration = fs.readFileSync(path.join(ROOT, 'supabase/migrations/20260825003000_cover_letter_coaching.sql'), 'utf8')
+const evidenceMigration = fs.readFileSync(path.join(ROOT, 'supabase/migrations/20260825090000_cover_letter_evidence_bank.sql'), 'utf8')
 
 const requiredScopes = [
   '오리엔테이션', '면접절차', '평가기준', '자기소개', '지원동기', '경험답변',
@@ -85,8 +92,11 @@ for (const item of INTERVIEW_ORGANIZATIONS) {
 }
 check(COVER_LETTER_STEPS.length === 7, `자기소개서 단계 오류: ${COVER_LETTER_STEPS.length}`)
 check(COVER_LETTER_FIELDS.length >= 11, `자기소개서 개인화 입력 부족: ${COVER_LETTER_FIELDS.length}`)
-check(COVER_LETTER_QUESTION_LIBRARY.length >= 16, `자기소개서 문항 라이브러리 부족: ${COVER_LETTER_QUESTION_LIBRARY.length}`)
+check(COVER_LETTER_QUESTION_LIBRARY.length >= 30, `자기소개서 문항 라이브러리 부족: ${COVER_LETTER_QUESTION_LIBRARY.length}`)
 check(COVER_LETTER_QUESTION_LIBRARY.every(item => item.question?.length >= 25 && item.required?.length >= 2 && item.limit >= 200), '자기소개서 문항 메타데이터 부족')
+check(COVER_LETTER_QUESTION_LIBRARY.every(item => COVER_QUESTION_GUIDES[item.id]), '자기소개서 문항별 작성 구조·예시 누락')
+check(COVER_EVIDENCE_MAJOR_GROUPS.length >= 10 && COVER_EVIDENCE_MAJOR_GROUPS.every(item => item.examples?.length >= 4), '전공별 근거은행 선택지 부족')
+check(REVIEW_COACH_ISSUES.length >= 10 && REVIEW_RUBRIC.length >= 7, '교사 첨삭 지원 기준 부족')
 for (const field of COVER_LETTER_FIELDS) {
   check(field.key && field.step && field.label, `자기소개서 필드 메타데이터 오류: ${JSON.stringify(field)}`)
   check(field.required?.length >= 2 && field.caution?.length >= 12, `자기소개서 필수·주의 안내 부족: ${field.key}`)
@@ -134,12 +144,16 @@ check(careerScreen.includes('공식 사이트에서 최신 정보 확인'), '기
 check(careerScreen.includes("import('html2canvas')") && careerScreen.includes("import('jspdf')"), '자기소개서 PDF 생성 누락')
 check(careerScreen.includes("rpc('rpc_submit_cover_letter'"), '자기소개서 교사 첨삭 요청 누락')
 check(careerScreen.includes('QuestionComposer') && careerScreen.includes('직접 추가'), '자기소개서 문항 선택·직접 추가 누락')
+check(careerScreen.includes('CoverLearningLibrary') && careerScreen.includes('EvidenceWorkbench'), '나를쓰다 학습·근거은행 화면 누락')
+check(careerScreen.includes('막막하면 답변 순서부터 고르기') && careerScreen.includes('첫 문장 고르기'), '자기소개서 공란 작성 지원 누락')
 check(careerScreen.includes('완성 예시 자기소개서') || careerScreen.includes('완성 예시 보기'), '기관별 자기소개서 완성 예시 화면 누락')
 check(teacherReviewScreen.includes("rpc('rpc_teacher_cover_letters'"), '교사 자기소개서 목록 조회 누락')
 check(teacherReviewScreen.includes("rpc('rpc_review_cover_letter'"), '교사 자기소개서 첨삭 저장 누락')
 check(teacherReviewScreen.includes('captureSelection') && teacherReviewScreen.includes('부분 메모 추가'), '교사 문장 형광펜·부분 메모 누락')
+check(teacherReviewScreen.includes('REVIEW_COACH_ISSUES') && teacherReviewScreen.includes('REVIEW_RUBRIC'), '교사 빠른 첨삭·평가 지원 누락')
 check(coverMigration.includes('SECURITY DEFINER') && coverMigration.includes('teacher_classes'), '자기소개서 담당 학급 권한 검증 누락')
 check(coverMigration.includes('FROM PUBLIC, anon'), '자기소개서 RPC 익명 실행 차단 누락')
+check(evidenceMigration.includes('ENABLE ROW LEVEL SECURITY') && evidenceMigration.includes('student_id = auth.uid()'), '근거은행 학생 본인 권한 검증 누락')
 
 for (const file of ['data/interview-study.json', 'data/interview-quiz.json', 'data/mock-interview-pool.json']) {
   check(!fs.readFileSync(path.join(ROOT, file), 'utf8').includes('\uFFFD'), `깨진 문자 U+FFFD: ${file}`)
@@ -151,4 +165,4 @@ if (failures.length) {
   process.exit(1)
 }
 
-console.log(`Interview release audit PASS: 기초 ${study.lessons.length}단원 · 기본 ${quiz.length}문항 · 심화 ${INTERVIEW_CAREER_ASSESSMENT_QUESTIONS.length}문항 · 기관 ${INTERVIEW_ORGANIZATIONS.length}곳 · 자기소개서 ${COVER_LETTER_STEPS.length}단계`)
+console.log(`Interview release audit PASS: 기초 ${study.lessons.length}단원 · 기본 ${quiz.length}문항 · 심화 ${INTERVIEW_CAREER_ASSESSMENT_QUESTIONS.length}문항 · 기관 ${INTERVIEW_ORGANIZATIONS.length}곳 · 자기소개서 ${COVER_LETTER_STEPS.length}단계/${COVER_LETTER_QUESTION_LIBRARY.length}유형`)

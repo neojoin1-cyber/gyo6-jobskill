@@ -28,6 +28,7 @@ let classId = null
 const createdMissionIds = []
 const createdUserIds = []
 const repeatQuestionId = `RELEASE-REPEAT-${Date.now()}`
+let createdEvidenceId = null
 
 try {
   for (const [expectedRole, email] of Object.entries(accounts)) {
@@ -99,6 +100,32 @@ try {
   check('wrong-note retry increments repeat count', !reviewWrongError && reviewStatus === 'open'
     && reviewedWrong?.wrong_count === 3 && reviewedWrong?.review_streak === 0,
   reviewWrongError?.message || JSON.stringify(reviewedWrong))
+
+  const evidenceTitle = `[출시검증] 근거은행 ${Date.now()}`
+  const { data: createdEvidence, error: evidenceCreateError } = await student.client
+    .from('cover_letter_evidence')
+    .insert({
+      student_id: student.profile.id,
+      major_group: 'business',
+      source_type: '전공 실습',
+      title: evidenceTitle,
+      situation: '교내 실습에서 거래 자료의 합계가 맞지 않는 상황',
+      task: '마감 전 오류 원인을 찾고 검산 기준을 남기는 역할',
+      action: '원본과 입력값을 항목별로 대조하고 오류 행을 표시함',
+      result: '누락 1건을 찾아 합계를 바로잡고 검산표를 완성함',
+      proof: '실습 결과 파일',
+      skills: ['정확성', '문제해결'],
+    })
+    .select('id, title, skills').single()
+  createdEvidenceId = createdEvidence?.id || null
+  check('student creates cover-letter evidence', !evidenceCreateError && Boolean(createdEvidenceId),
+    evidenceCreateError?.message || JSON.stringify(createdEvidence))
+
+  const { data: evidenceRead, error: evidenceReadError } = await student.client
+    .from('cover_letter_evidence').select('id, title, skills').eq('id', createdEvidenceId).maybeSingle()
+  check('student reloads cover-letter evidence', !evidenceReadError
+    && evidenceRead?.title === evidenceTitle && evidenceRead?.skills?.includes('문제해결'),
+  evidenceReadError?.message || JSON.stringify(evidenceRead))
 
   const { data: viewable, error: viewableError } = await teacher.client.rpc('rpc_my_viewable_subjects')
   check('teacher viewable subjects resolver', !viewableError && Array.isArray(viewable), viewableError?.message)
@@ -295,6 +322,11 @@ try {
   check('teacher cannot create unassigned class', teacherForbidden?.error || teacherForbidden == null, JSON.stringify(teacherForbidden))
 } finally {
   if (clients.student) {
+    if (createdEvidenceId) {
+      const { error: evidenceCleanupError } = await clients.student.client
+        .from('cover_letter_evidence').delete().eq('id', createdEvidenceId)
+      check('cover-letter evidence check cleaned up', !evidenceCleanupError, evidenceCleanupError?.message)
+    }
     const { error: repeatCleanupError } = await clients.student.client.from('wrong_answers')
       .delete().eq('question_id', repeatQuestionId)
     check('repeat wrong-answer check cleaned up', !repeatCleanupError, repeatCleanupError?.message)

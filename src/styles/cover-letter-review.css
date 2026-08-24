@@ -95,6 +95,23 @@
 .cover-highlight-list article span { display: -webkit-box; overflow: hidden; font-size: 8.5px; line-height: 1.35; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
 .cover-highlight-list article p { margin: 4px 0 0; color: #475569; font-size: 8.5px; line-height: 1.4; }
 .cover-highlight-list article button { position: absolute; top: 5px; right: 5px; width: 22px; height: 22px; display: grid; place-items: center; border: 0; background: transparent; color: #c2410c; }
+.cover-review-rubric, .cover-review-quick { margin-top: 10px; padding: 10px; border: 1px solid #d8dee7; background: #fff; }
+.cover-review-rubric > header { display: flex; align-items: flex-start; gap: 7px; margin-bottom: 7px; }
+.cover-review-rubric > header svg { flex: 0 0 auto; color: #0f766e; }
+.cover-review-rubric > header b, .cover-review-quick header b { display: block; font-size: 9px; }
+.cover-review-rubric > header p, .cover-review-quick header p { margin: 2px 0 0; color: #667085; font-size: 8px; line-height: 1.4; }
+.cover-review-rubric > div { min-height: 31px; display: grid; grid-template-columns: minmax(0,1fr) 132px; align-items: center; gap: 6px; border-top: 1px solid #edf0f4; }
+.cover-review-rubric > div > span { font-size: 8.5px; font-weight: 800; }
+.cover-review-rubric > div > div { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; }
+.cover-review-rubric button { min-height: 24px; border: 0; border-radius: 4px; background: #edf1f5; color: #667085; font-size: 7.5px; font-weight: 800; }
+.cover-review-rubric button.is-on { background: #0f766e; color: #fff; }
+.cover-review-quick > div { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 7px; }
+.cover-review-quick > div button { min-height: 27px; padding: 0 7px; border: 1px solid var(--issue-color); border-radius: 999px; background: color-mix(in srgb, var(--issue-color) 32%, #fff); color: #334155; font-size: 7.5px; font-weight: 900; }
+.cover-highlight-legend { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.cover-highlight-legend span { display: flex; align-items: center; gap: 3px; color: #667085; font-size: 7.5px; }
+.cover-highlight-legend i { width: 12px; height: 12px; border: 1px solid #cbd5e1; border-radius: 3px; }
+.cover-summary-starters { display: flex; flex-wrap: wrap; gap: 4px; margin: 6px 0; }
+.cover-summary-starters button { min-height: 27px; padding: 0 7px; border: 1px solid #bfdbfe; border-radius: 6px; background: #eff6ff; color: #1d4ed8; font-size: 7.5px; font-weight: 900; }
 
 @media (max-width: 900px) {
   .cover-review-head { grid-template-columns: 38px minmax(0,1fr); padding: 12px; }

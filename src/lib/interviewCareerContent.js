@@ -1,4 +1,5 @@
 import { interviewFoundationArea } from './interviewFoundationCourses.js'
+import { EXTRA_COVER_QUESTIONS } from './coverLetterGuidance.js'
 
 const learningUnit = (title, concept, example, trap, practice) => ({ title, concept, example, trap, practice })
 const learningModule = (id, title, focus, lessons, completion) => ({ id, title, focus, lessons, completion })
@@ -324,6 +325,7 @@ export const COVER_LETTER_QUESTION_LIBRARY = [
   { id: 'strength-weakness', label: '강점·보완점', question: '직무와 연결되는 강점과 보완 중인 점을 사례와 함께 작성해 주세요.', purpose: '성격 나열이 아니라 업무 영향과 보완 행동을 확인함.', required: ['강점 근거', '보완점 영향', '현재 행동'], sectors: ['finance', 'public', 'enterprise'], limit: 650 },
   { id: 'growth', label: '입사 후 성장', question: '입사 후 처음 익힐 업무와 장기적으로 기여할 방법을 작성해 주세요.', purpose: '과장된 직급 목표보다 초기 학습·확인·기여 순서를 확인함.', required: ['초기 업무', '학습 방법', '장기 기여'], sectors: ['finance', 'public', 'enterprise'], limit: 650 },
   { id: 'free', label: '자유 기술', question: '지원자가 추가로 알리고 싶은 내용을 자유롭게 작성해 주세요.', purpose: '다른 항목에서 증명하지 못한 직무 관련 근거를 보완함.', required: ['새로운 근거', '지원 직무 연결'], sectors: ['finance', 'public', 'enterprise'], limit: 700 },
+  ...EXTRA_COVER_QUESTIONS,
 ]
 
 const FOUNDATION_AREAS = {

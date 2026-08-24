@@ -39,6 +39,14 @@ import {
   INTERVIEW_ORGANIZATIONS,
   INTERVIEW_TRACKS,
 } from '../../lib/interviewCareerContent.js'
+import {
+  COVER_EVIDENCE_ACTIONS,
+  COVER_EVIDENCE_MAJOR_GROUPS,
+  COVER_EVIDENCE_RESULTS,
+  COVER_EVIDENCE_SOURCES,
+  COVER_FIELD_ASSISTS,
+  questionGuide,
+} from '../../lib/coverLetterGuidance.js'
 import '../../styles/interview-career.css'
 
 const SECTORS = [
@@ -50,7 +58,7 @@ const SECTORS = [
 const SECTION_META = {
   pathways: { title: '지원처별 면접 심화', eyebrow: '기초 다음 단계' },
   institutions: { title: '기업·기관 연구소', eyebrow: '지원처 전수 준비' },
-  cover: { title: '자기소개서 완성실', eyebrow: '작성부터 첨삭까지' },
+  cover: { title: '나를쓰다', eyebrow: '자기소개서 학습·작성·첨삭' },
 }
 
 const STATUS_LABELS = {
@@ -263,11 +271,13 @@ function CoverLetterBuilder() {
     } catch { return { sector: 'finance', coverItems: [], ...seed } }
   })
   const [stepIndex, setStepIndex] = useState(0)
+  const [workspace, setWorkspace] = useState('learn')
   const [view, setView] = useState('write')
   const [notice, setNotice] = useState(null)
   const [history, setHistory] = useState([])
   const [submitting, setSubmitting] = useState(false)
   const [pdfBusy, setPdfBusy] = useState(false)
+  const [evidenceBank, setEvidenceBank] = useState(() => Array.isArray(draft.evidenceBank) ? draft.evidenceBank : [])
   const previewRef = useRef(null)
   const sector = COVER_LETTER_SECTOR_CONTENT[draft.sector] || COVER_LETTER_SECTOR_CONTENT.finance
   const organizations = INTERVIEW_ORGANIZATIONS.filter(item => item.sector === draft.sector)
@@ -284,11 +294,83 @@ function CoverLetterBuilder() {
   const ready = missing.length === 0 && questionProblems.length === 0
   const generated = useMemo(() => buildCoverLetter(draft, organization), [draft, organization])
 
-  useEffect(() => { if (profile?.id) loadHistory() }, [profile?.id])
+  useEffect(() => {
+    if (!profile?.id) return
+    loadHistory()
+    loadEvidenceBank()
+  }, [profile?.id])
 
   async function loadHistory() {
     const { data } = await supabase.rpc('rpc_my_cover_letters')
     setHistory(Array.isArray(data) ? data : [])
+  }
+
+  async function loadEvidenceBank() {
+    const { data, error } = await supabase
+      .from('cover_letter_evidence')
+      .select('id, major_group, source_type, title, situation, task, action, result, proof, skills, created_at')
+      .eq('student_id', profile.id)
+      .order('created_at', { ascending: false })
+    if (error || !Array.isArray(data)) return
+    const items = data.map(normalizeEvidence)
+    setEvidenceBank(items)
+    persistEvidenceInDraft(items)
+  }
+
+  function persistEvidenceInDraft(items) {
+    setDraft(current => {
+      const next = { ...current, evidenceBank: items }
+      localStorage.setItem('iv_cover_draft', JSON.stringify(next))
+      return next
+    })
+  }
+
+  async function saveEvidence(item) {
+    const localItem = { ...item, id: item.id || `local-${Date.now()}`, createdAt: new Date().toISOString() }
+    if (profile?.id) {
+      const { data, error } = await supabase.from('cover_letter_evidence').insert({
+        student_id: profile.id,
+        major_group: item.majorGroup,
+        source_type: item.sourceType,
+        title: item.title,
+        situation: item.situation,
+        task: item.task,
+        action: item.action,
+        result: item.result,
+        proof: item.proof,
+        skills: item.skills,
+      }).select('id, major_group, source_type, title, situation, task, action, result, proof, skills, created_at').single()
+      if (!error && data) Object.assign(localItem, normalizeEvidence(data))
+    }
+    const next = [localItem, ...evidenceBank]
+    setEvidenceBank(next)
+    persistEvidenceInDraft(next)
+    setNotice({ ok: true, text: '근거 1장을 저장했어요. 작성 문항에서 바로 불러올 수 있어요.' })
+  }
+
+  async function deleteEvidence(item) {
+    if (profile?.id && item.id && !String(item.id).startsWith('local-')) {
+      await supabase.from('cover_letter_evidence').delete().eq('id', item.id).eq('student_id', profile.id)
+    }
+    const next = evidenceBank.filter(value => value.id !== item.id)
+    setEvidenceBank(next)
+    persistEvidenceInDraft(next)
+  }
+
+  function useEvidence(item) {
+    const next = {
+      ...draft,
+      majorSkill: draft.majorSkill || `${item.sourceType}에서 ${item.skills.join('·')} 역량을 활용함.`,
+      experience: `${item.situation} ${item.task}`.trim(),
+      action: item.action,
+      result: `${item.result}${item.proof ? ` 확인 근거: ${item.proof}` : ''}`.trim(),
+      evidenceBank,
+    }
+    setDraft(next)
+    localStorage.setItem('iv_cover_draft', JSON.stringify(next))
+    setWorkspace('write')
+    setStepIndex(COVER_LETTER_STEPS.findIndex(value => value.id === 'experience'))
+    setNotice({ ok: true, text: '선택한 근거를 경험 단계에 연결했어요. 사실과 표현을 다시 확인해 주세요.' })
   }
 
   function update(key, value) {
@@ -302,6 +384,15 @@ function CoverLetterBuilder() {
     localStorage.setItem('iv_cover_draft', JSON.stringify(next))
     localStorage.removeItem('iv_cover_seed')
     setNotice(null)
+  }
+
+  function startQuestion(item) {
+    const exists = questionItems.some(selected => selected.id === item.id && !selected.custom)
+    if (!exists) {
+      update('coverItems', [...questionItems, { ...item, instanceId: `${item.id}-${Date.now()}`, answer: seedQuestionAnswer(item.id, draft) }])
+    }
+    setWorkspace('write')
+    setStepIndex(COVER_LETTER_STEPS.findIndex(value => value.id === 'questions'))
   }
 
   function goNext() {
@@ -394,18 +485,111 @@ function CoverLetterBuilder() {
   }
 
   return (
-      <div className="cover-builder">
+    <div className="cover-builder">
+      <section className="cover-brand-panel">
+        <div><span>MY CAREER STORY</span><h2>나를쓰다</h2><p>고르기부터 시작해 내 경험을 근거로 바꾸고, 문항에 맞는 글로 완성함.</p></div>
+        <b>{evidenceBank.length}<small>근거 카드</small></b>
+      </section>
+      <nav className="cover-workspace-tabs" aria-label="나를쓰다 메뉴">
+        <button className={workspace === 'learn' ? 'is-on' : ''} onClick={() => setWorkspace('learn')}><BookOpen />배우기</button>
+        <button className={workspace === 'evidence' ? 'is-on' : ''} onClick={() => setWorkspace('evidence')}><ClipboardText />근거 찾기</button>
+        <button className={workspace === 'write' ? 'is-on' : ''} onClick={() => setWorkspace('write')}><PencilSimple />작성하기</button>
+      </nav>
+      {workspace === 'learn' && <CoverLearningLibrary onStart={startQuestion} />}
+      {workspace === 'evidence' && <EvidenceWorkbench items={evidenceBank} onSave={saveEvidence} onDelete={deleteEvidence} onUse={useEvidence} />}
+      {workspace === 'write' && <>
       <div className="cover-progress"><div><strong>{sector.headline}</strong><span>{completed}/{COVER_LETTER_FIELDS.length}</span></div><div><i style={{ width: `${pct}%` }} /></div><p>자동 저장됨 · 한 단계씩 점검한 뒤 완성본으로 연결함</p></div>
       <nav className="cover-step-tabs" aria-label="자기소개서 작성 단계">{COVER_LETTER_STEPS.map((item, index) => <button key={item.id} className={index === stepIndex ? 'is-current' : index < stepIndex ? 'is-past' : ''} onClick={() => setStepIndex(index)}><span>{index < stepIndex ? <CheckCircle weight="fill" /> : index + 1}</span><b>{item.title.replace(/^\d+\.\s*/, '')}</b></button>)}</nav>
       <section className="cover-step-heading"><span>STEP {stepIndex + 1}</span><h2>{step.title.replace(/^\d+\.\s*/, '')}</h2><p>{step.check}</p></section>
       {step.id === 'target' && <><div className="cover-sector-picker">{SECTORS.map(item => { const Icon = item.icon; return <button key={item.id} className={draft.sector === item.id ? 'is-active' : ''} onClick={() => update('sector', item.id)}><Icon weight={draft.sector === item.id ? 'fill' : 'regular'} /><b>{item.label}</b><small>{COVER_LETTER_SECTOR_CONTENT[item.id].focus[0]}</small></button> })}</div><label className="cover-org-select"><span>연구한 지원처 불러오기</span><select value={draft.organizationId || ''} onChange={event => update('organizationId', event.target.value)}><option value="">직접 입력</option>{organizations.map(item => <option key={item.id} value={item.id}>{item.name} · {item.group}</option>)}</select></label><div className="cover-sector-focus">{sector.focus.map(item => <span key={item}><CheckCircle weight="fill" />{item}</span>)}</div>{organization && <details className="cover-org-sample"><summary><FileText weight="duotone" /><span><b>{organization.name} 완성 예시 보기</b><small>구조만 참고하고 경험·수치 복사는 금지</small></span><CaretRight /></summary><div>{organization.sampleCoverLetter.map(item => <section key={item.title}><h3>{item.title}</h3><p>{item.body}</p></section>)}</div></details>}</>}
-      {step.id === 'questions' && <QuestionComposer sector={draft.sector} organization={organization} items={questionItems} draft={draft} onChange={items => update('coverItems', items)} />}
+      {step.id === 'questions' && <QuestionComposer sector={draft.sector} organization={organization} items={questionItems} draft={draft} evidenceBank={evidenceBank} onChange={items => update('coverItems', items)} />}
       {step.id === 'audit' ? <section className="cover-ready"><FileText weight="duotone" /><h3>{ready ? '완성본을 만들 준비가 됐어요' : `${missing.length + questionProblems.length}가지를 더 확인해요`}</h3><p>{missing.length ? missing.map(item => item.label).join(' · ') : questionProblems.length ? questionProblems[0] : `${questionItems.length}개 문항을 화면에서 먼저 읽고 PDF 저장 또는 선생님 첨삭 요청으로 이어갈 수 있어요.`}</p><button onClick={openPreview} disabled={!ready}><Eye weight="fill" />완성본 생성·확인</button></section> : step.id !== 'questions' && <div className="cover-fields">{stepFields.map(field => <CoverField key={field.key} field={field} value={draft[field.key] || ''} sector={draft.sector} onChange={value => update(field.key, value)} />)}</div>}
       {notice && <p className={`cover-notice ${notice.ok ? 'is-ok' : 'is-error'}`}>{notice.ok ? <CheckCircle weight="fill" /> : <WarningCircle weight="fill" />}{notice.text}</p>}
       <footer className="cover-step-actions"><button onClick={() => setStepIndex(value => Math.max(0, value - 1))} disabled={stepIndex === 0}><ArrowLeft />이전</button>{stepIndex < COVER_LETTER_STEPS.length - 1 ? <button className="is-primary" onClick={goNext}>다음 단계<CaretRight /></button> : <button className="is-primary" onClick={openPreview} disabled={!ready}><Eye />완성본 보기</button>}</footer>
       <CoverHistory history={history} />
+      </>}
     </div>
   )
+}
+
+function CoverLearningLibrary({ onStart }) {
+  const [sector, setSector] = useState('all')
+  const [query, setQuery] = useState('')
+  const visible = COVER_LETTER_QUESTION_LIBRARY.filter(item => {
+    const sectorMatch = sector === 'all' || item.sectors.includes(sector)
+    const guide = questionGuide(item.id, item)
+    return sectorMatch && (!query || `${item.label} ${item.question} ${item.purpose} ${guide.group}`.toLowerCase().includes(query.toLowerCase()))
+  })
+  return (
+    <section className="cover-learning-library">
+      <header><div><span>30개 자주 묻는 항목</span><h3>질문의 뜻부터 익히기</h3><p>모범문장 암기보다 평가 의도·답변 순서·내 근거를 먼저 확인함.</p></div><BookOpen weight="duotone" /></header>
+      <div className="cover-learning-filters">
+        <div>{[{ id: 'all', label: '전체' }, ...SECTORS].map(item => <button key={item.id} className={sector === item.id ? 'is-on' : ''} onClick={() => setSector(item.id)}>{item.label}</button>)}</div>
+        <label><MagnifyingGlass /><input value={query} onChange={event => setQuery(event.target.value)} placeholder="지원동기·갈등·안전 등 검색" /></label>
+      </div>
+      <p className="cover-learning-count">{visible.length}개 항목 · 실제 공고의 질문과 글자 수를 최종 확인함</p>
+      <div className="cover-learning-list">{visible.map(item => {
+        const content = questionGuide(item.id, item)
+        return <details key={item.id}><summary><span>{content.group}</span><div><b>{item.label}</b><p>{item.question}</p></div><CaretRight /></summary><div className="cover-learning-detail"><section><b>평가자는 이것을 봄</b><p>{item.purpose}</p></section><section><b>답변 순서</b><ol>{content.structure.map(value => <li key={value}>{value}</li>)}</ol></section><section className="is-good"><b>좋은 예시</b><p>{content.good}</p></section><section className="is-trap"><b>감점 예시</b><p>{content.trap}</p></section><div><b>찾아볼 내 경험</b><span>{content.evidenceHints.map(value => <em key={value}>{value}</em>)}</span></div><button onClick={() => onStart(item)}><PencilSimple />이 문항 작성에 추가</button></div></details>
+      })}</div>
+    </section>
+  )
+}
+
+function EvidenceWorkbench({ items, onSave, onDelete, onUse }) {
+  const [form, setForm] = useState({ majorGroup: 'business', sourceType: '전공 실습', title: '', situation: '', task: '', action: '', result: '', proof: '', skills: [] })
+  const major = COVER_EVIDENCE_MAJOR_GROUPS.find(item => item.id === form.majorGroup) || COVER_EVIDENCE_MAJOR_GROUPS[0]
+  const ready = form.title.trim().length >= 2 && form.situation.trim().length >= 10 && form.action.trim().length >= 15 && form.result.trim().length >= 8
+
+  function change(key, value) { setForm(current => ({ ...current, [key]: value })) }
+  function toggleSkill(value) {
+    change('skills', form.skills.includes(value) ? form.skills.filter(item => item !== value) : [...form.skills, value])
+  }
+  function append(key, value) {
+    const current = String(form[key] || '').trim()
+    change(key, current ? `${current} ${value}` : value)
+  }
+  async function save() {
+    if (!ready) return
+    await onSave({ ...form, skills: form.skills.length ? form.skills : major.examples.slice(0, 1) })
+    setForm(current => ({ ...current, title: '', situation: '', task: '', action: '', result: '', proof: '', skills: [] }))
+  }
+
+  return (
+    <section className="cover-evidence-workbench">
+      <header><div><span>EXPERIENCE BANK</span><h3>작은 경험도 근거 1장으로</h3><p>수상 경력이 없어도 직접 한 행동과 확인 가능한 변화가 있으면 좋은 근거가 됨.</p></div><b>{items.length}</b></header>
+      <div className="evidence-guide-strip"><b>빈칸 대신 순서대로 고름</b><span>전공·상황</span><CaretRight /><span>내 역할</span><CaretRight /><span>행동</span><CaretRight /><span>결과</span></div>
+      <section className="evidence-form">
+        <fieldset><legend>1. 전공·분야</legend><div className="evidence-chip-grid">{COVER_EVIDENCE_MAJOR_GROUPS.map(item => <button key={item.id} className={form.majorGroup === item.id ? 'is-on' : ''} onClick={() => change('majorGroup', item.id)}>{item.label}</button>)}</div></fieldset>
+        <fieldset><legend>2. 어디에서 한 경험인가?</legend><div className="evidence-chip-grid">{COVER_EVIDENCE_SOURCES.map(value => <button key={value} className={form.sourceType === value ? 'is-on' : ''} onClick={() => change('sourceType', value)}>{value}</button>)}</div></fieldset>
+        <fieldset><legend>3. 이 경험에서 쓴 기술·태도</legend><div className="evidence-chip-grid">{major.examples.map(value => <button key={value} className={form.skills.includes(value) ? 'is-on' : ''} onClick={() => toggleSkill(value)}>{value}</button>)}</div></fieldset>
+        <label><span>근거 카드 이름 <small>나중에 찾기 쉬운 짧은 이름</small></span><input value={form.title} onChange={event => change('title', event.target.value)} placeholder="예: 판매 프로젝트 정산 오류 해결" /></label>
+        <label><span>상황 <small>언제·어디서·무슨 일이 있었나?</small></span><div className="evidence-starters"><button onClick={() => append('situation', `${form.sourceType}에서 `)}>“{form.sourceType}에서”로 시작</button></div><textarea value={form.situation} onChange={event => change('situation', event.target.value)} placeholder="예: 교내 판매 프로젝트 마감 전 재고와 매출 기록이 맞지 않았음." rows={3} /></label>
+        <label><span>내 역할·목표 <small>팀 전체가 아니라 내가 맡은 일</small></span><div className="evidence-starters"><button onClick={() => append('task', '제가 맡은 역할은 ')}>“제가 맡은 역할은” 넣기</button></div><textarea value={form.task} onChange={event => change('task', event.target.value)} placeholder="예: 거래 기록을 다시 확인해 마감 전에 정산표를 맞추는 역할" rows={3} /></label>
+        <label><span>직접 한 행동 <small>확인 → 판단 → 실행 → 협업·보고</small></span><div className="evidence-starters">{COVER_EVIDENCE_ACTIONS.map(value => <button key={value} onClick={() => append('action', value)}>{value}</button>)}</div><textarea value={form.action} onChange={event => change('action', event.target.value)} placeholder="예: 거래 내역을 시간순으로 분류하고 영수증과 대조한 뒤 팀원과 수정 금액을 검산함." rows={4} /></label>
+        <label><span>결과·배운 점 <small>수치·완성물·시간·오류·피드백</small></span><div className="evidence-starters">{COVER_EVIDENCE_RESULTS.map(value => <button key={value} onClick={() => append('result', value)}>{value}</button>)}</div><textarea value={form.result} onChange={event => change('result', event.target.value)} placeholder="예: 누락 3건을 찾아 정산표를 맞추고 검산 칸을 추가함." rows={3} /></label>
+        <label><span>확인 근거 <small>없으면 비워도 됨</small></span><input value={form.proof} onChange={event => change('proof', event.target.value)} placeholder="예: 완성 파일·작업일지·담당 교사 피드백" /></label>
+        <button className="evidence-save" onClick={save} disabled={!ready}><Plus />근거 1장 저장</button>
+      </section>
+      <section className="evidence-saved-list"><h3>저장한 근거</h3>{items.length === 0 ? <div className="evidence-empty"><ClipboardText /><b>아직 저장한 근거가 없음</b><p>전공 실습이나 작은 역할 하나부터 시작함.</p></div> : items.map(item => <article key={item.id}><header><div><span>{item.sourceType}</span><b>{item.title}</b></div><button onClick={() => onDelete(item)} aria-label="근거 삭제"><Trash /></button></header><p>{item.situation}</p><div>{item.skills.map(value => <em key={value}>{value}</em>)}</div><footer><span>{item.result}</span><button onClick={() => onUse(item)}>작성에 사용<CaretRight /></button></footer></article>)}</section>
+    </section>
+  )
+}
+
+function normalizeEvidence(row) {
+  return {
+    id: row.id,
+    majorGroup: row.major_group,
+    sourceType: row.source_type,
+    title: row.title,
+    situation: row.situation,
+    task: row.task || '',
+    action: row.action,
+    result: row.result,
+    proof: row.proof || '',
+    skills: Array.isArray(row.skills) ? row.skills : [],
+    createdAt: row.created_at,
+  }
 }
 
 function defaultCoverItems(sector, organization, draft) {
@@ -428,7 +612,7 @@ function seedQuestionAnswer(id, draft) {
   return ''
 }
 
-function QuestionComposer({ sector, organization, items, draft, onChange }) {
+function QuestionComposer({ sector, organization, items, draft, evidenceBank, onChange }) {
   const [showLibrary, setShowLibrary] = useState(items.length === 0)
   const [showCustom, setShowCustom] = useState(false)
   const [custom, setCustom] = useState({ label: '', question: '', limit: 700 })
@@ -449,6 +633,16 @@ function QuestionComposer({ sector, organization, items, draft, onChange }) {
     onChange(items.map((item, itemIndex) => itemIndex === index ? { ...item, ...changes } : item))
   }
 
+  function addStarter(index, starter) {
+    const current = String(items[index].answer || '').trim()
+    updateItem(index, { answer: `${current}${current ? '\n' : ''}${starter}`.slice(0, items[index].limit) })
+  }
+
+  function useBankEvidence(index, evidence) {
+    const answer = [evidence.situation, evidence.task, evidence.action, evidence.result].filter(Boolean).join(' ')
+    updateItem(index, { answer: answer.slice(0, items[index].limit), evidenceId: evidence.id })
+  }
+
   function move(index, direction) {
     const target = index + direction
     if (target < 0 || target >= items.length) return
@@ -462,7 +656,16 @@ function QuestionComposer({ sector, organization, items, draft, onChange }) {
       <div className="cover-question-toolbar"><div><b>{organization ? `${organization.name} 추천 문항` : '지원처 문항 구성'}</b><p>공고의 실제 문항과 글자 수가 다르면 직접 수정함.</p></div><button onClick={() => setShowLibrary(value => !value)}><Plus />문항 선택</button><button onClick={() => setShowCustom(value => !value)}><NotePencil />직접 추가</button></div>
       {showLibrary && <div className="cover-question-library">{available.length ? available.map(item => <button key={item.id} onClick={() => addTemplate(item)}><span><b>{item.label}</b><small>{item.question}</small></span><Plus /></button>) : <p>이 분야에서 추가할 수 있는 기본 문항을 모두 선택했어요.</p>}</div>}
       {showCustom && <div className="cover-custom-question"><label><span>항목 이름</span><input value={custom.label} onChange={event => setCustom(value => ({ ...value, label: event.target.value }))} placeholder="예: 당행 인재상" /></label><label><span>실제 질문</span><textarea value={custom.question} onChange={event => setCustom(value => ({ ...value, question: event.target.value }))} placeholder="채용공고의 자기소개서 문항을 입력" rows={3} /></label><label><span>글자 수</span><input type="number" min="200" max="2000" step="50" value={custom.limit} onChange={event => setCustom(value => ({ ...value, limit: event.target.value }))} /></label><button onClick={addCustom}><Plus />이 문항 추가</button></div>}
-      <div className="cover-selected-questions">{items.map((item, index) => { const count = String(item.answer || '').length; return <article key={item.instanceId || `${item.id}-${index}`}><header><span>{index + 1}</span><div><b>{item.label}</b><p>{item.question}</p></div><div className="cover-question-order"><button onClick={() => move(index, -1)} disabled={index === 0} aria-label="위로 이동"><ArrowUp /></button><button onClick={() => move(index, 1)} disabled={index === items.length - 1} aria-label="아래로 이동"><ArrowDown /></button><button onClick={() => onChange(items.filter((_, itemIndex) => itemIndex !== index))} aria-label="문항 삭제"><Trash /></button></div></header><div className="cover-question-purpose"><b>평가 의도</b><p>{item.purpose}</p><span>{item.required.map(value => <em key={value}>{value}</em>)}</span></div><textarea value={item.answer || ''} onChange={event => updateItem(index, { answer: event.target.value.slice(0, item.limit) })} placeholder="근거 은행에서 관련 경험을 가져와 질문에 맞게 다시 구성" rows={7} /><footer><button onClick={() => updateItem(index, { answer: seedQuestionAnswer(item.id, draft) })}>내 근거 가져오기</button><span className={count >= 80 ? 'is-ready' : ''}>{count}/{item.limit}자</span></footer></article> })}</div>
+      <div className="cover-selected-questions">{items.map((item, index) => {
+        const count = String(item.answer || '').length
+        const guide = questionGuide(item.id, item)
+        const warnings = coverAnswerWarnings(item.answer, draft)
+        return <article key={item.instanceId || `${item.id}-${index}`}><header><span>{index + 1}</span><div><b>{item.label}</b><p>{item.question}</p></div><div className="cover-question-order"><button onClick={() => move(index, -1)} disabled={index === 0} aria-label="위로 이동"><ArrowUp /></button><button onClick={() => move(index, 1)} disabled={index === items.length - 1} aria-label="아래로 이동"><ArrowDown /></button><button onClick={() => onChange(items.filter((_, itemIndex) => itemIndex !== index))} aria-label="문항 삭제"><Trash /></button></div></header><div className="cover-question-purpose"><b>평가 의도</b><p>{item.purpose}</p><span>{item.required.map(value => <em key={value}>{value}</em>)}</span></div>
+          <details className="cover-answer-coach" open={!item.answer}><summary><PencilSimple />막막하면 답변 순서부터 고르기<CaretRight /></summary><div><section><b>답변 순서</b><ol>{guide.structure.map(value => <li key={value}>{value}</li>)}</ol></section><section><b>첫 문장 고르기</b><div>{guide.starters.map(value => <button key={value} onClick={() => addStarter(index, value)}>{value}</button>)}</div></section><section className="cover-answer-examples"><p><b>좋은 방향</b>{guide.good}</p><p><b>피할 표현</b>{guide.trap}</p></section><section><b>근거은행에서 가져오기</b>{evidenceBank.length ? <div>{evidenceBank.map(value => <button key={value.id} onClick={() => useBankEvidence(index, value)}>{value.title}</button>)}</div> : <p>근거 찾기에서 경험을 먼저 저장하면 여기서 선택할 수 있음.</p>}</section></div></details>
+          <textarea value={item.answer || ''} onChange={event => updateItem(index, { answer: event.target.value.slice(0, item.limit) })} placeholder="답변 순서를 고르고 근거은행의 실제 경험으로 한 칸씩 채움" rows={7} />
+          {warnings.length > 0 && <div className="cover-answer-warnings">{warnings.map(value => <span key={value}><WarningCircle weight="fill" />{value}</span>)}</div>}
+          <footer><button onClick={() => updateItem(index, { answer: seedQuestionAnswer(item.id, draft) })}>기본 작성 근거 불러오기</button><span className={count >= 80 ? 'is-ready' : ''}>{count}/{item.limit}자</span></footer></article>
+      })}</div>
       {!items.length && <div className="cover-question-empty"><ClipboardText /><b>제출할 문항을 먼저 구성해요</b><p>추천 문항을 고르거나 지원처 공고의 문항을 직접 추가함.</p></div>}
     </section>
   )
@@ -471,14 +674,33 @@ function QuestionComposer({ sector, organization, items, draft, onChange }) {
 function CoverField({ field, value, sector, onChange }) {
   const current = String(value).trim().length
   const ready = current >= field.minLength
+  const assist = COVER_FIELD_ASSISTS[field.key]
+  function addStarter(starter) {
+    const text = String(value || '').trim()
+    onChange(`${text}${text ? '\n' : ''}${starter}`)
+  }
   return (
     <article className={`cover-field-card ${ready ? 'is-ready' : ''}`}>
       <header><div><span>{ready ? <CheckCircle weight="fill" /> : <PencilSimple />}</span><strong>{field.label}</strong></div><small className={ready ? 'is-ready' : ''}>{current}/{field.minLength}자 기준</small></header>
       <div className="cover-field-guide"><div><b>꼭 넣기</b><ul>{field.required.map(item => <li key={item}>{item}</li>)}</ul></div><p><WarningCircle weight="fill" /><span><b>주의</b>{field.caution}</span></p></div>
       {field.showExample !== false && <details><summary>이 분야의 구체적 예시 보기</summary><div className="cover-example-box"><b>구조 참고</b><p>{field.examples[sector]}</p><small>기관명·경험·수치는 내 사실로 바꿔 작성함.</small></div></details>}
+      {assist && <details className="cover-field-assist"><summary><PencilSimple />막막하면 한 칸씩 시작</summary><div><section><b>먼저 답할 세 가지</b><ol>{assist.prompts.map(value => <li key={value}>{value}</li>)}</ol></section><section><b>첫 문장 고르기</b><div>{assist.starters.map(value => <button key={value} onClick={() => addStarter(value)}>{value}</button>)}</div></section></div></details>}
       <textarea id={`cover-${field.key}`} value={value} onChange={event => onChange(event.target.value)} placeholder={field.placeholder} rows={field.key === 'action' || field.key === 'motivation' ? 6 : 4} />
     </article>
   )
+}
+
+function coverAnswerWarnings(answer, draft) {
+  const text = String(answer || '').trim()
+  if (!text) return ['답변 순서 또는 근거 카드를 선택해 시작함.']
+  const warnings = []
+  if (text.length < 80) warnings.push('행동과 결과를 더 구체적으로 적음.')
+  if (/(열심히|최선을 다|성실하|노력하)(였|했|겠습니다|다고)/.test(text) && !/(확인|기록|비교|설명|조정|측정|검산)/.test(text)) warnings.push('추상 표현을 실제 행동 동사로 바꿈.')
+  if ((text.match(/저는/g) || []).length >= 4) warnings.push('“저는” 반복을 줄이고 행동부터 씀.')
+  if (/(부모|아버지|어머니|출신 학교|고등학교명|출생지|남자로서|여자로서)/.test(text)) warnings.push('블라인드 채용에서 제외할 개인정보를 확인함.')
+  const otherOrganizations = INTERVIEW_ORGANIZATIONS.filter(item => item.name !== draft.targetName && text.includes(item.name))
+  if (otherOrganizations.length) warnings.push(`다른 지원처명(${otherOrganizations[0].name})이 들어갔는지 확인함.`)
+  return warnings.slice(0, 3)
 }
 
 const CoverPreview = forwardRef(function CoverPreview({ draft, organization, generated }, ref) {
