@@ -223,7 +223,9 @@ export default function TeacherShell() {
           <TeacherLearningPreview
             profile={profile}
             initialSubject={screen.subject}
+            teachingMode={screen.teachingMode}
             onBack={closeScreen}
+            onOpenClassroom={() => navigate('classroom')}
             onOpenMessages={(params = {}) => navigate('messages', params)}
           />
         </Suspense>
@@ -288,7 +290,7 @@ export default function TeacherShell() {
           onOpenMessages={(params = {}) => navigate('messages', params)}
           onOpenCoverReviews={classId => navigate('cover-reviews', { classId })}
           onOpenInterviewCoach={classId => navigate('interview-coaching', { classId })}
-          onOpenStudentCampus={subject => navigate('student-campus', { subject })}
+          onOpenStudentCampus={(subject, options = {}) => navigate('student-campus', { subject, ...options })}
         />
       ) : (
       <div style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>

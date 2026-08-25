@@ -5,6 +5,14 @@ import { supabase } from './lib/supabase.js'
 import { ThemeProvider } from './lib/theme.jsx'
 import { initPushNotifications } from './lib/pushNotifications.js'
 import { scheduleReviewReminder } from './lib/reminders.js'
+import {
+  TRIAL_ACCOUNTS,
+  beginTrialSession,
+  clearTrialSession,
+  formatTrialRemaining,
+  setTrialNotice,
+  trialRoleFromEmail,
+} from './lib/trialSession.js'
 import LoginScreen from './screens/LoginScreen.jsx'
 const AdminShell = lazy(() => import('./screens/admin/AdminShell.jsx'))
 const SchoolAdminShell = lazy(() => import('./screens/schooladmin/SchoolAdminShell.jsx'))
@@ -77,12 +85,29 @@ export default function App() {
   )
 }
 
+function TrialSessionBar({ role, remaining, onExit }) {
+  const account = TRIAL_ACCOUNTS[role]
+  const ending = remaining <= 2 * 60 * 1000
+  return (
+    <div className={`trial-session-bar${ending ? ' is-ending' : ''}`} role="status" aria-live={ending ? 'polite' : 'off'}>
+      <div className="trial-session-copy">
+        <b>{account?.label || '공개'} 체험</b>
+        <span>화면 작동만 저장됨 · 서버 기록 없음</span>
+      </div>
+      <time aria-label={`체험 남은 시간 ${formatTrialRemaining(remaining)}`}>{formatTrialRemaining(remaining)}</time>
+      <button type="button" onClick={onExit} aria-label="체험 종료" title="체험 종료">×</button>
+    </div>
+  )
+}
+
 function AppInner() {
   const [session,        setSession]        = useState(undefined)
   const [profile,        setProfile]        = useState(null)
   const [profileLoading, setProfileLoading] = useState(false)
   const [profileError, setProfileError]     = useState(false)  // 조회 실패(네트워크) — '프로필 없음'과 구분
   const [profileRetry, setProfileRetry]     = useState(0)
+  const [trialExpiresAt, setTrialExpiresAt] = useState(0)
+  const [trialNow, setTrialNow]             = useState(Date.now())
 
   // 업데이트 상태: null(미확인) | 'ok' | 'soft' | 'force'
   const [updateState,    setUpdateState]    = useState(null)
@@ -160,7 +185,13 @@ function AppInner() {
       // 새/다른 사용자일 때만 로딩 표시(같은 사용자 토큰 리프레시는 로딩 불필요 → 무한로딩 방지)
       if (s && id !== loadedUidRef.current) setProfileLoading(true)
       setSession(s)
-      if (!s) { setProfile(null); setProfileLoading(false); loadedUidRef.current = null }
+      if (!s) {
+        clearTrialSession()
+        setTrialExpiresAt(0)
+        setProfile(null)
+        setProfileLoading(false)
+        loadedUidRef.current = null
+      }
     })
     return () => subscription.unsubscribe()
   }, [])
@@ -184,6 +215,45 @@ function AppInner() {
       })
     return () => { cancelled = true }
   }, [session?.user?.id, profileRetry])
+
+  const trialRole = trialRoleFromEmail(session?.user?.email)
+
+  useEffect(() => {
+    if (!session || !trialRole || Capacitor.isNativePlatform()) {
+      setTrialExpiresAt(0)
+      return undefined
+    }
+
+    const started = beginTrialSession(trialRole)
+    if (!started.allowed || !started.session?.expiresAt) {
+      setTrialNotice(started.reason || '체험 이용 시간이 끝났습니다.')
+      supabase.auth.signOut({ scope: 'local' })
+      return undefined
+    }
+
+    const expiresAt = Number(started.session.expiresAt)
+    setTrialExpiresAt(expiresAt)
+    setTrialNow(Date.now())
+    let expired = false
+    const tick = () => {
+      const now = Date.now()
+      setTrialNow(now)
+      if (!expired && now >= expiresAt) {
+        expired = true
+        setTrialNotice('15분 체험이 끝났습니다. 정식 계정에서는 학습 기록이 안전하게 저장됩니다.')
+        clearTrialSession()
+        supabase.auth.signOut({ scope: 'local' })
+      }
+    }
+    const timer = window.setInterval(tick, 1000)
+    return () => window.clearInterval(timer)
+  }, [session?.user?.id, trialRole])
+
+  async function exitTrial() {
+    setTrialNotice('체험을 종료했습니다. 정식 계정으로 로그인하면 모든 기록이 저장됩니다.')
+    clearTrialSession()
+    await supabase.auth.signOut({ scope: 'local' })
+  }
 
   // ── 업데이트 버튼 → 인앱 IMMEDIATE 업데이트(진행 UI+재시작), 불가 시 스토어 폴백 ──
   async function triggerUpdate() {
@@ -348,21 +418,32 @@ function AppInner() {
     )
   }
 
+  const isTrial = Boolean(trialRole && trialExpiresAt)
+  const shell = profile.role === 'admin'
+    ? <AdminShell profile={profile} />
+    : profile.role === 'school_admin'
+      ? <SchoolAdminShell />
+      : (profile.role === 'teacher' || profile.role === 'class_admin')
+        ? <TeacherShell />
+        : <StudentShell />
+
   return (
-    <AuthCtx.Provider value={{ session, profile }}>
+    <AuthCtx.Provider value={{ session, profile, isTrial, trialExpiresAt }}>
       {showSoftBanner && (
         <UpdateBanner version={updateInfo.version} onUpdate={triggerUpdate}
           onDismiss={() => setBannerDismissed(true)} />
       )}
-      <div style={{ height: '100%' }}>
-        {profile.role === 'admin'
-          ? <AdminShell profile={profile} />
-          : profile.role === 'school_admin'
-            ? <SchoolAdminShell />
-            : (profile.role === 'teacher' || profile.role === 'class_admin')
-              ? <TeacherShell />
-              : <StudentShell />
-        }
+      <div className={isTrial ? 'trial-app-frame' : ''} style={{ height: '100%' }}>
+        {isTrial && (
+          <TrialSessionBar
+            role={trialRole}
+            remaining={Math.max(0, trialExpiresAt - trialNow)}
+            onExit={exitTrial}
+          />
+        )}
+        <div className={isTrial ? 'trial-app-content' : ''} style={{ height: '100%' }}>
+          {shell}
+        </div>
       </div>
     </AuthCtx.Provider>
   )

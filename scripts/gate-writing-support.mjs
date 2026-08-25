@@ -1,5 +1,5 @@
 import fs from 'node:fs'
-import { getTeacherLessonGuide, lessonTiming, LESSON_DURATIONS } from '../src/lib/teacherLessonGuides.js'
+import { getTeacherLessonGuide } from '../src/lib/teacherLessonGuides.js'
 
 const checks = [
   ['나를쓰다 30개 문항 학습', 'src/screens/student/InterviewCareerLab.jsx', ['30개 자주 묻는 항목', '좋은 예시', '감점 예시']],
@@ -15,7 +15,9 @@ const checks = [
   ['면접 답변 구조 지원', 'src/screens/student/InterviewStudyScreen.jsx', ['답변 구조 힌트', '위 구조 힌트를 참고해']],
   ['학생 실전면접 리허설', 'src/screens/student/InterviewPracticalScreen.jsx', ['면접 동선 9단계', '전 과정 리허설 시작', '고정 예절 암기 금지']],
   ['교사 실전면접 코칭', 'src/screens/teacher/TeacherInterviewPracticeScreen.jsx', ['학생 관찰표', '지도 방법', '학생에게 피드백']],
-  ['학생 화면 결합 수업 코치', 'src/screens/teacher/TeacherLearningPreview.jsx', ['TeacherLessonCoach', 'onContextChange={setLearningContext}', '수업 코치']],
+  ['학생 학습 순서 전달', 'src/screens/student/StudyScreen.jsx', ['onLearningContext', "stage: !areaId ? 'area-choice'", 'position:', 'revealed: contextRevealed']],
+  ['학생앱 수업 맥락 지도', 'src/screens/teacher/TeacherLearningPreview.jsx', ['TeacherLessonCoach', 'onContextChange={setLearningContext}', '현재 단계 지도', 'context={learningContext}']],
+  ['교실 화면 순서별 지도', 'src/screens/teacher/ClassroomScreen.jsx', ['ClassroomContextGuide', '현재 순서 지도', 'revealed={reveal}', 'position={idx + 1}']],
   ['학생 답장 빠른 선택', 'src/screens/student/NotificationsScreen.jsx', ['QUICK_REPLIES', 'setReplyBody(text)']],
   ['교사 메시지 빠른 시작', 'src/screens/teacher/TeacherMessageScreen.jsx', ['TEMPLATES', 'applyTemplate(template)']],
   ['교사 첨삭 빠른 평가', 'src/screens/teacher/CoverLetterReviewScreen.jsx', ['빠른 평가', '첨삭 유형 고르기', '전체 조언']],
@@ -32,16 +34,11 @@ for (const [name, file, needles] of checks) {
 for (const subject of ['job-common', 'ncs-basic', 'recruit-written', 'interview', 'cover-letter', 'personality']) {
   const guide = getTeacherLessonGuide(subject, subject === 'cover-letter' ? 'cover-practical' : 'study')
   if (guide.prompts.length < 4 || guide.good.length < 3 || guide.improve.length < 3 || !guide.activity || !guide.exit) {
-    failures.push(`교사 수업 코치 ${subject}: 발문·사례·활동 부족`)
+    failures.push(`교사 맥락 지도 ${subject}: 발문·사례·활동 부족`)
   }
 }
 
-for (const minutes of LESSON_DURATIONS) {
-  const total = lessonTiming(minutes).reduce((sum, item) => sum + item[2], 0)
-  if (total !== minutes) failures.push(`교사 수업 코치 ${minutes}분: 실제 합계 ${total}분`)
-}
-
-if (!failures.length) console.log('PASS 교사 수업 코치 6과목 · 10/25/45분 구성')
+if (!failures.length) console.log('PASS 교사 맥락 지도 6과목 · 학생앱·교실 화면 연결')
 
 if (failures.length) {
   for (const failure of failures) console.error(`FAIL ${failure}`)

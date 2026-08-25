@@ -10,12 +10,12 @@ import { useState, useEffect } from 'react'
 import { supabase } from '../../lib/supabase.js'
 import { pushBack, popBack } from '../../lib/backButton.js'
 import { COMMON_ABILITY_COURSES } from '../../lib/officialStandards.js'
+import { filterActiveSubjects } from '../../lib/subjectCatalog.js'
 
 const SUBJECT_NAME = {
   'job-common': COMMON_ABILITY_COURSES['job-common'].title,
   'ncs-basic': COMMON_ABILITY_COURSES['ncs-basic'].title,
-  'food-service': '식음료서비스',
-  'recruit-written': '채용필기 심화·확장', 'quality': '품질경영', 'interview': '고졸 공정채용 면접', 'personality': '인성검사',
+  'recruit-written': '채용필기 심화·확장', 'interview': '고졸 공정채용 면접', 'personality': '인성검사',
 }
 function pctColor(p) { return p >= 80 ? '#10B981' : p >= 50 ? '#F59E0B' : '#EF4444' }
 function Bar({ pct }) {
@@ -36,8 +36,14 @@ export default function ClassProgressScreen({ classId, className, onBack, onMess
       .then(({ data, error }) => { if (error) setErr(error.message); else setData(data || { students: [], subjects: [] }) })
   }, [classId])
 
-  const students = data?.students || []
-  const subjects = data?.subjects || []
+  const students = (data?.students || []).map(student => {
+    const subjects = filterActiveSubjects(student.subjects)
+    const overall = subjects.length
+      ? Math.round(subjects.reduce((sum, subject) => sum + (subject.pct || 0), 0) / subjects.length)
+      : 0
+    return { ...student, subjects, overall }
+  })
+  const subjects = filterActiveSubjects(data?.subjects)
   const started = students.filter(s => (s.subjects || []).length > 0)
   const average = started.length ? Math.round(started.reduce((sum, student) => sum + (student.overall ?? 0), 0) / started.length) : 0
   const support = students.filter(student => !(student.subjects || []).length || (student.overall ?? 0) < 40)

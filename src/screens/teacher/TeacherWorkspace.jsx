@@ -12,7 +12,9 @@ import {
   ClipboardText,
   FileText,
   GraduationCap,
+  Lightbulb,
   MagnifyingGlass,
+  Monitor,
   PaperPlaneTilt,
   Plus,
   PresentationChart,
@@ -190,19 +192,7 @@ export default function TeacherWorkspace({
               <button onClick={() => onOpenStudentCampus?.()}><Buildings weight="fill" /><span>학생 화면 그대로</span><ArrowRight /></button>
             </header>
 
-            <section className="campus-map teacher-learning-map" aria-label="교사가 미리 살펴보는 스킬캠퍼스 지도">
-              <img src={campusAsset('skill-campus-map.webp')} alt="학생들과 함께 학습하는 스킬캠퍼스 전경" />
-              {CAMPUS_SPOTS.map(({ id, label, badge, authority, icon: Icon, className }) => (
-                <button key={id} className={`campus-spot ${className}`} onClick={() => onOpenStudentCampus?.(id)} aria-label={`${label} · ${authority}`}>
-                  <Icon weight="bold" />
-                  <span className="campus-spot-copy"><small>{badge}</small><b>{label}</b></span>
-                </button>
-              ))}
-              <button className="campus-active-spot" onClick={() => onOpenStudentCampus?.('interview')}>
-                <ChatCircleDots weight="fill" />
-                <span className="campus-spot-copy"><small>면접 필수</small><b>고졸면접관</b></span>
-              </button>
-            </section>
+            <TeacherCampusMap className="teacher-learning-map" onOpenStudentCampus={onOpenStudentCampus} />
 
             {showClassForm && (
               <form className="teacher-class-form" onSubmit={createClass}>
@@ -244,16 +234,31 @@ export default function TeacherWorkspace({
               <button className="teacher-refresh" onClick={loadLive} disabled={demo}><ArrowClockwise /> 새로고침</button>
             </header>
 
-            <nav className="teacher-mobile-actions" aria-label="교사 빠른 도구">
-              <button onClick={onOpenClassroom}><Broadcast weight="fill" /><span>수업 시작</span></button>
-              <button onClick={() => onOpenMessages?.({ scope: 'class', target: classId })}><ChatCircleDots weight="fill" /><span>메시지</span></button>
-              <button onClick={() => onOpenCoverReviews?.(classId)}><FileText weight="fill" /><span>글 첨삭</span></button>
-              <button onClick={() => onOpenInterviewCoach?.(classId)}><PresentationChart weight="fill" /><span>면접 코칭</span></button>
-              <button onClick={() => onNavigate?.('create-mission', { classId: cls.id, className: cls.name })}><Sparkle weight="fill" /><span>미션 만들기</span></button>
-            </nav>
+            <section className="teacher-class-launch" aria-label="오늘 수업 준비">
+              <TeacherCampusMap className="teacher-live-map" onOpenStudentCampus={onOpenStudentCampus} />
+              <div className="teacher-launch-panel">
+                <header><span>TEACHER PASS</span><h2>학생과 같은 흐름에서 바로 가르치기</h2><p>학습관과 단원 순서는 같게 유지하고, 필요한 순간에 지도 도구만 더함.</p></header>
+                <div className="teacher-launch-modes">
+                  <button onClick={() => onOpenStudentCampus?.()}>
+                    <span className="is-blue"><BookOpenText weight="fill" /></span><div><small>같이 배우기</small><b>학생 화면으로 준비</b></div><ArrowRight />
+                  </button>
+                  <button onClick={() => onOpenStudentCampus?.(null, { teachingMode: true })}>
+                    <span className="is-mint"><Lightbulb weight="fill" /></span><div><small>차시별 지도 함께</small><b>학생앱 활용 수업</b></div><ArrowRight />
+                  </button>
+                  <button className="is-classroom" onClick={onOpenClassroom}>
+                    <span><Monitor weight="fill" /></span><div><small>대형 화면</small><b>교실 화면 시작</b></div><ArrowRight />
+                  </button>
+                </div>
+                <nav className="teacher-launch-tools" aria-label="교사 보너스 도구">
+                  <button onClick={() => onOpenMessages?.({ scope: 'class', target: classId })}><ChatCircleDots weight="fill" /><span>소통</span></button>
+                  <button onClick={() => onOpenCoverReviews?.(classId)}><FileText weight="fill" /><span>글 첨삭</span></button>
+                  <button onClick={() => onOpenInterviewCoach?.(classId)}><PresentationChart weight="fill" /><span>면접 코칭</span></button>
+                  <button onClick={() => onNavigate?.('create-mission', { classId: cls.id, className: cls.name })}><Sparkle weight="fill" /><span>미션</span></button>
+                </nav>
+              </div>
+            </section>
 
-            <section className="teacher-campus-summary">
-              <div className="summary-image"><img src={`${import.meta.env.BASE_URL}images/campus/skill-campus-map.webp`} alt="스킬캠퍼스 전경" /></div>
+            <section className="teacher-campus-summary teacher-campus-summary-compact">
               <div className="summary-copy">
                 <span className="summary-live"><i /> 오늘의 캠퍼스가 열렸어요</span>
                 <h2>{live && live !== 'loading' ? `${live.summary?.active ?? 0}명이 학습 중이에요` : '학생 현황을 준비하고 있어요'}</h2>
@@ -324,6 +329,24 @@ export default function TeacherWorkspace({
         )}
       </section>
     </div>
+  )
+}
+
+function TeacherCampusMap({ className = '', onOpenStudentCampus }) {
+  return (
+    <section className={`campus-map teacher-campus-map ${className}`} aria-label="학생과 교사가 함께 사용하는 스킬캠퍼스 지도">
+      <img src={campusAsset('skill-campus-map.webp')} alt="학생들과 함께 학습하는 스킬캠퍼스 전경" />
+      {CAMPUS_SPOTS.map(({ id, label, badge, authority, icon: Icon, className: spotClass }) => (
+        <button key={id} className={`campus-spot ${spotClass}`} onClick={() => onOpenStudentCampus?.(id)} aria-label={`${label} · ${authority}`}>
+          <Icon weight="bold" />
+          <span className="campus-spot-copy"><small>{badge}</small><b>{label}</b></span>
+        </button>
+      ))}
+      <button className="campus-active-spot" onClick={() => onOpenStudentCampus?.('interview')} aria-label="고졸면접관 · 특성화고 공정채용 면접">
+        <ChatCircleDots weight="fill" />
+        <span className="campus-spot-copy"><small>면접 필수</small><b>고졸면접관</b></span>
+      </button>
+    </section>
   )
 }
 

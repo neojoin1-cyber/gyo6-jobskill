@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { filterActiveSubjects } from '../../lib/subjectCatalog.js'
 import { supabase } from '../../lib/supabase.js'
-import foodServiceQuestions from '../../../data/food-service-questions.json'
 import { buildJcMissionAreas } from '../../lib/jobCommonAreas.js'
 import { buildNcs2026Areas } from '../../lib/ncs2026.js'
 import { RECRUIT_WRITTEN_TRACKS, buildRecruitWrittenAreas } from '../../lib/recruitWritten.js'
@@ -25,18 +24,6 @@ const RECRUIT_AREAS = RECRUIT_WRITTEN_TRACKS.flatMap(track =>
   }))
 )
 
-// 식음료서비스 장별 목록 (단원만, 모의평가 제외)
-const FOOD_SERVICE_AREAS = (() => {
-  const map = {}
-  for (const q of foodServiceQuestions) {
-    if (q.excludeFromQuiz || q.lessonKind !== 'unit') continue
-    const key = q.lessonId
-    if (!map[key]) map[key] = { id: key, displayName: q.lessonTitle, totalQuestions: 0 }
-    map[key].totalQuestions++
-  }
-  return Object.values(map).sort((a, b) => a.id.localeCompare(b.id))
-})()
-
 export default function MissionCreateScreen({ classId, className, onBack }) {
   const [availableSubjects, setAvailableSubjects] = useState([])
   const [title, setTitle] = useState('')
@@ -58,13 +45,15 @@ export default function MissionCreateScreen({ classId, className, onBack }) {
       .then(({ data }) => {
         const subs = (data ?? []).map(r => r.subjects).filter(Boolean)
         if (subs.length > 0) {
-          setAvailableSubjects(filterActiveSubjects(subs))
-          setSubjectId(subs[0].id)
+          const active = filterActiveSubjects(subs)
+          setAvailableSubjects(active)
+          setSubjectId(active[0]?.id ?? 'job-common')
         } else {
           // 배정 없으면 전체 subjects 표시
           supabase.from('subjects').select('id, name, description').then(({ data: all }) => {
-            setAvailableSubjects(filterActiveSubjects(all))
-            setSubjectId((all ?? [])[0]?.id ?? 'job-common')
+            const active = filterActiveSubjects(all)
+            setAvailableSubjects(active)
+            setSubjectId(active[0]?.id ?? 'job-common')
           })
         }
       })
@@ -117,10 +106,6 @@ export default function MissionCreateScreen({ classId, className, onBack }) {
       })
       questionIds = [...new Set(allQuestionIds)]
       if (areaIds.length === 0) areaIds = [...selectedLessons]
-    } else if (subjectId === 'food-service') {
-      // 식음료서비스: lessonId(C01, C02...) 기반
-      questionIds = selectedAreas   // e.g. ["C01", "C03"]
-      areaIds = selectedAreas
     } else if (subjectId === 'interview' || subjectId === 'personality') {
       questionIds = [...new Set(guidedQuestionIds(subjectId, selectedAreas, selectedLessons))]
       areaIds = selectedAreas.length > 0 ? selectedAreas : selectedLessons
@@ -161,13 +146,11 @@ export default function MissionCreateScreen({ classId, className, onBack }) {
   const isRecruit     = subjectId === 'recruit-written'
   const isInterview   = subjectId === 'interview'
   const isPersonality = subjectId === 'personality'
-  const isFoodService = subjectId === 'food-service'
   const visibleAreas  = isNCS ? NCS_AREAS
     : isRecruit ? RECRUIT_AREAS
       : isInterview ? INTERVIEW_AREAS
         : isPersonality ? PERSONALITY_AREAS
-          : isFoodService ? FOOD_SERVICE_AREAS
-            : JOB_AREAS
+          : JOB_AREAS
 
   return (
     <div className="screen">

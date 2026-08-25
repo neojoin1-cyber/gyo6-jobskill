@@ -6,6 +6,29 @@ import CompactText from '../../components/CompactText.jsx'
 
 const EMPTY_QUESTIONS = []
 
+export function buildStudySummaryCards(summary, questions = EMPTY_QUESTIONS, preparedPoints, preparedMistakes) {
+  const learningPoints = preparedPoints ?? buildLearningPoints(summary, questions)
+  const learningMistakes = preparedMistakes ?? buildLearningMistakes(summary, questions)
+  const mustRemember = summary?.mustRemember ?? []
+  const terms = summary?.terms ?? []
+  const cards = [{ type: 'intro' }]
+  learningPoints.forEach((point, index) => cards.push({
+    type: 'point',
+    point,
+    text: typeof point === 'string' ? point : '',
+    n: index + 1,
+  }))
+  if (mustRemember.length) cards.push({ type: 'recap' })
+  terms.forEach(term => cards.push({
+    type: 'term',
+    term: term.term ?? term.word ?? term.name,
+    def: term.def ?? term.definition,
+  }))
+  learningMistakes.forEach(mistake => cards.push({ type: 'tip', mistake }))
+  cards.push({ type: 'end' })
+  return cards
+}
+
 function ExpandableText({ text, style }) {
   return <CompactText text={text} style={style} />
 }
@@ -131,17 +154,11 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, onS
   const learningMistakes = useMemo(() => buildLearningMistakes(summary, questions), [summary, questions])
   const introVisual = useMemo(() => learningVisualFor(`${title ?? ''} ${intro ?? ''}`), [title, intro])
 
-  // 카드 시퀀스 구성
-  const cards = useMemo(() => {
-    const c = [{ type: 'intro' }]
-    learningPoints.forEach((p, i) => c.push({ type: 'point', point: p, text: typeof p === 'string' ? p : '', n: i + 1 }))
-    if (mustRemember.length) c.push({ type: 'recap' })
-    // 용어 데이터가 소스마다 term/word/name 키를 혼용 → 모두 수용(빈 headline 방지)
-    terms.forEach(t => c.push({ type: 'term', term: t.term ?? t.word ?? t.name, def: t.def ?? t.definition }))
-    learningMistakes.forEach(mistake => c.push({ type: 'tip', mistake }))
-    c.push({ type: 'end' })
-    return c
-  }, [summary, learningPoints, learningMistakes])
+  // 학생 화면과 교사용 현재 단계 지원이 같은 카드 순서를 공유함.
+  const cards = useMemo(
+    () => buildStudySummaryCards(summary, questions, learningPoints, learningMistakes),
+    [summary, questions, learningPoints, learningMistakes],
+  )
 
   const [step, setStep]         = useState(initialStep)
   const [revealed, setRevealed] = useState({})  // stepIndex → true

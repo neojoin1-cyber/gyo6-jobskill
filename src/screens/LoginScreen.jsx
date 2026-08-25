@@ -3,6 +3,15 @@ import { Capacitor } from '@capacitor/core'
 import { App as CapApp } from '@capacitor/app'
 import { supabase } from '../lib/supabase.js'
 import { pushBack, popBack } from '../lib/backButton.js'
+import {
+  TRIAL_ACCOUNTS,
+  TRIAL_PASSWORD,
+  beginTrialSession,
+  consumeTrialNotice,
+  requestedTrialRole,
+  trialRoleFromEmail,
+  trialStartAvailability,
+} from '../lib/trialSession.js'
 
 /**
  * 역할별 첫인상.
@@ -72,7 +81,9 @@ export default function LoginScreen() {
   const [audience,      setAudience]     = useState(null)   // 'student' | 'teacher'
   const [error,         setError]        = useState('')
   const [success,       setSuccess]      = useState('')
+  const [trialMessage,  setTrialMessage] = useState(() => consumeTrialNotice())
   const [showExitDialog, setShowExitDialog] = useState(false)
+  const trialLaunchRef = useRef(false)
 
   // 비밀번호 재설정(인앱 OTP: 이메일→6자리 코드→새 비밀번호)
   const [resetStep,     setResetStep]    = useState('email') // 'email' | 'code'
@@ -102,6 +113,14 @@ export default function LoginScreen() {
       setSchools(data ?? [])
       if (data?.length === 1) setSelectedSchool(data[0].id)
     })
+  }, [])
+
+  useEffect(() => {
+    if (Capacitor.isNativePlatform() || trialLaunchRef.current) return
+    const role = requestedTrialRole()
+    if (!role) return
+    trialLaunchRef.current = true
+    handleTrialLogin(role)
   }, [])
 
   // 뒤로가기: login/signup → landing, landing → 종료 확인 (최신 상태를 ref로 읽어 1회 등록)
@@ -177,13 +196,68 @@ export default function LoginScreen() {
   async function handleLogin(e) {
     e.preventDefault(); reset(); setLoading(true)
     try {
+      const trialRole = trialRoleFromEmail(email)
+      if (trialRole) {
+        const availability = trialStartAvailability(trialRole)
+        if (!availability.allowed) {
+          setError(availability.reason)
+          return
+        }
+      }
       const { error: err } = await supabase.auth.signInWithPassword({ email: email.trim(), password })
       if (err) setError(fmtErr(err))
+      else if (trialRole) beginTrialSession(trialRole)
     } catch (ex) {
       setError(fmtErr(ex))
     } finally {
       setLoading(false)
     }
+  }
+
+  async function handleTrialLogin(role) {
+    if (Capacitor.isNativePlatform() || !TRIAL_ACCOUNTS[role]) return
+    reset()
+    setTrialMessage('')
+    setAudience(role === 'school_admin' ? 'teacher' : role)
+
+    const availability = trialStartAvailability(role)
+    if (!availability.allowed) {
+      setTrialMessage(availability.reason)
+      removeTrialQuery()
+      return
+    }
+
+    setLoading(true)
+    try {
+      const account = TRIAL_ACCOUNTS[role]
+      const { error: err } = await supabase.auth.signInWithPassword({
+        email: account.email,
+        password: TRIAL_PASSWORD,
+      })
+      if (err) {
+        setTrialMessage(fmtErr(err))
+        return
+      }
+      const started = beginTrialSession(role)
+      if (!started.allowed) {
+        await supabase.auth.signOut({ scope: 'local' })
+        setTrialMessage(started.reason)
+      }
+    } catch (ex) {
+      setTrialMessage(fmtErr(ex))
+    } finally {
+      setLoading(false)
+      removeTrialQuery()
+    }
+  }
+
+  function removeTrialQuery() {
+    try {
+      const url = new URL(window.location.href)
+      url.searchParams.delete('trial')
+      url.searchParams.delete('trial_nonce')
+      window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`)
+    } catch { /* noop */ }
   }
 
   async function handleStudentJoin(e) {
@@ -307,6 +381,27 @@ export default function LoginScreen() {
         </p>
       </div>
 
+      {!isNative && (
+        <section className="trial-login-panel" aria-labelledby="trial-login-title">
+          <div>
+            <span className="trial-login-kicker">15분 미리보기</span>
+            <h2 id="trial-login-title">계정 입력 없이 바로 체험</h2>
+          </div>
+          <div className="trial-login-actions">
+            <button type="button" onClick={() => handleTrialLogin('student')} disabled={loading}>
+              <span className="trial-login-icon student">학</span>
+              <span><b>학생 체험</b><small>학습·문제·오답 흐름</small></span>
+            </button>
+            <button type="button" onClick={() => handleTrialLogin('teacher')} disabled={loading}>
+              <span className="trial-login-icon teacher">교</span>
+              <span><b>교사 체험</b><small>수업·학급·지도 흐름</small></span>
+            </button>
+          </div>
+          <p>체험 기록 저장 안 됨 · 실제 학교 데이터와 분리</p>
+          {trialMessage && <div className="trial-login-message" role="status">{trialMessage}</div>}
+        </section>
+      )}
+
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12, maxWidth: 420, width: '100%', margin: '0 auto' }}>
         {[AUDIENCE.student, AUDIENCE.teacher].map(a => (
           <button key={a.key} onClick={() => { setAudience(a.key); reset() }}
@@ -366,10 +461,17 @@ export default function LoginScreen() {
 
       {/* 버튼 — 헤더 바로 아래 최상단 */}
       <div style={{ padding: '0 16px 20px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+        {!isNative && (
+          <button className="trial-role-start" type="button" onClick={() => handleTrialLogin(audience)} disabled={loading}>
+            <span>{loading ? '체험 화면 여는 중' : `${A.key === 'teacher' ? '교사' : '학생'} 체험 바로 시작`}</span>
+            <small>계정 입력 없음 · 15분 · 저장 안 됨</small>
+          </button>
+        )}
+        {trialMessage && <div className="trial-login-message on-color" role="status">{trialMessage}</div>}
         {/* 로그인·회원가입은 웹·앱 모두에서 사용 가능(PWA). 웹에서도 직접 시연·테스트 가능. */}
         <button onClick={() => { setView('login'); reset() }}
           style={{ width: '100%', minHeight: 52, padding: '15px', background: '#fff', color: A.accent, border: 'none', borderRadius: 14, fontSize: 16, fontWeight: 700, cursor: 'pointer', boxShadow: '0 4px 20px rgba(0,0,0,0.25)' }}>
-          로그인
+          내 계정으로 로그인
         </button>
         <button onClick={() => { setView('signup'); setTab('student'); reset() }}
           style={{ width: '100%', padding: '15px', background: 'rgba(255,255,255,0.13)', color: '#fff', border: '1.5px solid rgba(255,255,255,0.35)', borderRadius: 14, fontSize: 16, fontWeight: 700, cursor: 'pointer' }}>

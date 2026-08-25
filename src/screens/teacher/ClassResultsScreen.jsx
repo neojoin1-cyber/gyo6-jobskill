@@ -1,43 +1,16 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../../lib/supabase.js'
 import { formatDuration } from '../../lib/dateUtils.js'
-import { getPassSpec } from '../../lib/passExam.js'
 
 export default function ClassResultsScreen({ classId, className, onBack }) {
   const [missions, setMissions] = useState([])
   const [selectedMission, setSelectedMission] = useState(null)
   const [rankings, setRankings] = useState([])
-  const [passResults, setPassResults] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     loadMissions()
-    loadPassResults()
   }, [])
-
-  // 합격 판정 모의 결과(이 학급 학생들, 학생별 최신 1건) — RLS가 교사 권한 보장
-  async function loadPassResults() {
-    const { data: scs } = await supabase
-      .from('student_classes')
-      .select('student_id, profiles(display_name, nickname)')
-      .eq('class_id', classId)
-    const list = scs ?? []
-    const nameById = Object.fromEntries(list.map(s => [s.student_id, s.profiles?.display_name || s.profiles?.nickname || '학생']))
-    const ids = list.map(s => s.student_id)
-    if (ids.length === 0) { setPassResults([]); return }
-    const { data } = await supabase
-      .from('pass_exam_results')
-      .select('student_id, subject_id, paper_no, passed_count, verdict, weak_units, created_at')
-      .in('student_id', ids)
-      .order('created_at', { ascending: false })
-    // 학생×과목별 최신 1건(식음료·품질을 각각 표시)
-    const seen = new Set(); const latest = []
-    for (const r of (data ?? [])) {
-      const key = `${r.student_id}|${r.subject_id || 'food-service'}`
-      if (!seen.has(key)) { seen.add(key); latest.push({ ...r, name: nameById[r.student_id] || '학생' }) }
-    }
-    setPassResults(latest)
-  }
 
   async function loadMissions() {
     const { data } = await supabase
@@ -74,35 +47,6 @@ export default function ClassResultsScreen({ classId, className, onBack }) {
       </div>
 
       <div className="screen-body">
-        {/* 🎯 합격 판정 모의 결과 (지필 자동채점 스냅샷) */}
-        {passResults.length > 0 && (
-          <>
-            <p className="section-title">🎯 합격 판정 모의 (지필 자동채점)</p>
-            {passResults.map(r => {
-              const v = r.verdict === 'pass' ? { t: '합격 예측', c: 'var(--success)' }
-                : r.verdict === 'fail' ? { t: '불합격 예측', c: 'var(--danger)' }
-                : { t: '면접 미정', c: 'var(--text-muted)' }
-              const spec = getPassSpec(r.subject_id)          // 과목별 능력단위 수(식음료 8·품질 7)
-              return (
-                <div key={`${r.student_id}|${r.subject_id || ''}`} className="list-item" style={{ cursor: 'default' }}>
-                  <div className="list-item-body">
-                    <p className="list-item-title">{r.name} <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)' }}>· {spec.title}</span></p>
-                    <p className="list-item-sub">
-                      통과 {r.passed_count ?? 0}/{spec.totalUnits} 능력단위
-                      {(r.weak_units?.length) ? ` · 약점 ${r.weak_units.length}개` : ''}
-                    </p>
-                  </div>
-                  <div style={{ textAlign: 'right' }}>
-                    <p style={{ fontWeight: 700, fontSize: 14, color: v.c }}>{v.t}</p>
-                    <p style={{ fontSize: 11, color: 'var(--text-muted)' }}>{r.paper_no ? `${r.paper_no}회` : ''}</p>
-                  </div>
-                </div>
-              )
-            })}
-            <div style={{ height: 12 }} />
-          </>
-        )}
-
         {loading && missions.length === 0 ? (
           <div style={{ padding: 40, textAlign: 'center' }}><div className="spinner" /></div>
         ) : missions.length === 0 ? (

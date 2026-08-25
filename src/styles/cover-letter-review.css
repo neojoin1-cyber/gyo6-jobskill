@@ -1,4 +1,4 @@
-.cover-review-screen { min-height: 100%; overflow: auto; background: #f3f6f8; color: #172033; }
+.cover-review-screen { width: 100%; height: 100%; min-height: 0; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; background: #f3f6f8; color: #172033; }
 .cover-review-screen button, .cover-review-screen input, .cover-review-screen select, .cover-review-screen textarea { font: inherit; }
 .cover-review-head { min-height: 96px; display: grid; grid-template-columns: 40px minmax(0,1fr) auto; align-items: center; gap: 14px; padding: 16px 22px; border-bottom: 1px solid #d8dee7; background: #fff; }
 .cover-review-head > button { width: 38px; height: 38px; display: grid; place-items: center; border: 1px solid #d8dee7; border-radius: 7px; background: #fff; color: #172033; cursor: pointer; }
@@ -120,10 +120,10 @@
   .cover-review-head { grid-template-columns: 38px minmax(0,1fr); padding: 12px; }
   .cover-review-summary { grid-column: 1 / -1; display: flex; align-items: center; gap: 6px; min-width: 0; }
   .cover-review-summary b, .cover-review-summary span { display: inline; }
-  .cover-review-layout { width: calc(100% - 18px); grid-template-columns: 1fr; }
+  .cover-review-layout { width: calc(100% - 18px); min-height: 0; grid-template-columns: 1fr; }
   .cover-review-queue { border-right: 0; }
   .cover-review-list { max-height: 260px; }
   .cover-review-no-selection { grid-column: 1; min-height: 260px; }
-  .cover-review-document { padding: 20px 16px; }
+  .cover-review-document { overflow: visible; padding: 20px 16px; }
   .cover-review-coach { border-left: 0; border-top: 1px solid #d8dee7; }
 }

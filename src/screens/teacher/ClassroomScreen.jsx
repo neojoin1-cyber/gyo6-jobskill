@@ -44,7 +44,7 @@
  * 들어왔고, 과목을 고를 때 그 과목만 받는다.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { ArrowLeft, ArrowsOutSimple, Books, ClipboardText, SunHorizon, Target } from '@phosphor-icons/react'
+import { ArrowLeft, ArrowsOutSimple, Books, ClipboardText, Lightbulb, SunHorizon, Target, X } from '@phosphor-icons/react'
 import { supabase } from '../../lib/supabase.js'
 import { useAuth } from '../../App.jsx'
 import {
@@ -73,6 +73,8 @@ import {
   PERSONALITY_QUESTIONS,
   guidedLessonMatches,
 } from '../../lib/guidedSubjectContent.js'
+import { getTeacherLessonGuide } from '../../lib/teacherLessonGuides.js'
+import { buildTeacherContextMaterials } from '../../lib/teacherContextMaterials.js'
 
 const LETTERS = ['A', 'B', 'C', 'D', 'E']
 const THINK_SECONDS = 60
@@ -172,6 +174,7 @@ export default function ClassroomScreen({ onBack }) {
   const [idx,      setIdx]      = useState(0)
   const [reveal,   setReveal]   = useState(false)
   const [showExp,  setShowExp]  = useState(false)
+  const [coachOpen, setCoachOpen] = useState(false)
   const [shuffle,  setShuffle]  = useState(false)
 
   // 수업 덱 — 차시 자료를 앱 안에서 띄운다
@@ -794,6 +797,7 @@ export default function ClassroomScreen({ onBack }) {
         <button className="classroom-btn" onClick={() => setDeckChapter(null)}>← 목록</button>
         <span className="classroom-progress">{beatIdx + 1} / {beatCount}</span>
         <div style={{ flex: 1 }} />
+        <button className={`classroom-btn classroom-coach-button${coachOpen ? ' is-on' : ''}`} onClick={() => setCoachOpen(value => !value)}><Lightbulb weight="fill" /> 현재 순서 지도</button>
         {left != null && <span className="classroom-timer">{left}초</span>}
         <button className="classroom-btn" onClick={() => setLeft(THINK_SECONDS)}>⏱ 생각 <kbd>T</kbd></button>
         {roster.length > 0 && (
@@ -819,6 +823,16 @@ export default function ClassroomScreen({ onBack }) {
       )}
 
       {hint && <p className="classroom-hint">{hint}</p>}
+      {coachOpen && <ClassroomContextGuide
+        subject={deckSubject?.id === 'interview' ? 'interview' : deckSubject?.id === 'personality' ? 'personality' : 'recruit-written'}
+        areaLabel={deckLesson?.title}
+        lessonLabel={deckChapter?.ctitle}
+        position={beatIdx + 1}
+        total={beatCount}
+        stage="concept"
+        title={deckChapter?.beats?.[beatIdx]?.title || deckChapter?.ctitle}
+        content={{ kind: 'deck', beat: deckChapter?.beats?.[beatIdx] }}
+        onClose={() => setCoachOpen(false)} />}
       {live && <LivePanel live={live} names={liveNames} onNames={setLiveNames}
                           onRefresh={() => { loadLive(); loadPresence() }}
                           onClose={() => setLive(null)}
@@ -872,6 +886,7 @@ export default function ClassroomScreen({ onBack }) {
         <button className="classroom-btn" onClick={() => setTalkId(null)}>← 목록</button>
         <span className="classroom-progress">{talk.theme}</span>
         <div style={{ flex: 1 }} />
+        <button className={`classroom-btn classroom-coach-button${coachOpen ? ' is-on' : ''}`} onClick={() => setCoachOpen(value => !value)}><Lightbulb weight="fill" /> 현재 순서 지도</button>
         {roster.length > 0 && (
           <button className="classroom-btn" onClick={pickStudent}>🎲 지목 <kbd>R</kbd></button>
         )}
@@ -887,6 +902,16 @@ export default function ClassroomScreen({ onBack }) {
                           onClose={() => setLive(null)}
                           presence={presence} session={session}
                           onStart={startSession} onEnd={endSession} />}
+      {coachOpen && <ClassroomContextGuide
+        subject="job-common"
+        areaLabel={talk.theme}
+        lessonLabel={talk.title}
+        position={1}
+        total={1}
+        stage="concept"
+        title={talk.question?.stem || talk.oneLine || talk.title}
+        content={{ kind: 'talk', talk }}
+        onClose={() => setCoachOpen(false)} />}
       <div className="classroom-body">
         <div className="classroom-main">
           <h2 className="classroom-stem">{talk.title}</h2>
@@ -928,6 +953,7 @@ export default function ClassroomScreen({ onBack }) {
         )}
         <span className="classroom-progress">{idx + 1} / {questions.length}</span>
         <div style={{ flex: 1 }} />
+        <button className={`classroom-btn classroom-coach-button${coachOpen ? ' is-on' : ''}`} onClick={() => setCoachOpen(value => !value)}><Lightbulb weight="fill" /> 현재 순서 지도</button>
         {left != null && <span className="classroom-timer">{left}초</span>}
         <button className="classroom-btn" onClick={() => setLeft(THINK_SECONDS)}>⏱ 생각 <kbd>T</kbd></button>
         {(q?.context || q?.passage) && !q?.audioText && (
@@ -960,6 +986,17 @@ export default function ClassroomScreen({ onBack }) {
       )}
 
       {hint && <p className="classroom-hint">{hint}</p>}
+      {coachOpen && <ClassroomContextGuide
+        subject={QUIZ_SYSTEM_META[quizSystem]?.subject}
+        areaLabel={areas.find(area => area.id === areaId)?.label || areaId}
+        lessonLabel={lessonLabelFor(areas, areaId, lessonId)}
+        position={idx + 1}
+        total={questions.length}
+        stage="question"
+        revealed={reveal}
+        title={q?.stem}
+        content={{ kind: 'question', question: q }}
+        onClose={() => setCoachOpen(false)} />}
 
       {live && <LivePanel live={live} names={liveNames} onNames={setLiveNames}
                           onRefresh={() => { loadLive(); loadPresence() }}
@@ -973,18 +1010,15 @@ export default function ClassroomScreen({ onBack }) {
         <div className="classroom-body">
           {/* 유형에 맞춰 그린다 — 듣기는 소리가 나고, 매칭·풀다운은 학생
               화면과 같은 부품을 읽기 전용으로 세운다. */}
-          <ClassroomQuestion q={q} reveal={reveal} hideContext={hideContext} />
+          <ClassroomQuestion
+            q={q}
+            reveal={reveal}
+            hideContext={hideContext}
+            showExplanation={showExp}
+            onToggleExplanation={() => setShowExp(value => !value)} />
 
           {picked && <div className="classroom-picked">🎲 {picked.name} 학생</div>}
 
-          {reveal && q.explanation && (
-            <div className="classroom-exp">
-              <button className="classroom-btn" onClick={() => setShowExp(v => !v)}>
-                {showExp ? '해설 접기' : '해설 펼치기'}
-              </button>
-              {showExp && <CompactText text={q.explanation} maxItemChars={88} />}
-            </div>
-          )}
         </div>
       )}
 
@@ -994,6 +1028,40 @@ export default function ClassroomScreen({ onBack }) {
                 disabled={idx >= questions.length - 1}>다음 →</button>
       </div>
     </div>
+  )
+}
+
+function lessonLabelFor(areas, areaId, lessonId) {
+  return areas.find(area => area.id === areaId)?.lessons?.find(lesson => lesson.id === lessonId)?.label || lessonId || ''
+}
+
+function shortClassroomCopy(value, max = 96) {
+  const text = String(value || '').replace(/\s+/g, ' ').trim()
+  return text.length > max ? `${text.slice(0, max).trim()}…` : text
+}
+
+function ClassroomContextGuide({ subject, areaLabel, lessonLabel, position, total, stage, revealed = false, title, content, onClose }) {
+  const guide = getTeacherLessonGuide(subject, stage === 'question' ? 'study' : 'textbook')
+  const context = { stage, revealed, title, lessonLabel, content }
+  const materials = buildTeacherContextMaterials(context, guide, { publicView: true })
+  const current = String(materials.heading || title || lessonLabel || guide.focus).replace(/\s+/g, ' ').trim()
+  const focus = shortClassroomCopy(current, 88)
+  const words = shortClassroomCopy(revealed
+    ? materials.prompts.find(prompt => /실수|틀|막/.test(prompt)) || materials.prompts[0]
+    : materials.prompts[0], 118)
+  const explanations = materials.explanations.slice(0, 2).map(item => shortClassroomCopy(item, 84))
+  const good = materials.good[0]
+  const bad = materials.bad[0]
+
+  return (
+    <aside className="classroom-context-guide" aria-label="현재 순서 교사용 지도 지원">
+      <header><span>교사용 · {position}/{total || 1}</span><b>{areaLabel}{lessonLabel ? ` · ${lessonLabel}` : ''}</b><button onClick={onClose} aria-label="현재 순서 지도 닫기"><X /></button></header>
+      <div><small>현재 화면</small><p>{focus}</p></div>
+      <div><small>추가 설명</small><p>{explanations.join(' · ')}</p></div>
+      {revealed && (good || bad) && <div className="is-cases"><small>좋은 사례 / 잘못된 사례</small><p>{good ? `${good.title}: ${good.text} — ${good.detail}` : ''}{good && bad ? ' / ' : ''}{bad ? `${bad.title}: ${bad.text} — ${bad.detail}` : ''}</p></div>}
+      {materials.mistakes[0] && <div className="is-mistake"><small>실수 포인트</small><p>{materials.mistakes.slice(0, 2).join(' · ')}</p></div>}
+      <blockquote>{words}</blockquote>
+    </aside>
   )
 }
 

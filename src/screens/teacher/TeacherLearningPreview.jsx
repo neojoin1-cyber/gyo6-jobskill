@@ -6,6 +6,7 @@ import {
   ChartLineUp,
   Compass,
   House,
+  Monitor,
   PresentationChart,
   UserCircle,
 } from '@phosphor-icons/react'
@@ -17,12 +18,13 @@ import RankingScreen from '../student/RankingScreen.jsx'
 import { campusCourseTarget } from '../../lib/studentCampusRoutes.js'
 import TeacherLessonCoach from './TeacherLessonCoach.jsx'
 
-export default function TeacherLearningPreview({ profile, initialSubject = null, onBack, onOpenMessages }) {
+export default function TeacherLearningPreview({ profile, initialSubject = null, teachingMode = false, onBack, onOpenClassroom, onOpenMessages }) {
   const initialLink = useMemo(() => campusCourseTarget(initialSubject), [initialSubject])
   const [tab, setTab] = useState(initialLink ? 'study' : 'home')
   const [deepLink, setDeepLink] = useState(initialLink)
   const [learningContext, setLearningContext] = useState({ subject: initialLink?.subject || initialSubject, mode: null })
-  const [coachOpen, setCoachOpen] = useState(() => window.matchMedia?.('(min-width: 900px)').matches ?? false)
+  const [coachOpen, setCoachOpen] = useState(false)
+  const contextReady = ['concept', 'question'].includes(learningContext.stage)
 
   function openStudy(subject) {
     setDeepLink(campusCourseTarget(subject))
@@ -45,10 +47,17 @@ export default function TeacherLearningPreview({ profile, initialSubject = null,
           <ArrowLeft weight="bold" />
         </button>
         <span className="teacher-preview-mark"><Buildings weight="fill" /></span>
-        <div><small>STUDENT VIEW</small><b>학생 화면 그대로 보기</b></div>
-        <button type="button" className={`teacher-preview-exit ${coachOpen ? 'is-on' : ''}`} onClick={() => setCoachOpen(value => !value)} aria-expanded={coachOpen}>
-          <PresentationChart weight={coachOpen ? 'fill' : 'regular'} />수업 코치
-        </button>
+        <div><small>STUDENT VIEW · TEACHER PASS</small><b>학생과 같은 화면으로 배우기</b></div>
+        <div className="teacher-preview-actions">
+          <button type="button" className={`teacher-preview-exit ${coachOpen ? 'is-on' : ''}`} disabled={!contextReady}
+            title={contextReady ? '현재 차시의 교사용 지도 지원' : '학습관에서 단원을 열면 활성화됩니다'}
+            onClick={() => setCoachOpen(value => !value)} aria-expanded={coachOpen} aria-haspopup="dialog">
+            <PresentationChart weight={coachOpen ? 'fill' : 'regular'} /><span>{contextReady ? '현재 단계 지도' : '단원 선택 전'}</span>
+          </button>
+          <button type="button" className="teacher-preview-classroom" onClick={onOpenClassroom} aria-label="교실 화면 시작" title="교실 화면 시작">
+            <Monitor weight="bold" />
+          </button>
+        </div>
       </header>
 
       <div className={`teacher-preview-stage ${coachOpen ? 'has-coach' : ''}`}>
@@ -80,6 +89,7 @@ export default function TeacherLearningPreview({ profile, initialSubject = null,
           <TeacherLessonCoach
             subject={learningContext.subject}
             mode={learningContext.mode}
+            context={learningContext}
             onMessage={onOpenMessages}
             onClose={() => setCoachOpen(false)}
           />

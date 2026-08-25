@@ -30,8 +30,41 @@ import ListeningPrompt from '../student/ListeningPrompt.jsx'
 import MatchingBoard from '../student/MatchingBoard.jsx'
 import PulldownForm from '../student/PulldownForm.jsx'
 import QuestionMedia from '../student/QuestionMedia.jsx'
+import CompactText from '../../components/CompactText.jsx'
 
 const LETTERS = ['A', 'B', 'C', 'D', 'E']
+
+const CLASSROOM_VISUALS = [
+  {
+    test: /면접|자기소개|지원동기|채용/,
+    src: '/images/learning/workplace-interview.webp',
+    label: '채용 현장',
+  },
+  {
+    test: /문서|보고서|공지|메일|의사소통|영어|회의록/,
+    src: '/images/learning/workplace-documents.webp',
+    label: '문서와 소통',
+  },
+  {
+    test: /협업|팀|조직|갈등|이해관계자/,
+    src: '/images/learning/workplace-teamwork.webp',
+    label: '협업 현장',
+  },
+  {
+    test: /자료|데이터|수리|자원|시간|예산|비용|정보|분석/,
+    src: '/images/learning/workplace-data.webp',
+    label: '자료로 판단',
+  },
+]
+
+function classroomVisual(q) {
+  if (q?.image || q?.imageUrl || q?.media) return null
+  const source = [q?.area, q?.lessonTitle, q?.stem, q?.context].filter(Boolean).join(' ')
+  return CLASSROOM_VISUALS.find(item => item.test.test(source)) || {
+    src: '/images/learning/workplace-reflection.webp',
+    label: '직무 상황',
+  }
+}
 
 export function letterToIndex(a) {
   if (typeof a === 'number') return a
@@ -89,15 +122,16 @@ export function isProjectable(q) {
  * 자기 기기에서 볼 수 있다.** 그래서 투사 화면에서는 접고, 발문과 선택지에
  * 화면을 다 준다. 어디를 읽어야 하는지는 위의 주소줄이 알려 준다.
  */
-export default function ClassroomQuestion({ q, reveal, hideContext = false }) {
+export default function ClassroomQuestion({ q, reveal, hideContext = false, showExplanation = false, onToggleExplanation }) {
   // 덱과 같은 자동 맞춤. 문항마다 지문 길이가 크게 다른데 글자를 고정하면
   // 짧은 문항은 화면의 절반이 비고 교실 뒤에서 안 읽힌다.
   const stage = useRef(null)
-  useAutoFit(stage, `${q?.id}:${reveal}:${hideContext}`)
+  useAutoFit(stage, `${q?.id}:${reveal}:${hideContext}:${showExplanation}`)
   if (!q) return null
   const t = q.type
   const stem = q.stem || q.question
   const context = q.context || q.passage
+  const visual = classroomVisual(q)
 
   // 듣기 문항은 지문을 글로 보여 주면 듣기가 아니게 된다. 대본은 답과
   // 함께 열린다.
@@ -106,6 +140,15 @@ export default function ClassroomQuestion({ q, reveal, hideContext = false }) {
   return (
     <div ref={stage} className="quiz-stage" data-kind={t || 'mcq'}>
       <div className="classroom-main">
+        {visual && (
+          <figure className="classroom-visual-cue">
+            <img src={visual.src} alt="" aria-hidden="true" />
+            <figcaption>
+              <span>오늘의 직무 장면</span>
+              <b>{visual.label}</b>
+            </figcaption>
+          </figure>
+        )}
         {isListening && (
           <ListeningPrompt q={q} unlimited revealTranscript={reveal} />
         )}
@@ -156,6 +199,19 @@ export default function ClassroomQuestion({ q, reveal, hideContext = false }) {
               </li>
             ))}
           </ol>
+        )}
+        {reveal && q.explanation && (
+          <div className="classroom-inline-explanation">
+            <button className="classroom-btn" onClick={onToggleExplanation}>
+              {showExplanation ? '해설 접기' : '해설 보기'}
+            </button>
+            {showExplanation && (
+              <div className="classroom-exp">
+                <b>판단 근거</b>
+                <CompactText text={q.explanation} maxItemChars={78} />
+              </div>
+            )}
+          </div>
         )}
       </div>
     </div>

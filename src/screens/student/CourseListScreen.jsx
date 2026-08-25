@@ -269,6 +269,7 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
             initialLesson={remediation?.lesson ?? deepLink?.lesson ?? undefined}
             initialQuestionId={deepLink?.questionId ?? undefined}
             initialQuestionIndex={deepLink?.index ?? undefined}
+            onLearningContext={onContextChange}
             onBack={backToChooser} />
         </Lazy>
       )

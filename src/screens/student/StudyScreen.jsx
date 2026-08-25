@@ -16,7 +16,6 @@ import { saveWrongAnswer } from '../../lib/wrongAnswers.js'
 import { addXp }           from '../../lib/xp.js'
 import { recordAnswer }    from '../../lib/mastery.js'
 import { recordQuestion }  from '../../lib/subjectProgress.js'
-import foodServiceQuestions from '../../../data/food-service-questions.json'
 import areaMapping          from '../../../data/areaMapping.json'
 import { buildJcOfficialAreas, jcStudyQuestions } from '../../lib/jobCommonAreas.js'
 import { ncs2026Questions, buildNcs2026Areas } from '../../lib/ncs2026.js'
@@ -29,12 +28,11 @@ import {
   recruitAreaId,
   recruitLessonTitle,
 } from '../../lib/recruitWritten.js'
-import fsChapters           from '../../../data/food-service-chapters.json'
 import ncsExtras            from '../../../data/ncs-lesson-extras.json'
 import { ncsTier } from '../../lib/ncsAreaPriority.js'
 import { getSummary }       from '../../lib/studySummaries.js'
 import { buildQuestionDrivenSummary } from '../../lib/learningExperience.js'
-import StudySummary         from './StudySummary.jsx'
+import StudySummary, { buildStudySummaryCards } from './StudySummary.jsx'
 import DifficultyBadge      from './DifficultyBadge.jsx'
 import ListeningPrompt      from './ListeningPrompt.jsx'
 import QuestionMedia        from './QuestionMedia.jsx'
@@ -45,10 +43,20 @@ import PulldownForm, { isPulldownCorrect } from './PulldownForm.jsx'
 import { studyQuestions } from '../../lib/assessmentPartition.js'
 import CompactText from '../../components/CompactText.jsx'
 
-const fsChaptersMap = new Map(fsChapters.map(c => [c.lessonId, c]))
 const ncsExtrasMap  = new Map(ncsExtras.map(e => [e.lessonId, e]))
 
 function answerIdx(letter) { return letter?.charCodeAt(0) - 65 }
+
+function summaryCardTitle(card, summary) {
+  if (!card) return summary?.title || '개념 학습'
+  if (card.type === 'intro') return `${summary?.title || '단원'} 요점`
+  if (card.type === 'point') return card.point?.topic || card.text || `핵심 ${card.n || 1}`
+  if (card.type === 'recap') return '꼭 기억할 것'
+  if (card.type === 'term') return `${card.term || '핵심 용어'} 확인`
+  if (card.type === 'tip') return card.mistake?.stem || '실제 오답으로 고쳐 보기'
+  if (card.type === 'end') return '요점 학습 완료'
+  return summary?.title || '개념 학습'
+}
 
 // 신규 type 필드 + 레거시 questionMode 통합 해석
 function resolveType(q) {
@@ -72,22 +80,12 @@ const SUBJECTS = [
   { id: 'job-common',   label: COMMON_ABILITY_COURSES['job-common'].title, icon: '📚', questions: jcStudyQuestions() },
   { id: 'ncs-basic',    label: COMMON_ABILITY_COURSES['ncs-basic'].title, icon: '🔧', questions: studyQuestions(ncs2026Questions) },
   { id: 'recruit-written', label: '채용필기 심화·확장', icon: '📝', questions: studyQuestions(recruitWrittenQuestions) },
-  { id: 'food-service', label: '식음료서비스', icon: '🍽️', questions: foodServiceQuestions },
 ]
 
 // 교육부·대한상의 직업공통능력 인증 = 5개 인증영역.
 const JOB_AREAS = buildJcOfficialAreas()
 
-function buildFoodAreas(qs) {
-  const map = {}
-  for (const q of qs) {
-    if (q.excludeFromQuiz || q.lessonKind !== 'unit') continue
-    if (!map[q.lessonId]) map[q.lessonId] = { id: q.lessonId, label: q.lessonTitle, lessons: [] }
-  }
-  return Object.values(map).sort((a, b) => a.id.localeCompare(b.id))
-}
-
-export default function StudyScreen({ initialSubject, initialArea, initialLesson, initialQuestionId, initialQuestionIndex, onBack }) {
+export default function StudyScreen({ initialSubject, initialArea, initialLesson, initialQuestionId, initialQuestionIndex, onLearningContext, onBack }) {
   const subjectId = initialSubject ?? 'job-common'
   const [trackId,          setTrackId]          = useState(null)
   // 교사가 준 링크(수업 덱의 QR)로 들어오면 과목 고르기부터 다시 하지 않고
@@ -95,7 +93,6 @@ export default function StudyScreen({ initialSubject, initialArea, initialLesson
   // 스무 명이 각자 더듬는 시간이 통째로 사라진다.
   const [areaId,           setAreaId]           = useState(initialArea ?? null)
   const [lessonId,         setLessonId]         = useState(initialLesson ?? null)
-  const [showChapterIntro, setShowChapterIntro] = useState(false)
   const [learnIdx,         setLearnIdx]         = useState(0)
   const [gameIdx,          setGameIdx]          = useState(0)
   const [learnCardStep,    setLearnCardStep]    = useState(0)
@@ -124,7 +121,6 @@ export default function StudyScreen({ initialSubject, initialArea, initialLesson
     if (subjectId === 'job-common')   return JOB_AREAS
     if (subjectId === 'ncs-basic')    return buildNcs2026Areas(subject?.questions ?? [])
     if (subjectId === 'recruit-written') return buildRecruitWrittenAreas(trackId, subject?.questions ?? [])
-    if (subjectId === 'food-service') return buildFoodAreas(foodServiceQuestions)
     return []
   }, [subject, subjectId, trackId])
 
@@ -170,7 +166,6 @@ export default function StudyScreen({ initialSubject, initialArea, initialLesson
         (!lessonId || lessonId === '__all__' || recruitLessonTitle(q) === lessonId)
       )
     }
-    if (subjectId === 'food-service') return qs.filter(q => !q.excludeFromQuiz && q.lessonId === areaId)
     return []
   }, [subject, subjectId, trackId, areaId, lessonId])
 
@@ -229,12 +224,48 @@ export default function StudyScreen({ initialSubject, initialArea, initialLesson
     })
   }, [subjectId, areaId, lessonId, areas, lessons, questionPool])
 
+  const contextQuestion = questionPool[questionIdx] ?? null
+  const contextSummaryCards = useMemo(
+    () => lessonSummary ? buildStudySummaryCards(lessonSummary, questionPool) : [],
+    [lessonSummary, questionPool],
+  )
+  const contextSummaryCard = contextSummaryCards[learnCardStep] ?? null
+  const contextAreaLabel = areas.find(area => area.id === areaId)?.label || areaId || ''
+  const contextLessonLabel = lessonId === '__all__'
+    ? `${contextAreaLabel} 전체 학습`
+    : lessons.find(lesson => lesson.id === lessonId)?.label || contextQuestion?.lessonTitle || lessonId || ''
+  const contextRevealed = studyMode === 'learn'
+    ? Boolean(learnRevealed[contextQuestion?.id ?? questionIdx])
+    : Boolean(gameChecked[questionIdx])
+
+  useEffect(() => {
+    onLearningContext?.({
+      subject: subjectId,
+      mode: 'study',
+      stage: !areaId ? 'area-choice' : !lessonId ? 'lesson-choice' : (studyMode === 'learn' && lessonSummary ? 'concept' : 'question'),
+      areaId,
+      areaLabel: contextAreaLabel,
+      lessonId,
+      lessonLabel: contextLessonLabel,
+      position: studyMode === 'learn' && lessonSummary ? learnCardStep + 1 : questionIdx + 1,
+      total: studyMode === 'learn' && lessonSummary ? contextSummaryCards.length : questionPool.length,
+      studyMode,
+      revealed: contextRevealed,
+      title: studyMode === 'learn' && lessonSummary
+        ? summaryCardTitle(contextSummaryCard, lessonSummary)
+        : contextQuestion?.stem || contextLessonLabel,
+      questionId: contextQuestion?.id || null,
+      content: studyMode === 'learn' && lessonSummary
+        ? { kind: 'summary', summary: lessonSummary, card: contextSummaryCard }
+        : { kind: 'question', question: contextQuestion },
+    })
+  }, [onLearningContext, subjectId, areaId, lessonId, contextAreaLabel, contextLessonLabel, studyMode, lessonSummary, contextSummaryCards.length, contextSummaryCard, learnCardStep, questionIdx, questionPool.length, contextQuestion, contextRevealed])
+
   function resetGame() { setGameAnswers({}); setGameResult(null); setGameChecked({}) }
 
   function selectArea(id) {
     setAreaId(id); setLessonId(null)
     setLearnIdx(0); setGameIdx(0); setLearnCardStep(0); resetGame()
-    setShowChapterIntro(subjectId === 'food-service')
   }
   function selectLesson(id) {
     setLessonId(id); setLearnIdx(0); setGameIdx(0); setLearnCardStep(0); resetGame()
@@ -287,7 +318,7 @@ export default function StudyScreen({ initialSubject, initialArea, initialLesson
   }
 
   function computeAndShowResult() {
-    const courseId = subjectId === 'food-service' ? 3 : 1
+    const courseId = 1
     const lessonKey = lessonId ?? areaId
     const wrong = []
     let score = 0
@@ -553,60 +584,6 @@ export default function StudyScreen({ initialSubject, initialArea, initialLesson
     )
   }
 
-  // ── 식음료서비스 단원 소개 ────────────────────────────────────────────
-  if (subjectId === 'food-service' && showChapterIntro) {
-    const ch = fsChaptersMap.get(areaId)
-    return (
-      <div className="screen">
-        <div className="appbar">
-          <button className="appbar-back" onClick={() => setAreaId(null)}>←</button>
-          <span className="appbar-title">{ch?.title ?? areaId}</span>
-        </div>
-        <div className="screen-body">
-          {ch && (
-            <div style={{ background: 'var(--primary-light)', borderRadius: 12, padding: '14px 16px', border: '1px solid var(--primary)', marginBottom: 14 }}>
-              <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--primary)', marginBottom: 8 }}>📌 단원 정보</p>
-              {ch.unitCode && <p style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 4 }}>능력단위: {ch.unitCode}</p>}
-              {ch.evalType && <p style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 6 }}>평가 유형: {ch.evalType}</p>}
-              {ch.plainSummary && (
-                <div style={{ background: 'var(--card)', borderRadius: 8, padding: '10px 12px', border: '1px solid var(--border)' }}>
-                  <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--primary)', marginBottom: 4 }}>핵심 한 줄 요약</p>
-                  <CompactText text={ch.plainSummary} maxItemChars={72} style={{ fontSize: 13, color: 'var(--text)' }} />
-                </div>
-              )}
-            </div>
-          )}
-          {ch?.criteria?.length > 0 && (
-            <div style={{ background: 'var(--card)', borderRadius: 12, padding: '14px 16px', border: '1px solid var(--border)', marginBottom: 14 }}>
-              <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--text)', marginBottom: 10 }}>🎯 핵심 수행준거</p>
-              {ch.criteria.map((c, i) => (
-                <div key={i} style={{ display: 'flex', gap: 8, marginBottom: 6, alignItems: 'flex-start' }}>
-                  <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--primary)', flexShrink: 0, marginTop: 3 }}>•</span>
-                  <CompactText text={c} maxItemChars={72} style={{ fontSize: 13, color: 'var(--text)' }} />
-                </div>
-              ))}
-            </div>
-          )}
-          {ch?.blocks?.map((block, bi) => (
-            <div key={bi} style={{ background: '#f8f4ff', borderRadius: 12, padding: '14px 16px', border: '1px solid #c5b3e8', marginBottom: 14 }}>
-              <p style={{ fontSize: 12, fontWeight: 700, color: '#6a1b9a', marginBottom: 10 }}>📋 {block.heading}</p>
-              {block.items.map((item, ii) => (
-                <div key={ii} style={{ display: 'flex', gap: 8, marginBottom: 5, alignItems: 'flex-start' }}>
-                  <span style={{ fontSize: 12, fontWeight: 700, color: '#6a1b9a', flexShrink: 0, marginTop: 3 }}>•</span>
-                  <CompactText text={item} maxItemChars={72} style={{ fontSize: 13 }} />
-                </div>
-              ))}
-            </div>
-          ))}
-          <button className="btn btn-primary btn-full" style={{ marginTop: 8 }}
-            onClick={() => setShowChapterIntro(false)}>
-            문제 풀기 ({questionPool.length}문항) →
-          </button>
-        </div>
-      </div>
-    )
-  }
-
   // ── 문항 없음 ─────────────────────────────────────────────────────────
   if (questionPool.length === 0) {
     return (
@@ -780,7 +757,6 @@ export default function StudyScreen({ initialSubject, initialArea, initialLesson
 
   function handleBack() {
     setShowJump(false)
-    if (showChapterIntro) { setShowChapterIntro(false); return }
     if (gameResult) { resetGame(); return }
     if (lessonId) { setLessonId(null); return }
     if (areaId) { setAreaId(null); return }

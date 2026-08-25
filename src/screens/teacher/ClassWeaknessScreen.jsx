@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react'
 import { supabase } from '../../lib/supabase.js'
 import { pushBack, popBack } from '../../lib/backButton.js'
 
-const COURSE_NAME = { 1: '직업기초/공통', 2: '품질경영', 3: '식음료서비스', 4: '면접', 5: '인성검사' }
+const COURSE_NAME = { 1: '직업공통능력', 4: '면접', 5: '인성검사' }
 
 export default function ClassWeaknessScreen({ classId, className, onBack }) {
   const [data, setData] = useState(null)
@@ -19,7 +19,7 @@ export default function ClassWeaknessScreen({ classId, className, onBack }) {
       .then(({ data, error }) => { if (error) setErr(error.message); else setData(data || { areas: [], students: [] }) })
   }, [classId])
 
-  const areas = data?.areas || []
+  const areas = (data?.areas || []).filter(area => ![2, 3].includes(Number(area.course_id)))
   const students = data?.students || []
   const maxWrong = Math.max(1, ...areas.map(a => a.wrong_count || 0))
   const withOpen = students.filter(s => (s.open_count || 0) > 0)
