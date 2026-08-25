@@ -45,6 +45,7 @@ jobs:
           DEMO_STUDENT_EMAIL: demo.student@sugarsalt.kr
           DEMO_TEACHER_EMAIL: demo.teacher@sugarsalt.kr
           DEMO_ADMIN_EMAIL: demo.admin@sugarsalt.kr
+          PUBLIC_TRIAL_READ_ONLY: "true"
         run: npm run verify:production-flows
 
       - uses: actions/upload-pages-artifact@v3

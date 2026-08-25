@@ -5,6 +5,7 @@ const env = loadEnv('.env.local')
 const url = process.env.VITE_SUPABASE_URL || env.VITE_SUPABASE_URL
 const anon = process.env.VITE_SUPABASE_ANON_KEY || env.VITE_SUPABASE_ANON_KEY
 const password = process.env.DEMO_PASSWORD
+const readOnlyTrial = process.env.PUBLIC_TRIAL_READ_ONLY === 'true'
 
 if (!url || !anon || !password) {
   throw new Error('VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY and DEMO_PASSWORD are required')
@@ -70,6 +71,41 @@ try {
     check(`${role} bootstrap`, !error && !data?.error, error?.message || data?.error)
     report.metrics[`${role}BootstrapKeys`] = data ? Object.keys(data).sort() : []
   }
+
+  if (readOnlyTrial) {
+    for (const [role, entry] of Object.entries(clients)) {
+      const { error } = await entry.client.from('profiles')
+        .update({ display_name: entry.profile.display_name })
+        .eq('id', entry.profile.id)
+      check(`${role} public trial write blocked`, error?.code === '42501', error?.code || error?.message)
+    }
+
+    const readChecks = [
+      ['teacher viewable subjects resolver', teacher, 'rpc_my_viewable_subjects', undefined],
+      ['teacher diagnostics menu', teacher, 'rpc_class_diagnostics', { p_class_id: classId }],
+      ['teacher progress menu', teacher, 'rpc_class_progress', { p_class_id: classId }],
+      ['teacher weakness menu', teacher, 'rpc_class_weakness', { p_class_id: classId }],
+      ['teacher personality menu', teacher, 'rpc_class_personality', { p_class_id: classId }],
+      ['teacher class students menu', teacher, 'rpc_my_class_students', undefined],
+      ['teacher leaderboard menu', teacher, 'rpc_class_leaderboard', { p_class_id: classId, p_subject_id: 'job-common' }],
+      ['teacher class position menu', teacher, 'rpc_class_position', { p_class_id: classId, p_subject_id: 'job-common' }],
+      ['teacher live class read', teacher, 'rpc_class_live', { p_class_id: classId }],
+      ['teacher inbox read', teacher, 'rpc_teacher_inbox', { p_limit: 10 }],
+      ['school admin member management read', schoolAdmin, 'rpc_admin_members', undefined],
+      ['student notification read', student, 'rpc_bootstrap', undefined],
+    ]
+    for (const [name, entry, fn, args] of readChecks) {
+      const { data, error } = await entry.client.rpc(fn, args)
+      check(name, !error && !data?.error, error?.message || data?.error)
+    }
+
+    const { data: schoolClasses, error: schoolClassesError } = await schoolAdmin.client
+      .from('classes').select('id, name').eq('school_id', schoolAdmin.profile.school_id)
+    check('school admin class management read', !schoolClassesError && Array.isArray(schoolClasses), schoolClassesError?.message)
+    report.metrics.publicTrialMode = 'read-only'
+  }
+
+  if (!readOnlyTrial) {
 
   const repeatParams = {
     p_question_id: repeatQuestionId,
@@ -320,8 +356,9 @@ try {
     p_academic_year: new Date().getFullYear(),
   })
   check('teacher cannot create unassigned class', teacherForbidden?.error || teacherForbidden == null, JSON.stringify(teacherForbidden))
+  }
 } finally {
-  if (clients.student) {
+  if (!readOnlyTrial && clients.student) {
     if (createdEvidenceId) {
       const { error: evidenceCleanupError } = await clients.student.client
         .from('cover_letter_evidence').delete().eq('id', createdEvidenceId)
@@ -334,22 +371,22 @@ try {
       .delete().like('title', '[출시검증 %')
     check('student release-test messages cleaned up', !error, error?.message)
   }
-  if (clients.teacher) {
+  if (!readOnlyTrial && clients.teacher) {
     const { error } = await clients.teacher.client.from('notifications')
       .delete().like('title', '%답장: [출시검증 %')
     check('teacher release-test replies cleaned up', !error, error?.message)
   }
-  if (createdMissionIds.length && clients.teacher) {
+  if (!readOnlyTrial && createdMissionIds.length && clients.teacher) {
     const { error } = await clients.teacher.client.from('missions').delete().in('id', createdMissionIds)
     check('release-test missions cleaned up', !error, error?.message)
   }
-  if (createdUserIds.length && clients.school_admin) {
+  if (!readOnlyTrial && createdUserIds.length && clients.school_admin) {
     for (const userId of createdUserIds) {
       const { error } = await clients.school_admin.client.rpc('rpc_admin_delete_member', { p_uid: userId })
       check(`temporary member cleanup ${userId}`, !error, error?.message)
     }
   }
-  if (classId && clients.teacher) {
+  if (!readOnlyTrial && classId && clients.teacher) {
     const { data, error } = await clients.teacher.client.rpc('rpc_end_class_session', { p_class_id: classId })
     check('teacher ends class', !error && Number(data?.ended) >= 0, error?.message)
   }
