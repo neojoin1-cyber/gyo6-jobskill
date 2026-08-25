@@ -18,6 +18,7 @@ import {
   REVIEW_COACH_ISSUES,
   REVIEW_RUBRIC,
 } from '../src/lib/coverLetterGuidance.js'
+import { INTERVIEW_OBSERVATION_AREAS, INTERVIEW_PRACTICAL_STAGES } from '../src/lib/interviewPracticalContent.js'
 
 const ROOT = process.cwd()
 const failures = []
@@ -33,8 +34,11 @@ const quizText = JSON.stringify(quiz)
 const screen = fs.readFileSync(path.join(ROOT, 'src/screens/student/InterviewStudyScreen.jsx'), 'utf8')
 const careerScreen = fs.readFileSync(path.join(ROOT, 'src/screens/student/InterviewCareerLab.jsx'), 'utf8')
 const teacherReviewScreen = fs.readFileSync(path.join(ROOT, 'src/screens/teacher/CoverLetterReviewScreen.jsx'), 'utf8')
+const practicalScreen = fs.readFileSync(path.join(ROOT, 'src/screens/student/InterviewPracticalScreen.jsx'), 'utf8')
+const teacherPracticalScreen = fs.readFileSync(path.join(ROOT, 'src/screens/teacher/TeacherInterviewPracticeScreen.jsx'), 'utf8')
 const coverMigration = fs.readFileSync(path.join(ROOT, 'supabase/migrations/20260825003000_cover_letter_coaching.sql'), 'utf8')
 const evidenceMigration = fs.readFileSync(path.join(ROOT, 'supabase/migrations/20260825090000_cover_letter_evidence_bank.sql'), 'utf8')
+const practiceMigration = fs.readFileSync(path.join(ROOT, 'supabase/migrations/20260825104000_interview_practice_reviews.sql'), 'utf8')
 
 const requiredScopes = [
   '오리엔테이션', '면접절차', '평가기준', '자기소개', '지원동기', '경험답변',
@@ -149,15 +153,24 @@ check(careerScreen.includes('cover-document-answer-box') && careerScreen.include
 check(careerScreen.includes('CoverLearningLibrary') && careerScreen.includes('EvidenceWorkbench'), '나를쓰다 학습·근거은행 화면 누락')
 check(careerScreen.includes('CoverLetterAssessment') && careerScreen.includes("section === 'scripts'"), '나를쓰다 진단·모의 또는 면접 답변 연결실 누락')
 check(careerScreen.includes('coverLinkSignature') && careerScreen.includes("documentType: 'interview-script'"), '자기소개서·면접 답변 근거 연결 검증 누락')
+check(careerScreen.includes("closing: { label: '마지막 한마디'") && careerScreen.includes('세 답변 근거 일치'), '1분 자기소개·지원동기·마지막 한마디 연결 누락')
 check(careerScreen.includes('막막하면 답변 순서부터 고르기') && careerScreen.includes('첫 문장 고르기'), '자기소개서 공란 작성 지원 누락')
 check(careerScreen.includes('완성 예시 자기소개서') || careerScreen.includes('완성 예시 보기'), '기관별 자기소개서 완성 예시 화면 누락')
 check(teacherReviewScreen.includes("rpc('rpc_teacher_cover_letters'"), '교사 자기소개서 목록 조회 누락')
 check(teacherReviewScreen.includes("rpc('rpc_review_cover_letter'"), '교사 자기소개서 첨삭 저장 누락')
 check(teacherReviewScreen.includes('captureSelection') && teacherReviewScreen.includes('부분 메모 추가'), '교사 문장 형광펜·부분 메모 누락')
 check(teacherReviewScreen.includes('REVIEW_COACH_ISSUES') && teacherReviewScreen.includes('REVIEW_RUBRIC'), '교사 빠른 첨삭·평가 지원 누락')
+check(INTERVIEW_PRACTICAL_STAGES.length === 9, `실전면접 동선 9단계 오류: ${INTERVIEW_PRACTICAL_STAGES.length}`)
+check(INTERVIEW_PRACTICAL_STAGES.every(stage => stage.student?.length >= 3 && stage.teacher?.length >= 3 && stage.scenarios?.length >= 2 && stage.good?.length >= 20 && stage.bad?.length >= 20), '실전면접 학생·교사 지도 또는 변형 상황 부족')
+check(INTERVIEW_OBSERVATION_AREAS.length >= 6, `실전면접 공통 관찰 기준 부족: ${INTERVIEW_OBSERVATION_AREAS.length}`)
+check(practicalScreen.includes('전 과정 리허설 시작') && practicalScreen.includes('상황별 먼저 연습'), '학생 실전면접 단계·전 과정 리허설 누락')
+check(teacherPracticalScreen.includes('학생 관찰표') && teacherPracticalScreen.includes('학생에게 피드백'), '교사 실전면접 관찰·피드백 연결 누락')
+check(teacherPracticalScreen.includes("rpc('rpc_save_interview_practice_review'") && teacherPracticalScreen.includes('서버 저장됨'), '교사 실전면접 관찰표 서버 저장 누락')
 check(coverMigration.includes('SECURITY DEFINER') && coverMigration.includes('teacher_classes'), '자기소개서 담당 학급 권한 검증 누락')
 check(coverMigration.includes('FROM PUBLIC, anon'), '자기소개서 RPC 익명 실행 차단 누락')
 check(evidenceMigration.includes('ENABLE ROW LEVEL SECURITY') && evidenceMigration.includes('student_id = auth.uid()'), '근거은행 학생 본인 권한 검증 누락')
+check(practiceMigration.includes('SECURITY DEFINER') && practiceMigration.includes('teacher_classes') && practiceMigration.includes('student_classes'), '실전면접 관찰표 담당 학급 권한 검증 누락')
+check(practiceMigration.includes('FROM PUBLIC, anon'), '실전면접 관찰표 RPC 익명 실행 차단 누락')
 
 for (const file of ['data/interview-study.json', 'data/interview-quiz.json', 'data/mock-interview-pool.json']) {
   check(!fs.readFileSync(path.join(ROOT, file), 'utf8').includes('\uFFFD'), `깨진 문자 U+FFFD: ${file}`)

@@ -12,6 +12,7 @@ import CompactText from '../../components/CompactText.jsx'
 const StudyScreen             = lazyChunk(() => import('./StudyScreen.jsx'), 'StudyScreen')
 const InterviewStudyScreen    = lazyChunk(() => import('./InterviewStudyScreen.jsx'), 'InterviewStudyScreen')
 const InterviewCareerLab      = lazyChunk(() => import('./InterviewCareerLab.jsx'), 'InterviewCareerLab')
+const InterviewPracticalScreen = lazyChunk(() => import('./InterviewPracticalScreen.jsx'), 'InterviewPracticalScreen')
 const UniversalLearnScreen    = lazyChunk(() => import('./UniversalLearnScreen.jsx'), 'UniversalLearnScreen')
 const MockAssessmentScreen    = lazyChunk(() => import('./MockAssessmentScreen.jsx'), 'MockAssessmentScreen')
 const TextbookReader          = lazyChunk(() => import('./TextbookReader.jsx'), 'TextbookReader')
@@ -103,7 +104,7 @@ const CATALOG = [
     tagColor: '#92400E',
     bg: '#FEF3C7',
     desc: '채용공고·직무기술서 기반 고졸 면접 완전 대비',
-    meta: '12주제 자율학습 · 진단평가 · 모의면접',
+    meta: '자율학습 · 진단평가 · 모의면접 · 실전면접 리허설',
     type: 'interview',
   },
   {
@@ -245,6 +246,10 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
     )
   }
 
+  if (selected && course === 'interview' && mode === 'practical') {
+    return <Lazy onRetry={backToChooser}><InterviewPracticalScreen onBack={backToChooser} /></Lazy>
+  }
+
   // ── 자율학습 모드 ──
   if (selected && mode === 'study') {
     if (selected.type === 'study') {
@@ -319,13 +324,15 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
               <CompactText text={writtenGuide} maxItemChars={68} />
             </div>
           )}
-          {/* 세 학습 기능은 순서 강제 없이 목적에 따라 선택한다. */}
+          {/* 면접은 지식 점검 뒤 실제 행동 리허설까지 네 기능으로 완성한다. */}
           <div style={{ background: 'var(--card)', border: '1px solid var(--border)', borderRadius: 12, padding: '12px 14px', marginBottom: 16 }}>
             <p style={{ fontSize: 12, fontWeight: 800, color: 'var(--text)', marginBottom: 8 }}>원하는 학습 기능을 바로 선택하세요</p>
             <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
               {(isPersonality
                 ? [['📘', '학습방법', '익히기'], ['📊', '인성 진단', '자가진단'], ['📝', '실전 모의', '점검']]
-                : [['📚', '자율학습', '배우기·반복'], ['📊', '진단평가', '약점 처방'], ['📝', '모의고사', '실전 재현']]
+                : course === 'interview'
+                  ? [['📚', '자율학습', '배우기·반복'], ['📊', '진단평가', '약점 처방'], ['📝', '모의면접', '답변 점검'], ['🎬', '실전면접', '행동 리허설']]
+                  : [['📚', '자율학습', '배우기·반복'], ['📊', '진단평가', '약점 처방'], ['📝', '모의고사', '실전 재현']]
               ).map(([icon, a, b]) => (
                 <div key={a} style={{ display: 'flex', alignItems: 'center', gap: 2, flex: 1 }}>
                   <div style={{ flex: 1, textAlign: 'center' }}>
@@ -452,7 +459,7 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
             <div style={{ width: 48, height: 48, borderRadius: 12, flexShrink: 0, background: '#DBEAFE', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>📝</div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <p style={{ fontWeight: 700, fontSize: 15, marginBottom: 3 }}>
-                <span style={{ ...stepBadge, background: '#DBEAFE', color: '#1D4ED8' }}>선택 · 실전</span>{isPersonality ? '실전 모의검사' : '모의고사'}
+                <span style={{ ...stepBadge, background: '#DBEAFE', color: '#1D4ED8' }}>선택 · 실전</span>{isPersonality ? '실전 모의검사' : course === 'interview' ? '모의면접' : '모의고사'}
                 {course === 'job-common' && goal && ASSESS_GOALS[goal].recommend === 'mock' && <span style={goalPick}>내 목표에 맞음</span>}
                 {!mockReady && <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-muted)', marginLeft: 6 }}>준비 중</span>}
               </p>
@@ -460,6 +467,25 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
             </div>
             {mockReady && <span style={{ color: 'var(--text-muted)', fontSize: 20, flexShrink: 0 }}>›</span>}
           </button>
+
+          {course === 'interview' && (
+            <button onClick={() => setMode('practical')}
+              style={{
+                width: '100%', textAlign: 'left', background: '#ECFDF5',
+                border: '2px solid #0F766E', borderRadius: 14,
+                padding: '16px', marginBottom: 12, cursor: 'pointer',
+                display: 'flex', alignItems: 'center', gap: 14,
+              }}>
+              <div style={{ width: 48, height: 48, borderRadius: 12, flexShrink: 0, background: '#CCFBF1', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>🎬</div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <p style={{ fontWeight: 700, fontSize: 15, marginBottom: 3 }}>
+                  <span style={{ ...stepBadge, background: '#CCFBF1', color: '#0F766E' }}>선택 · 리허설</span>실전면접
+                </p>
+                <CompactText text={'대기·입장·착석·답변·마지막 한마디·퇴장 9단계\n변형 상황 판단 · 습관 점검 · 전 과정 리허설'} maxItemChars={68} style={{ fontSize: 12, color: 'var(--text-muted)' }} />
+              </div>
+              <span style={{ color: '#0F766E', fontSize: 20, flexShrink: 0 }}>›</span>
+            </button>
+          )}
 
         </div>
       </div>

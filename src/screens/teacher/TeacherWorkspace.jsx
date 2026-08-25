@@ -57,7 +57,7 @@ const campusAsset = (name) => `${import.meta.env.BASE_URL}images/campus/${name}`
 
 export default function TeacherWorkspace({
   profile, classes, missions, pendingCount,
-  onNavigate, onOpenClassroom, onOpenMessages, onOpenCoverReviews, onOpenStudentCampus, onTab, tab,
+  onNavigate, onOpenClassroom, onOpenMessages, onOpenCoverReviews, onOpenInterviewCoach, onOpenStudentCampus, onTab, tab,
   workspaceState = 'ready', onRefresh,
   demo = false,
 }) {
@@ -148,6 +148,7 @@ export default function TeacherWorkspace({
           <button onClick={() => onOpenStudentCampus?.()}><BookOpenText /> 학생 화면 보기</button>
           <button onClick={() => onOpenMessages?.({ scope: 'class', target: classId })}><ChatCircleDots /> 메시지</button>
           <button onClick={() => onOpenCoverReviews?.(classId)}><FileText /> 자소서 첨삭</button>
+          <button onClick={() => onOpenInterviewCoach?.(classId)}><PresentationChart /> 면접 코칭</button>
           <button disabled={!cls} title={!cls ? '담당 학급 연결 후 사용할 수 있습니다' : undefined}
             onClick={() => onNavigate?.('create-mission', { classId: cls.id, className: cls.name })}><Sparkle /> 미션 만들기</button>
         </div>
@@ -219,6 +220,7 @@ export default function TeacherWorkspace({
                 <button onClick={() => onNavigate?.('textbook-browse')}><span><BookOpenText weight="fill" /></span><b>교재 미리보기</b><small>학생 학습 그대로</small><ArrowRight /></button>
                 <button onClick={() => onOpenMessages?.()}><span><ChatCircleDots weight="fill" /></span><b>소통·상담</b><small>공지·개별 메시지</small><ArrowRight /></button>
                 <button onClick={() => onOpenCoverReviews?.()}><span><FileText weight="fill" /></span><b>자소서 첨삭</b><small>형광펜·메모·총평</small><ArrowRight /></button>
+                <button onClick={() => onOpenInterviewCoach?.()}><span><PresentationChart weight="fill" /></span><b>실전면접 코칭</b><small>9단계 관찰·피드백</small><ArrowRight /></button>
               </div>
             </section>
 
@@ -246,6 +248,7 @@ export default function TeacherWorkspace({
               <button onClick={onOpenClassroom}><Broadcast weight="fill" /><span>수업 시작</span></button>
               <button onClick={() => onOpenMessages?.({ scope: 'class', target: classId })}><ChatCircleDots weight="fill" /><span>메시지</span></button>
               <button onClick={() => onOpenCoverReviews?.(classId)}><FileText weight="fill" /><span>글 첨삭</span></button>
+              <button onClick={() => onOpenInterviewCoach?.(classId)}><PresentationChart weight="fill" /><span>면접 코칭</span></button>
               <button onClick={() => onNavigate?.('create-mission', { classId: cls.id, className: cls.name })}><Sparkle weight="fill" /><span>미션 만들기</span></button>
             </nav>
 

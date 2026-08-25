@@ -38,6 +38,7 @@ const ClassroomScreen      = lazy(() => import('./ClassroomScreen.jsx'))
 const TeacherMessageScreen = lazy(() => import('./TeacherMessageScreen.jsx'))
 const CoverLetterReviewScreen = lazy(() => import('./CoverLetterReviewScreen.jsx'))
 const TeacherLearningPreview = lazy(() => import('./TeacherLearningPreview.jsx'))
+const TeacherInterviewPracticeScreen = lazy(() => import('./TeacherInterviewPracticeScreen.jsx'))
 
 export default function TeacherShell() {
   const { profile } = useAuth() ?? {}
@@ -176,6 +177,8 @@ export default function TeacherShell() {
             initialScope={screen.scope}
             initialTarget={screen.target}
             initialStudentName={screen.studentName}
+            initialTitle={screen.title}
+            initialBody={screen.body}
           />
         </Suspense>
       )
@@ -183,6 +186,16 @@ export default function TeacherShell() {
       return (
         <Suspense fallback={<div className="loading-screen"><div className="spinner" /></div>}>
           <CoverLetterReviewScreen onBack={closeScreen} initialClassId={screen.classId} />
+        </Suspense>
+      )
+    if (screen.name === 'interview-coaching')
+      return (
+        <Suspense fallback={<div className="loading-screen"><div className="spinner" /></div>}>
+          <TeacherInterviewPracticeScreen
+            onBack={closeScreen}
+            initialClassId={screen.classId}
+            onMessage={params => navigate('messages', params)}
+          />
         </Suspense>
       )
     if (screen.name === 'pending-students')
@@ -274,6 +287,7 @@ export default function TeacherShell() {
           onOpenClassroom={() => navigate('classroom')}
           onOpenMessages={(params = {}) => navigate('messages', params)}
           onOpenCoverReviews={classId => navigate('cover-reviews', { classId })}
+          onOpenInterviewCoach={classId => navigate('interview-coaching', { classId })}
           onOpenStudentCampus={subject => navigate('student-campus', { subject })}
         />
       ) : (

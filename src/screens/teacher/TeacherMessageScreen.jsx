@@ -19,7 +19,7 @@ const TEMPLATES = [
   { id: 'remind', title: '미션 안내', body: '오늘의 캠퍼스 미션이 열렸어요. 부담 없이 짧게 시작해 보세요.' },
 ]
 
-export default function TeacherMessageScreen({ onBack, initialScope, initialTarget, initialStudentName, demo = false }) {
+export default function TeacherMessageScreen({ onBack, initialScope, initialTarget, initialStudentName, initialTitle = '', initialBody = '', demo = false }) {
   const { profile } = useAuth() ?? {}
   const [tab, setTab] = useState('send')
   const [classes, setClasses] = useState(demo ? [{ id: 'c1', name: '3학년 2반' }] : [])
@@ -27,8 +27,8 @@ export default function TeacherMessageScreen({ onBack, initialScope, initialTarg
   const [scope, setScope] = useState(initialScope || 'class')
   const [target, setTarget] = useState(initialTarget || '')
   const [type, setType] = useState('encourage')
-  const [title, setTitle] = useState('')
-  const [body, setBody] = useState('')
+  const [title, setTitle] = useState(initialTitle)
+  const [body, setBody] = useState(initialBody)
   const [sending, setSending] = useState(false)
   const [result, setResult] = useState(null)
   const [inbox, setInbox] = useState(demo ? demoInbox() : [])
@@ -70,6 +70,11 @@ export default function TeacherMessageScreen({ onBack, initialScope, initialTarg
     setScope(initialScope || 'personal')
     setTarget(initialTarget)
   }, [initialScope, initialTarget, loading])
+
+  useEffect(() => {
+    if (initialTitle) setTitle(initialTitle)
+    if (initialBody) setBody(initialBody)
+  }, [initialTitle, initialBody])
 
   async function send() {
     if (!title.trim() || !body.trim() || !target) return

@@ -474,7 +474,7 @@
 .script-linked-source article { margin-top: 9px; padding: 10px; border-left: 3px solid #2c71dc; background: #f5f8fc; }
 .script-linked-source article b { color: #17385f; font-size: 12px; }
 .script-linked-source article p { margin: 5px 0 0; color: #3d5066; font-size: 12px; line-height: 1.55; }
-.script-type-tabs { display: grid; grid-template-columns: 1fr 1fr; padding: 4px; border: 1px solid #dce2e8; border-radius: 7px; background: #eef1f5; }
+.script-type-tabs { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); padding: 4px; border: 1px solid #dce2e8; border-radius: 7px; background: #eef1f5; }
 .script-type-tabs button { min-height: 42px; border: 0; border-radius: 5px; background: transparent; color: #677386; font-size: 13px; font-weight: 900; }
 .script-type-tabs button.is-on { background: #fff; color: #4f46e5; box-shadow: 0 1px 4px rgba(15,23,42,.1); }
 .script-writing-card { padding: 14px; border: 1px solid #dfe4eb; background: #fff; }
@@ -509,6 +509,7 @@
 .script-submit { width: 100%; min-height: 50px; display: flex; align-items: center; justify-content: center; gap: 7px; border: 0; border-radius: 7px; background: #4f46e5; color: #fff; font-size: 13px; font-weight: 900; }
 
 @media (max-width: 390px) {
+  .script-type-tabs button { padding: 4px 2px; font-size: 10px; }
   .cover-workspace-tabs { grid-template-columns: repeat(3,1fr); }
   .cover-workspace-tabs button:nth-child(4), .cover-workspace-tabs button:nth-child(5) { grid-column: span 1; }
 }

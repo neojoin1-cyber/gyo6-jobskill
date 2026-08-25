@@ -291,6 +291,7 @@ function OrganizationDetail({ organization, onBack, onOpenCover }) {
 const INTERVIEW_SCRIPT_LIMITS = {
   introduction: { label: '1분 자기소개', minLength: 250, limit: 350 },
   motivation: { label: '면접 지원동기', minLength: 220, limit: 350 },
+  closing: { label: '마지막 한마디', minLength: 100, limit: 180 },
 }
 
 function readLocalJson(key, fallback = {}) {
@@ -323,6 +324,7 @@ function InterviewScriptBuilder() {
       role: coverDraft.role || '',
       introduction: '',
       motivation: '',
+      closing: '',
       coverSignature: coverLinkSignature(coverDraft),
       ...saved,
     }
@@ -336,12 +338,13 @@ function InterviewScriptBuilder() {
     ? coverDraft.coverItems.filter(item => String(item.answer || '').trim())
     : []
   const sourceChanged = Boolean(coverLinkSignature(coverDraft)) && draft.coverSignature !== coverLinkSignature(coverDraft)
-  const foreignOrganization = INTERVIEW_ORGANIZATIONS.find(item => item.id !== draft.organizationId && `${draft.introduction} ${draft.motivation}`.includes(item.name))
+  const foreignOrganization = INTERVIEW_ORGANIZATIONS.find(item => item.id !== draft.organizationId && `${draft.introduction} ${draft.motivation} ${draft.closing}`.includes(item.name))
   const config = INTERVIEW_SCRIPT_LIMITS[active]
   const value = String(draft[active] || '')
   const introductionReady = String(draft.introduction || '').trim().length >= INTERVIEW_SCRIPT_LIMITS.introduction.minLength
   const motivationReady = String(draft.motivation || '').trim().length >= INTERVIEW_SCRIPT_LIMITS.motivation.minLength
-  const ready = draft.targetName && draft.role && introductionReady && motivationReady && !sourceChanged && !foreignOrganization
+  const closingReady = String(draft.closing || '').trim().length >= INTERVIEW_SCRIPT_LIMITS.closing.minLength
+  const ready = draft.targetName && draft.role && introductionReady && motivationReady && closingReady && !sourceChanged && !foreignOrganization
 
   useEffect(() => {
     supabase.rpc('rpc_my_cover_letters').then(({ data }) => setHistory(Array.isArray(data) ? data : []))
@@ -382,19 +385,25 @@ function InterviewScriptBuilder() {
         { label: '대표 행동 근거', text: [coverDraft.action, coverDraft.result].filter(Boolean).join(' ') || '제가 직접 확인하고 개선한 대표 경험을 한 문장으로 정리합니다.' },
         { label: '입사 후 기여', text: coverDraft.contribution || `${draft.role || '지원 직무'}에서 정확한 확인과 기록으로 기여하겠습니다.` },
       ]
-    : [
+    : active === 'motivation' ? [
         { label: '개인 계기', text: coverDraft.motivation || '이 직무에 관심을 갖게 된 구체적인 경험을 적습니다.' },
         { label: '지원처 공식 근거', text: coverDraft.targetEvidence || `${draft.targetName || '지원처'}의 공식 사업·고객·제품 중 확인한 사실을 적습니다.` },
         { label: '직무 기여', text: coverDraft.contribution || `${draft.role || '지원 직무'}에서 처음 실천할 행동을 적습니다.` },
+      ] : [
+        { label: '핵심 강점 회수', text: coverDraft.result || '면접에서 확인받은 제 강점 한 가지를 짧게 다시 연결합니다.' },
+        { label: '직무 첫 행동', text: coverDraft.contribution || `${draft.role || '지원 직무'}에서 기준을 빠르게 익히고 맡은 일을 정확히 확인하겠습니다.` },
+        { label: '감사로 마무리', text: `오늘 ${draft.role || '지원 직무'}에 대한 제 준비를 말씀드릴 기회를 주셔서 감사합니다.` },
       ]
 
   const model = active === 'introduction'
     ? `안녕하십니까. ${draft.role || '지원 직무'}에서 정확한 확인과 꾸준한 개선을 실천할 지원자입니다. 전공 실습에서 ${coverDraft.action || '작업 기준에 따라 문제 원인을 나누어 확인했고'}, ${coverDraft.result || '결과를 기록해 다음 작업의 오류를 줄였습니다'}. 이 경험으로 작은 이상도 근거를 찾아 끝까지 확인하는 태도를 갖췄습니다. ${draft.targetName || '지원처'}에서도 업무 기준을 빠르게 익히고 안전·품질·고객 신뢰에 기여하겠습니다.`
-    : `${coverDraft.motivation || `${draft.role || '지원 직무'}에 필요한 정확성과 책임을 전공 실습에서 배웠습니다.`} ${coverDraft.targetEvidence || `${draft.targetName || '지원처'}의 공식 자료에서 핵심 역할과 고객을 확인했습니다.`} 제 경험을 ${draft.role || '지원 직무'}의 실제 업무에 연결해, 입사 초기에는 기준과 절차를 정확히 익히고 확인 가능한 결과로 기여하겠습니다.`
+    : active === 'motivation'
+      ? `${coverDraft.motivation || `${draft.role || '지원 직무'}에 필요한 정확성과 책임을 전공 실습에서 배웠습니다.`} ${coverDraft.targetEvidence || `${draft.targetName || '지원처'}의 공식 자료에서 핵심 역할과 고객을 확인했습니다.`} 제 경험을 ${draft.role || '지원 직무'}의 실제 업무에 연결해, 입사 초기에는 기준과 절차를 정확히 익히고 확인 가능한 결과로 기여하겠습니다.`
+      : `오늘 답변을 통해 ${coverDraft.result || '기준을 확인하고 끝까지 개선하는 제 강점'}을 말씀드렸습니다. 이 강점을 ${draft.targetName || '지원처'}의 ${draft.role || '지원 직무'}에서 실제 행동으로 보여 드리겠습니다. 입사 후에는 ${coverDraft.contribution || '업무 기준을 빠르게 익히고 정확한 기록과 확인으로 기여하겠습니다.'} 귀한 기회를 주셔서 감사합니다.`
 
   async function submit() {
     if (!ready || submitting) {
-      setNotice({ ok: false, text: sourceChanged ? '자기소개서 최신 내용을 먼저 다시 연결해 주세요.' : foreignOrganization ? `${foreignOrganization.name} 표기를 현재 지원처에 맞게 고쳐 주세요.` : '두 답변을 권장 분량까지 완성해 주세요.' })
+      setNotice({ ok: false, text: sourceChanged ? '자기소개서 최신 내용을 먼저 다시 연결해 주세요.' : foreignOrganization ? `${foreignOrganization.name} 표기를 현재 지원처에 맞게 고쳐 주세요.` : '세 답변을 권장 분량까지 완성해 주세요.' })
       return
     }
     setSubmitting(true)
@@ -446,18 +455,18 @@ function InterviewScriptBuilder() {
       {linkedCoverItems.length > 0 && <details className="script-linked-source"><summary><Eye />연결된 자기소개서 원문 {linkedCoverItems.length}개 확인<CaretRight /></summary><div>{linkedCoverItems.map(item => <article key={item.id}><b>{item.label}</b><p>{item.answer}</p></article>)}</div></details>}
     </section>
 
-    <nav className="script-type-tabs"><button className={active === 'introduction' ? 'is-on' : ''} onClick={() => setActive('introduction')}>1분 자기소개</button><button className={active === 'motivation' ? 'is-on' : ''} onClick={() => setActive('motivation')}>지원동기</button></nav>
+    <nav className="script-type-tabs"><button className={active === 'introduction' ? 'is-on' : ''} onClick={() => setActive('introduction')}>1분 자기소개</button><button className={active === 'motivation' ? 'is-on' : ''} onClick={() => setActive('motivation')}>지원동기</button><button className={active === 'closing' ? 'is-on' : ''} onClick={() => setActive('closing')}>마지막 한마디</button></nav>
 
     <section className="script-writing-card">
-      <header><div><span>{active === 'introduction' ? '전공·강점 → 대표 근거 → 기여' : '개인 계기 → 지원처 근거 → 직무 기여'}</span><h3>{config.label} 완성</h3></div><b className={value.length < config.minLength ? 'is-short' : 'is-ready'}>{value.length}/{config.limit}자<small>약 {speakingSeconds(value)}초</small></b></header>
+      <header><div><span>{active === 'introduction' ? '전공·강점 → 대표 근거 → 기여' : active === 'motivation' ? '개인 계기 → 지원처 근거 → 직무 기여' : '핵심 강점 회수 → 첫 행동 → 감사'}</span><h3>{config.label} 완성</h3></div><b className={value.length < config.minLength ? 'is-short' : 'is-ready'}>{value.length}/{config.limit}자<small>약 {speakingSeconds(value)}초</small></b></header>
       <div className="script-assist-list">{assists.map(item => <button key={item.label} onClick={() => append(item.text)}><Plus /><span><b>{item.label}</b><small>{item.text}</small></span></button>)}</div>
-      <label><span>내 답변 <small>권장 {config.minLength}~{config.limit}자</small></span><textarea value={value} maxLength={config.limit} rows={8} onChange={event => persist({ ...draft, [active]: event.target.value })} placeholder={active === 'introduction' ? '전공과 직무를 연결한 한 문장부터 시작함' : '지원처를 선택한 나의 계기부터 시작함'} /></label>
+      <label><span>내 답변 <small>권장 {config.minLength}~{config.limit}자</small></span><textarea value={value} maxLength={config.limit} rows={active === 'closing' ? 6 : 8} onChange={event => persist({ ...draft, [active]: event.target.value })} placeholder={active === 'introduction' ? '전공과 직무를 연결한 한 문장부터 시작함' : active === 'motivation' ? '지원처를 선택한 나의 계기부터 시작함' : '면접에서 확인된 강점 하나를 짧게 회수함'} /></label>
       <details className="script-model"><summary><Eye />지원처·내 근거를 반영한 구조 예시<CaretRight /></summary><p>{model}</p><small>문장 복사보다 구조 확인 · 사실과 표현은 내 것으로 바꿈</small></details>
     </section>
 
-    <section className="script-consistency-check"><h3>연결 점검</h3><div><span className={draft.targetName ? 'is-ok' : ''}><CheckCircle />지원처 일치</span><span className={draft.role ? 'is-ok' : ''}><CheckCircle />직무 일치</span><span className={introductionReady ? 'is-ok' : ''}><CheckCircle />자기소개 분량</span><span className={motivationReady ? 'is-ok' : ''}><CheckCircle />지원동기 분량</span></div></section>
+    <section className="script-consistency-check"><h3>연결 점검</h3><div><span className={draft.targetName ? 'is-ok' : ''}><CheckCircle />지원처 일치</span><span className={draft.role ? 'is-ok' : ''}><CheckCircle />직무 일치</span><span className={introductionReady ? 'is-ok' : ''}><CheckCircle />자기소개 분량</span><span className={motivationReady ? 'is-ok' : ''}><CheckCircle />지원동기 분량</span><span className={closingReady ? 'is-ok' : ''}><CheckCircle />마지막 말 분량</span><span className={!foreignOrganization && !sourceChanged ? 'is-ok' : ''}><CheckCircle />세 답변 근거 일치</span></div></section>
     {notice && <p className={`cover-notice ${notice.ok ? 'is-ok' : 'is-error'}`}>{notice.ok ? <CheckCircle weight="fill" /> : <WarningCircle weight="fill" />}{notice.text}</p>}
-    <button className="script-submit" onClick={submit} disabled={submitting}><PaperPlaneTilt weight="fill" />{submitting ? '보내는 중' : '두 답변 교사 첨삭 요청'}</button>
+    <button className="script-submit" onClick={submit} disabled={submitting}><PaperPlaneTilt weight="fill" />{submitting ? '보내는 중' : '세 답변 교사 첨삭 요청'}</button>
     <CoverHistory history={history} />
   </div>
 }
