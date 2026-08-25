@@ -112,14 +112,14 @@ const SECTOR_RESEARCH = {
   },
 }
 
-function buildEvidenceExamples(name, sector, roles, values) {
+function buildEvidenceExamples(name, sector, roles, values, sample) {
   const guide = SECTOR_RESEARCH[sector]
   return values.map((value, index) => ({
     value,
     examples: [
-      `전공 실습에서 ${particle(roles[index % roles.length], '과', '와')} 연결되는 작업을 맡아 ${guide.field}`,
-      `팀 프로젝트·동아리에서 ${objectValue(value)} 보여 주기 위해 역할을 나누고 진행 상황을 기록·공유함`,
-      `${guide.customer}. 그 결과는 수치·완성물·피드백 중 하나로 확인함: ${guide.result}`,
+      `${sample.setting}에서 ${objectValue(value)} 실제 행동으로 보여 주기 위해 ${sample.action}`,
+      `${sample.result}. 결과를 말할 때는 본인이 한 행동과 팀 전체 성과를 구분함`,
+      `${name}의 ${roles[index % roles.length]} 직무와 연결할 때는 “${guide.field}”라는 업무 행동으로 바꾸고 ${guide.result} 중 실제 근거를 제시함`,
     ],
   }))
 }
@@ -155,35 +155,148 @@ function buildQuestions(name, identity, roles, values) {
   ]
 }
 
-function buildOfficialChecks(sector) {
+function buildOfficialChecks(name, sector, officialUrl) {
   const [job, business, news] = SECTOR_RESEARCH[sector].sources
+  const officialHost = new URL(officialUrl).hostname.replace(/^www\./, '')
   return [
-    { title: job, method: '현재 공고의 지원 자격·전형 순서·우대사항을 표시하고, 직무 설명에서 반복되는 지식·기술·태도 3개를 적음.' },
-    { title: business, method: '최근 자료의 기준 연도와 발행 주체를 확인한 뒤, 지원동기에 쓸 핵심 역할 1개와 면접에서 물어볼 변화 1개를 정리함.' },
-    { title: news, method: '최근 1년 자료 중 지원 직무와 직접 연결되는 내용만 고르고, 제목·게시일·핵심 사실을 메모함. 홍보 문구는 자신의 경험처럼 쓰지 않음.' },
-    { title: '최종 교차 점검', method: '공고·직무자료·사업자료 두 곳 이상에서 같은 표현인지 확인하고, 오래된 후기와 다르면 현재 공식 자료를 우선함.' },
+    { title: `${name} ${job}`, method: `${officialHost}와 현재 채용 페이지에서 지원 자격·전형 순서·우대사항을 표시하고, ${name} 직무 설명에서 반복되는 지식·기술·태도 3개를 적음.` },
+    { title: `${name} ${business}`, method: `발행 주체가 ${name} 또는 공공 공시기관인지 확인함. 기준 연도를 적고 지원동기에 쓸 핵심 역할 1개와 면접에서 확인할 변화 1개를 구분함.` },
+    { title: `${name} ${news}`, method: `최근 1년 공식 자료 중 지원 직무와 직접 연결되는 내용만 고름. 제목·게시일·핵심 사실을 메모하고 홍보 문구를 자신의 경험처럼 쓰지 않음.` },
+    { title: `${name} 최종 교차 점검`, method: `${name} 공고·직무자료·사업자료 두 곳 이상에서 같은 내용인지 확인함. 앱이나 오래된 후기와 다르면 현재 공식 자료를 우선함.` },
   ]
 }
 
-const SAMPLE_EXPERIENCE = {
-  finance: {
+const SAMPLE_EXPERIENCES = {
+  finance: [{
     setting: '교내 창업 프로젝트의 판매·정산 담당',
+    situation: '교내 창업 프로젝트 마감 전 재고 수량과 매출 기록이 맞지 않아 정산 오류를 찾아야 했음',
     action: '거래 자료를 시간순으로 분류하고 영수증과 대조했으며, 차이가 난 항목은 팀원과 수정 전후 금액을 다시 검산함',
     result: '누락된 거래 3건을 찾아 정산표를 맞추고 다음 행사부터 사용할 검산 칸을 추가함',
     growth: '상품과 규정을 정확히 익힌 뒤 고객의 이해 여부까지 확인하는 설명 역량',
-  },
-  public: {
+    major: '상업정보·회계정보 전공',
+  }, {
+    setting: '학생회 축제 부스의 사전 예약·문의 담당',
+    situation: '같은 시간대 예약이 겹치고 환불 기준에 대한 문의가 반복되어 안내 기준을 통일해야 했음',
+    action: '예약 순서와 결제 내역을 대조하고 환불 가능 조건을 한 장으로 정리한 뒤 문의자에게 이해한 내용을 다시 확인함',
+    result: '중복 예약 2건을 행사 전에 조정하고 팀원이 같은 기준으로 안내할 수 있는 확인표를 남김',
+    growth: '고객의 요청과 거래 사실을 구분하고 기준을 쉬운 말로 설명하는 역량',
+    major: '상업·서비스 전공',
+  }, {
+    setting: '회계 실무 수업의 거래 자료 검토 담당',
+    situation: '원장과 증빙 자료의 금액이 달라 결산 전에 오류 발생 위치를 확인해야 했음',
+    action: '계정과목별 자료를 다시 분류하고 원본 증빙과 입력값을 교차 확인한 뒤 수정 내역을 별도 표에 기록함',
+    result: '오입력 4건을 바로잡고 이후 검토자가 수정 이유까지 확인할 수 있는 기록 양식을 만듦',
+    growth: '금융 자료를 정확히 대조하고 수정 이력을 투명하게 남기는 역량',
+    major: '회계·금융 전공',
+  }, {
+    setting: '교내 디지털 금융 안내 활동의 사용 지원 담당',
+    situation: '모바일 이용이 익숙하지 않은 참여자가 인증 단계에서 반복해 멈추는 상황을 개선해야 했음',
+    action: '개인정보를 대신 입력하지 않고 화면 단계와 주의사항을 큰 글씨 순서표로 만들고 참여자가 직접 수행하도록 확인함',
+    result: '참여자가 스스로 전 과정을 마쳤고 다음 안내에서도 사용할 개인정보 보호 문구와 단계표를 남김',
+    growth: '디지털 편의와 개인정보 보호를 함께 고려해 고객을 지원하는 역량',
+    major: '정보·금융 전공',
+  }, {
+    setting: '상업 경진 활동의 고객 설문 분석 담당',
+    situation: '팀이 제안한 서비스가 실제 학생의 불편을 해결하는지 근거가 부족해 확인이 필요했음',
+    action: '질문을 이용 상황·불편·선호 방식으로 나누고 응답을 표로 집계한 뒤 소수 의견도 따로 분류해 팀과 비교함',
+    result: '가장 많이 막히는 단계 2개를 찾아 제안서의 우선 개선 항목과 안내 방식을 수정함',
+    growth: '고객 의견을 추측하지 않고 자료로 확인해 서비스 개선으로 연결하는 역량',
+    major: '경영·정보 전공',
+  }],
+  public: [{
     setting: '전공 실습의 설비 점검·안전 기록 담당',
+    situation: '전기 배선 실습 중 측정값이 기준과 달라 안전을 확보한 뒤 원인을 찾아야 했음',
     action: '측정값이 기준과 다른 것을 확인해 작업을 멈추고 전원을 차단한 뒤, 회로도와 측정 순서를 대조해 이상 구간을 표시하고 담당 교사와 재확인함',
     result: '결선 오류 1곳을 수정하고 점검표에 측정값 확인 순서를 보완함',
     growth: '현장 절차와 설비 기준을 익히고 이상 징후를 빠짐없이 기록·보고하는 역량',
-  },
-  enterprise: {
+    major: '전기·전기제어 전공',
+  }, {
+    setting: '학교 안전점검 활동의 시설 확인 담당',
+    situation: '비가 온 뒤 통행로 일부가 미끄럽고 안내 표지가 잘 보이지 않아 이용자의 위험을 줄여야 했음',
+    action: '위험 위치와 시간대를 사진·점검표로 기록하고 임시 통제를 요청한 뒤 시설 담당자와 보완 상태를 다시 확인함',
+    result: '미끄럼 방지 조치와 안내 표지 위치가 보완됐고 후속 점검 날짜가 기록된 확인표를 남김',
+    growth: '국민과 이용자의 안전을 먼저 확인하고 조치·보고·재점검하는 역량',
+    major: '건축·시설 전공',
+  }, {
+    setting: '학생자치회 민원 제안의 의견 정리 담당',
+    situation: '공용공간 이용 시간을 두고 학급별 요구가 달라 공정한 기준과 대안을 마련해야 했음',
+    action: '이용 인원·시간·불편 내용을 같은 양식으로 받아 공통 요구와 충돌 지점을 구분하고 순환 사용안을 제안함',
+    result: '학급별 사용 시간을 합의하고 예외 요청을 기록해 다음 회의에서 같은 기준으로 검토할 수 있게 함',
+    growth: '다른 이해관계자의 요구를 사실과 기준으로 조정하는 공공서비스 역량',
+    major: '행정·사무 전공',
+  }, {
+    setting: '지역 복지관 디지털 안내 봉사의 접수 지원 담당',
+    situation: '신청 절차를 어려워하는 이용자가 많아 개인정보를 보호하면서 정확히 안내해야 했음',
+    action: '신청 자격과 준비 서류를 단계별로 설명하고 본인이 직접 입력하도록 기다린 뒤 누락 항목만 다시 안내함',
+    result: '대상자가 스스로 신청을 완료했고 반복 질문을 줄이는 준비 서류 확인표를 담당자에게 전달함',
+    growth: '취약 이용자의 접근성을 고려하면서 권한과 개인정보 원칙을 지키는 역량',
+    major: '보건·복지·사무 전공',
+  }, {
+    setting: '환경 동아리의 교내 폐기물 측정 담당',
+    situation: '분리배출 개선안을 제안했지만 어느 장소에서 어떤 오류가 많은지 자료가 부족했음',
+    action: '장소·시간·오류 유형을 같은 기준으로 기록하고 배출량을 비교한 뒤 안내 문구와 수거 위치 변경안을 제안함',
+    result: '오류가 집중된 구역 2곳을 확인해 안내 위치를 바꾸고 한 달 뒤 같은 기준으로 재측정함',
+    growth: '환경 문제를 자료로 확인하고 실행 후 효과를 다시 점검하는 역량',
+    major: '환경·화학 전공',
+  }],
+  enterprise: [{
     setting: '자동화 실습의 센서·공정 점검 담당',
+    situation: '자동화 실습에서 센서가 간헐적으로 작동하지 않아 정해진 시간 안에 공정을 정상화해야 했음',
     action: '센서·배선·프로그램 순으로 원인을 나누고 팀원과 점검 구간을 분담했으며, 발견 내용을 작업일지에 남긴 뒤 시험 가동함',
     result: '센서 위치를 조정해 시험 가동 10회를 정상 완료하고 같은 오류를 찾는 점검 순서를 남김',
     growth: '표준작업과 품질 기준을 익히고 설비 이상과 불량 원인을 기록으로 개선하는 역량',
-  },
+    major: '자동화기계·스마트팩토리 전공',
+  }, {
+    setting: '기계가공 실습의 치수 검사 담당',
+    situation: '가공품의 일부 치수가 허용 범위를 벗어나 추가 불량을 막고 원인을 확인해야 했음',
+    action: '의심 제품을 분리하고 측정기 영점을 다시 확인한 뒤 공정 순서와 공구 상태를 팀원과 대조해 기록함',
+    result: '공구 마모 시점을 확인해 교체하고 이후 가공품 8개의 치수가 기준 범위에 들어온 것을 재검사함',
+    growth: '품질 기준에 따라 불량을 격리하고 측정·기록으로 원인을 확인하는 역량',
+    major: '기계·정밀가공 전공',
+  }, {
+    setting: '용접 실습의 작업 전 안전 확인 담당',
+    situation: '작업 구역 가까이에 가연성 자재가 남아 있어 실습 시작 전에 위험을 통제해야 했음',
+    action: '작업을 시작하지 않고 자재를 이동한 뒤 환기·보호구·소화설비를 확인하고 팀원과 점검표를 교차 확인함',
+    result: '모든 점검 항목을 충족한 뒤 실습을 진행하고 다음 조가 같은 순서로 확인하도록 표지를 남김',
+    growth: '납기보다 안전 기준을 우선하고 작업 전 위험을 팀과 함께 통제하는 역량',
+    major: '용접·기계 전공',
+  }, {
+    setting: '전자제품 조립 실습의 기능 검사 담당',
+    situation: '조립 완료 제품에서 같은 기능 오류가 반복돼 부품·배선·조립 순서 중 원인을 찾아야 했음',
+    action: '오류 제품을 정상 제품과 비교하고 부품 방향·배선·체결 상태를 순서대로 확인해 차이를 검사표에 표시함',
+    result: '반대로 장착된 부품을 찾아 수정하고 검사표에 방향 확인 그림을 추가해 재발 가능성을 낮춤',
+    growth: '작은 조립 차이를 표준과 비교하고 작업자가 바로 확인할 수 있게 개선하는 역량',
+    major: '전자·전기 전공',
+  }, {
+    setting: '스마트공장 프로젝트의 자재 동선 개선 담당',
+    situation: '부품을 찾으러 이동하는 시간이 반복돼 조립 순서가 자주 끊기는 문제를 줄여야 했음',
+    action: '작업별 사용 부품과 이동 횟수를 기록하고 사용 순서에 따라 보관 위치를 바꾼 뒤 변경 전후 시간을 같은 조건에서 비교함',
+    result: '모의 조립 1회당 이동 횟수를 줄이고 새 배치도와 원위치 확인표를 팀에 공유함',
+    growth: '현장의 낭비를 관찰 자료로 정의하고 작은 개선의 효과를 검증하는 역량',
+    major: '산업·스마트팩토리 전공',
+  }],
+}
+
+function sampleExperience(id, sector) {
+  const samples = SAMPLE_EXPERIENCES[sector]
+  const checksum = [...String(id)].reduce((total, character) => total + character.charCodeAt(0), 0)
+  return samples[checksum % samples.length]
+}
+
+function buildFieldExamples(name, sector, identity, roles, values, sample) {
+  return {
+    targetName: name,
+    targetEvidence: `${name} 공식 자료에서 ${identity} 점을 확인함. ${sample.setting}에서 ${objectValue(values[0])} 행동으로 옮긴 경험과 ${roles[0]} 직무의 연결점을 추가 조사함.`,
+    role: `${name} ${roles[0]}`,
+    roleNeed: `${name}의 ${roles[0]} 업무에서는 ${objectValue(values[0])} 기준으로 삼고, ${objectValue(values[1])} 고객·현장 상황에서 구체적인 확인 행동으로 보여 줄 필요가 있음.`,
+    major: sample.major,
+    majorSkill: `${sample.action}. 이 과정에서 ${roles[0]} 업무와 연결되는 확인·기록·협업 방식을 익힘.`,
+    experience: sample.situation,
+    action: sample.action,
+    result: sample.result,
+    motivation: `${sample.setting}에서 ${objectValue(values[0])} 행동으로 지키는 중요성을 배움 → ${name}의 “${identity}” 역할을 공식 자료에서 확인함 → ${roles[0]} 직무에서 같은 기준으로 기여하고자 함.`,
+    contribution: `${name} 입사 초기에는 ${roles[0]} 업무의 절차와 판단 기준을 정확히 익힘. 이후 ${sample.growth}을 바탕으로 ${objectValue(values[2])} 확인 가능한 결과로 남기겠음.`,
+  }
 }
 
 function buildOrganizationCourse(name, sector, identity, roles, values) {
@@ -197,8 +310,7 @@ function buildOrganizationCourse(name, sector, identity, roles, values) {
   ]
 }
 
-function buildSampleCoverLetter(name, sector, identity, roles, values) {
-  const sample = SAMPLE_EXPERIENCE[sector]
+function buildSampleCoverLetter(name, sector, identity, roles, values, sample) {
   return [
     { title: '1. 지원동기', body: `${objectValue(sample.setting)} 맡으며 정확한 확인과 기록이 조직의 신뢰를 만든다는 점을 배웠습니다. 이후 공식 자료에서 ${subjectValue(name)} ${quotedDefinition(identity)} 점을 확인했습니다. 단순히 규모가 큰 지원처가 아니라 제가 익힌 확인 습관을 ${roles[0]} 업무에서 고객과 현장의 신뢰로 연결할 수 있다고 판단해 지원했습니다.` },
     { title: '2. 직무와 전공 역량', body: `${roles[0]} 직무에는 ${values[0]}의 의미를 정확히 이해하고 ${objectValue(values[1])} 실제 업무 행동으로 옮기는 힘이 필요하다고 생각합니다. 전공 과정에서 ${sample.setting}으로 활동하며 ${sample.action}. 이 경험으로 자료와 기준을 대조하고, 혼자 단정하지 않고 관련자와 재확인하는 방법을 익혔습니다.` },
@@ -215,17 +327,21 @@ function recommendedQuestionIds(sector) {
       : ['motivation', 'job-competency', 'problem-solving', 'quality', 'collaboration']
 }
 
-const profile = (id, name, sector, group, identity, roles, values, officialUrl) => ({
-  id, name, sector, group, identity, roles, values, officialUrl,
-  evidenceExamples: buildEvidenceExamples(name, sector, roles, values),
-  questions: buildQuestions(name, identity, roles, values),
-  officialChecks: buildOfficialChecks(sector),
-  interviewCourse: buildOrganizationCourse(name, sector, identity, roles, values),
-  sampleCoverLetter: buildSampleCoverLetter(name, sector, identity, roles, values),
-  recommendedQuestionIds: recommendedQuestionIds(sector),
-  coverLetterBridge: `${name}의 역할을 보여 주는 공식 근거 1개와 ${roles[0]} 직무에서 필요한 행동 1개를 골라 자기소개서 지원동기·직무역량 칸에 연결함.`,
-  verifiedAt: '2026-08',
-})
+const profile = (id, name, sector, group, identity, roles, values, officialUrl) => {
+  const sample = sampleExperience(id, sector)
+  return {
+    id, name, sector, group, identity, roles, values, officialUrl,
+    fieldExamples: buildFieldExamples(name, sector, identity, roles, values, sample),
+    evidenceExamples: buildEvidenceExamples(name, sector, roles, values, sample),
+    questions: buildQuestions(name, identity, roles, values),
+    officialChecks: buildOfficialChecks(name, sector, officialUrl),
+    interviewCourse: buildOrganizationCourse(name, sector, identity, roles, values),
+    sampleCoverLetter: buildSampleCoverLetter(name, sector, identity, roles, values, sample),
+    recommendedQuestionIds: recommendedQuestionIds(sector),
+    coverLetterBridge: `${name}의 “${identity}” 역할을 보여 주는 공식 근거 1개와 ${roles[0]} 직무에서 필요한 행동 1개를 골라 자기소개서 지원동기·직무역량 칸에 연결함.`,
+    verifiedAt: '2026-08',
+  }
+}
 
 export const INTERVIEW_ORGANIZATIONS = [
   profile('kdb', '한국산업은행', 'finance', '국책은행', '산업과 기업의 성장·재편을 금융으로 지원하는 정책금융기관', ['기업금융', '심사·리스크', '디지털·IT'], ['공공성', '산업 이해', '책임 있는 판단'], 'https://www.kdb.co.kr/'),
@@ -235,7 +351,7 @@ export const INTERVIEW_ORGANIZATIONS = [
   profile('shinhan', '신한은행', 'finance', '시중은행', '고객 자산과 기업 활동을 연결하는 종합금융 서비스 기관', ['영업·고객상담', '기업금융', '디지털·IT'], ['고객 보호', '혁신', '책임'], 'https://www.shinhan.com/'),
   profile('hana', '하나은행', 'finance', '시중은행', '개인·기업·외환을 아우르는 종합금융 서비스 기관', ['영업·고객상담', '외환·기업금융', '디지털·IT'], ['고객 이해', '글로벌 감각', '정직'], 'https://www.hanabank.com/'),
   profile('woori', '우리은행', 'finance', '시중은행', '개인과 기업 고객에게 예금·대출·결제·자산관리 서비스를 제공하는 은행', ['영업·고객상담', '기업금융', '디지털·IT'], ['신뢰', '고객 중심', '실행'], 'https://www.wooribank.com/'),
-  profile('nh', 'NH농협은행', 'finance', '시중은행', '금융 서비스와 농업·농촌 및 지역경제 지원을 함께 수행하는 은행', ['영업·고객상담', '기업·지역금융', '디지털·IT'], ['고객본위', '사회적 책임', '협력'], 'https://www.nhbank.com/nhmn/KO_NHMN_07.do'),
+  profile('nh', 'NH농협은행', 'finance', '시중은행', '금융 서비스와 농업·농촌 및 지역경제 지원을 함께 수행하는 은행', ['영업·고객상담', '기업·지역금융', '디지털·IT'], ['고객본위', '상호신뢰', '혁신추구'], 'https://www.nhbank.com/goSubPage.do?srchGb=KO_NHMN_05'),
   profile('kakao-bank', '카카오뱅크', 'finance', '인터넷은행', '모바일 중심으로 금융 접근성과 사용 경험을 개선하는 인터넷전문은행', ['고객서비스', '운영', '디지털·IT'], ['사용자 관점', '보안', '빠른 개선'], 'https://recruit.kakaobank.com/'),
   profile('toss-bank', '토스뱅크', 'finance', '인터넷은행', '모바일 기반의 단순하고 투명한 금융 경험을 지향하는 인터넷전문은행', ['고객서비스', '운영', '디지털·IT'], ['고객 문제 해결', '투명성', '책임'], 'https://toss.im/career/'),
   profile('bok', '한국은행', 'finance', '중앙은행', '물가와 금융 안정을 위해 통화신용정책과 지급결제·외환 업무를 수행하는 중앙은행', ['경제조사', '지급결제', '전산·경영지원'], ['공공성', '정확성', '경제 이해'], 'https://www.bok.or.kr/portal/main/main.do'),
@@ -245,7 +361,7 @@ export const INTERVIEW_ORGANIZATIONS = [
   profile('kibo', '기술보증기금', 'finance', '금융공공기관', '기술기업의 기술성과 사업성을 평가하고 보증·지원하는 기관', ['기술평가', '보증·지원', '디지털·경영지원'], ['기술 이해', '공정성', '도전 지원'], 'https://www.kibo.or.kr/'),
   profile('sc', 'SC제일은행', 'finance', '시중은행', '국내 고객 서비스와 글로벌 금융 네트워크를 연결하는 은행', ['영업·고객상담', '기업금융', '디지털·운영'], ['고객 보호', '글로벌 협업', '정확성'], 'https://www.sc.co.kr/'),
 
-  profile('kepco', '한국전력공사', 'public', '에너지', '전력 공급과 전력망 운영을 통해 국민 생활과 산업을 뒷받침하는 공기업', ['전기·송배전', '설비·안전', '사무·고객'], ['안전', '공공성', '현장 책임'], 'https://recruit.kepco.co.kr/'),
+  profile('kepco', '한국전력공사', 'public', '에너지', '전력 공급과 전력망 운영을 통해 국민 생활과 산업을 뒷받침하는 공기업', ['전기·송배전', '설비·안전', '사무·고객'], ['안전', '공공성', '현장 책임'], 'https://www.kepco.co.kr/home/esg/society/talent/conts.do'),
   profile('khnp', '한국수력원자력', 'public', '에너지', '원자력·수력 등 발전설비를 안전하게 운영하는 에너지 공기업', ['발전·전기', '기계·정비', '안전·품질'], ['안전 최우선', '절차 준수', '협업'], 'https://www.khnp.co.kr/recruit/'),
   profile('korail', '한국철도공사', 'public', '교통', '철도 운송과 시설 운영으로 국민의 안전한 이동을 지원하는 공기업', ['운전·차량', '전기·시설', '고객·사무'], ['안전', '정시성', '고객 책임'], 'https://info.korail.com/info/selectBbsNttList.do?bbsNo=198&key=733'),
   profile('airport', '인천국제공항공사', 'public', '교통', '공항 인프라와 여객·물류 서비스를 운영하는 공기업', ['시설·전기', '운영·안전', '고객·사무'], ['안전', '서비스', '국제 협업'], 'https://www.airport.kr/co/ko/cmm/cmmBbsList.do?FNCT_CODE=121'),
@@ -254,7 +370,7 @@ export const INTERVIEW_ORGANIZATIONS = [
   profile('kogas', '한국가스공사', 'public', '에너지', '천연가스의 도입·공급과 관련 인프라를 운영하는 공기업', ['설비·기계', '전기·안전', '사무·공급'], ['안전', '공급 안정', '윤리'], 'https://www.kogas.or.kr/site/koGas/1040100000000'),
   profile('lh', '한국토지주택공사', 'public', '주거·도시', '주거 안정과 국토·도시 개발 사업을 수행하는 공기업', ['건축·토목', '주거복지', '사무·고객'], ['공공성', '현장 책임', '청렴'], 'https://lh.or.kr/board.es?mid=a10601020000&bid=0036'),
   profile('ex', '한국도로공사', 'public', '교통', '고속도로 건설·유지관리와 교통 서비스를 담당하는 공기업', ['토목·시설', '전기·기계', '교통·고객'], ['안전', '현장 대응', '공공서비스'], 'https://www.ex.co.kr/portal/recruit/recruitList/view.do?menuNo=800326'),
-  profile('kospo', '한국남부발전', 'public', '에너지', '발전소 운영과 에너지 전환 사업을 수행하는 발전 공기업', ['발전·전기', '기계·정비', '안전·환경'], ['안전', '설비 신뢰성', '환경 책임'], 'https://www.kospo.co.kr/kospo/123/subview.do'),
+  profile('kospo', '한국남부발전', 'public', '에너지', '발전소 운영과 에너지 전환 사업을 수행하는 발전 공기업', ['발전·전기', '기계·정비', '안전·환경'], ['안전', '설비 신뢰성', '환경 책임'], 'https://www.kospo.co.kr/kospo/211/subview.do'),
   profile('nhis', '국민건강보험공단', 'public', '보건·복지', '건강보험과 장기요양보험을 운영해 국민의 의료·돌봄 안전망을 지원하는 공공기관', ['고객·보험', '전산·데이터', '행정·경영지원'], ['공공성', '개인정보 보호', '고객 배려'], 'https://www.nhis.or.kr/'),
   profile('nps', '국민연금공단', 'public', '보건·복지', '국민연금 제도를 운영하고 가입자와 수급자의 노후 소득 보장을 지원하는 공공기관', ['연금서비스', '고객상담', '전산·행정'], ['신뢰', '정확성', '공공서비스'], 'https://www.nps.or.kr/'),
   profile('hrdkorea', '한국산업인력공단', 'public', '고용·인재', '국가직무능력표준, 국가자격, 직업능력개발과 해외취업 지원을 수행하는 공공기관', ['자격운영', '능력개발', '전산·행정'], ['공정성', '전문성', '고객 책임'], 'https://www.hrdkorea.or.kr/'),
@@ -262,7 +378,7 @@ export const INTERVIEW_ORGANIZATIONS = [
   profile('keco', '한국환경공단', 'public', '환경', '환경오염 방지와 자원순환·기후 대응 사업을 수행하는 환경 공공기관', ['환경·측정', '시설·안전', '전산·행정'], ['환경 책임', '정확성', '현장 협업'], 'https://www.keco.or.kr/'),
 
   profile('samsung-electronics', '삼성전자', 'enterprise', '전자·반도체', '반도체와 전자제품을 개발·생산·서비스하는 글로벌 제조기업', ['반도체 제조', '설비·품질', '전자 생산'], ['품질', '기술 학습', '협업'], 'https://www.samsungcareers.com/'),
-  profile('sk-hynix', 'SK하이닉스', 'enterprise', '반도체', '메모리 반도체를 중심으로 개발·생산하는 제조기업', ['반도체 제조', '설비·유틸리티', '품질'], ['정확성', '안전', '개선'], 'https://recruit.skhynix.com/'),
+  profile('sk-hynix', 'SK하이닉스', 'enterprise', '반도체', '메모리 반도체를 중심으로 개발·생산하는 제조기업', ['반도체 제조', '설비·유틸리티', '품질'], ['정확성', '안전', '개선'], 'https://talent.skhynix.com/hub/ko/home'),
   profile('hyundai', '현대자동차', 'enterprise', '자동차', '자동차와 모빌리티 서비스를 개발·생산하는 제조기업', ['생산', '품질', '설비보전'], ['안전', '고객 품질', '현장 개선'], 'https://talent.hyundai.com/'),
   profile('kia', '기아', 'enterprise', '자동차', '자동차와 모빌리티 제품을 개발·생산하는 제조기업', ['생산', '품질', '설비보전'], ['안전', '품질', '팀워크'], 'https://career.kia.com/'),
   profile('posco', '포스코', 'enterprise', '철강·소재', '철강과 소재를 생산하며 산업 현장에 기초 소재를 공급하는 제조기업', ['생산', '설비·정비', '안전·품질'], ['안전', '공정 이해', '책임'], 'https://recruit.posco.com/'),
@@ -271,9 +387,9 @@ export const INTERVIEW_ORGANIZATIONS = [
   profile('samsung-sdi', '삼성SDI', 'enterprise', '배터리·소재', '배터리와 전자재료를 개발·생산하는 제조기업', ['생산', '설비', '품질·안전'], ['안전', '정밀성', '기술 학습'], 'https://www.samsungcareers.com/'),
   profile('hanwha-aerospace', '한화에어로스페이스', 'enterprise', '항공·방산', '항공엔진과 방산·우주 관련 제품을 개발·생산하는 기업', ['생산·조립', '품질', '설비·정비'], ['품질', '보안·윤리', '책임'], 'https://www.hanwhain.com/'),
   profile('doosan-enerbility', '두산에너빌리티', 'enterprise', '에너지·기계', '발전·에너지 설비와 대형 기계 제품을 제작하는 기업', ['생산·용접', '기계·정비', '품질·안전'], ['안전', '기술 숙련', '협업'], 'https://career.doosan.com/'),
-  profile('lg-energy-solution', 'LG에너지솔루션', 'enterprise', '배터리', '배터리 셀과 에너지 솔루션을 개발·생산하는 기업', ['생산', '설비·유틸리티', '품질·안전'], ['안전', '품질', '기술 학습'], 'https://www.lgensol.com/kr/career/index'),
+  profile('lg-energy-solution', 'LG에너지솔루션', 'enterprise', '배터리', '배터리 셀과 에너지 솔루션을 개발·생산하는 기업', ['생산', '설비·유틸리티', '품질·안전'], ['안전', '품질', '기술 학습'], 'https://www.lgensol.com/kr/career/career-recruit'),
   profile('samsung-electro', '삼성전기', 'enterprise', '전자부품', '전자·전기 제품에 쓰이는 핵심 부품을 개발·생산하는 기업', ['생산', '설비', '품질·검사'], ['정밀성', '품질', '협업'], 'https://www.samsungcareers.com/'),
-  profile('ski', 'SK이노베이션', 'enterprise', '에너지·소재', '에너지와 화학·소재 분야의 제품과 솔루션을 개발·생산하는 기업', ['생산·공정', '설비·정비', '안전·환경'], ['안전', '공정 이해', '변화 대응'], 'https://www.skinnovation.com/company/recruit.asp'),
+  profile('ski', 'SK이노베이션', 'enterprise', '에너지·소재', '에너지와 화학·소재 분야의 제품과 솔루션을 개발·생산하는 기업', ['생산·공정', '설비·정비', '안전·환경'], ['안전', '공정 이해', '변화 대응'], 'https://www.skinnovation.com/recruit/org_culture'),
   profile('kai', '한국항공우주산업', 'enterprise', '항공·우주', '항공기와 우주 관련 체계를 개발·생산·정비하는 기업', ['생산·조립', '품질·검사', '설비·정비'], ['품질', '보안·윤리', '정확성'], 'https://www.koreaaero.com/KO/Recruit/RecruitIntro.aspx'),
   profile('hd-hhi', 'HD현대중공업', 'enterprise', '조선·해양', '선박과 해양·에너지 설비를 설계·제작하는 중공업 기업', ['생산·용접', '설비·정비', '품질·안전'], ['안전', '기술 숙련', '협업'], 'https://recruit.hd.com/'),
 ]
@@ -290,7 +406,7 @@ export const COVER_LETTER_STEPS = [
 
 export const COVER_LETTER_FIELDS = [
   { key: 'targetName', step: 'target', label: '지원 기관·기업', placeholder: '목록에서 고르거나 정확한 공식 명칭 입력', minLength: 2, required: ['공식 기관·기업명', '지원 분야와 일치 여부'], caution: '계열사·공사·은행 이름을 줄여 쓰지 않음.', showExample: false, examples: { finance: 'IBK기업은행', public: '한국전력공사', enterprise: '삼성전자' } },
-  { key: 'targetEvidence', step: 'target', label: '공식 자료에서 찾은 지원 근거', placeholder: '공식 사업·고객·제품·공공 역할 중 나의 관심과 연결되는 사실', minLength: 35, required: ['공식 자료의 핵심 사실', '그 사실이 나와 연결되는 이유'], caution: '규모·연봉·복지만 칭찬하거나 출처 없는 최근 사업을 단정하지 않음.', examples: { finance: '중소기업 금융 접근성을 지원하는 역할을 확인함. 교내 창업 프로젝트에서 자금 흐름을 정리한 경험과 연결됨.', public: '안전한 전력 공급을 담당하는 역할을 확인함. 전기 실습에서 작업 전 점검표를 지킨 경험과 연결됨.', enterprise: '반도체 생산의 품질과 설비 안정이 중요함을 확인함. 자동화 실습에서 오차 원인을 기록한 경험과 연결됨.' } },
+  { key: 'targetEvidence', step: 'target', label: '공식 자료에서 찾은 지원 근거', placeholder: '공식 사업·고객·제품·공공 역할 중 나의 관심과 연결되는 사실', minLength: 35, required: ['공식 자료의 핵심 사실', '그 사실이 나와 연결되는 이유'], caution: '규모·연봉·복지만 칭찬하거나 출처 없는 최근 사업을 단정하지 않음.', examples: { finance: '지원 금융기관의 공식 자료에서 주요 고객과 핵심 금융 역할을 확인함. 거래 자료를 검산하고 이용자에게 기준을 설명한 경험과 연결점을 찾음.', public: '지원 기관의 공식 자료에서 국민에게 제공하는 공공서비스와 현장 직무를 확인함. 전공 실습에서 안전 절차와 점검표를 지킨 경험과 연결점을 찾음.', enterprise: '지원 기업의 공식 자료에서 주력 제품·서비스와 생산 현장의 품질·안전 기준을 확인함. 전공 실습에서 오차 원인을 기록한 경험과 연결점을 찾음.' } },
   { key: 'role', step: 'role', label: '지원 직무', placeholder: '채용공고에 표시된 직무명', minLength: 2, required: ['공고의 정확한 직무명', '희망 업무 범위'], caution: '지원 직무를 회사 전체의 사업과 혼동하지 않음.', examples: { finance: '금융일반·고객상담', public: '전기·송배전', enterprise: '생산·설비보전' } },
   { key: 'roleNeed', step: 'role', label: '직무의 핵심 요구', placeholder: '직무자료의 지식·기술·태도 중 가장 중요한 2~3개', minLength: 30, required: ['지식·기술·태도 중 2개 이상', '실제 업무에서 필요한 이유'], caution: '성실함·열정 같은 추상어만 나열하지 않음.', examples: { finance: '고객 요구를 정확히 듣고 규정에 맞게 안내하는 설명력과 개인정보 보호 태도', public: '도면·설비 상태를 확인하는 기술과 이상 발견 시 작업을 멈추고 보고하는 안전 태도', enterprise: '표준작업 준수, 설비 이상 징후 기록, 품질 기준에 따른 검사 능력' } },
   { key: 'major', step: 'major', label: '전공', placeholder: '학과·전공명', minLength: 2, required: ['현재 전공명', '지원 직무와 연결할 전공 분야'], caution: '학교명·지역명 등 블라인드 정보를 함께 쓰지 않음.', examples: { finance: '상업정보과·회계정보 전공', public: '전기과·전기제어 전공', enterprise: '자동화기계과·스마트팩토리 전공' } },

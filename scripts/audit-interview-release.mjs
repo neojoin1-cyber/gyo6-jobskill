@@ -77,6 +77,8 @@ for (const track of INTERVIEW_TRACKS) {
   check(track.modules.every(module => module.lessons.every(lesson => lesson.concept?.length >= 25 && lesson.example?.length >= 25 && lesson.trap?.length >= 15 && lesson.practice?.length >= 18)), `지원처 심화 단원 구성 부족: ${track.id}`)
 }
 check(INTERVIEW_ORGANIZATIONS.length >= 45, `기업·기관 연구 대상 45곳 미만: ${INTERVIEW_ORGANIZATIONS.length}`)
+check(new Set(INTERVIEW_ORGANIZATIONS.map(item => item.id)).size === INTERVIEW_ORGANIZATIONS.length, '기업·기관 ID 중복')
+check(new Set(INTERVIEW_ORGANIZATIONS.map(item => item.name)).size === INTERVIEW_ORGANIZATIONS.length, '기업·기관 공식 명칭 중복')
 for (const sector of ['finance', 'public', 'enterprise']) {
   check(INTERVIEW_ORGANIZATIONS.filter(item => item.sector === sector).length >= 15, `${sector} 기관 연구 15곳 미만`)
 }
@@ -84,16 +86,46 @@ for (const id of ['kdb', 'ibk', 'kexim', 'kb', 'shinhan', 'hana', 'woori', 'nh']
   check(INTERVIEW_ORGANIZATIONS.some(item => item.id === id), `필수 금융기관 누락: ${id}`)
 }
 for (const item of INTERVIEW_ORGANIZATIONS) {
+  const otherOrganizations = INTERVIEW_ORGANIZATIONS.filter(other => other.id !== item.id)
+  const supportText = JSON.stringify({
+    fieldExamples: item.fieldExamples,
+    evidenceExamples: item.evidenceExamples,
+    questions: item.questions,
+    officialChecks: item.officialChecks,
+    interviewCourse: item.interviewCourse,
+    sampleCoverLetter: item.sampleCoverLetter,
+    coverLetterBridge: item.coverLetterBridge,
+  })
+  const foreignNames = otherOrganizations.filter(other => supportText.includes(other.name))
+  const foreignIdentities = otherOrganizations.filter(other => other.identity !== item.identity && supportText.includes(other.identity))
   check(/^https:\/\//.test(item.officialUrl), `기관 공식 URL 오류: ${item.id}`)
+  check(Boolean(new URL(item.officialUrl).hostname), `기관 공식 URL 파싱 오류: ${item.id}`)
   check(item.roles.length >= 3 && item.values.length >= 3, `기관 직무·가치 정보 부족: ${item.id}`)
+  for (const field of COVER_LETTER_FIELDS.filter(field => field.showExample !== false)) {
+    const minimum = ['role', 'major'].includes(field.key) ? 4 : 20
+    check(item.fieldExamples?.[field.key]?.length >= minimum, `기관별 자기소개서 필드 예시 누락: ${item.id}/${field.key}`)
+  }
+  for (const field of ['targetEvidence', 'motivation', 'contribution']) {
+    check(item.fieldExamples?.[field]?.includes(item.name), `기관별 자기소개서 예시에 자기 기관명 누락: ${item.id}/${field}`)
+  }
+  for (const field of ['role', 'roleNeed', 'contribution']) {
+    check(item.fieldExamples?.[field]?.includes(item.roles[0]), `기관별 자기소개서 예시에 대표 직무 누락: ${item.id}/${field}`)
+  }
+  check(item.fieldExamples?.targetEvidence?.includes(item.identity), `기관별 지원 근거에 기관 정체성 누락: ${item.id}`)
+  check(foreignNames.length === 0, `기관별 콘텐츠에 다른 지원처명 혼입: ${item.id} <- ${foreignNames.map(other => other.id).join(', ')}`)
+  check(foreignIdentities.length === 0, `기관별 콘텐츠에 다른 지원처 정체성 혼입: ${item.id} <- ${foreignIdentities.map(other => other.id).join(', ')}`)
   check(item.evidenceExamples?.length >= 3 && item.evidenceExamples.every(value => value.examples?.length >= 3), `기관 증명 사례 부족: ${item.id}`)
+  check(item.evidenceExamples.every(value => value.examples.some(example => example.includes(item.name))), `기관 증명 사례에 지원처 연결 누락: ${item.id}`)
   check(item.questions?.length >= 3 && item.questions.every(question => question.model?.length >= 80), `기관 모범답안 부족: ${item.id}`)
-  check(item.officialChecks?.length >= 4 && item.officialChecks.every(checkItem => checkItem.method?.length >= 35), `기관 공식자료 점검법 부족: ${item.id}`)
+  check(item.officialChecks?.length >= 4 && item.officialChecks.every(checkItem => checkItem.title?.includes(item.name) && checkItem.method?.length >= 35), `기관 공식자료 점검법 부족: ${item.id}`)
   check(item.interviewCourse?.length >= 5 && item.interviewCourse.every(stage => stage.tasks?.length >= 3 && stage.output?.length >= 25), `기관 면접 완성과정 부족: ${item.id}`)
   check(item.sampleCoverLetter?.length >= 4 && item.sampleCoverLetter.every(section => section.body?.length >= 150), `기관별 자기소개서 완성 예시 부족: ${item.id}`)
+  check(item.sampleCoverLetter.filter(section => section.body.includes(item.name)).length >= 2, `기관별 자기소개서에 지원처 연결 부족: ${item.id}`)
   check(item.recommendedQuestionIds?.length >= 5, `기관별 추천 자기소개서 문항 부족: ${item.id}`)
   check(item.coverLetterBridge?.length >= 40, `기관 자기소개서 연결 안내 부족: ${item.id}`)
 }
+check(new Set(INTERVIEW_ORGANIZATIONS.map(item => item.fieldExamples.targetEvidence)).size === INTERVIEW_ORGANIZATIONS.length, '기관별 지원 근거 예시가 중복됨')
+check(new Set(INTERVIEW_ORGANIZATIONS.map(item => item.fieldExamples.motivation)).size === INTERVIEW_ORGANIZATIONS.length, '기관별 지원동기 예시가 중복됨')
 check(COVER_LETTER_STEPS.length === 7, `자기소개서 단계 오류: ${COVER_LETTER_STEPS.length}`)
 check(COVER_LETTER_FIELDS.length >= 11, `자기소개서 개인화 입력 부족: ${COVER_LETTER_FIELDS.length}`)
 check(COVER_LETTER_QUESTION_LIBRARY.length >= 30, `자기소개서 문항 라이브러리 부족: ${COVER_LETTER_QUESTION_LIBRARY.length}`)
@@ -106,6 +138,8 @@ for (const field of COVER_LETTER_FIELDS) {
   check(field.required?.length >= 2 && field.caution?.length >= 12, `자기소개서 필수·주의 안내 부족: ${field.key}`)
   check(['finance', 'public', 'enterprise'].every(sector => field.examples?.[sector]?.length >= 4), `자기소개서 분야별 예시 누락: ${field.key}`)
 }
+check(careerScreen.includes('organization?.fieldExamples?.[field.key]'), '자기소개서 작성 화면이 기관별 예시를 사용하지 않음')
+check(careerScreen.includes('organizationDraft.coverItems = org ? defaultCoverItems'), '지원처 변경 시 추천 문항을 새 기관 기준으로 재구성하지 않음')
 check(INTERVIEW_CAREER_SCOPES.length === 4, `면접 심화 평가 범위 오류: ${INTERVIEW_CAREER_SCOPES.length}`)
 check(INTERVIEW_CAREER_ASSESSMENT_QUESTIONS.length >= 330, `면접 심화 평가문항 부족: ${INTERVIEW_CAREER_ASSESSMENT_QUESTIONS.length}`)
 check(new Set(INTERVIEW_CAREER_ASSESSMENT_QUESTIONS.map(question => question.id)).size === INTERVIEW_CAREER_ASSESSMENT_QUESTIONS.length, '면접 심화 평가문항 ID 중복')

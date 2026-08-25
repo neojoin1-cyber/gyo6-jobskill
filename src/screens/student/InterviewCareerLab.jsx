@@ -604,10 +604,25 @@ function CoverLetterBuilder({ initialWorkspace = 'learn' }) {
 
   function update(key, value) {
     const next = { ...draft, [key]: value }
-    if (key === 'sector') Object.assign(next, { organizationId: '', targetName: '', targetEvidence: '', role: '', coverItems: defaultCoverItems(value, null, next) })
+    if (key === 'sector') {
+      const sectorDraft = { ...next, organizationId: '', targetName: '', targetEvidence: '', role: '', roleNeed: '', motivation: '', contribution: '' }
+      sectorDraft.coverItems = defaultCoverItems(value, null, sectorDraft)
+      Object.assign(next, sectorDraft)
+    }
     if (key === 'organizationId') {
       const org = INTERVIEW_ORGANIZATIONS.find(item => item.id === value)
-      Object.assign(next, { targetName: org?.name || '', targetEvidence: org?.identity || '', role: org?.roles?.[0] || '', coverItems: org ? defaultCoverItems(org.sector, org, next) : next.coverItems })
+      const organizationDraft = {
+        ...next,
+        sector: org?.sector || next.sector,
+        targetName: org?.name || '',
+        targetEvidence: org?.identity || '',
+        role: org?.roles?.[0] || '',
+        roleNeed: '',
+        motivation: '',
+        contribution: '',
+      }
+      organizationDraft.coverItems = org ? defaultCoverItems(org.sector, org, organizationDraft) : defaultCoverItems(next.sector, null, organizationDraft)
+      Object.assign(next, organizationDraft)
     }
     setDraft(next)
     localStorage.setItem('iv_cover_draft', JSON.stringify(next))
@@ -743,7 +758,7 @@ function CoverLetterBuilder({ initialWorkspace = 'learn' }) {
       <section className="cover-step-heading"><span>STEP {stepIndex + 1}</span><h2>{step.title.replace(/^\d+\.\s*/, '')}</h2><p>{step.check}</p></section>
       {step.id === 'target' && <><div className="cover-sector-picker">{SECTORS.map(item => { const Icon = item.icon; return <button key={item.id} className={draft.sector === item.id ? 'is-active' : ''} onClick={() => update('sector', item.id)}><Icon weight={draft.sector === item.id ? 'fill' : 'regular'} /><b>{item.label}</b><small>{COVER_LETTER_SECTOR_CONTENT[item.id].focus[0]}</small></button> })}</div><label className="cover-org-select"><span>연구한 지원처 불러오기</span><select value={draft.organizationId || ''} onChange={event => update('organizationId', event.target.value)}><option value="">직접 입력</option>{organizations.map(item => <option key={item.id} value={item.id}>{item.name} · {item.group}</option>)}</select></label><div className="cover-sector-focus">{sector.focus.map(item => <span key={item}><CheckCircle weight="fill" />{item}</span>)}</div>{organization && <details className="cover-org-sample"><summary><FileText weight="duotone" /><span><b>{organization.name} 완성 예시 보기</b><small>구조만 참고하고 경험·수치 복사는 금지</small></span><CaretRight /></summary><div>{organization.sampleCoverLetter.map(item => <section key={item.title}><h3>{item.title}</h3><p>{item.body}</p></section>)}</div></details>}</>}
       {step.id === 'questions' && <QuestionComposer sector={draft.sector} organization={organization} items={questionItems} draft={draft} evidenceBank={evidenceBank} onChange={items => update('coverItems', items)} />}
-      {step.id === 'audit' ? <section className="cover-ready"><FileText weight="duotone" /><h3>{ready ? '완성본을 만들 준비가 됐어요' : `${missing.length + questionProblems.length}가지를 더 확인해요`}</h3><p>{missing.length ? missing.map(item => item.label).join(' · ') : questionProblems.length ? questionProblems[0] : `${questionItems.length}개 문항을 화면에서 먼저 읽고 PDF 저장 또는 선생님 첨삭 요청으로 이어갈 수 있어요.`}</p><button onClick={openPreview} disabled={!ready}><Eye weight="fill" />완성본 생성·확인</button></section> : step.id !== 'questions' && <div className="cover-fields">{stepFields.map(field => <CoverField key={field.key} field={field} value={draft[field.key] || ''} sector={draft.sector} onChange={value => update(field.key, value)} />)}</div>}
+      {step.id === 'audit' ? <section className="cover-ready"><FileText weight="duotone" /><h3>{ready ? '완성본을 만들 준비가 됐어요' : `${missing.length + questionProblems.length}가지를 더 확인해요`}</h3><p>{missing.length ? missing.map(item => item.label).join(' · ') : questionProblems.length ? questionProblems[0] : `${questionItems.length}개 문항을 화면에서 먼저 읽고 PDF 저장 또는 선생님 첨삭 요청으로 이어갈 수 있어요.`}</p><button onClick={openPreview} disabled={!ready}><Eye weight="fill" />완성본 생성·확인</button></section> : step.id !== 'questions' && <div className="cover-fields">{stepFields.map(field => <CoverField key={field.key} field={field} value={draft[field.key] || ''} sector={draft.sector} organization={organization} onChange={value => update(field.key, value)} />)}</div>}
       {notice && <p className={`cover-notice ${notice.ok ? 'is-ok' : 'is-error'}`}>{notice.ok ? <CheckCircle weight="fill" /> : <WarningCircle weight="fill" />}{notice.text}</p>}
       <footer className="cover-step-actions"><button onClick={() => setStepIndex(value => Math.max(0, value - 1))} disabled={stepIndex === 0}><ArrowLeft />이전</button>{stepIndex < COVER_LETTER_STEPS.length - 1 ? <button className="is-primary" onClick={goNext}>다음 단계<CaretRight /></button> : <button className="is-primary" onClick={openPreview} disabled={!ready}><Eye />완성본 보기</button>}</footer>
       <CoverHistory history={history} />
@@ -945,10 +960,12 @@ function QuestionComposer({ sector, organization, items, draft, evidenceBank, on
   )
 }
 
-function CoverField({ field, value, sector, onChange }) {
+function CoverField({ field, value, sector, organization, onChange }) {
   const current = String(value).trim().length
   const ready = current >= field.minLength
   const assist = COVER_FIELD_ASSISTS[field.key]
+  const example = organization?.fieldExamples?.[field.key] || field.examples[sector]
+  const exampleLabel = organization ? `${organization.name} 맞춤 구조 예시` : `${COVER_LETTER_SECTOR_CONTENT[sector]?.label || '지원 분야'} 공통 구조 예시`
   function addStarter(starter) {
     const text = String(value || '').trim()
     onChange(`${text}${text ? '\n' : ''}${starter}`)
@@ -957,7 +974,7 @@ function CoverField({ field, value, sector, onChange }) {
     <article className={`cover-field-card ${ready ? 'is-ready' : ''}`}>
       <header><div><span>{ready ? <CheckCircle weight="fill" /> : <PencilSimple />}</span><strong>{field.label}</strong></div><small className={ready ? 'is-ready' : ''}>{current}/{field.minLength}자 기준</small></header>
       <div className="cover-field-guide"><div><b>꼭 넣기</b><ul>{field.required.map(item => <li key={item}>{item}</li>)}</ul></div><p><WarningCircle weight="fill" /><span><b>주의</b>{field.caution}</span></p></div>
-      {field.showExample !== false && <details><summary>이 분야의 구체적 예시 보기</summary><div className="cover-example-box"><b>구조 참고</b><p>{field.examples[sector]}</p><small>기관명·경험·수치는 내 사실로 바꿔 작성함.</small></div></details>}
+      {field.showExample !== false && <details><summary>{exampleLabel} 보기</summary><div className="cover-example-box"><b>{organization ? '선택한 지원처 기준' : '분야 공통 기준'}</b><p>{example}</p><small>구조만 참고함. 공식 사실은 현재 공고·공식 사이트에서 다시 확인하고 경험·수치는 내 사실로 작성함.</small></div></details>}
       {assist && <details className="cover-field-assist"><summary><PencilSimple />막막하면 한 칸씩 시작</summary><div><section><b>먼저 답할 세 가지</b><ol>{assist.prompts.map(value => <li key={value}>{value}</li>)}</ol></section><section><b>첫 문장 고르기</b><div>{assist.starters.map(value => <button key={value} onClick={() => addStarter(value)}>{value}</button>)}</div></section></div></details>}
       <textarea id={`cover-${field.key}`} value={value} onChange={event => onChange(event.target.value)} placeholder={field.placeholder} rows={field.key === 'action' || field.key === 'motivation' ? 6 : 4} />
     </article>

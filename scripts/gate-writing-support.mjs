@@ -4,7 +4,7 @@ import { getTeacherLessonGuide, lessonTiming, LESSON_DURATIONS } from '../src/li
 const checks = [
   ['나를쓰다 30개 문항 학습', 'src/screens/student/InterviewCareerLab.jsx', ['30개 자주 묻는 항목', '좋은 예시', '감점 예시']],
   ['근거은행 선택·작성 지원', 'src/screens/student/InterviewCareerLab.jsx', ['1. 전공·분야', '첫 문장 고르기', '근거은행에서 가져오기']],
-  ['빈칸 작성 지원', 'src/screens/student/InterviewCareerLab.jsx', ['막막하면 한 칸씩 시작', '이 분야의 구체적 예시 보기']],
+  ['빈칸 작성 지원', 'src/screens/student/InterviewCareerLab.jsx', ['막막하면 한 칸씩 시작', '맞춤 구조 예시']],
   ['자기소개서 글자 수 지원', 'src/screens/student/InterviewCareerLab.jsx', ['권장 최소', '최대 글자 수', '공고 글자 수', 'cover-document-answer-box']],
   ['나를쓰다 독립 학습관', 'src/screens/student/CourseListScreen.jsx', ["id: 'cover-letter'", 'initialWorkspace="diagnostic"', 'initialWorkspace="mock"']],
   ['실전자기소개서 독립 모드', 'src/screens/student/CourseListScreen.jsx', ['실전자기소개서', "setMode('cover-practical')", 'initialWorkspace="practical"']],
