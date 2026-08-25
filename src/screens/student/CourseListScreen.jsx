@@ -157,7 +157,7 @@ function MasteryBar({ subjectId, canSync }) {
   )
 }
 
-export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, deepLink } = {}) {
+export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, deepLink, onContextChange } = {}) {
   // 수업 덱의 링크로 들어오면 교재·모드 고르기를 건너뛰고 그 차시를 바로 연다.
   const [course, setCourse] = useState(deepLink?.subject ?? null)
   // 홈의 학습관은 과목 소개·방식 선택부터 열고, 교사 수업 링크만 자율학습으로 직행한다.
@@ -173,6 +173,10 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
   const visibleCatalog = allowed ? VISIBLE_CATALOG.filter(c => allowed.has(c.id)) : VISIBLE_CATALOG
 
   const selected = CATALOG.find(c => c.id === course)
+
+  useEffect(() => {
+    onContextChange?.({ subject: course, mode })
+  }, [course, mode, onContextChange])
 
   function backToChooser() { setMode(null) }
   function backToList() {
@@ -248,6 +252,10 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
 
   if (selected && course === 'interview' && mode === 'practical') {
     return <Lazy onRetry={backToChooser}><InterviewPracticalScreen onBack={backToChooser} /></Lazy>
+  }
+
+  if (selected && course === 'cover-letter' && mode === 'cover-practical') {
+    return <Lazy onRetry={backToChooser}><InterviewCareerLab section="cover" initialWorkspace="practical" onBack={backToChooser} /></Lazy>
   }
 
   // ── 자율학습 모드 ──
@@ -332,6 +340,8 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
                 ? [['📘', '학습방법', '익히기'], ['📊', '인성 진단', '자가진단'], ['📝', '실전 모의', '점검']]
                 : course === 'interview'
                   ? [['📚', '자율학습', '배우기·반복'], ['📊', '진단평가', '약점 처방'], ['📝', '모의면접', '답변 점검'], ['🎬', '실전면접', '행동 리허설']]
+                  : course === 'cover-letter'
+                    ? [['📚', '자율학습', '배우기·반복'], ['📊', '진단평가', '약점 처방'], ['📝', '모의고사', '기준 점검'], ['✍️', '실전자기소개서', '직접 완성']]
                   : [['📚', '자율학습', '배우기·반복'], ['📊', '진단평가', '약점 처방'], ['📝', '모의고사', '실전 재현']]
               ).map(([icon, a, b]) => (
                 <div key={a} style={{ display: 'flex', alignItems: 'center', gap: 2, flex: 1 }}>
@@ -482,6 +492,25 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
                   <span style={{ ...stepBadge, background: '#CCFBF1', color: '#0F766E' }}>선택 · 리허설</span>실전면접
                 </p>
                 <CompactText text={'대기·입장·착석·답변·마지막 한마디·퇴장 9단계\n변형 상황 판단 · 습관 점검 · 전 과정 리허설'} maxItemChars={68} style={{ fontSize: 12, color: 'var(--text-muted)' }} />
+              </div>
+              <span style={{ color: '#0F766E', fontSize: 20, flexShrink: 0 }}>›</span>
+            </button>
+          )}
+
+          {course === 'cover-letter' && (
+            <button onClick={() => setMode('cover-practical')}
+              style={{
+                width: '100%', textAlign: 'left', background: '#ECFDF5',
+                border: '2px solid #0F766E', borderRadius: 14,
+                padding: '16px', marginBottom: 12, cursor: 'pointer',
+                display: 'flex', alignItems: 'center', gap: 14,
+              }}>
+              <div style={{ width: 48, height: 48, borderRadius: 12, flexShrink: 0, background: '#CCFBF1', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>✍️</div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <p style={{ fontWeight: 700, fontSize: 15, marginBottom: 3 }}>
+                  <span style={{ ...stepBadge, background: '#CCFBF1', color: '#0F766E' }}>선택 · 작성</span>실전자기소개서
+                </p>
+                <CompactText text={'근거 찾기·지원처 문항 구성·분량 맞춤·작성\n완성본 미리보기 · PDF 저장 · 선생님 첨삭'} maxItemChars={68} style={{ fontSize: 12, color: 'var(--text-muted)' }} />
               </div>
               <span style={{ color: '#0F766E', fontSize: 20, flexShrink: 0 }}>›</span>
             </button>

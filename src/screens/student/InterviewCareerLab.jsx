@@ -489,6 +489,7 @@ function CoverLetterBuilder({ initialWorkspace = 'learn' }) {
   })
   const [stepIndex, setStepIndex] = useState(0)
   const [workspace, setWorkspace] = useState(initialWorkspace)
+  const [practicalFlow] = useState(initialWorkspace === 'practical')
   const [view, setView] = useState('write')
   const [notice, setNotice] = useState(null)
   const [history, setHistory] = useState([])
@@ -719,12 +720,19 @@ function CoverLetterBuilder({ initialWorkspace = 'learn' }) {
         <b>{evidenceBank.length}<small>근거 카드</small></b>
       </section>
       <nav className="cover-workspace-tabs" aria-label="나를쓰다 메뉴">
-        <button className={workspace === 'learn' ? 'is-on' : ''} onClick={() => setWorkspace('learn')}><BookOpen />학습</button>
-        <button className={workspace === 'diagnostic' ? 'is-on' : ''} onClick={() => setWorkspace('diagnostic')}><Target />자가진단</button>
-        <button className={workspace === 'mock' ? 'is-on' : ''} onClick={() => setWorkspace('mock')}><ClipboardText />모의고사</button>
-        <button className={workspace === 'evidence' ? 'is-on' : ''} onClick={() => setWorkspace('evidence')}><ClipboardText />근거 찾기</button>
-        <button className={workspace === 'write' ? 'is-on' : ''} onClick={() => setWorkspace('write')}><PencilSimple />작성하기</button>
+        {practicalFlow ? <>
+          <button className={workspace === 'practical' ? 'is-on' : ''} onClick={() => setWorkspace('practical')}><PlayCircle />실전 홈</button>
+          <button className={workspace === 'evidence' ? 'is-on' : ''} onClick={() => setWorkspace('evidence')}><ClipboardText />근거 찾기</button>
+          <button className={workspace === 'write' ? 'is-on' : ''} onClick={() => setWorkspace('write')}><PencilSimple />작성하기</button>
+        </> : <>
+          <button className={workspace === 'learn' ? 'is-on' : ''} onClick={() => setWorkspace('learn')}><BookOpen />학습</button>
+          <button className={workspace === 'diagnostic' ? 'is-on' : ''} onClick={() => setWorkspace('diagnostic')}><Target />자가진단</button>
+          <button className={workspace === 'mock' ? 'is-on' : ''} onClick={() => setWorkspace('mock')}><ClipboardText />모의고사</button>
+          <button className={workspace === 'evidence' ? 'is-on' : ''} onClick={() => setWorkspace('evidence')}><ClipboardText />근거 찾기</button>
+          <button className={workspace === 'write' ? 'is-on' : ''} onClick={() => setWorkspace('write')}><PencilSimple />작성하기</button>
+        </>}
       </nav>
+      {workspace === 'practical' && <CoverPracticalHome evidenceCount={evidenceBank.length} questionCount={questionItems.length} completed={completed} total={COVER_LETTER_FIELDS.length} onEvidence={() => setWorkspace('evidence')} onWrite={() => setWorkspace('write')} />}
       {workspace === 'learn' && <CoverLearningLibrary onStart={startQuestion} />}
       {workspace === 'diagnostic' && <CoverLetterAssessment mode="diagnostic" onGoLearn={() => setWorkspace('learn')} />}
       {workspace === 'mock' && <CoverLetterAssessment mode="mock" onGoLearn={() => setWorkspace('learn')} />}
@@ -741,6 +749,28 @@ function CoverLetterBuilder({ initialWorkspace = 'learn' }) {
       <CoverHistory history={history} />
       </>}
     </div>
+  )
+}
+
+function CoverPracticalHome({ evidenceCount, questionCount, completed, total, onEvidence, onWrite }) {
+  const stages = [
+    { title: '내 근거 준비', value: `${evidenceCount}장`, ready: evidenceCount > 0, help: '전공·실습·프로젝트 경험을 행동과 결과로 저장함' },
+    { title: '지원처·직무 선택', value: completed > 0 ? '진행 중' : '시작 전', ready: completed > 0, help: '금융권·공공기관·대기업과 지원 직무를 연결함' },
+    { title: '실제 문항 구성', value: `${questionCount}개`, ready: questionCount >= 2, help: '공고 문항을 고르거나 직접 추가하고 글자 수를 정함' },
+    { title: '완성·첨삭', value: `${completed}/${total}`, ready: completed === total && questionCount >= 2, help: '미리보기·PDF 저장 후 담당 선생님께 첨삭을 요청함' },
+  ]
+  return (
+    <section className="cover-practical-home">
+      <header><span>REAL APPLICATION WRITING</span><h3>실전자기소개서</h3><p>빈 문서부터 시작하지 않음. 내 근거를 고르고 실제 지원처 문항과 분량에 맞춰 제출본을 완성함.</p></header>
+      <div className="cover-practical-route">
+        {stages.map((stage, index) => <article key={stage.title} className={stage.ready ? 'is-ready' : ''}><span>{stage.ready ? <CheckCircle weight="fill" /> : index + 1}</span><div><b>{stage.title}</b><p>{stage.help}</p></div><strong>{stage.value}</strong></article>)}
+      </div>
+      <div className="cover-practical-actions">
+        <button onClick={onEvidence}><ClipboardText weight="fill" /><span><b>{evidenceCount ? '근거 더 채우기' : '근거부터 찾기'}</b><small>선택형 도움으로 경험 카드 만들기</small></span><CaretRight /></button>
+        <button className="is-primary" onClick={onWrite}><PencilSimple weight="fill" /><span><b>{completed ? '작성 이어가기' : '지원처부터 작성 시작'}</b><small>문항·분량·미리보기·PDF·첨삭</small></span><CaretRight /></button>
+      </div>
+      <aside><ShieldCheck weight="fill" /><p>예시는 구조 확인용임. 경험·역할·수치·결과는 학생이 설명하고 증명할 수 있는 사실만 사용함.</p></aside>
+    </section>
   )
 }
 

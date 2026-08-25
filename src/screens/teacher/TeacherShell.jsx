@@ -224,7 +224,7 @@ export default function TeacherShell() {
             profile={profile}
             initialSubject={screen.subject}
             onBack={closeScreen}
-            onOpenMessages={() => navigate('messages')}
+            onOpenMessages={(params = {}) => navigate('messages', params)}
           />
         </Suspense>
       )
