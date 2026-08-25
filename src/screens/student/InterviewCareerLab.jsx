@@ -31,6 +31,7 @@ import { pushBack, popBack } from '../../lib/backButton.js'
 import { supabase } from '../../lib/supabase.js'
 import { useAuth } from '../../App.jsx'
 import CompactText from '../../components/CompactText.jsx'
+import CoverLetterAssessment from './CoverLetterAssessment.jsx'
 import {
   COVER_LETTER_FIELDS,
   COVER_LETTER_QUESTION_LIBRARY,
@@ -59,6 +60,7 @@ const SECTION_META = {
   pathways: { title: '지원처별 면접 심화', eyebrow: '기초 다음 단계' },
   institutions: { title: '기업·기관 연구소', eyebrow: '지원처 전수 준비' },
   cover: { title: '나를쓰다', eyebrow: '자기소개서 학습·작성·첨삭' },
+  scripts: { title: '답변 연결실', eyebrow: '자기소개서에서 면접 답변으로' },
 }
 
 const STATUS_LABELS = {
@@ -68,7 +70,35 @@ const STATUS_LABELS = {
   approved: '첨삭 완료',
 }
 
-export default function InterviewCareerLab({ section, onBack, onOpenCover }) {
+const COVER_LENGTH_PRESETS = [
+  { minLength: 350, limit: 500, label: '500자' },
+  { minLength: 500, limit: 700, label: '700자' },
+  { minLength: 600, limit: 800, label: '800자' },
+  { minLength: 700, limit: 1000, label: '1000자' },
+  { minLength: 1050, limit: 1500, label: '1500자' },
+]
+
+function coverQuestionLimits(item = {}) {
+  const limit = Math.max(100, Math.min(2000, Number(item.limit) || 700))
+  const fallbackMinimum = Math.max(100, Math.round((limit * 0.72) / 50) * 50)
+  const minLength = Math.max(50, Math.min(limit, Number(item.minLength) || fallbackMinimum))
+  return { minLength, limit }
+}
+
+function normalizeCoverItem(item) {
+  const limits = coverQuestionLimits(item)
+  return { ...item, ...limits, answer: String(item?.answer || '') }
+}
+
+function coverTextareaRows(limit) {
+  return Math.max(7, Math.min(16, Math.ceil(limit / 90)))
+}
+
+function coverAnswerBoxHeight(limit) {
+  return Math.max(180, Math.ceil(limit / 44) * 23 + 34)
+}
+
+export default function InterviewCareerLab({ section, onBack, onOpenCover, initialWorkspace = 'learn' }) {
   const [detail, setDetail] = useState(null)
   const meta = SECTION_META[section] || SECTION_META.pathways
   const backRef = useRef(null)
@@ -93,14 +123,18 @@ export default function InterviewCareerLab({ section, onBack, onOpenCover }) {
       : <LabFrame meta={meta} onBack={onBack}><OrganizationList onOpen={setDetail} /></LabFrame>
   }
 
-  return <LabFrame meta={meta} onBack={onBack}><CoverLetterBuilder /></LabFrame>
+  if (section === 'scripts') {
+    return <LabFrame meta={meta} onBack={onBack}><InterviewScriptBuilder /></LabFrame>
+  }
+
+  return <LabFrame meta={meta} onBack={onBack}><CoverLetterBuilder initialWorkspace={initialWorkspace} /></LabFrame>
 }
 
 function LabFrame({ meta, onBack, children }) {
   return (
     <div className="screen interview-career-screen">
       <header className="appbar interview-career-appbar">
-        <button className="appbar-back" onClick={onBack} aria-label="면접 학습으로 돌아가기"><ArrowLeft /></button>
+        <button className="appbar-back" onClick={onBack} aria-label="이전 화면으로 돌아가기"><ArrowLeft /></button>
         <div><span className="interview-career-eyebrow">{meta.eyebrow}</span><span className="appbar-title">{meta.title}</span></div>
       </header>
       <div className="screen-body interview-career-body">{children}</div>
@@ -254,7 +288,181 @@ function OrganizationDetail({ organization, onBack, onOpenCover }) {
   )
 }
 
-function CoverLetterBuilder() {
+const INTERVIEW_SCRIPT_LIMITS = {
+  introduction: { label: '1분 자기소개', minLength: 250, limit: 350 },
+  motivation: { label: '면접 지원동기', minLength: 220, limit: 350 },
+}
+
+function readLocalJson(key, fallback = {}) {
+  try { return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback)) }
+  catch { return fallback }
+}
+
+function coverLinkSignature(draft) {
+  const fields = ['organizationId', 'targetName', 'role', 'targetEvidence', 'majorSkill', 'action', 'result', 'motivation', 'contribution']
+    .map(key => String(draft?.[key] || '').trim())
+  const answers = Array.isArray(draft?.coverItems)
+    ? draft.coverItems.map(item => [item.id, item.label, item.answer].map(value => String(value || '').trim()).join(':'))
+    : []
+  return [...fields, ...answers].join('|')
+}
+
+function speakingSeconds(text) {
+  return Math.max(0, Math.round(String(text || '').trim().length / 5))
+}
+
+function InterviewScriptBuilder() {
+  const { profile } = useAuth() ?? {}
+  const coverDraft = useMemo(() => readLocalJson('iv_cover_draft'), [])
+  const [draft, setDraft] = useState(() => {
+    const saved = readLocalJson('iv_interview_script_draft')
+    return {
+      sector: coverDraft.sector || 'finance',
+      organizationId: coverDraft.organizationId || '',
+      targetName: coverDraft.targetName || '',
+      role: coverDraft.role || '',
+      introduction: '',
+      motivation: '',
+      coverSignature: coverLinkSignature(coverDraft),
+      ...saved,
+    }
+  })
+  const [active, setActive] = useState('introduction')
+  const [notice, setNotice] = useState(null)
+  const [history, setHistory] = useState([])
+  const [submitting, setSubmitting] = useState(false)
+  const organization = INTERVIEW_ORGANIZATIONS.find(item => item.id === draft.organizationId)
+  const linkedCoverItems = Array.isArray(coverDraft.coverItems)
+    ? coverDraft.coverItems.filter(item => String(item.answer || '').trim())
+    : []
+  const sourceChanged = Boolean(coverLinkSignature(coverDraft)) && draft.coverSignature !== coverLinkSignature(coverDraft)
+  const foreignOrganization = INTERVIEW_ORGANIZATIONS.find(item => item.id !== draft.organizationId && `${draft.introduction} ${draft.motivation}`.includes(item.name))
+  const config = INTERVIEW_SCRIPT_LIMITS[active]
+  const value = String(draft[active] || '')
+  const introductionReady = String(draft.introduction || '').trim().length >= INTERVIEW_SCRIPT_LIMITS.introduction.minLength
+  const motivationReady = String(draft.motivation || '').trim().length >= INTERVIEW_SCRIPT_LIMITS.motivation.minLength
+  const ready = draft.targetName && draft.role && introductionReady && motivationReady && !sourceChanged && !foreignOrganization
+
+  useEffect(() => {
+    supabase.rpc('rpc_my_cover_letters').then(({ data }) => setHistory(Array.isArray(data) ? data : []))
+  }, [profile?.id])
+
+  function persist(next) {
+    setDraft(next)
+    localStorage.setItem('iv_interview_script_draft', JSON.stringify(next))
+    setNotice(null)
+  }
+
+  function syncCover() {
+    if (!coverDraft.targetName || !coverDraft.role) {
+      setNotice({ ok: false, text: '나를쓰다에서 지원처와 직무를 먼저 연결해 주세요.' })
+      return
+    }
+    persist({
+      ...draft,
+      sector: coverDraft.sector || draft.sector,
+      organizationId: coverDraft.organizationId || '',
+      targetName: coverDraft.targetName,
+      role: coverDraft.role,
+      coverSignature: coverLinkSignature(coverDraft),
+      linkedAt: new Date().toISOString(),
+    })
+    setNotice({ ok: true, text: '지원처·직무·근거를 최신 자기소개서와 맞췄어요.' })
+  }
+
+  function append(text) {
+    const current = String(draft[active] || '').trim()
+    const nextValue = `${current}${current ? ' ' : ''}${text}`.slice(0, config.limit)
+    persist({ ...draft, [active]: nextValue })
+  }
+
+  const assists = active === 'introduction'
+    ? [
+        { label: '전공·직무 연결', text: coverDraft.majorSkill || `${draft.role || '지원 직무'}에 필요한 전공 실습과 작업 기준을 익혀 왔습니다.` },
+        { label: '대표 행동 근거', text: [coverDraft.action, coverDraft.result].filter(Boolean).join(' ') || '제가 직접 확인하고 개선한 대표 경험을 한 문장으로 정리합니다.' },
+        { label: '입사 후 기여', text: coverDraft.contribution || `${draft.role || '지원 직무'}에서 정확한 확인과 기록으로 기여하겠습니다.` },
+      ]
+    : [
+        { label: '개인 계기', text: coverDraft.motivation || '이 직무에 관심을 갖게 된 구체적인 경험을 적습니다.' },
+        { label: '지원처 공식 근거', text: coverDraft.targetEvidence || `${draft.targetName || '지원처'}의 공식 사업·고객·제품 중 확인한 사실을 적습니다.` },
+        { label: '직무 기여', text: coverDraft.contribution || `${draft.role || '지원 직무'}에서 처음 실천할 행동을 적습니다.` },
+      ]
+
+  const model = active === 'introduction'
+    ? `안녕하십니까. ${draft.role || '지원 직무'}에서 정확한 확인과 꾸준한 개선을 실천할 지원자입니다. 전공 실습에서 ${coverDraft.action || '작업 기준에 따라 문제 원인을 나누어 확인했고'}, ${coverDraft.result || '결과를 기록해 다음 작업의 오류를 줄였습니다'}. 이 경험으로 작은 이상도 근거를 찾아 끝까지 확인하는 태도를 갖췄습니다. ${draft.targetName || '지원처'}에서도 업무 기준을 빠르게 익히고 안전·품질·고객 신뢰에 기여하겠습니다.`
+    : `${coverDraft.motivation || `${draft.role || '지원 직무'}에 필요한 정확성과 책임을 전공 실습에서 배웠습니다.`} ${coverDraft.targetEvidence || `${draft.targetName || '지원처'}의 공식 자료에서 핵심 역할과 고객을 확인했습니다.`} 제 경험을 ${draft.role || '지원 직무'}의 실제 업무에 연결해, 입사 초기에는 기준과 절차를 정확히 익히고 확인 가능한 결과로 기여하겠습니다.`
+
+  async function submit() {
+    if (!ready || submitting) {
+      setNotice({ ok: false, text: sourceChanged ? '자기소개서 최신 내용을 먼저 다시 연결해 주세요.' : foreignOrganization ? `${foreignOrganization.name} 표기를 현재 지원처에 맞게 고쳐 주세요.` : '두 답변을 권장 분량까지 완성해 주세요.' })
+      return
+    }
+    setSubmitting(true)
+    const coverItems = Object.entries(INTERVIEW_SCRIPT_LIMITS).map(([id, item]) => ({ id, label: item.label, minLength: item.minLength, limit: item.limit, answer: draft[id] }))
+    const submissionDraft = {
+      ...draft,
+      documentType: 'interview-script',
+      sourceCover: {
+        targetName: coverDraft.targetName,
+        role: coverDraft.role,
+        organizationId: coverDraft.organizationId,
+        targetEvidence: coverDraft.targetEvidence,
+        majorSkill: coverDraft.majorSkill,
+        action: coverDraft.action,
+        result: coverDraft.result,
+        motivation: coverDraft.motivation,
+        contribution: coverDraft.contribution,
+        evidenceTitles: Array.isArray(coverDraft.evidenceBank) ? coverDraft.evidenceBank.map(item => item.title).filter(Boolean) : [],
+        coverItems: linkedCoverItems.map(item => ({ id: item.id, label: item.label, answer: item.answer })),
+      },
+      coverItems,
+    }
+    const generatedText = coverItems.map((item, index) => `${index + 1}. ${item.label}\n${item.answer}`).join('\n\n')
+    const { data, error } = await supabase.rpc('rpc_submit_cover_letter', {
+      p_sector: draft.sector,
+      p_organization_id: draft.organizationId || null,
+      p_target_name: draft.targetName,
+      p_role: draft.role,
+      p_draft: submissionDraft,
+      p_generated_text: generatedText,
+    })
+    setSubmitting(false)
+    if (error || data?.error) {
+      setNotice({ ok: false, text: data?.error === 'no_class' ? '소속 학급을 확인한 뒤 다시 요청해 주세요.' : '첨삭 요청을 보내지 못했어요.' })
+      return
+    }
+    setNotice({ ok: true, text: '자기소개서와 연결된 면접 답변을 선생님께 보냈어요.' })
+    const { data: rows } = await supabase.rpc('rpc_my_cover_letters')
+    setHistory(Array.isArray(rows) ? rows : [])
+  }
+
+  return <div className="interview-script-builder">
+    <section className="script-link-card">
+      <header><FileText weight="duotone" /><div><span>자기소개서 연결</span><h2>{draft.targetName || '지원처를 먼저 연결하세요'}</h2><p>{draft.role || '나를쓰다에서 지원 직무를 선택함'}</p></div></header>
+      <div className="script-link-flow"><span>자기소개서</span><CaretRight /><b>같은 근거</b><CaretRight /><span>면접 답변</span></div>
+      {sourceChanged && <p className="script-link-warning"><WarningCircle weight="fill" />자기소개서 내용이 바뀜 · 면접 답변과 다시 맞춰야 함</p>}
+      {foreignOrganization && <p className="script-link-warning"><WarningCircle weight="fill" />다른 지원처명 발견: {foreignOrganization.name} · 제출 전 수정 필요</p>}
+      <button onClick={syncCover}><CheckCircle weight="fill" />{sourceChanged ? '최신 내용 다시 연결' : '자기소개서 내용 확인·연결'}</button>
+      {linkedCoverItems.length > 0 && <details className="script-linked-source"><summary><Eye />연결된 자기소개서 원문 {linkedCoverItems.length}개 확인<CaretRight /></summary><div>{linkedCoverItems.map(item => <article key={item.id}><b>{item.label}</b><p>{item.answer}</p></article>)}</div></details>}
+    </section>
+
+    <nav className="script-type-tabs"><button className={active === 'introduction' ? 'is-on' : ''} onClick={() => setActive('introduction')}>1분 자기소개</button><button className={active === 'motivation' ? 'is-on' : ''} onClick={() => setActive('motivation')}>지원동기</button></nav>
+
+    <section className="script-writing-card">
+      <header><div><span>{active === 'introduction' ? '전공·강점 → 대표 근거 → 기여' : '개인 계기 → 지원처 근거 → 직무 기여'}</span><h3>{config.label} 완성</h3></div><b className={value.length < config.minLength ? 'is-short' : 'is-ready'}>{value.length}/{config.limit}자<small>약 {speakingSeconds(value)}초</small></b></header>
+      <div className="script-assist-list">{assists.map(item => <button key={item.label} onClick={() => append(item.text)}><Plus /><span><b>{item.label}</b><small>{item.text}</small></span></button>)}</div>
+      <label><span>내 답변 <small>권장 {config.minLength}~{config.limit}자</small></span><textarea value={value} maxLength={config.limit} rows={8} onChange={event => persist({ ...draft, [active]: event.target.value })} placeholder={active === 'introduction' ? '전공과 직무를 연결한 한 문장부터 시작함' : '지원처를 선택한 나의 계기부터 시작함'} /></label>
+      <details className="script-model"><summary><Eye />지원처·내 근거를 반영한 구조 예시<CaretRight /></summary><p>{model}</p><small>문장 복사보다 구조 확인 · 사실과 표현은 내 것으로 바꿈</small></details>
+    </section>
+
+    <section className="script-consistency-check"><h3>연결 점검</h3><div><span className={draft.targetName ? 'is-ok' : ''}><CheckCircle />지원처 일치</span><span className={draft.role ? 'is-ok' : ''}><CheckCircle />직무 일치</span><span className={introductionReady ? 'is-ok' : ''}><CheckCircle />자기소개 분량</span><span className={motivationReady ? 'is-ok' : ''}><CheckCircle />지원동기 분량</span></div></section>
+    {notice && <p className={`cover-notice ${notice.ok ? 'is-ok' : 'is-error'}`}>{notice.ok ? <CheckCircle weight="fill" /> : <WarningCircle weight="fill" />}{notice.text}</p>}
+    <button className="script-submit" onClick={submit} disabled={submitting}><PaperPlaneTilt weight="fill" />{submitting ? '보내는 중' : '두 답변 교사 첨삭 요청'}</button>
+    <CoverHistory history={history} />
+  </div>
+}
+
+function CoverLetterBuilder({ initialWorkspace = 'learn' }) {
   const { profile } = useAuth() ?? {}
   const seed = useMemo(() => {
     try { return JSON.parse(localStorage.getItem('iv_cover_seed') || '{}') }
@@ -265,13 +473,13 @@ function CoverLetterBuilder() {
       const restored = { sector: 'finance', ...JSON.parse(localStorage.getItem('iv_cover_draft') || '{}'), ...seed }
       const organization = INTERVIEW_ORGANIZATIONS.find(item => item.id === restored.organizationId)
       const coverItems = Array.isArray(restored.coverItems) && restored.coverItems.length
-        ? restored.coverItems
+        ? restored.coverItems.map(normalizeCoverItem)
         : defaultCoverItems(restored.sector, organization, restored)
       return { ...restored, coverItems }
     } catch { return { sector: 'finance', coverItems: [], ...seed } }
   })
   const [stepIndex, setStepIndex] = useState(0)
-  const [workspace, setWorkspace] = useState('learn')
+  const [workspace, setWorkspace] = useState(initialWorkspace)
   const [view, setView] = useState('write')
   const [notice, setNotice] = useState(null)
   const [history, setHistory] = useState([])
@@ -290,12 +498,19 @@ function CoverLetterBuilder() {
   const questionItems = Array.isArray(draft.coverItems) ? draft.coverItems : []
   const questionProblems = questionItems.length < 2
     ? ['자기소개서 문항을 2개 이상 구성해 주세요.']
-    : questionItems.filter(item => String(item.answer || '').trim().length < 80).map(item => `${item.label} 답변을 80자 이상 작성해 주세요.`)
+    : questionItems.filter(item => {
+      const count = String(item.answer || '').trim().length
+      const { minLength, limit } = coverQuestionLimits(item)
+      return count < minLength || count > limit
+    }).map(item => {
+      const count = String(item.answer || '').trim().length
+      const { minLength, limit } = coverQuestionLimits(item)
+      return count > limit ? `${item.label} 답변을 최대 ${limit}자 안으로 줄여 주세요.` : `${item.label} 답변을 권장 최소 ${minLength}자까지 작성해 주세요.`
+    })
   const ready = missing.length === 0 && questionProblems.length === 0
   const generated = useMemo(() => buildCoverLetter(draft, organization), [draft, organization])
 
   useEffect(() => {
-    if (!profile?.id) return
     loadHistory()
     loadEvidenceBank()
   }, [profile?.id])
@@ -306,10 +521,12 @@ function CoverLetterBuilder() {
   }
 
   async function loadEvidenceBank() {
+    const studentId = profile?.id || (await supabase.auth.getUser()).data.user?.id
+    if (!studentId) return
     const { data, error } = await supabase
       .from('cover_letter_evidence')
       .select('id, major_group, source_type, title, situation, task, action, result, proof, skills, created_at')
-      .eq('student_id', profile.id)
+      .eq('student_id', studentId)
       .order('created_at', { ascending: false })
     if (error || !Array.isArray(data)) return
     const items = data.map(normalizeEvidence)
@@ -327,9 +544,10 @@ function CoverLetterBuilder() {
 
   async function saveEvidence(item) {
     const localItem = { ...item, id: item.id || `local-${Date.now()}`, createdAt: new Date().toISOString() }
-    if (profile?.id) {
+    const studentId = profile?.id || (await supabase.auth.getUser()).data.user?.id
+    if (studentId) {
       const { data, error } = await supabase.from('cover_letter_evidence').insert({
-        student_id: profile.id,
+        student_id: studentId,
         major_group: item.majorGroup,
         source_type: item.sourceType,
         title: item.title,
@@ -349,8 +567,9 @@ function CoverLetterBuilder() {
   }
 
   async function deleteEvidence(item) {
-    if (profile?.id && item.id && !String(item.id).startsWith('local-')) {
-      await supabase.from('cover_letter_evidence').delete().eq('id', item.id).eq('student_id', profile.id)
+    const studentId = profile?.id || (await supabase.auth.getUser()).data.user?.id
+    if (studentId && item.id && !String(item.id).startsWith('local-')) {
+      await supabase.from('cover_letter_evidence').delete().eq('id', item.id).eq('student_id', studentId)
     }
     const next = evidenceBank.filter(value => value.id !== item.id)
     setEvidenceBank(next)
@@ -389,7 +608,7 @@ function CoverLetterBuilder() {
   function startQuestion(item) {
     const exists = questionItems.some(selected => selected.id === item.id && !selected.custom)
     if (!exists) {
-      update('coverItems', [...questionItems, { ...item, instanceId: `${item.id}-${Date.now()}`, answer: seedQuestionAnswer(item.id, draft) }])
+      update('coverItems', [...questionItems, normalizeCoverItem({ ...item, instanceId: `${item.id}-${Date.now()}`, answer: seedQuestionAnswer(item.id, draft) })])
     }
     setWorkspace('write')
     setStepIndex(COVER_LETTER_STEPS.findIndex(value => value.id === 'questions'))
@@ -491,11 +710,15 @@ function CoverLetterBuilder() {
         <b>{evidenceBank.length}<small>근거 카드</small></b>
       </section>
       <nav className="cover-workspace-tabs" aria-label="나를쓰다 메뉴">
-        <button className={workspace === 'learn' ? 'is-on' : ''} onClick={() => setWorkspace('learn')}><BookOpen />배우기</button>
+        <button className={workspace === 'learn' ? 'is-on' : ''} onClick={() => setWorkspace('learn')}><BookOpen />학습</button>
+        <button className={workspace === 'diagnostic' ? 'is-on' : ''} onClick={() => setWorkspace('diagnostic')}><Target />자가진단</button>
+        <button className={workspace === 'mock' ? 'is-on' : ''} onClick={() => setWorkspace('mock')}><ClipboardText />모의고사</button>
         <button className={workspace === 'evidence' ? 'is-on' : ''} onClick={() => setWorkspace('evidence')}><ClipboardText />근거 찾기</button>
         <button className={workspace === 'write' ? 'is-on' : ''} onClick={() => setWorkspace('write')}><PencilSimple />작성하기</button>
       </nav>
       {workspace === 'learn' && <CoverLearningLibrary onStart={startQuestion} />}
+      {workspace === 'diagnostic' && <CoverLetterAssessment mode="diagnostic" onGoLearn={() => setWorkspace('learn')} />}
+      {workspace === 'mock' && <CoverLetterAssessment mode="mock" onGoLearn={() => setWorkspace('learn')} />}
       {workspace === 'evidence' && <EvidenceWorkbench items={evidenceBank} onSave={saveEvidence} onDelete={deleteEvidence} onUse={useEvidence} />}
       {workspace === 'write' && <>
       <div className="cover-progress"><div><strong>{sector.headline}</strong><span>{completed}/{COVER_LETTER_FIELDS.length}</span></div><div><i style={{ width: `${pct}%` }} /></div><p>자동 저장됨 · 한 단계씩 점검한 뒤 완성본으로 연결함</p></div>
@@ -600,7 +823,7 @@ function defaultCoverItems(sector, organization, draft) {
       : ['motivation', 'job-competency', 'problem-solving', 'quality', 'collaboration'])
   return ids.map(id => {
     const template = COVER_LETTER_QUESTION_LIBRARY.find(item => item.id === id)
-    return { ...template, instanceId: `${id}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`, answer: seedQuestionAnswer(id, draft) }
+    return normalizeCoverItem({ ...template, instanceId: `${id}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`, answer: seedQuestionAnswer(id, draft) })
   }).filter(item => item.id)
 }
 
@@ -615,32 +838,41 @@ function seedQuestionAnswer(id, draft) {
 function QuestionComposer({ sector, organization, items, draft, evidenceBank, onChange }) {
   const [showLibrary, setShowLibrary] = useState(items.length === 0)
   const [showCustom, setShowCustom] = useState(false)
-  const [custom, setCustom] = useState({ label: '', question: '', limit: 700 })
+  const [custom, setCustom] = useState({ label: '', question: '', minLength: 500, limit: 700 })
   const available = COVER_LETTER_QUESTION_LIBRARY.filter(item => item.sectors.includes(sector) && !items.some(selected => selected.id === item.id && !selected.custom))
 
   function addTemplate(template) {
-    onChange([...items, { ...template, instanceId: `${template.id}-${Date.now()}`, answer: seedQuestionAnswer(template.id, draft) }])
+    onChange([...items, normalizeCoverItem({ ...template, instanceId: `${template.id}-${Date.now()}`, answer: seedQuestionAnswer(template.id, draft) })])
   }
 
   function addCustom() {
     if (custom.label.trim().length < 2 || custom.question.trim().length < 8) return
-    onChange([...items, { id: `custom-${Date.now()}`, instanceId: `custom-${Date.now()}`, custom: true, label: custom.label.trim(), question: custom.question.trim(), purpose: '지원처가 요구한 내용을 빠짐없이 자신의 근거로 작성함.', required: ['질문의 핵심 요구', '내 행동 근거', '지원 직무 연결'], limit: Math.max(200, Math.min(2000, Number(custom.limit) || 700)), answer: '' }])
-    setCustom({ label: '', question: '', limit: 700 })
+    const limits = coverQuestionLimits(custom)
+    onChange([...items, { id: `custom-${Date.now()}`, instanceId: `custom-${Date.now()}`, custom: true, label: custom.label.trim(), question: custom.question.trim(), purpose: '지원처가 요구한 내용을 빠짐없이 자신의 근거로 작성함.', required: ['질문의 핵심 요구', '내 행동 근거', '지원 직무 연결'], ...limits, answer: '' }])
+    setCustom({ label: '', question: '', minLength: 500, limit: 700 })
     setShowCustom(false)
   }
 
   function updateItem(index, changes) {
-    onChange(items.map((item, itemIndex) => itemIndex === index ? { ...item, ...changes } : item))
+    onChange(items.map((item, itemIndex) => itemIndex === index ? normalizeCoverItem({ ...item, ...changes }) : item))
+  }
+
+  function updateLimits(index, changes) {
+    const current = items[index]
+    const currentLimits = coverQuestionLimits(current)
+    const limit = changes.limit == null ? currentLimits.limit : Math.max(100, Math.min(2000, Number(changes.limit) || 100))
+    const minLength = changes.minLength == null ? Math.min(currentLimits.minLength, limit) : Math.max(50, Math.min(limit, Number(changes.minLength) || 50))
+    onChange(items.map((item, itemIndex) => itemIndex === index ? { ...item, minLength, limit } : item))
   }
 
   function addStarter(index, starter) {
     const current = String(items[index].answer || '').trim()
-    updateItem(index, { answer: `${current}${current ? '\n' : ''}${starter}`.slice(0, items[index].limit) })
+    updateItem(index, { answer: `${current}${current ? '\n' : ''}${starter}`.slice(0, coverQuestionLimits(items[index]).limit) })
   }
 
   function useBankEvidence(index, evidence) {
     const answer = [evidence.situation, evidence.task, evidence.action, evidence.result].filter(Boolean).join(' ')
-    updateItem(index, { answer: answer.slice(0, items[index].limit), evidenceId: evidence.id })
+    updateItem(index, { answer: answer.slice(0, coverQuestionLimits(items[index]).limit), evidenceId: evidence.id })
   }
 
   function move(index, direction) {
@@ -655,16 +887,19 @@ function QuestionComposer({ sector, organization, items, draft, evidenceBank, on
     <section className="cover-question-composer">
       <div className="cover-question-toolbar"><div><b>{organization ? `${organization.name} 추천 문항` : '지원처 문항 구성'}</b><p>공고의 실제 문항과 글자 수가 다르면 직접 수정함.</p></div><button onClick={() => setShowLibrary(value => !value)}><Plus />문항 선택</button><button onClick={() => setShowCustom(value => !value)}><NotePencil />직접 추가</button></div>
       {showLibrary && <div className="cover-question-library">{available.length ? available.map(item => <button key={item.id} onClick={() => addTemplate(item)}><span><b>{item.label}</b><small>{item.question}</small></span><Plus /></button>) : <p>이 분야에서 추가할 수 있는 기본 문항을 모두 선택했어요.</p>}</div>}
-      {showCustom && <div className="cover-custom-question"><label><span>항목 이름</span><input value={custom.label} onChange={event => setCustom(value => ({ ...value, label: event.target.value }))} placeholder="예: 당행 인재상" /></label><label><span>실제 질문</span><textarea value={custom.question} onChange={event => setCustom(value => ({ ...value, question: event.target.value }))} placeholder="채용공고의 자기소개서 문항을 입력" rows={3} /></label><label><span>글자 수</span><input type="number" min="200" max="2000" step="50" value={custom.limit} onChange={event => setCustom(value => ({ ...value, limit: event.target.value }))} /></label><button onClick={addCustom}><Plus />이 문항 추가</button></div>}
+      {showCustom && <div className="cover-custom-question"><label><span>항목 이름</span><input value={custom.label} onChange={event => setCustom(value => ({ ...value, label: event.target.value }))} placeholder="예: 당행 인재상" /></label><label><span>실제 질문</span><textarea value={custom.question} onChange={event => setCustom(value => ({ ...value, question: event.target.value }))} placeholder="채용공고의 자기소개서 문항을 입력" rows={3} /></label><div className="cover-custom-limits"><label><span>권장 최소</span><input type="number" min="50" max={custom.limit} step="50" value={custom.minLength} onChange={event => setCustom(value => ({ ...value, minLength: Math.min(Number(value.limit) || 700, Number(event.target.value) || 50) }))} /></label><label><span>최대 글자 수</span><input type="number" min="100" max="2000" step="50" value={custom.limit} onChange={event => setCustom(value => ({ ...value, limit: Number(event.target.value) || 100, minLength: Math.min(Number(value.minLength) || 50, Number(event.target.value) || 100) }))} /></label></div><button onClick={addCustom}><Plus />이 문항 추가</button></div>}
       <div className="cover-selected-questions">{items.map((item, index) => {
         const count = String(item.answer || '').length
+        const { minLength, limit } = coverQuestionLimits(item)
         const guide = questionGuide(item.id, item)
-        const warnings = coverAnswerWarnings(item.answer, draft)
+        const warnings = coverAnswerWarnings(item.answer, draft, minLength, limit)
+        const lengthStatus = count > limit ? `${count - limit}자 초과` : count < minLength ? `${minLength - count}자 더 필요` : '권장 분량 충족'
         return <article key={item.instanceId || `${item.id}-${index}`}><header><span>{index + 1}</span><div><b>{item.label}</b><p>{item.question}</p></div><div className="cover-question-order"><button onClick={() => move(index, -1)} disabled={index === 0} aria-label="위로 이동"><ArrowUp /></button><button onClick={() => move(index, 1)} disabled={index === items.length - 1} aria-label="아래로 이동"><ArrowDown /></button><button onClick={() => onChange(items.filter((_, itemIndex) => itemIndex !== index))} aria-label="문항 삭제"><Trash /></button></div></header><div className="cover-question-purpose"><b>평가 의도</b><p>{item.purpose}</p><span>{item.required.map(value => <em key={value}>{value}</em>)}</span></div>
+          <div className="cover-length-panel"><header><div><b>공고 글자 수</b><span>실제 채용공고 기준이 최우선</span></div><strong className={count < minLength || count > limit ? 'is-short' : 'is-ready'}>{lengthStatus}</strong></header><div className="cover-length-inputs"><label><span>권장 최소</span><input type="number" min="50" max={limit} step="50" value={minLength} onChange={event => updateLimits(index, { minLength: event.target.value })} /></label><label><span>최대 글자 수</span><input type="number" min="100" max="2000" step="50" value={limit} onChange={event => updateLimits(index, { limit: event.target.value })} /></label></div><div className="cover-length-presets" aria-label="자주 쓰는 글자 수 범위">{COVER_LENGTH_PRESETS.map(preset => <button key={preset.limit} className={limit === preset.limit ? 'is-on' : ''} onClick={() => updateLimits(index, preset)}>{preset.label}</button>)}</div></div>
           <details className="cover-answer-coach" open={!item.answer}><summary><PencilSimple />막막하면 답변 순서부터 고르기<CaretRight /></summary><div><section><b>답변 순서</b><ol>{guide.structure.map(value => <li key={value}>{value}</li>)}</ol></section><section><b>첫 문장 고르기</b><div>{guide.starters.map(value => <button key={value} onClick={() => addStarter(index, value)}>{value}</button>)}</div></section><section className="cover-answer-examples"><p><b>좋은 방향</b>{guide.good}</p><p><b>피할 표현</b>{guide.trap}</p></section><section><b>근거은행에서 가져오기</b>{evidenceBank.length ? <div>{evidenceBank.map(value => <button key={value.id} onClick={() => useBankEvidence(index, value)}>{value.title}</button>)}</div> : <p>근거 찾기에서 경험을 먼저 저장하면 여기서 선택할 수 있음.</p>}</section></div></details>
-          <textarea value={item.answer || ''} onChange={event => updateItem(index, { answer: event.target.value.slice(0, item.limit) })} placeholder="답변 순서를 고르고 근거은행의 실제 경험으로 한 칸씩 채움" rows={7} />
+          <textarea value={item.answer || ''} maxLength={limit} onChange={event => updateItem(index, { answer: event.target.value })} placeholder="답변 순서를 고르고 근거은행의 실제 경험으로 한 칸씩 채움" rows={coverTextareaRows(limit)} />
           {warnings.length > 0 && <div className="cover-answer-warnings">{warnings.map(value => <span key={value}><WarningCircle weight="fill" />{value}</span>)}</div>}
-          <footer><button onClick={() => updateItem(index, { answer: seedQuestionAnswer(item.id, draft) })}>기본 작성 근거 불러오기</button><span className={count >= 80 ? 'is-ready' : ''}>{count}/{item.limit}자</span></footer></article>
+          <footer><button onClick={() => updateItem(index, { answer: seedQuestionAnswer(item.id, draft) })}>기본 작성 근거 불러오기</button><span className={count >= minLength && count <= limit ? 'is-ready' : 'is-short'}>{count}자 · 권장 {minLength}~{limit}자</span></footer></article>
       })}</div>
       {!items.length && <div className="cover-question-empty"><ClipboardText /><b>제출할 문항을 먼저 구성해요</b><p>추천 문항을 고르거나 지원처 공고의 문항을 직접 추가함.</p></div>}
     </section>
@@ -690,11 +925,12 @@ function CoverField({ field, value, sector, onChange }) {
   )
 }
 
-function coverAnswerWarnings(answer, draft) {
+function coverAnswerWarnings(answer, draft, minLength = 100, limit = 2000) {
   const text = String(answer || '').trim()
   if (!text) return ['답변 순서 또는 근거 카드를 선택해 시작함.']
   const warnings = []
-  if (text.length < 80) warnings.push('행동과 결과를 더 구체적으로 적음.')
+  if (text.length > limit) warnings.push(`최대 ${limit}자보다 ${text.length - limit}자 많음. 핵심 근거를 남기고 줄임.`)
+  if (text.length < minLength) warnings.push(`권장 최소 ${minLength}자까지 행동·결과·직무 연결을 보완함.`)
   if (/(열심히|최선을 다|성실하|노력하)(였|했|겠습니다|다고)/.test(text) && !/(확인|기록|비교|설명|조정|측정|검산)/.test(text)) warnings.push('추상 표현을 실제 행동 동사로 바꿈.')
   if ((text.match(/저는/g) || []).length >= 4) warnings.push('“저는” 반복을 줄이고 행동부터 씀.')
   if (/(부모|아버지|어머니|출신 학교|고등학교명|출생지|남자로서|여자로서)/.test(text)) warnings.push('블라인드 채용에서 제외할 개인정보를 확인함.')
@@ -708,7 +944,7 @@ const CoverPreview = forwardRef(function CoverPreview({ draft, organization, gen
     <article ref={ref} className="cover-document">
       <header><div><span>자기소개서 완성본</span><h1>{draft.targetName}</h1><p>{draft.role} 지원</p></div><div><b>{COVER_LETTER_SECTOR_CONTENT[draft.sector]?.label}</b><small>{new Date().toLocaleDateString('ko-KR')}</small></div></header>
       {organization && <section className="cover-document-source"><ShieldCheck weight="fill" /><p><b>지원처 연구 연결</b>{organization.identity}</p></section>}
-      {generated.map(item => <section key={item.title}><h2>{item.title}</h2>{item.question && <small>{item.question}</small>}<p>{item.body}</p></section>)}
+      {generated.map(item => <section key={item.title} className={item.limit ? 'cover-document-question' : ''}><h2>{item.title}</h2>{item.question && <small>{item.question}</small>}{item.limit && <div className="cover-document-limit"><span>공고 기준 {item.minLength}~{item.limit}자</span><b className={item.body.length < item.minLength ? 'is-short' : ''}>{item.body.length}/{item.limit}자</b></div>}<div className={item.limit ? 'cover-document-answer-box' : ''} style={item.limit ? { minHeight: `${coverAnswerBoxHeight(item.limit)}px` } : undefined}><p>{item.body}</p></div></section>)}
       <footer><p>제출 전 확인: 학교명·가족관계 등 블라인드 정보, 다른 회사명, 사실과 다른 수치가 없는지 확인함.</p><span>설탕과소금 스킬캠퍼스 · 학생 작성본</span></footer>
     </article>
   )
@@ -717,7 +953,10 @@ const CoverPreview = forwardRef(function CoverPreview({ draft, organization, gen
 function buildCoverLetter(draft, organization) {
   const orgName = draft.targetName || organization?.name || '지원처'
   if (Array.isArray(draft.coverItems) && draft.coverItems.length) {
-    return draft.coverItems.map((item, index) => ({ title: `${index + 1}. ${item.label}`, question: item.question, body: String(item.answer || '').trim() }))
+    return draft.coverItems.map((item, index) => {
+      const limits = coverQuestionLimits(item)
+      return { title: `${index + 1}. ${item.label}`, question: item.question, body: String(item.answer || '').trim(), ...limits }
+    })
   }
   return [
     { title: '1. 지원동기', body: `${draft.motivation || ''} ${draft.targetEvidence || ''} 이러한 이유로 ${orgName}의 ${draft.role || '지원 직무'}에 지원했습니다.`.trim() },
@@ -729,5 +968,5 @@ function buildCoverLetter(draft, organization) {
 
 function CoverHistory({ history }) {
   if (!history.length) return null
-  return <section className="cover-history"><h3><ChatCircleText weight="duotone" />첨삭 이력</h3>{history.slice(0, 5).map(item => { const highlights = Array.isArray(item.section_feedback?.highlights) ? item.section_feedback.highlights : []; return <article key={item.id}><header><b>{item.target_name}</b><span className={`is-${item.status}`}>{STATUS_LABELS[item.status] || item.status}</span></header><small>{new Date(item.created_at).toLocaleString('ko-KR')}</small>{item.feedback_summary && <p><strong>선생님 전체 조언</strong>{item.feedback_summary}</p>}{highlights.length > 0 && <div className="cover-history-highlights"><b>문장별 메모 {highlights.length}개</b>{highlights.map(mark => <blockquote key={mark.id} style={{ '--mark-color': mark.color }}><span>“{mark.quote}”</span><p>{mark.note}</p></blockquote>)}</div>}</article> })}</section>
+  return <section className="cover-history"><h3><ChatCircleText weight="duotone" />첨삭 이력</h3>{history.slice(0, 5).map(item => { const highlights = Array.isArray(item.section_feedback?.highlights) ? item.section_feedback.highlights : []; const type = item.draft?.documentType === 'interview-script' ? '면접 답변' : '작성·답변'; return <article key={item.id}><header><div><small>{type}</small><b>{item.target_name}</b></div><span className={`is-${item.status}`}>{STATUS_LABELS[item.status] || item.status}</span></header><small>{new Date(item.created_at).toLocaleString('ko-KR')}</small>{item.feedback_summary && <p><strong>선생님 전체 조언</strong>{item.feedback_summary}</p>}{highlights.length > 0 && <div className="cover-history-highlights"><b>문장별 메모 {highlights.length}개</b>{highlights.map(mark => <blockquote key={mark.id} style={{ '--mark-color': mark.color }}><span>“{mark.quote}”</span><p>{mark.note}</p></blockquote>)}</div>}</article> })}</section>
 }

@@ -4,6 +4,7 @@ export const STUDENT_CAMPUS_HALLS = [
   { id: 'recruit-written', label: '채용필기 심화관', badge: 'STEP 2 · 지원처 심화', authority: '공공기관·금융권·대기업 추가 출제영역' },
   { id: 'personality', label: '인성검사관', badge: '인적성 필수', authority: '정답 없는 응답 경향 검사' },
   { id: 'interview', label: '고졸면접관', badge: '면접 필수', authority: '특성화고 공정채용 면접' },
+  { id: 'cover-letter', label: '나를쓰다', badge: '취업 서류', authority: '자기소개서 학습·진단·작성·첨삭' },
 ]
 
 export const STUDENT_SUBJECT_IDS = new Set(STUDENT_CAMPUS_HALLS.map(hall => hall.id))

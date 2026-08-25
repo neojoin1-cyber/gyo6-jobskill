@@ -8,6 +8,7 @@ import {
   ChartLineUp,
   ChatCircleDots,
   CheckCircle,
+  FileText,
   GraduationCap,
   LockSimple,
   MapPin,
@@ -25,6 +26,7 @@ const HALL_PRESENTATION = {
   'ncs-basic': { icon: CheckCircle, className: 'spot-team' },
   'recruit-written': { icon: Briefcase, className: 'spot-career' },
   personality: { icon: ChartLineUp, className: 'spot-data' },
+  'cover-letter': { icon: FileText, className: 'spot-cover' },
 }
 
 const CAMPUS_SPOTS = STUDENT_CAMPUS_HALLS
@@ -36,6 +38,7 @@ const CONTINUE_COURSES = [
   { id: 'ncs-basic', label: 'NCS 직업기초능력' },
   { id: 'recruit-written', label: '채용 필기' },
   { id: 'interview', label: '고졸 면접' },
+  { id: 'cover-letter', label: '나를쓰다' },
 ]
 
 function findContinueCourse() {
@@ -155,7 +158,7 @@ export default function StudentCampusHome({
         <button className="route-status" onClick={() => onGoStudy?.(null)}>
           <MapPin weight="fill" />
           <span>오늘의 루트</span>
-          <b>2 / 5</b>
+          <b>2 / 6</b>
           <ArrowRight />
         </button>
       </section>
@@ -179,7 +182,7 @@ export default function StudentCampusHome({
         <div className="mission-copy">
           <span className="mission-eyebrow">오늘의 캠퍼스 미션</span>
           <h2 id="today-mission-title">{missionTitle}</h2>
-          <p>{mission ? `${mission.question_count ?? 5}개 활동 · ${missionMinutes}분` : '5개 학습관에서 오늘의 목표를 선택하세요'}</p>
+          <p>{mission ? `${mission.question_count ?? 5}개 활동 · ${missionMinutes}분` : '6개 학습관에서 오늘의 목표를 선택하세요'}</p>
         </div>
         <button className="mission-launch" onClick={launchMission}>
           <Play weight="fill" />

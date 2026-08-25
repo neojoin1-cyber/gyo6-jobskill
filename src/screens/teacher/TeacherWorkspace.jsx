@@ -46,6 +46,7 @@ const HALL_PRESENTATION = {
   'ncs-basic': { icon: CheckCircle, className: 'spot-team' },
   'recruit-written': { icon: Briefcase, className: 'spot-career' },
   personality: { icon: ChartBar, className: 'spot-data' },
+  'cover-letter': { icon: FileText, className: 'spot-cover' },
 }
 
 const CAMPUS_SPOTS = STUDENT_CAMPUS_HALLS
@@ -240,6 +241,13 @@ export default function TeacherWorkspace({
               <div className="teacher-campus-code">학급 코드 <b>{cls.class_code}</b></div>
               <button className="teacher-refresh" onClick={loadLive} disabled={demo}><ArrowClockwise /> 새로고침</button>
             </header>
+
+            <nav className="teacher-mobile-actions" aria-label="교사 빠른 도구">
+              <button onClick={onOpenClassroom}><Broadcast weight="fill" /><span>수업 시작</span></button>
+              <button onClick={() => onOpenMessages?.({ scope: 'class', target: classId })}><ChatCircleDots weight="fill" /><span>메시지</span></button>
+              <button onClick={() => onOpenCoverReviews?.(classId)}><FileText weight="fill" /><span>글 첨삭</span></button>
+              <button onClick={() => onNavigate?.('create-mission', { classId: cls.id, className: cls.name })}><Sparkle weight="fill" /><span>미션 만들기</span></button>
+            </nav>
 
             <section className="teacher-campus-summary">
               <div className="summary-image"><img src={`${import.meta.env.BASE_URL}images/campus/skill-campus-map.webp`} alt="스킬캠퍼스 전경" /></div>

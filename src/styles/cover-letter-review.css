@@ -46,10 +46,13 @@
 .cover-review-document > article h3 { margin: 0 0 7px; color: #0f766e; font-size: 12px; }
 .cover-review-section-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 7px; }
 .cover-review-section-head h3 { margin: 0 !important; }
+.cover-review-section-head small { display: block; margin-top: 3px; color: #047857; font-size: 8px; font-weight: 900; }
+.cover-review-section-head small.is-short { color: #c2410c; }
 .cover-review-section-head button { min-height: 28px; display: flex; align-items: center; gap: 4px; padding: 0 7px; border: 1px solid #d8dee7; border-radius: 6px; background: #fff; color: #64748b; font-size: 8px; font-weight: 900; }
 .cover-review-section-head button svg { color: #ca8a04; }
 .cover-review-document > article p { margin: 0; font-size: 11.5px; line-height: 1.8; white-space: pre-wrap; }
 .cover-review-document > article p::selection { background: #fef08a; color: #172033; }
+.cover-review-document > article.has-length-guide { padding: 16px 12px; border: 1px solid #d8dee7; border-top: 3px solid #0f766e; background: #fff; }
 .cover-review-document mark { padding: 1px 0; color: inherit; cursor: help; }
 .cover-review-select-help { display: flex; align-items: center; gap: 5px; margin: 12px 0 0; padding: 7px 9px; border-left: 3px solid #eab308; background: #fefce8; color: #713f12; font-size: 8.5px; }
 .cover-review-select-help svg { flex: 0 0 auto; }

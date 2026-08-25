@@ -11,6 +11,7 @@ import CompactText from '../../components/CompactText.jsx'
 // 과목별 청크 분리 — 해당 과목 선택 시에만 로드됨
 const StudyScreen             = lazyChunk(() => import('./StudyScreen.jsx'), 'StudyScreen')
 const InterviewStudyScreen    = lazyChunk(() => import('./InterviewStudyScreen.jsx'), 'InterviewStudyScreen')
+const InterviewCareerLab      = lazyChunk(() => import('./InterviewCareerLab.jsx'), 'InterviewCareerLab')
 const UniversalLearnScreen    = lazyChunk(() => import('./UniversalLearnScreen.jsx'), 'UniversalLearnScreen')
 const MockAssessmentScreen    = lazyChunk(() => import('./MockAssessmentScreen.jsx'), 'MockAssessmentScreen')
 const TextbookReader          = lazyChunk(() => import('./TextbookReader.jsx'), 'TextbookReader')
@@ -19,11 +20,11 @@ const PersonalityTestScreen   = lazyChunk(() => import('./PersonalityTestScreen.
 const JobCommonDiagnosticHub  = lazyChunk(() => import('./JobCommonDiagnosticHub.jsx'), 'JobCommonDiagnosticHub')
 
 // 모의고사 지원 과목 (평탄 문항 풀 + 자동채점 가능) — 전 과목
-const MOCK_SUPPORTED = new Set(['job-common', 'ncs-basic', 'recruit-written', 'interview'])
+const MOCK_SUPPORTED = new Set(['job-common', 'ncs-basic', 'recruit-written', 'interview', 'cover-letter'])
 // 진단은 모의와 별개다. 지금은 두 목록이 같지만 `mockReady` 하나로 두 버튼을
 // 잠그고 있어서, 모의가 없는 과목이 생기면 **진단까지 함께 잠긴다.**
 // 지금 값이 같다고 조건을 공유하면 나중에 조용히 틀린다.
-const DIAG_SUPPORTED = new Set(['job-common', 'ncs-basic', 'recruit-written', 'interview'])
+const DIAG_SUPPORTED = new Set(['job-common', 'ncs-basic', 'recruit-written', 'interview', 'cover-letter'])
 
 // 완전교재(리더) 노출 과목. 두 직업공통능력 교재는 서로 다른 공식 기준을
 // 자율학습 화면에서 제공하므로 구형 통합 완전교재로 폴백하지 않는다.
@@ -104,6 +105,17 @@ const CATALOG = [
     desc: '채용공고·직무기술서 기반 고졸 면접 완전 대비',
     meta: '12주제 자율학습 · 진단평가 · 모의면접',
     type: 'interview',
+  },
+  {
+    id: 'cover-letter',
+    icon: '✍️',
+    name: '나를쓰다',
+    tag: '자기소개서 완성',
+    tagColor: '#0F766E',
+    bg: '#DDF7F0',
+    desc: '질문 이해부터 나의 근거·지원처별 완성본까지',
+    meta: '학습 · 자가진단 · 모의평가 · 근거은행 · 작성 · 교사 첨삭',
+    type: 'cover',
   },
   {
     id: 'personality',
@@ -203,6 +215,9 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
 
   // ── 진단평가 모드 (자가 성취도 진단) ──
   if (selected && mode === 'diagnostic') {
+    if (course === 'cover-letter') {
+      return <Lazy onRetry={backToChooser}><InterviewCareerLab section="cover" initialWorkspace="diagnostic" onBack={backToChooser} /></Lazy>
+    }
     if (course === 'job-common') {
       return (
         <Lazy onRetry={backToChooser}>
@@ -220,6 +235,9 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
 
   // ── 모의고사 모드 ──
   if (selected && mode === 'mock') {
+    if (course === 'cover-letter') {
+      return <Lazy onRetry={backToChooser}><InterviewCareerLab section="cover" initialWorkspace="mock" onBack={backToChooser} /></Lazy>
+    }
     return (
       <Lazy onRetry={backToChooser}>
         <MockAssessmentScreen subjectId={course} subjectName={selected.name} onBack={backToChooser} />
@@ -249,6 +267,9 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
         </Lazy>
       )
     }
+    if (course === 'cover-letter') {
+      return <Lazy onRetry={backToChooser}><InterviewCareerLab section="cover" initialWorkspace="learn" onBack={backToChooser} /></Lazy>
+    }
   }
 
   // ── 모드 선택 화면 (과목 선택 후) ──
@@ -269,7 +290,9 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
           ? '전체·영역·소단원 범위 선택\n5~40문항으로 약점·보완 순서 확인\n공식 합격 판정 아님'
           : course === 'recruit-written'
             ? '채용 트랙·세부 단원 범위 선택\n5~40문항으로 약점·보완 순서 확인\n실제 기관 합격 판정 아님'
-            : '전체·영역·소단원 범위 선택\n이해도 진단 후 보완학습 바로 연결'
+            : course === 'cover-letter'
+              ? '질문 의도·지원처·근거·구조·사실성 진단\n부족한 작성 기준으로 바로 연결'
+              : '전체·영역·소단원 범위 선택\n이해도 진단 후 보완학습 바로 연결'
     const mockCopy = isPersonality
       ? '190문항 · 약 51분 · 총 10회\n실전 응시 후 상세 결과 분석'
       : mockReady
@@ -279,7 +302,9 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
             : '2026 공개 구성의 영역별 문항 수·시간 반영\n영역별 또는 342문항 전체 실전 가능'
           : course === 'recruit-written'
             ? '지원 분야·문항 수·제한시간 선택\n중간 해설 없는 실제 필기 방식'
-            : '영역·문항 수·제한시간 선택\n중간 해설 없는 실제 시험 방식'
+            : course === 'cover-letter'
+              ? '10·20문항과 제한시간 선택\n중간 해설 없이 작성 판단 기준 평가'
+              : '영역·문항 수·제한시간 선택\n중간 해설 없는 실제 시험 방식'
         : '과목별 모의고사 준비 중'
     return (
       <div className="screen">

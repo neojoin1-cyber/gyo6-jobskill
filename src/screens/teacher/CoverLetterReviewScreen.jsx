@@ -24,6 +24,42 @@ const STATUS = {
   approved: '첨삭 완료',
 }
 
+function documentLabel(row) {
+  return row?.draft?.documentType === 'interview-script' ? '면접 답변' : '자기소개서'
+}
+
+const DRAFT_EVIDENCE_LABELS = {
+  targetName: '지원처',
+  role: '지원 직무',
+  targetEvidence: '지원처 공식 근거',
+  majorSkill: '전공·직무 역량',
+  action: '나의 행동',
+  result: '확인된 결과',
+  motivation: '지원동기 근거',
+  contribution: '입사 후 기여',
+  proof: '확인 자료',
+  situation: '상황',
+  task: '맡은 역할',
+}
+
+const HIDDEN_DRAFT_KEYS = new Set([
+  'coverSignature', 'documentType', 'introduction', 'motivation', 'organizationId',
+  'role', 'sector', 'targetName', 'linkedAt', 'generatedText',
+])
+
+function draftEvidenceEntries(draft) {
+  if (draft?.documentType === 'interview-script') return []
+  return Object.entries(draft || {})
+    .filter(([key, value]) => !HIDDEN_DRAFT_KEYS.has(key) && typeof value === 'string' && value.trim())
+    .map(([key, value]) => ({ key, label: DRAFT_EVIDENCE_LABELS[key] || key, value }))
+}
+
+function sourceEvidenceEntries(sourceCover) {
+  return Object.entries(sourceCover || {})
+    .filter(([key, value]) => key !== 'organizationId' && typeof value === 'string' && value.trim())
+    .map(([key, value]) => ({ key, label: DRAFT_EVIDENCE_LABELS[key] || key, value }))
+}
+
 export default function CoverLetterReviewScreen({ onBack, initialClassId, demo = false }) {
   const { profile } = useAuth() ?? {}
   const demoItems = useMemo(() => demo ? demoRows() : [], [demo])
@@ -42,11 +78,13 @@ export default function CoverLetterReviewScreen({ onBack, initialClassId, demo =
   const [saving, setSaving] = useState(false)
   const [notice, setNotice] = useState(null)
 
-  useEffect(() => { if (!demo && profile?.id) loadClasses() }, [demo, profile?.id])
-  useEffect(() => { if (!demo && profile?.id) loadRows() }, [demo, profile?.id, classId])
+  useEffect(() => { if (!demo) loadClasses() }, [demo, profile?.id])
+  useEffect(() => { if (!demo) loadRows() }, [demo, profile?.id, classId])
 
   async function loadClasses() {
-    const { data } = await supabase.from('teacher_classes').select('class_id, classes(name)').eq('teacher_id', profile.id)
+    const teacherId = profile?.id || (await supabase.auth.getUser()).data.user?.id
+    if (!teacherId) return
+    const { data } = await supabase.from('teacher_classes').select('class_id, classes(name)').eq('teacher_id', teacherId)
     const list = (data || []).map(item => ({ id: item.class_id, name: item.classes?.name || '이름 없는 학급' }))
     setClasses(list)
     if (!classId && list.length === 1) setClassId(list[0].id)
@@ -72,7 +110,7 @@ export default function CoverLetterReviewScreen({ onBack, initialClassId, demo =
     return matchesQuery && matchesStatus
   }), [rows, query, status])
   const selected = rows.find(item => item.id === selectedId) || null
-  const documentSections = useMemo(() => splitGeneratedText(selected?.generated_text), [selected?.generated_text])
+  const documentSections = useMemo(() => splitGeneratedText(selected?.generated_text, selected?.draft), [selected?.generated_text, selected?.draft])
   const highlights = Array.isArray(feedback.highlights) ? feedback.highlights : []
 
   useEffect(() => {
@@ -159,7 +197,7 @@ export default function CoverLetterReviewScreen({ onBack, initialClassId, demo =
     <main className="cover-review-screen">
       <header className="cover-review-head">
         <button onClick={onBack} aria-label="교사 캠퍼스로 돌아가기"><ArrowLeft /></button>
-          <div><span>TEACHER WRITING COACH</span><h1>나를쓰다 첨삭실</h1><p>학생의 근거·직무·경험을 함께 보고 항목별로 조언함.</p></div>
+          <div><span>TEACHER WRITING COACH</span><h1>나를쓰다 첨삭실</h1><p>자기소개서와 연결된 면접 답변까지 같은 근거로 지도함.</p></div>
         <div className="cover-review-summary"><b>{rows.filter(item => ['submitted', 'in_review'].includes(item.status)).length}</b><span>첨삭 대기</span></div>
       </header>
 
@@ -173,16 +211,16 @@ export default function CoverLetterReviewScreen({ onBack, initialClassId, demo =
           <div className="cover-review-list">
             {loading && <p className="cover-review-empty">첨삭 요청을 불러오는 중입니다.</p>}
             {!loading && visible.length === 0 && <p className="cover-review-empty">조건에 맞는 제출물이 없습니다.</p>}
-            {visible.map(item => <button key={item.id} className={selectedId === item.id ? 'is-on' : ''} onClick={() => setSelectedId(item.id)}><span><Student weight="duotone" /></span><div><header><b>{item.student_name}</b><em className={`is-${item.status}`}>{STATUS[item.status]}</em></header><strong>{item.target_name}</strong><small>{item.role_name} · {item.class_name} · {item.revision_no}차</small></div></button>)}
+            {visible.map(item => <button key={item.id} className={selectedId === item.id ? 'is-on' : ''} onClick={() => setSelectedId(item.id)}><span><Student weight="duotone" /></span><div><header><b>{item.student_name}</b><em className={`is-${item.status}`}>{STATUS[item.status]}</em></header><strong>{item.target_name}</strong><small>{documentLabel(item)} · {item.role_name} · {item.class_name} · {item.revision_no}차</small></div></button>)}
           </div>
         </aside>
 
-        {!selected ? <section className="cover-review-no-selection"><FileText /><b>첨삭할 자기소개서를 선택하세요</b></section> : <>
+        {!selected ? <section className="cover-review-no-selection"><FileText /><b>첨삭할 글을 선택하세요</b></section> : <>
           <section className="cover-review-document">
-            <header><div><span>{selected.student_name} 학생 · {selected.class_name}</span><h2>{selected.target_name}</h2><p>{selected.role_name} 지원 · {selected.revision_no}차 초안</p></div><em>{STATUS[selected.status]}</em></header>
+            <header><div><span>{selected.student_name} 학생 · {selected.class_name}</span><h2>{selected.target_name}</h2><p>{documentLabel(selected)} · {selected.role_name} 지원 · {selected.revision_no}차</p></div><em>{STATUS[selected.status]}</em></header>
             <p className="cover-review-select-help"><Highlighter weight="fill" />메모할 문장을 드래그하면 오른쪽 첨삭함에 선택됨.</p>
-            {documentSections.map(item => <article key={item.title}><header className="cover-review-section-head"><h3>{item.title}</h3><button onClick={() => selectParagraph(item.title, item.body)}><Highlighter />문단 메모</button></header><p onMouseUp={() => captureSelection(item.title, item.body)}>{renderHighlightedText(item.body, highlights.filter(mark => mark.sectionTitle === item.title))}</p></article>)}
-            <details><summary>학생이 입력한 원본 근거 보기</summary>{Object.entries(selected.draft || {}).filter(([, value]) => typeof value === 'string' && value.trim()).map(([key, value]) => <div key={key}><b>{key}</b><p>{value}</p></div>)}{Array.isArray(selected.draft?.evidenceBank) && selected.draft.evidenceBank.map(item => <div key={item.id}><b>근거 카드 · {item.title}</b><p>{[item.situation, item.task, item.action, item.result].filter(Boolean).join(' ')}</p></div>)}</details>
+            {documentSections.map(item => <article key={item.title} className={item.limit ? 'has-length-guide' : ''} style={item.limit ? { minHeight: `${reviewAnswerBoxHeight(item.limit)}px` } : undefined}><header className="cover-review-section-head"><div><h3>{item.title}</h3>{item.limit && <small className={item.count < item.minLength ? 'is-short' : 'is-ready'}>{item.count}자 · 권장 {item.minLength}~{item.limit}자</small>}</div><button onClick={() => selectParagraph(item.title, item.body)}><Highlighter />문단 메모</button></header><p onMouseUp={() => captureSelection(item.title, item.body)}>{renderHighlightedText(item.body, highlights.filter(mark => mark.sectionTitle === item.title))}</p></article>)}
+            <details><summary>학생이 입력한 원본 근거 보기</summary>{draftEvidenceEntries(selected.draft).map(item => <div key={item.key}><b>{item.label}</b><p>{item.value}</p></div>)}{sourceEvidenceEntries(selected.draft?.sourceCover).map(item => <div key={`source-${item.key}`}><b>연결 자기소개서 · {item.label}</b><p>{item.value}</p></div>)}{Array.isArray(selected.draft?.sourceCover?.coverItems) && selected.draft.sourceCover.coverItems.map(item => <div key={`source-item-${item.id}`}><b>연결 자기소개서 원문 · {item.label}</b><p>{item.answer}</p></div>)}{Array.isArray(selected.draft?.evidenceBank) && selected.draft.evidenceBank.map(item => <div key={item.id}><b>근거 카드 · {item.title}</b><p>{[item.situation, item.task, item.action, item.result].filter(Boolean).join(' ')}</p></div>)}</details>
           </section>
 
           <aside className="cover-review-coach">
@@ -202,11 +240,21 @@ export default function CoverLetterReviewScreen({ onBack, initialClassId, demo =
   )
 }
 
-function splitGeneratedText(text) {
-  return String(text || '').split(/\n\n+/).map(block => {
+function splitGeneratedText(text, draft) {
+  const coverItems = Array.isArray(draft?.coverItems) ? draft.coverItems : []
+  return String(text || '').split(/\n\n+/).map((block, index) => {
     const [title, ...body] = block.split('\n')
-    return { title: title || '자기소개서', body: body.join('\n') }
+    const answer = body.join('\n')
+    const source = coverItems[index]
+    if (!source) return { title: title || '자기소개서', body: answer }
+    const limit = Math.max(100, Math.min(2000, Number(source.limit) || 700))
+    const minLength = Math.max(50, Math.min(limit, Number(source.minLength) || Math.round((limit * 0.72) / 50) * 50))
+    return { title: title || '자기소개서', body: answer, count: answer.trim().length, minLength, limit }
   }).filter(item => item.title || item.body)
+}
+
+function reviewAnswerBoxHeight(limit) {
+  return Math.max(170, Math.ceil(limit / 52) * 22 + 42)
 }
 
 function renderHighlightedText(text, highlights) {
@@ -239,6 +287,12 @@ function demoRows() {
       roleNeed: '고객 요구를 정확히 확인하고 규정에 맞게 설명하는 능력과 개인정보 보호 태도',
       action: '거래 자료를 시간순으로 다시 분류하고 원본 영수증과 대조한 뒤 팀원과 수정 전후 금액을 검산함.',
       result: '누락된 거래 3건을 찾아 정산표를 맞추고 검산 칸을 추가함.',
+      coverItems: [
+        { id: 'motivation', label: '지원동기', minLength: 500, limit: 700 },
+        { id: 'job-competency', label: '직무와 전공 역량', minLength: 500, limit: 700 },
+        { id: 'experience', label: '경험으로 증명한 강점', minLength: 500, limit: 700 },
+        { id: 'growth', label: '입사 후 기여', minLength: 450, limit: 650 },
+      ],
     },
     generated_text: '1. 지원동기\n교내 정산 프로젝트에서 정확한 기록이 신뢰를 만든다는 점을 배웠습니다. 중소기업 금융 접근성을 지원하는 기관의 역할과 제 경험을 연결해 지원했습니다.\n\n2. 직무와 전공 역량\n스프레드시트로 거래 자료를 분류하고 원본과 대조하는 검산 과정을 수행했습니다.\n\n3. 경험으로 증명한 강점\n누락된 거래를 찾아 팀원과 수정 전후 금액을 재확인하고 검산표를 개선했습니다.\n\n4. 입사 후 기여\n상품과 규정을 정확히 익히고 고객이 이해하기 쉬운 안내에 기여하겠습니다.',
   }]

@@ -6,6 +6,7 @@ const expected = new Map([
   ['채용필기 심화관', 'recruit-written'],
   ['인성검사관', 'personality'],
   ['고졸면접관', 'interview'],
+  ['나를쓰다', 'cover-letter'],
 ])
 
 const failures = []
