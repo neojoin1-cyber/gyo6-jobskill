@@ -22,16 +22,18 @@ import { STUDENT_CAMPUS_HALLS } from '../../lib/studentCampusRoutes.js'
 import '../../styles/campus.css'
 
 const HALL_PRESENTATION = {
-  'job-common': { icon: BookOpenText, className: 'spot-problem' },
-  'ncs-basic': { icon: CheckCircle, className: 'spot-team' },
-  'recruit-written': { icon: Briefcase, className: 'spot-career' },
-  personality: { icon: ChartLineUp, className: 'spot-data' },
-  'cover-letter': { icon: FileText, className: 'spot-cover' },
+  'job-common': { icon: BookOpenText, className: 'spot-problem', tone: 'blue' },
+  'ncs-basic': { icon: CheckCircle, className: 'spot-team', tone: 'mint' },
+  'recruit-written': { icon: Briefcase, className: 'spot-career', tone: 'coral' },
+  personality: { icon: ChartLineUp, className: 'spot-data', tone: 'violet' },
+  'cover-letter': { icon: FileText, className: 'spot-cover', tone: 'amber' },
 }
 
 const CAMPUS_SPOTS = STUDENT_CAMPUS_HALLS
   .filter(hall => hall.id !== 'interview')
   .map(hall => ({ ...hall, ...HALL_PRESENTATION[hall.id] }))
+
+const INTERVIEW_HALL = STUDENT_CAMPUS_HALLS.find(hall => hall.id === 'interview')
 
 const CONTINUE_COURSES = [
   { id: 'job-common', label: '직업공통능력 인증' },
@@ -165,15 +167,15 @@ export default function StudentCampusHome({
 
       <section className="campus-map" aria-label="스킬캠퍼스 지도">
         <img src={campusAsset('skill-campus-map.webp')} alt="학생들이 함께 배우고 쉬는 스킬캠퍼스 전경" />
-        {CAMPUS_SPOTS.map(({ id, label, badge, authority, icon: Icon, className }) => (
+        {CAMPUS_SPOTS.map(({ id, label, badge, authority, icon: Icon, className, tone }) => (
           <button key={id} className={`campus-spot ${className}`} onClick={() => onGoStudy?.(id)} aria-label={`${label} · ${authority}`}>
-            <Icon weight="bold" />
+            <span className={`campus-spot-icon is-${tone}`} aria-hidden="true"><Icon weight="duotone" /></span>
             <span className="campus-spot-copy"><small>{badge}</small><b>{label}</b></span>
           </button>
         ))}
-        <button className="campus-active-spot" onClick={() => onGoStudy?.('interview')} aria-label="고졸면접관 · 특성화고 공정채용 면접">
-          <ChatCircleDots weight="fill" />
-          <span className="campus-spot-copy"><small>면접 필수</small><b>고졸면접관</b></span>
+        <button className="campus-active-spot" onClick={() => onGoStudy?.('interview')} aria-label={`${INTERVIEW_HALL.label} · ${INTERVIEW_HALL.authority}`}>
+          <span className="campus-spot-icon is-interview" aria-hidden="true"><ChatCircleDots weight="duotone" /></span>
+          <span className="campus-spot-copy"><small>{INTERVIEW_HALL.badge}</small><b>{INTERVIEW_HALL.label}</b></span>
         </button>
       </section>
 

@@ -1,12 +1,12 @@
 import { STUDENT_CAMPUS_HALLS, campusCourseTarget } from '../src/lib/studentCampusRoutes.js'
 
 const expected = new Map([
-  ['직업공통능력관', 'job-common'],
-  ['NCS 직업기초관', 'ncs-basic'],
-  ['채용필기 심화관', 'recruit-written'],
-  ['인성검사관', 'personality'],
-  ['고졸면접관', 'interview'],
-  ['나를쓰다', 'cover-letter'],
+  ['교육부 직업공통능력관', 'job-common'],
+  ['NCS직업공통능력관', 'ncs-basic'],
+  ['NCS직업공통능력 심화관', 'recruit-written'],
+  ['인성검사훈련관', 'personality'],
+  ['면접 스킬관', 'interview'],
+  ['자기소개서관', 'cover-letter'],
 ])
 
 const failures = []
