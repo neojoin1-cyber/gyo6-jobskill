@@ -59,7 +59,7 @@ const SECTORS = [
 const SECTION_META = {
   pathways: { title: '지원처별 면접 심화', eyebrow: '기초 다음 단계' },
   institutions: { title: '기업·기관 연구소', eyebrow: '지원처 전수 준비' },
-  cover: { title: '나를쓰다', eyebrow: '자기소개서 학습·작성·첨삭' },
+  cover: { title: '자기소개서관', eyebrow: '개념·진단·실전 작성' },
   scripts: { title: '답변 연결실', eyebrow: '자기소개서에서 면접 답변으로' },
 }
 
@@ -98,7 +98,7 @@ function coverAnswerBoxHeight(limit) {
   return Math.max(180, Math.ceil(limit / 44) * 23 + 34)
 }
 
-export default function InterviewCareerLab({ section, onBack, onOpenCover, initialWorkspace = 'learn' }) {
+export default function InterviewCareerLab({ section, onBack, onOpenCover, initialWorkspace = 'learn', onLearningContext }) {
   const [detail, setDetail] = useState(null)
   const meta = SECTION_META[section] || SECTION_META.pathways
   const backRef = useRef(null)
@@ -127,7 +127,7 @@ export default function InterviewCareerLab({ section, onBack, onOpenCover, initi
     return <LabFrame meta={meta} onBack={onBack}><InterviewScriptBuilder /></LabFrame>
   }
 
-  return <LabFrame meta={meta} onBack={onBack}><CoverLetterBuilder initialWorkspace={initialWorkspace} /></LabFrame>
+  return <LabFrame meta={meta} onBack={onBack}><CoverLetterBuilder initialWorkspace={initialWorkspace} onLearningContext={onLearningContext} /></LabFrame>
 }
 
 function LabFrame({ meta, onBack, children }) {
@@ -471,7 +471,7 @@ function InterviewScriptBuilder() {
   </div>
 }
 
-function CoverLetterBuilder({ initialWorkspace = 'learn' }) {
+function CoverLetterBuilder({ initialWorkspace = 'learn', onLearningContext }) {
   const { profile } = useAuth() ?? {}
   const seed = useMemo(() => {
     try { return JSON.parse(localStorage.getItem('iv_cover_seed') || '{}') }
@@ -490,6 +490,7 @@ function CoverLetterBuilder({ initialWorkspace = 'learn' }) {
   const [stepIndex, setStepIndex] = useState(0)
   const [workspace, setWorkspace] = useState(initialWorkspace)
   const [practicalFlow] = useState(initialWorkspace === 'practical')
+  const assessmentFlow = workspace === 'diagnostic' || workspace === 'mock'
   const [view, setView] = useState('write')
   const [notice, setNotice] = useState(null)
   const [history, setHistory] = useState([])
@@ -519,6 +520,13 @@ function CoverLetterBuilder({ initialWorkspace = 'learn' }) {
     })
   const ready = missing.length === 0 && questionProblems.length === 0
   const generated = useMemo(() => buildCoverLetter(draft, organization), [draft, organization])
+  const flowMeta = practicalFlow
+    ? { eyebrow: 'REAL APPLICATION', title: '실전자기소개서', description: '근거은행부터 지원처별 작성·PDF·교사 첨삭까지 한 흐름으로 완성함.' }
+    : workspace === 'diagnostic'
+      ? { eyebrow: 'WRITING CHECK-UP', title: '작성 기준 진단', description: '질문 의도·근거·구조·사실성 중 부족한 기준을 찾음.' }
+      : workspace === 'mock'
+        ? { eyebrow: 'WRITING PRACTICE TEST', title: '실전 문항 평가', description: '중간 해설 없이 자기소개서 판단 기준을 문제로 점검함.' }
+        : { eyebrow: 'WRITING CLASS', title: '자기소개서 배우기', description: '개념부터 자주 묻는 항목별 작성법까지 단원 순서로 익힘.' }
 
   useEffect(() => {
     loadHistory()
@@ -630,15 +638,6 @@ function CoverLetterBuilder({ initialWorkspace = 'learn' }) {
     setNotice(null)
   }
 
-  function startQuestion(item) {
-    const exists = questionItems.some(selected => selected.id === item.id && !selected.custom)
-    if (!exists) {
-      update('coverItems', [...questionItems, normalizeCoverItem({ ...item, instanceId: `${item.id}-${Date.now()}`, answer: seedQuestionAnswer(item.id, draft) })])
-    }
-    setWorkspace('write')
-    setStepIndex(COVER_LETTER_STEPS.findIndex(value => value.id === 'questions'))
-  }
-
   function goNext() {
     const unfinished = stepFields.find(field => String(draft[field.key] || '').trim().length < field.minLength)
     if (unfinished) {
@@ -730,25 +729,17 @@ function CoverLetterBuilder({ initialWorkspace = 'learn' }) {
 
   return (
     <div className="cover-builder">
-      <section className="cover-brand-panel">
-        <div><span>MY CAREER STORY</span><h2>나를쓰다</h2><p>고르기부터 시작해 내 경험을 근거로 바꾸고, 문항에 맞는 글로 완성함.</p></div>
-        <b>{evidenceBank.length}<small>근거 카드</small></b>
-      </section>
-      <nav className="cover-workspace-tabs" aria-label="나를쓰다 메뉴">
-        {practicalFlow ? <>
-          <button className={workspace === 'practical' ? 'is-on' : ''} onClick={() => setWorkspace('practical')}><PlayCircle />실전 홈</button>
-          <button className={workspace === 'evidence' ? 'is-on' : ''} onClick={() => setWorkspace('evidence')}><ClipboardText />근거 찾기</button>
-          <button className={workspace === 'write' ? 'is-on' : ''} onClick={() => setWorkspace('write')}><PencilSimple />작성하기</button>
-        </> : <>
-          <button className={workspace === 'learn' ? 'is-on' : ''} onClick={() => setWorkspace('learn')}><BookOpen />학습</button>
-          <button className={workspace === 'diagnostic' ? 'is-on' : ''} onClick={() => setWorkspace('diagnostic')}><Target />자가진단</button>
-          <button className={workspace === 'mock' ? 'is-on' : ''} onClick={() => setWorkspace('mock')}><ClipboardText />모의고사</button>
-          <button className={workspace === 'evidence' ? 'is-on' : ''} onClick={() => setWorkspace('evidence')}><ClipboardText />근거 찾기</button>
-          <button className={workspace === 'write' ? 'is-on' : ''} onClick={() => setWorkspace('write')}><PencilSimple />작성하기</button>
-        </>}
-      </nav>
+      {!assessmentFlow && <section className="cover-brand-panel">
+        <div><span>{flowMeta.eyebrow}</span><h2>{flowMeta.title}</h2><p>{flowMeta.description}</p></div>
+        {practicalFlow && <b>{evidenceBank.length}<small>근거 카드</small></b>}
+      </section>}
+      {practicalFlow && <nav className="cover-workspace-tabs" aria-label="실전자기소개서 메뉴">
+        <button className={workspace === 'practical' ? 'is-on' : ''} onClick={() => setWorkspace('practical')}><PlayCircle />준비 현황</button>
+        <button className={workspace === 'evidence' ? 'is-on' : ''} onClick={() => setWorkspace('evidence')}><ClipboardText />나의 근거</button>
+        <button className={workspace === 'write' ? 'is-on' : ''} onClick={() => setWorkspace('write')}><PencilSimple />작성실</button>
+      </nav>}
       {workspace === 'practical' && <CoverPracticalHome evidenceCount={evidenceBank.length} questionCount={questionItems.length} completed={completed} total={COVER_LETTER_FIELDS.length} onEvidence={() => setWorkspace('evidence')} onWrite={() => setWorkspace('write')} />}
-      {workspace === 'learn' && <CoverLearningLibrary onStart={startQuestion} />}
+      {workspace === 'learn' && <CoverLearningLibrary onLearningContext={onLearningContext} />}
       {workspace === 'diagnostic' && <CoverLetterAssessment mode="diagnostic" onGoLearn={() => setWorkspace('learn')} />}
       {workspace === 'mock' && <CoverLetterAssessment mode="mock" onGoLearn={() => setWorkspace('learn')} />}
       {workspace === 'evidence' && <EvidenceWorkbench items={evidenceBank} onSave={saveEvidence} onDelete={deleteEvidence} onUse={useEvidence} />}
@@ -776,7 +767,7 @@ function CoverPracticalHome({ evidenceCount, questionCount, completed, total, on
   ]
   return (
     <section className="cover-practical-home">
-      <header><span>REAL APPLICATION WRITING</span><h3>실전자기소개서</h3><p>빈 문서부터 시작하지 않음. 내 근거를 고르고 실제 지원처 문항과 분량에 맞춰 제출본을 완성함.</p></header>
+      <header><span>READY TO SUBMIT</span><h3>4단계 완성 경로</h3><p>빈 문서부터 시작하지 않음. 내 근거를 고르고 실제 지원처 문항과 분량에 맞춰 제출본을 완성함.</p></header>
       <div className="cover-practical-route">
         {stages.map((stage, index) => <article key={stage.title} className={stage.ready ? 'is-ready' : ''}><span>{stage.ready ? <CheckCircle weight="fill" /> : index + 1}</span><div><b>{stage.title}</b><p>{stage.help}</p></div><strong>{stage.value}</strong></article>)}
       </div>
@@ -789,28 +780,88 @@ function CoverPracticalHome({ evidenceCount, questionCount, completed, total, on
   )
 }
 
-function CoverLearningLibrary({ onStart }) {
-  const [sector, setSector] = useState('all')
-  const [query, setQuery] = useState('')
-  const visible = COVER_LETTER_QUESTION_LIBRARY.filter(item => {
-    const sectorMatch = sector === 'all' || item.sectors.includes(sector)
-    const guide = questionGuide(item.id, item)
-    return sectorMatch && (!query || `${item.label} ${item.question} ${item.purpose} ${guide.group}`.toLowerCase().includes(query.toLowerCase()))
-  })
-  return (
-    <section className="cover-learning-library">
-      <header><div><span>30개 자주 묻는 항목</span><h3>질문의 뜻부터 익히기</h3><p>모범문장 암기보다 평가 의도·답변 순서·내 근거를 먼저 확인함.</p></div><BookOpen weight="duotone" /></header>
-      <div className="cover-learning-filters">
-        <div>{[{ id: 'all', label: '전체' }, ...SECTORS].map(item => <button key={item.id} className={sector === item.id ? 'is-on' : ''} onClick={() => setSector(item.id)}>{item.label}</button>)}</div>
-        <label><MagnifyingGlass /><input value={query} onChange={event => setQuery(event.target.value)} placeholder="지원동기·갈등·안전 등 검색" /></label>
-      </div>
-      <p className="cover-learning-count">{visible.length}개 항목 · 실제 공고의 질문과 글자 수를 최종 확인함</p>
-      <div className="cover-learning-list">{visible.map(item => {
-        const content = questionGuide(item.id, item)
-        return <details key={item.id}><summary><span>{content.group}</span><div><b>{item.label}</b><p>{item.question}</p></div><CaretRight /></summary><div className="cover-learning-detail"><section><b>평가자는 이것을 봄</b><p>{item.purpose}</p></section><section><b>답변 순서</b><ol>{content.structure.map(value => <li key={value}>{value}</li>)}</ol></section><section className="is-good"><b>좋은 예시</b><p>{content.good}</p></section><section className="is-trap"><b>감점 예시</b><p>{content.trap}</p></section><div><b>찾아볼 내 경험</b><span>{content.evidenceHints.map(value => <em key={value}>{value}</em>)}</span></div><button onClick={() => onStart(item)}><PencilSimple />이 문항 작성에 추가</button></div></details>
-      })}</div>
+function CoverLearningLibrary({ onLearningContext }) {
+  const groups = useMemo(() => {
+    const grouped = new Map()
+    COVER_LETTER_QUESTION_LIBRARY.forEach(item => {
+      const group = questionGuide(item.id, item).group
+      grouped.set(group, [...(grouped.get(group) || []), item])
+    })
+    return [...grouped.entries()].map(([label, items]) => ({ label, items }))
+  }, [])
+  const [groupLabel, setGroupLabel] = useState(null)
+  const [index, setIndex] = useState(0)
+  const group = groups.find(item => item.label === groupLabel)
+  const item = group?.items[index]
+  const content = useMemo(() => item ? questionGuide(item.id, item) : null, [item])
+
+  useEffect(() => {
+    if (!onLearningContext) return
+    if (!group || !item || !content) {
+      onLearningContext({
+        subject: 'cover-letter',
+        mode: 'study',
+        stage: 'area-choice',
+        areaLabel: '자기소개서 배우기',
+        lessonLabel: '학습 범위 선택',
+      })
+      return
+    }
+    onLearningContext({
+      subject: 'cover-letter',
+      mode: 'study',
+      stage: 'concept',
+      areaLabel: group.label,
+      lessonLabel: item.label,
+      title: item.question,
+      position: index + 1,
+      total: group.items.length,
+      revealed: true,
+      content: {
+        kind: 'question',
+        question: {
+          stem: item.question,
+          context: `${group.label} · ${item.label}`,
+          choices: [
+            { label: '좋은 예시', text: content.good, explanation: item.purpose },
+            { label: '감점 예시', text: content.trap, explanation: '지원처 근거·학생 행동·확인 가능한 결과 중 빠진 요소를 찾음.' },
+          ],
+          answerIndex: 0,
+          explanation: item.purpose,
+          thinkingSteps: content.structure,
+          distractorTypes: [`감점 표현: ${content.trap}`],
+        },
+      },
+    })
+  }, [content, group, index, item, onLearningContext])
+
+  function openGroup(label) {
+    setGroupLabel(label)
+    setIndex(0)
+  }
+
+  if (!group || !item || !content) {
+    return <section className="cover-learning-library">
+      <header><div><span>개념·질문 유형 30개</span><h3>자기소개서 개념과 작성법</h3><p>학습 범위를 고른 뒤 개념·실제 예시·감점 포인트를 순서대로 익힘.</p></div><BookOpen weight="duotone" /></header>
+      <section className="cover-learning-overview"><strong>학습 순서</strong><div><span>1</span>범위 선택<i /><span>2</span>개념·질문 이해<i /><span>3</span>좋은 예시·감점 비교</div></section>
+      <p className="cover-learning-count">학습 범위 선택 · 전체 {COVER_LETTER_QUESTION_LIBRARY.length}개 항목</p>
+      <div className="cover-learning-unit-list">{groups.map((value, groupIndex) => <button key={value.label} onClick={() => openGroup(value.label)}><span>{groupIndex + 1}</span><div><b>{value.label}</b><p>{value.items.map(entry => entry.label).join(' · ')}</p></div><strong>{value.items.length}개</strong><CaretRight /></button>)}</div>
     </section>
-  )
+  }
+
+  const last = index === group.items.length - 1
+  return <section className="cover-learning-session">
+    <header><button onClick={() => setGroupLabel(null)} aria-label="학습 범위로 돌아가기"><ArrowLeft /></button><div><span>{group.label}</span><b>{item.label}</b></div><strong>{index + 1}/{group.items.length}</strong></header>
+    <div className="cover-learning-progress"><i style={{ width: `${(index + 1) / group.items.length * 100}%` }} /></div>
+    <article className="cover-learning-card">
+      <div className="cover-learning-question"><span>개념 {index + 1}</span><h3>{item.label}</h3><p>{item.question}</p></div>
+      <section><b>이 개념을 이해해요</b><p>{item.purpose}</p></section>
+      <section className="is-structure"><b>답변은 이렇게 구성해요</b><ol>{content.structure.map(value => <li key={value}>{value}</li>)}</ol></section>
+      <div className="cover-learning-examples"><section className="is-good"><b>좋은 예시</b><p>{content.good}</p></section><section className="is-trap"><b>감점 예시</b><p>{content.trap}</p></section></div>
+      <section className="is-evidence"><b>내 경험에서 찾을 것</b><div>{content.evidenceHints.map(value => <em key={value}>{value}</em>)}</div></section>
+    </article>
+    <footer><button onClick={() => setIndex(value => Math.max(0, value - 1))} disabled={index === 0}><ArrowLeft />이전</button><button className="is-primary" onClick={() => last ? setGroupLabel(null) : setIndex(value => value + 1)}>{last ? '단원 완료' : '다음'}<CaretRight /></button></footer>
+  </section>
 }
 
 function EvidenceWorkbench({ items, onSave, onDelete, onUse }) {

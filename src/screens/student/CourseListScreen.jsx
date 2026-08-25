@@ -110,12 +110,12 @@ const CATALOG = [
   {
     id: 'cover-letter',
     icon: '✍️',
-    name: '나를쓰다',
-    tag: '자기소개서 완성',
+    name: '자기소개서관',
+    tag: '개념부터 제출본까지',
     tagColor: '#0F766E',
     bg: '#DDF7F0',
-    desc: '질문 이해부터 나의 근거·지원처별 완성본까지',
-    meta: '학습 · 자가진단 · 모의평가 · 근거은행 · 작성 · 교사 첨삭',
+    desc: '개념·작성 기준을 익히고 지원처별 제출본까지 완성',
+    meta: '배우기 · 작성 기준 진단 · 실전 문항 평가 · 근거은행 · 작성 · 교사 첨삭',
     type: 'cover',
   },
   {
@@ -221,7 +221,7 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
   // ── 진단평가 모드 (자가 성취도 진단) ──
   if (selected && mode === 'diagnostic') {
     if (course === 'cover-letter') {
-      return <Lazy onRetry={backToChooser}><InterviewCareerLab section="cover" initialWorkspace="diagnostic" onBack={backToChooser} /></Lazy>
+      return <Lazy onRetry={backToChooser}><InterviewCareerLab section="cover" initialWorkspace="diagnostic" onLearningContext={onContextChange} onBack={backToChooser} /></Lazy>
     }
     if (course === 'job-common') {
       return (
@@ -241,7 +241,7 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
   // ── 모의고사 모드 ──
   if (selected && mode === 'mock') {
     if (course === 'cover-letter') {
-      return <Lazy onRetry={backToChooser}><InterviewCareerLab section="cover" initialWorkspace="mock" onBack={backToChooser} /></Lazy>
+      return <Lazy onRetry={backToChooser}><InterviewCareerLab section="cover" initialWorkspace="mock" onLearningContext={onContextChange} onBack={backToChooser} /></Lazy>
     }
     return (
       <Lazy onRetry={backToChooser}>
@@ -255,7 +255,7 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
   }
 
   if (selected && course === 'cover-letter' && mode === 'cover-practical') {
-    return <Lazy onRetry={backToChooser}><InterviewCareerLab section="cover" initialWorkspace="practical" onBack={backToChooser} /></Lazy>
+    return <Lazy onRetry={backToChooser}><InterviewCareerLab section="cover" initialWorkspace="practical" onLearningContext={onContextChange} onBack={backToChooser} /></Lazy>
   }
 
   // ── 자율학습 모드 ──
@@ -282,7 +282,7 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
       )
     }
     if (course === 'cover-letter') {
-      return <Lazy onRetry={backToChooser}><InterviewCareerLab section="cover" initialWorkspace="learn" onBack={backToChooser} /></Lazy>
+      return <Lazy onRetry={backToChooser}><InterviewCareerLab section="cover" initialWorkspace="learn" onLearningContext={onContextChange} onBack={backToChooser} /></Lazy>
     }
   }
 
@@ -342,7 +342,7 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
                 : course === 'interview'
                   ? [['📚', '자율학습', '배우기·반복'], ['📊', '진단평가', '약점 처방'], ['📝', '모의면접', '답변 점검'], ['🎬', '실전면접', '행동 리허설']]
                   : course === 'cover-letter'
-                    ? [['📚', '자율학습', '배우기·반복'], ['📊', '진단평가', '약점 처방'], ['📝', '모의고사', '기준 점검'], ['✍️', '실전자기소개서', '직접 완성']]
+                    ? [['📚', '개념·작성법', '배우기'], ['📊', '작성 기준', '진단'], ['📝', '실전 문항', '평가'], ['✍️', '실전자기소개서', '직접 완성']]
                   : [['📚', '자율학습', '배우기·반복'], ['📊', '진단평가', '약점 처방'], ['📝', '모의고사', '실전 재현']]
               ).map(([icon, a, b]) => (
                 <div key={a} style={{ display: 'flex', alignItems: 'center', gap: 2, flex: 1 }}>
@@ -428,9 +428,11 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
             <div style={{ width: 48, height: 48, borderRadius: 12, flexShrink: 0, background: '#EDE9FE', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>📚</div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <p style={{ fontWeight: 700, fontSize: 15, marginBottom: 3 }}>
-                <span style={stepBadge}>선택 · 학습</span>자율학습
+                <span style={stepBadge}>선택 · 학습</span>{course === 'cover-letter' ? '자기소개서 배우기' : '자율학습'}
               </p>
-              <CompactText text={'요점정리로 개념 학습\n문제 풀이로 반복\n오답노트로 복습 · 처음이면 여기부터'} maxItemChars={68} style={{ fontSize: 12, color: 'var(--text-muted)' }} />
+              <CompactText text={course === 'cover-letter'
+                ? '개념·질문 유형·항목별 작성법 학습\n좋은 예시·감점 예시·내 경험 찾는 법'
+                : '요점정리로 개념 학습\n문제 풀이로 반복\n오답노트로 복습 · 처음이면 여기부터'} maxItemChars={68} style={{ fontSize: 12, color: 'var(--text-muted)' }} />
             </div>
             <span style={{ color: 'var(--text-muted)', fontSize: 20, flexShrink: 0 }}>›</span>
           </button>
@@ -449,7 +451,7 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
             <div style={{ width: 48, height: 48, borderRadius: 12, flexShrink: 0, background: '#E0E7FF', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>📊</div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <p style={{ fontWeight: 700, fontSize: 15, marginBottom: 3 }}>
-                <span style={{ ...stepBadge, background: '#E0E7FF', color: '#4338CA' }}>선택 · 진단</span>{isPersonality ? '인성 진단' : '진단평가'}
+                <span style={{ ...stepBadge, background: '#E0E7FF', color: '#4338CA' }}>선택 · 진단</span>{isPersonality ? '인성 진단' : course === 'cover-letter' ? '작성 기준 진단' : '진단평가'}
                 {course === 'job-common' && goal && ASSESS_GOALS[goal].recommend === 'diagnostic' && <span style={goalPick}>내 목표에 맞음</span>}
               </p>
               <CompactText text={diagnosticCopy} maxItemChars={68} style={{ fontSize: 12, color: 'var(--text-muted)' }} />
@@ -470,7 +472,7 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
             <div style={{ width: 48, height: 48, borderRadius: 12, flexShrink: 0, background: '#DBEAFE', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>📝</div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <p style={{ fontWeight: 700, fontSize: 15, marginBottom: 3 }}>
-                <span style={{ ...stepBadge, background: '#DBEAFE', color: '#1D4ED8' }}>선택 · 실전</span>{isPersonality ? '실전 모의검사' : course === 'interview' ? '모의면접' : '모의고사'}
+                <span style={{ ...stepBadge, background: '#DBEAFE', color: '#1D4ED8' }}>선택 · 실전</span>{isPersonality ? '실전 모의검사' : course === 'interview' ? '모의면접' : course === 'cover-letter' ? '실전 문항 평가' : '모의고사'}
                 {course === 'job-common' && goal && ASSESS_GOALS[goal].recommend === 'mock' && <span style={goalPick}>내 목표에 맞음</span>}
                 {!mockReady && <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-muted)', marginLeft: 6 }}>준비 중</span>}
               </p>

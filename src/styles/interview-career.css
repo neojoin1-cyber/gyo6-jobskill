@@ -408,16 +408,16 @@
 .cover-history-highlights blockquote span { font-size: 10px; }
 .cover-history-highlights blockquote p { margin: 4px 0 0; padding: 0; background: transparent; color: #475569; font-size: 10px; }
 
-/* 나를쓰다: 학습 · 근거 · 작성 */
+/* 자기소개서관: 배우기 · 평가 · 실전 작성 */
 .cover-brand-panel { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 15px 16px; border-left: 4px solid #0f766e; background: #ecfdf5; }
-.cover-brand-panel span { color: #0f766e; font-size: 8px; font-weight: 900; }
-.cover-brand-panel h2 { margin: 2px 0; font-size: 20px; }
-.cover-brand-panel p { margin: 0; color: #47615b; font-size: 10.5px; line-height: 1.5; }
+.cover-brand-panel span { color: #0f766e; font-size: 10px; font-weight: 900; }
+.cover-brand-panel h2 { margin: 3px 0; font-size: 22px; }
+.cover-brand-panel p { margin: 0; color: #47615b; font-size: 12px; line-height: 1.55; }
 .cover-brand-panel > b { min-width: 54px; color: #0f766e; font-size: 22px; text-align: center; }
-.cover-brand-panel > b small { display: block; font-size: 8px; }
-.cover-workspace-tabs { display: grid; grid-template-columns: repeat(5,1fr); gap: 4px; margin: 10px 0 14px; padding: 4px; border: 1px solid var(--border); border-radius: 8px; background: #f1f5f9; }
-.cover-workspace-tabs button { min-height: 42px; display: flex; align-items: center; justify-content: center; gap: 5px; border: 0; border-radius: 6px; background: transparent; color: #64748b; font-size: 10.5px; font-weight: 900; cursor: pointer; }
-.cover-workspace-tabs button svg { width: 17px; height: 17px; }
+.cover-brand-panel > b small { display: block; font-size: 9px; }
+.cover-workspace-tabs { display: grid; grid-template-columns: repeat(3,1fr); gap: 5px; margin: 10px 0 14px; padding: 4px; border: 1px solid var(--border); border-radius: 8px; background: #f1f5f9; }
+.cover-workspace-tabs button { min-height: 48px; display: flex; align-items: center; justify-content: center; gap: 6px; border: 0; border-radius: 6px; background: transparent; color: #64748b; font-size: 12.5px; font-weight: 900; cursor: pointer; }
+.cover-workspace-tabs button svg { width: 19px; height: 19px; }
 .cover-workspace-tabs button.is-on { background: #fff; color: #0f766e; box-shadow: 0 1px 4px rgba(15,23,42,.1); }
 
 .cover-assessment-setup,
@@ -541,39 +541,56 @@
 
 @media (max-width: 390px) {
   .script-type-tabs button { padding: 4px 2px; font-size: 10px; }
-  .cover-workspace-tabs { grid-template-columns: repeat(3,1fr); }
-  .cover-workspace-tabs button:nth-child(4), .cover-workspace-tabs button:nth-child(5) { grid-column: span 1; }
+  .cover-workspace-tabs button { gap: 4px; font-size: 11.5px; }
 }
-.cover-learning-library > header, .cover-evidence-workbench > header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 13px 2px; }
-.cover-learning-library > header span, .cover-evidence-workbench > header span { color: #1d4ed8; font-size: 8px; font-weight: 900; }
-.cover-learning-library > header h3, .cover-evidence-workbench > header h3 { margin: 2px 0; font-size: 16px; }
-.cover-learning-library > header p, .cover-evidence-workbench > header p { margin: 0; color: var(--text-muted); font-size: 9.5px; line-height: 1.45; }
-.cover-learning-library > header svg { width: 33px; height: 33px; color: #0f766e; }
-.cover-learning-filters { display: grid; gap: 8px; padding: 10px; border: 1px solid var(--border); background: #f8fafc; }
-.cover-learning-filters > div { display: grid; grid-template-columns: repeat(4,1fr); gap: 4px; }
-.cover-learning-filters button { min-height: 32px; border: 0; border-radius: 6px; background: #e2e8f0; color: #475569; font-size: 9px; font-weight: 900; }
-.cover-learning-filters button.is-on { background: #0f766e; color: #fff; }
-.cover-learning-filters label { min-height: 38px; display: flex; align-items: center; gap: 6px; padding: 0 9px; border: 1px solid #cbd5e1; border-radius: 7px; background: #fff; color: #64748b; }
-.cover-learning-filters input { min-width: 0; flex: 1; border: 0; outline: 0; background: transparent; font: inherit; font-size: 10px; }
-.cover-learning-count { margin: 8px 0; color: #64748b; font-size: 9px; }
-.cover-learning-list { border-top: 1px solid var(--border); }
-.cover-learning-list > details { border-bottom: 1px solid var(--border); }
-.cover-learning-list summary { min-height: 68px; display: grid; grid-template-columns: 70px minmax(0,1fr) 18px; align-items: center; gap: 8px; padding: 10px 4px; cursor: pointer; list-style: none; }
-.cover-learning-list summary > span { padding: 4px 6px; border-radius: 5px; background: #e0f2fe; color: #0369a1; font-size: 8px; font-weight: 900; text-align: center; }
-.cover-learning-list summary b, .cover-learning-list summary p { display: block; }
-.cover-learning-list summary b { font-size: 11px; }
-.cover-learning-list summary p { margin: 3px 0 0; color: #475569; font-size: 9.5px; line-height: 1.45; }
-.cover-learning-list details[open] summary > svg { transform: rotate(90deg); }
-.cover-learning-detail { display: grid; gap: 8px; padding: 0 8px 14px 78px; }
-.cover-learning-detail section { padding: 9px 10px; border-left: 3px solid #1d4ed8; background: #eff6ff; }
-.cover-learning-detail section.is-good { border-color: #0f766e; background: #ecfdf5; }
-.cover-learning-detail section.is-trap { border-color: #ea580c; background: #fff7ed; }
-.cover-learning-detail b { display: block; margin-bottom: 3px; font-size: 9px; }
-.cover-learning-detail p, .cover-learning-detail li { margin: 0; font-size: 10px; line-height: 1.55; }
-.cover-learning-detail ol { margin: 0; padding-left: 17px; }
-.cover-learning-detail > div > span { display: flex; flex-wrap: wrap; gap: 4px; }
-.cover-learning-detail em { padding: 3px 6px; border-radius: 999px; background: #f1f5f9; color: #475569; font-size: 8.5px; font-style: normal; }
-.cover-learning-detail > button { min-height: 38px; display: flex; align-items: center; justify-content: center; gap: 5px; border: 0; border-radius: 7px; background: #0f766e; color: #fff; font-size: 9.5px; font-weight: 900; }
+.cover-learning-library > header, .cover-evidence-workbench > header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 17px 4px 14px; }
+.cover-learning-library > header span, .cover-evidence-workbench > header span { color: #1d4ed8; font-size: 10px; font-weight: 900; }
+.cover-learning-library > header h3, .cover-evidence-workbench > header h3 { margin: 3px 0; font-size: 20px; }
+.cover-learning-library > header p, .cover-evidence-workbench > header p { margin: 0; color: var(--text-muted); font-size: 12px; line-height: 1.55; }
+.cover-learning-library > header svg { width: 38px; height: 38px; flex: 0 0 auto; color: #0f766e; }
+.cover-learning-overview { padding: 12px; border: 1px solid #cbdcff; background: #f5f8ff; }
+.cover-learning-overview > strong { display: block; margin-bottom: 9px; color: #1d4ed8; font-size: 12px; }
+.cover-learning-overview > div { display: flex; align-items: center; gap: 6px; color: #334155; font-size: 11px; font-weight: 800; }
+.cover-learning-overview span { width: 23px; height: 23px; display: grid; place-items: center; flex: 0 0 auto; border-radius: 50%; background: #1d4ed8; color: #fff; }
+.cover-learning-overview i { height: 1px; flex: 1; background: #b8c8e5; }
+.cover-learning-count { margin: 14px 2px 8px; color: #526175; font-size: 12px; font-weight: 800; }
+.cover-learning-unit-list { display: grid; gap: 8px; }
+.cover-learning-unit-list > button { min-height: 72px; display: grid; grid-template-columns: 34px minmax(0,1fr) auto 18px; align-items: center; gap: 10px; padding: 11px 12px; border: 1px solid #d9e1ea; border-radius: 8px; background: #fff; color: #172033; text-align: left; cursor: pointer; }
+.cover-learning-unit-list > button > span { width: 32px; height: 32px; display: grid; place-items: center; border-radius: 8px; background: #e0ecff; color: #1d4ed8; font-size: 13px; font-weight: 900; }
+.cover-learning-unit-list > button > div { min-width: 0; }
+.cover-learning-unit-list b { display: block; font-size: 14px; }
+.cover-learning-unit-list p { margin: 4px 0 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #64748b; font-size: 11px; }
+.cover-learning-unit-list strong { color: #0f766e; font-size: 11px; white-space: nowrap; }
+.cover-learning-unit-list svg { width: 17px; color: #7b8798; }
+.cover-learning-session { min-height: 0; display: flex; flex-direction: column; }
+.cover-learning-session > header { min-height: 58px; display: grid; grid-template-columns: 42px minmax(0,1fr) auto; align-items: center; gap: 9px; border-bottom: 1px solid #dbe2ea; }
+.cover-learning-session > header > button { width: 40px; height: 40px; display: grid; place-items: center; border: 1px solid #d8e0e9; border-radius: 8px; background: #fff; color: #1d4ed8; }
+.cover-learning-session > header > button svg { width: 18px; }
+.cover-learning-session > header > div { min-width: 0; display: grid; gap: 2px; }
+.cover-learning-session > header span { color: #1d4ed8; font-size: 10px; font-weight: 900; }
+.cover-learning-session > header b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 15px; }
+.cover-learning-session > header > strong { color: #64748b; font-size: 12px; }
+.cover-learning-progress { height: 5px; overflow: hidden; background: #e4e9ef; }
+.cover-learning-progress i { display: block; height: 100%; background: #4f46e5; transition: width .2s ease; }
+.cover-learning-card { display: grid; gap: 10px; padding: 14px 0; }
+.cover-learning-question { padding: 15px; border: 1px solid #cbdcff; border-left: 5px solid #4f46e5; background: #f6f7ff; }
+.cover-learning-question span { color: #4f46e5; font-size: 10px; font-weight: 900; }
+.cover-learning-question h3 { margin: 5px 0 7px; font-size: 20px; }
+.cover-learning-question p { margin: 0; color: #334155; font-size: 14px; line-height: 1.6; }
+.cover-learning-card > section, .cover-learning-examples > section { padding: 13px 14px; border-left: 4px solid #1d4ed8; background: #eff6ff; }
+.cover-learning-card section > b { display: block; margin-bottom: 6px; font-size: 12px; }
+.cover-learning-card section p, .cover-learning-card section li { margin: 0; color: #26364a; font-size: 13.5px; line-height: 1.65; }
+.cover-learning-card ol { margin: 0; padding-left: 20px; }
+.cover-learning-examples { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.cover-learning-examples .is-good { border-color: #0f8d73; background: #ecfdf5; }
+.cover-learning-examples .is-trap { border-color: #ea580c; background: #fff7ed; }
+.cover-learning-card .is-evidence { border-color: #7c3aed; background: #f5f3ff; }
+.cover-learning-card .is-evidence > div { display: flex; flex-wrap: wrap; gap: 6px; }
+.cover-learning-card em { padding: 5px 8px; border-radius: 6px; background: #fff; color: #5b4b82; font-size: 11px; font-style: normal; font-weight: 800; }
+.cover-learning-session > footer { display: grid; grid-template-columns: 1fr 1.7fr; gap: 8px; padding: 10px 0 2px; border-top: 1px solid #dbe2ea; }
+.cover-learning-session > footer button { min-height: 48px; display: flex; align-items: center; justify-content: center; gap: 6px; border: 1px solid #d6dee7; border-radius: 8px; background: #fff; color: #526175; font-size: 13px; font-weight: 900; }
+.cover-learning-session > footer button.is-primary { border-color: #4f46e5; background: #4f46e5; color: #fff; }
+.cover-learning-session > footer button:disabled { opacity: .38; }
 .cover-evidence-workbench > header > b { min-width: 45px; color: #0f766e; font-size: 24px; text-align: center; }
 .evidence-guide-strip { display: flex; align-items: center; gap: 5px; overflow-x: auto; padding: 9px 10px; border-left: 3px solid #1d4ed8; background: #eff6ff; white-space: nowrap; }
 .evidence-guide-strip b { margin-right: auto; font-size: 9px; }
@@ -630,8 +647,8 @@
 .cover-answer-warnings svg { flex: 0 0 auto; margin-top: 1px; }
 
 @media (max-width: 430px) {
-  .cover-learning-list summary { grid-template-columns: 58px minmax(0,1fr) 16px; }
-  .cover-learning-detail { padding-left: 0; }
+  .cover-learning-examples { grid-template-columns: 1fr; }
+  .cover-learning-overview > div { gap: 4px; font-size: 10px; }
   .cover-brand-panel p { max-width: 240px; }
 }
 

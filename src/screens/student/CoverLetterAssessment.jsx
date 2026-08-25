@@ -105,11 +105,11 @@ export default function CoverLetterAssessment({ mode = 'diagnostic', onGoLearn }
 
   if (!started) {
     return <section className="cover-assessment-setup">
-      <header><span>{mode === 'mock' ? 'WRITING MOCK TEST' : 'WRITING CHECK-UP'}</span><h3>{mode === 'mock' ? '자기소개서 모의평가' : '자기소개서 이해 진단'}</h3><p>{mode === 'mock' ? '해설 없이 끝까지 풂 · 제출 후 기준별 결과 확인' : '질문 의도부터 최종 점검까지 부족한 기준을 찾음'}</p></header>
+      <header><span>{mode === 'mock' ? 'WRITING PRACTICE TEST' : 'WRITING CHECK-UP'}</span><h3>{mode === 'mock' ? '실전 문항 평가' : '작성 기준 진단'}</h3><p>{mode === 'mock' ? '해설 없이 끝까지 풂 · 제출 후 기준별 결과 확인' : '질문 의도부터 최종 점검까지 부족한 기준을 찾음'}</p></header>
       <div className="cover-assessment-scopes"><button className={scope === 'all' ? 'is-on' : ''} onClick={() => setScope('all')}>전체</button>{areasOf(bank).map(area => <button key={area} className={scope === area ? 'is-on' : ''} onClick={() => setScope(area)}>{AREAS[area]}</button>)}</div>
       {mode === 'mock' && <div className="cover-assessment-options"><label><span>문항 수</span><select value={count} onChange={event => setCount(Number(event.target.value))}><option value="10">10문항</option><option value="20">20문항</option></select></label><label><span>제한 시간</span><select value={minutes} onChange={event => setMinutes(Number(event.target.value))}><option value="10">10분</option><option value="20">20분</option><option value="30">30분</option></select></label></div>}
       <div className="cover-assessment-ready"><Target weight="duotone" /><div><b>{questions.length}문항 준비됨</b><p>{mode === 'mock' ? `${minutes}분 · 중간 정답 공개 없음` : '완료 후 약한 기준과 학습 위치 안내'}</p></div></div>
-      <button className="cover-assessment-start" onClick={start}><Play weight="fill" />{mode === 'mock' ? '모의평가 시작' : '진단 시작'}</button>
+      <button className="cover-assessment-start" onClick={start}><Play weight="fill" />{mode === 'mock' ? '실전 평가 시작' : '진단 시작'}</button>
     </section>
   }
 
@@ -123,7 +123,7 @@ export default function CoverLetterAssessment({ mode = 'diagnostic', onGoLearn }
     }).sort((a, b) => a.pct - b.pct)
     try { localStorage.setItem(`iv_cover_${mode}_result`, JSON.stringify({ score, areaResults, at: new Date().toISOString() })) } catch { /* local storage unavailable */ }
     return <section className="cover-assessment-result">
-      <header className={score >= 80 ? 'is-good' : 'is-review'}><CheckCircle weight="fill" /><div><span>{mode === 'mock' ? '모의평가 결과' : '이해 진단 결과'}</span><strong>{score}점</strong><p>{correct}/{questions.length}문항 정답</p></div></header>
+      <header className={score >= 80 ? 'is-good' : 'is-review'}><CheckCircle weight="fill" /><div><span>{mode === 'mock' ? '실전 문항 평가 결과' : '작성 기준 진단 결과'}</span><strong>{score}점</strong><p>{correct}/{questions.length}문항 정답</p></div></header>
       <div className="cover-area-results">{areaResults.map(item => <article key={item.area}><div><b>{AREAS[item.area]}</b><span>{item.done}/{item.total}</span></div><i><span style={{ width: `${item.pct}%` }} /></i><small>{item.pct < 70 ? '보완 필요' : '기준 이해'}</small></article>)}</div>
       <section className="cover-result-review"><h4>틀린 문항 다시 보기</h4>{questions.filter(item => answers[item.id] !== item.answer).map(item => <details key={item.id}><summary><WarningCircle />{item.stem}</summary><p><b>정답</b> {item.choices[item.answer]}</p><p>{item.explanation}</p></details>)}</section>
       <div className="cover-result-actions"><button onClick={() => { setStarted(false); setFinished(false) }}><ArrowLeft />다시 설정</button><button onClick={onGoLearn}><FileText />부족한 기준 학습</button></div>

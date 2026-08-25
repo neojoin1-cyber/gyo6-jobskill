@@ -2,14 +2,14 @@ import fs from 'node:fs'
 import { getTeacherLessonGuide } from '../src/lib/teacherLessonGuides.js'
 
 const checks = [
-  ['나를쓰다 30개 문항 학습', 'src/screens/student/InterviewCareerLab.jsx', ['30개 자주 묻는 항목', '좋은 예시', '감점 예시']],
+  ['자기소개서 30개 항목 순차 학습', 'src/screens/student/InterviewCareerLab.jsx', ['개념·질문 유형 30개', '학습 범위 선택', '단원 완료', '좋은 예시', '감점 예시', "stage: 'concept'", "kind: 'question'"]],
   ['근거은행 선택·작성 지원', 'src/screens/student/InterviewCareerLab.jsx', ['1. 전공·분야', '첫 문장 고르기', '근거은행에서 가져오기']],
   ['빈칸 작성 지원', 'src/screens/student/InterviewCareerLab.jsx', ['막막하면 한 칸씩 시작', '맞춤 구조 예시']],
   ['자기소개서 글자 수 지원', 'src/screens/student/InterviewCareerLab.jsx', ['권장 최소', '최대 글자 수', '공고 글자 수', 'cover-document-answer-box']],
-  ['나를쓰다 독립 학습관', 'src/screens/student/CourseListScreen.jsx', ["id: 'cover-letter'", 'initialWorkspace="diagnostic"', 'initialWorkspace="mock"']],
+  ['자기소개서관 독립 학습 흐름', 'src/screens/student/CourseListScreen.jsx', ["id: 'cover-letter'", '자기소개서 배우기', '작성 기준 진단', '실전 문항 평가', 'initialWorkspace="diagnostic"', 'initialWorkspace="mock"']],
   ['실전자기소개서 독립 모드', 'src/screens/student/CourseListScreen.jsx', ['실전자기소개서', "setMode('cover-practical')", 'initialWorkspace="practical"']],
-  ['실전자기소개서 완성 동선', 'src/screens/student/InterviewCareerLab.jsx', ['REAL APPLICATION WRITING', '내 근거 준비', '실제 문항 구성', '완성·첨삭']],
-  ['자기소개서 진단·모의평가', 'src/screens/student/CoverLetterAssessment.jsx', ['COVER_DIAGNOSTIC_QUESTIONS', 'COVER_MOCK_QUESTIONS', '부족한 기준 학습']],
+  ['실전자기소개서 완성 동선', 'src/screens/student/InterviewCareerLab.jsx', ['4단계 완성 경로', '내 근거 준비', '실제 문항 구성', '완성·첨삭']],
+  ['자기소개서 진단·실전 문항 평가', 'src/screens/student/CoverLetterAssessment.jsx', ['COVER_DIAGNOSTIC_QUESTIONS', 'COVER_MOCK_QUESTIONS', '작성 기준 진단', '실전 문항 평가', '부족한 기준 학습']],
   ['자기소개서·면접 답변 연결', 'src/screens/student/InterviewCareerLab.jsx', ['coverLinkSignature', '최신 내용 다시 연결', "documentType: 'interview-script'", '연결된 자기소개서 원문', 'coverItems: linkedCoverItems']],
   ['면접 세 답변 연결', 'src/screens/student/InterviewCareerLab.jsx', ["closing: { label: '마지막 한마디'", '세 답변 근거 일치', '세 답변 교사 첨삭 요청']],
   ['면접 답변 구조 지원', 'src/screens/student/InterviewStudyScreen.jsx', ['답변 구조 힌트', '위 구조 힌트를 참고해']],
@@ -30,6 +30,31 @@ for (const [name, file, needles] of checks) {
   if (missing.length) failures.push(`${name}: ${missing.join(', ')}`)
   else console.log(`PASS ${name}`)
 }
+
+const careerSource = fs.readFileSync('src/screens/student/InterviewCareerLab.jsx', 'utf8')
+const courseSource = fs.readFileSync('src/screens/student/CourseListScreen.jsx', 'utf8')
+const duplicatedInnerRoutes = [
+  "setWorkspace('diagnostic')",
+  "setWorkspace('mock')",
+]
+if (duplicatedInnerRoutes.some(needle => careerSource.includes(needle))) {
+  failures.push('자기소개서 메뉴 위계: 배우기 내부에 진단·평가 전환이 다시 들어감')
+}
+if (!careerSource.includes('{practicalFlow && <nav className="cover-workspace-tabs"') ||
+    !careerSource.includes('준비 현황') ||
+    !careerSource.includes('나의 근거') ||
+    !careerSource.includes('작성실')) {
+  failures.push('실전자기소개서 메뉴 위계: 근거·작성 도구가 실전 흐름에만 묶이지 않음')
+}
+if (!careerSource.includes("const assessmentFlow = workspace === 'diagnostic' || workspace === 'mock'") ||
+    !careerSource.includes('{!assessmentFlow && <section className="cover-brand-panel">')) {
+  failures.push('자기소개서 평가 화면: 중복 제목 방지 조건이 없음')
+}
+if (!courseSource.includes("setMode('cover-practical')") ||
+    !courseSource.includes('initialWorkspace="practical"')) {
+  failures.push('자기소개서 메뉴 위계: 실전자기소개서 상위 진입점이 없음')
+}
+if (!failures.length) console.log('PASS 자기소개서 상·하위 메뉴 중복 방지')
 
 for (const subject of ['job-common', 'ncs-basic', 'recruit-written', 'interview', 'cover-letter', 'personality']) {
   const guide = getTeacherLessonGuide(subject, subject === 'cover-letter' ? 'cover-practical' : 'study')
