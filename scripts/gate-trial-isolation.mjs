@@ -18,6 +18,10 @@ if (!supabaseSource.includes('storage: window.sessionStorage')) {
 if (!supabaseSource.includes('storageKey: `sugar-salt-auth-${tabId}`')) {
   fail('Supabase BroadcastChannel을 분리할 탭별 storageKey가 없음')
 }
+if (!supabaseSource.includes('resetWebAuthSession') ||
+    !supabaseSource.includes("sessionStorage.removeItem(`sugar-salt-auth-${tabId}`)")) {
+  fail('체험 역할 전환용 탭 단위 인증 초기화가 없음')
+}
 if (!supabaseSource.includes('Capacitor.isNativePlatform()')) {
   fail('네이티브 앱의 기존 로그인 지속성을 보호하지 않음')
 }
@@ -64,6 +68,10 @@ if (!appSource.includes('TrialSessionBar') || !appSource.includes("signOut({ sco
 }
 if (!appSource.includes('SUGAR_SALT_APP_READY')) {
   fail('포털이 실제 화면 준비 완료를 판별할 신호가 없음')
+}
+if (!appSource.includes('requestedTrial && requestedTrial !== trialRole') ||
+    !appSource.includes('switchingTrialRole')) {
+  fail('같은 iframe에서 학생·교사 체험 역할을 바꾸는 흐름이 없음')
 }
 if (!supabaseSource.includes('trialSafeFetch') || !supabaseSource.includes('X-Sugar-Salt-Trial')) {
   fail('체험 데이터의 클라이언트 저장 차단이 없음')

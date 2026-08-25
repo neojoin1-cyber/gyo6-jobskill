@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, createContext, useContext, lazy, Suspense } from 'react'
 import { Capacitor } from '@capacitor/core'
 import { App as CapApp } from '@capacitor/app'
-import { supabase } from './lib/supabase.js'
+import { resetWebAuthSession, supabase } from './lib/supabase.js'
 import { ThemeProvider } from './lib/theme.jsx'
 import { initPushNotifications } from './lib/pushNotifications.js'
 import { scheduleReviewReminder } from './lib/reminders.js'
@@ -10,6 +10,7 @@ import {
   beginTrialSession,
   clearTrialSession,
   formatTrialRemaining,
+  requestedTrialRole,
   setTrialNotice,
   trialRoleFromEmail,
 } from './lib/trialSession.js'
@@ -217,10 +218,22 @@ function AppInner() {
   }, [session?.user?.id, profileRetry])
 
   const trialRole = trialRoleFromEmail(session?.user?.email)
+  const requestedTrial = Capacitor.isNativePlatform() ? null : requestedTrialRole()
+  const switchingTrialRole = Boolean(session && requestedTrial && requestedTrial !== trialRole)
+
+  // The portal reuses one iframe while switching between student and teacher.
+  // Drop the previous local auth session so LoginScreen can honor the new role.
+  useEffect(() => {
+    if (!switchingTrialRole) return
+    clearTrialSession()
+    setTrialExpiresAt(0)
+    if (resetWebAuthSession()) return
+    supabase.auth.signOut({ scope: 'local' })
+  }, [switchingTrialRole])
 
   // 포털 iframe의 load 이벤트는 HTML 문서 수신만 뜻한다. React가 실제
   // 로그인 또는 역할 화면을 그린 뒤 부모 창에 준비 완료를 알린다.
-  const appReady = updateState !== null && session !== undefined &&
+  const appReady = !switchingTrialRole && updateState !== null && session !== undefined &&
     (!session || (!profileLoading && Boolean(profile || profileError)))
   useEffect(() => {
     if (!appReady || Capacitor.isNativePlatform() || window.parent === window) return undefined
@@ -363,7 +376,7 @@ function AppInner() {
   }
 
   // ── 로딩 ─────────────────────────────────────────────────────────────────
-  if (session === undefined || updateState === null) {
+  if (session === undefined || updateState === null || switchingTrialRole) {
     return <div className="loading-screen"><div className="spinner" /></div>
   }
 

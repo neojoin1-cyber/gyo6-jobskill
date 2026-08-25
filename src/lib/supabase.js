@@ -99,4 +99,19 @@ function webAuthOptions() {
   }
 }
 
+export function resetWebAuthSession() {
+  if (typeof window === 'undefined' || Capacitor.isNativePlatform()) return false
+  try {
+    const tabId = window.name.startsWith(TAB_NAME_PREFIX)
+      ? window.name.slice(TAB_NAME_PREFIX.length)
+      : sessionStorage.getItem(TAB_ID_KEY) || ''
+    if (!tabId) return false
+    sessionStorage.removeItem(`sugar-salt-auth-${tabId}`)
+    globalThis.location?.reload()
+    return true
+  } catch {
+    return false
+  }
+}
+
 export const supabase = createClient(url, key, webAuthOptions())
