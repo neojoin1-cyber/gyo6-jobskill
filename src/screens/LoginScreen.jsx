@@ -109,6 +109,7 @@ export default function LoginScreen() {
   const [selectedSchool, setSelectedSchool] = useState('')
 
   useEffect(() => {
+    if (!Capacitor.isNativePlatform() && requestedTrialRole()) return
     supabase.from('schools').select('id, name, region, education_office').order('name').then(({ data }) => {
       setSchools(data ?? [])
       if (data?.length === 1) setSelectedSchool(data[0].id)

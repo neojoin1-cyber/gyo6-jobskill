@@ -15,7 +15,7 @@
   --radius: 12px;
   --shadow: 0 1px 3px rgba(0,0,0,0.1);
   --shadow-md: 0 4px 12px rgba(0,0,0,0.12);
-  --font: 'Noto Sans KR', -apple-system, sans-serif;
+  --font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
   /* 안전영역은 두 곳에서 온다. iOS 는 브라우저가 env() 로 주고, 안드로이드
      Capacitor 는 **CSS 변수** --safe-area-inset-* 를 직접 주입한다(SystemBars).
      env() 만 읽으면 안드로이드에서 0 이 되어, targetSdk 35+ 의 강제
@@ -1594,8 +1594,93 @@ html.teacher-mode[data-teacher-view='wide'] .bottom-tab > * { flex: 0 0 auto; mi
   line-height: 1;
   cursor: pointer;
 }
+.chunk-recovery-screen { height: 100%; min-height: 360px; padding: 28px; display: grid; align-content: center; justify-items: center; gap: 10px; background: #f5f7fb; color: #172033; text-align: center; }
+.chunk-recovery-screen strong { font-size: 17px; }
+.chunk-recovery-screen p { color: #607086; font-size: 12px; }
+.chunk-recovery-screen button { min-height: 44px; margin-top: 6px; padding: 0 16px; border: 0; border-radius: 8px; background: #1769f6; color: #fff; font-weight: 900; cursor: pointer; }
+.shell-screen-loading { align-items: center; justify-content: center; gap: 12px; color: var(--text-muted); font-size: 13px; font-weight: 700; }
+.shell-screen-loading p { margin: 0; }
 
 @media (max-width: 420px) {
   .trial-session-copy span { display: none; }
   .trial-session-bar { grid-template-columns: minmax(0, 1fr) auto auto; }
+}
+
+/* Shared guided self-study ------------------------------------------------ */
+.guided-study-screen { background: #f5f7fb; }
+.guided-study-appbar {
+  min-height: 58px; padding: 7px 10px; display: flex; align-items: center; gap: 8px;
+  flex: 0 0 auto; border-bottom: 1px solid #dbe3ee; background: #fff;
+}
+.guided-study-appbar > button {
+  width: 42px; height: 42px; flex: 0 0 42px; display: grid; place-items: center;
+  border: 1px solid #dbe3ee; border-radius: 8px; background: #fff; color: #31506f; cursor: pointer;
+}
+.guided-study-appbar > button svg { width: 20px; height: 20px; }
+.guided-study-appbar > div:first-of-type { min-width: 0; flex: 1; }
+.guided-study-appbar > div:first-of-type span,
+.guided-study-appbar > div:first-of-type b { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.guided-study-appbar > div:first-of-type span { margin-bottom: 2px; color: #16806f; font-size: 10px; font-weight: 900; }
+.guided-study-appbar > div:first-of-type b { color: #172033; font-size: 15px; }
+.guided-study-body { padding: 14px 14px 24px; }
+.guided-study-intro {
+  position: relative; padding: 18px 16px; overflow: hidden; border-left: 5px solid #14977e;
+  background: #e9f9f4;
+}
+.guided-study-intro > div { position: absolute; right: 13px; top: 14px; color: #14977e; opacity: .28; }
+.guided-study-intro > div svg { width: 58px; height: 58px; }
+.guided-study-intro > span { color: #087f69; font-size: 10px; font-weight: 900; }
+.guided-study-intro h2 { margin: 4px 62px 7px 0; color: #172033; font-size: 21px; }
+.guided-study-intro > p { max-width: 350px; color: #3f5268; font-size: 13px; line-height: 1.6; }
+.guided-study-intro ol { margin: 15px 0 0; padding: 0; display: flex; align-items: center; gap: 5px; list-style: none; }
+.guided-study-intro li { display: flex; align-items: center; gap: 4px; color: #31506f; font-size: 11px; font-weight: 800; }
+.guided-study-intro li span { width: 20px; height: 20px; display: grid; place-items: center; border-radius: 50%; background: #fff; color: #087f69; }
+.guided-study-section-title { margin: 18px 2px 8px; color: #52647a; font-size: 12px; font-weight: 900; }
+.guided-study-list { display: grid; gap: 8px; }
+.guided-study-list > button {
+  width: 100%; min-height: 72px; padding: 11px 12px; display: flex; align-items: center; gap: 11px;
+  border: 1px solid #d9e2ec; border-radius: 8px; background: #fff; color: #172033; text-align: left; cursor: pointer;
+  box-shadow: 0 2px 6px rgba(38,61,92,.04);
+}
+.guided-study-list > button > span { width: 34px; height: 34px; flex: 0 0 34px; display: grid; place-items: center; border-radius: 8px; background: #e8f1ff; color: #1769f6; font-size: 13px; font-weight: 900; }
+.guided-study-list > button > span.is-done { background: #dff6ef; color: #087f69; }
+.guided-study-list > button > span svg { width: 20px; height: 20px; }
+.guided-study-list > button > div { flex: 1; min-width: 0; }
+.guided-study-list > button b { display: block; margin-bottom: 4px; font-size: 15px; }
+.guided-study-list > button p { color: #607086; font-size: 11.5px; line-height: 1.45; }
+.guided-study-list > button strong { flex: 0 0 auto; color: #16806f; font-size: 11px; }
+.guided-study-list > button > svg { width: 17px; color: #8da0b4; }
+.guided-study-area-head { margin-bottom: 12px; padding: 14px; display: flex; gap: 12px; background: #eef6ff; border-left: 5px solid #1769f6; }
+.guided-study-area-head > svg { width: 29px; height: 29px; flex: 0 0 29px; color: #1769f6; }
+.guided-study-area-head span { color: #1769f6; font-size: 10px; font-weight: 900; }
+.guided-study-area-head h2 { margin: 2px 0 5px; font-size: 19px; }
+.guided-study-area-head p { color: #52647a; font-size: 12px; }
+.guided-study-challenge {
+  min-height: 52px; margin: 0 14px 14px; padding: 0 15px; display: flex; align-items: center; justify-content: center; gap: 8px;
+  flex: 0 0 auto; border: 0; border-radius: 8px; background: #1769f6; color: #fff; font-size: 14px; font-weight: 900; cursor: pointer;
+}
+.guided-study-challenge svg { width: 19px; height: 19px; }
+.guided-study-challenge svg:last-child { margin-left: auto; }
+
+.learning-reflection-card { margin-top: 10px; padding: 12px; border: 1px solid #bfe4d9; border-radius: 8px; background: #effbf7; }
+.learning-reflection-label { margin-bottom: 7px; color: #087f69; font-size: 11px; font-weight: 900; }
+.learning-reflection-context { margin-bottom: 7px; color: #52647a; font-size: 12px; line-height: 1.55; }
+.learning-reflection-stem { margin-bottom: 10px; color: #172033; font-size: 14px; font-weight: 800; line-height: 1.55; }
+.learning-reflection-choices { display: grid; gap: 6px; }
+.learning-reflection-choices button { min-height: 44px; padding: 9px 10px; display: flex; align-items: flex-start; gap: 8px; border: 1px solid #cfe1dd; border-radius: 8px; background: #fff; color: #263a52; text-align: left; cursor: pointer; }
+.learning-reflection-choices button.is-selected { border-color: #14977e; background: #dff6ef; color: #0c6c5d; }
+.learning-reflection-choices button span { font-weight: 900; }
+.learning-reflection-help { margin-top: 8px; color: #087f69; font-size: 11px; font-weight: 800; }
+.learning-reflection-feedback { margin-top: 10px; padding-top: 10px; border-top: 1px solid #bfe4d9; color: #1f4d45; }
+.learning-reflection-feedback > b { display: block; margin-bottom: 5px; font-size: 12px; }
+.learning-reflection-feedback p,
+.learning-reflection-feedback li { font-size: 12px; line-height: 1.55; }
+.learning-reflection-feedback ol { margin: 7px 0 0; padding-left: 18px; }
+
+@media (max-width: 390px) {
+  .guided-study-appbar { gap: 5px; padding-inline: 7px; }
+  .guided-study-appbar > button { width: 38px; height: 38px; flex-basis: 38px; }
+  .guided-study-appbar > div:last-child button { padding-inline: 8px !important; }
+  .guided-study-intro ol { align-items: flex-start; }
+  .guided-study-intro li { display: grid; justify-items: center; text-align: center; }
 }

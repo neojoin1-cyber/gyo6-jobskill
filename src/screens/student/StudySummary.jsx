@@ -54,6 +54,29 @@ function LearnLines({ text }) {
 }
 
 function SampleQuestionCard({ sample, example, isOpen, selected, onSelect, onChange, onOpen }) {
+  if (sample.type === 'reflection') {
+    return (
+      <div data-learning-question="reflection" className="learning-reflection-card">
+        <p className="learning-reflection-label">{sample.label || '응답 기준 성찰 · 정답 없음'}</p>
+        {sample.context && <p className="learning-reflection-context">{sample.context}</p>}
+        <p className="learning-reflection-stem">{sample.stem}</p>
+        <div className="learning-reflection-choices">
+          {(sample.choices || []).map(choice => (
+            <button key={choice.value} type="button" className={selected === choice.value ? 'is-selected' : ''} onClick={() => onSelect(choice.value)}>
+              <span>{choice.value}</span>{choice.text}
+            </button>
+          ))}
+        </div>
+        {isOpen ? (
+          <div className="learning-reflection-feedback">
+            <b>선택 뒤 확인할 기준</b>
+            <CompactText text={sample.feedback || sample.explanation} maxItemChars={72} />
+            {sample.thinkingSteps?.length > 0 && <ol>{sample.thinkingSteps.map(step => <li key={step}>{step}</li>)}</ol>}
+          </div>
+        ) : <p className="learning-reflection-help">내 기준과 가까운 문장 선택 → 성찰 포인트 확인</p>}
+      </div>
+    )
+  }
   if (sample.isInterview) {
     return isOpen ? (
       <div data-learning-question="interview" style={{ marginTop: 10, background: '#FFFDE7', border: '1.5px solid #FFE082', borderRadius: 10, padding: '12px 14px' }}>
@@ -224,8 +247,10 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, onS
                   ncs: '고용노동부·한국산업인력공단 NCS',
                   recruitment: '채용필기 심화·확장',
                   interview: '고졸 공정채용 면접',
+                  personality: '정답 없는 인성검사',
+                  'cover-letter': '고졸 공채 자기소개서',
                 }[summary.courseKind] || '자율학습'}</span>
-                <strong>개념 이해 · 실제 형식 · 독립 연습</strong>
+                <strong>{summary.courseKind === 'personality' ? '검사 이해 · 응답 성찰 · 실전 적응' : summary.courseKind === 'cover-letter' ? '질문 이해 · 사례 비교 · 독립 작성' : '개념 이해 · 실제 형식 · 독립 연습'}</strong>
               </div>
             )}
             <figure className="learning-scene learning-scene-intro">

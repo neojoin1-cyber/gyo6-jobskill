@@ -69,5 +69,21 @@ export default defineConfig({
   ],
   base: process.env.GITHUB_ACTIONS ? '/gyo6-jobskill/' : '/',
   server: { port: 5173, strictPort: true },
-  build: { outDir: 'dist' },
+  build: {
+    outDir: 'dist',
+    rolldownOptions: {
+      output: {
+        codeSplitting: {
+          groups: [
+            {
+              name: 'compact-ui',
+              test: /src[\\/](components[\\/]CompactText\.jsx|lib[\\/]compactCopy\.js)$/,
+              priority: 20,
+              includeDependenciesRecursively: false,
+            },
+          ],
+        },
+      },
+    },
+  },
 })

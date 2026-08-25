@@ -197,9 +197,9 @@ function ResultView({ result, onRetake }) {
       <p className="section-title">응답 신뢰도 (실제 검사가 가장 먼저 보는 부분)</p>
       <div className="card">
         <Gauge label="일관성" value={R.consistency} ok={R.consistencyOk}
-          hint={R.consistencyOk ? '같은 뜻의 문항에 일관되게 답했습니다.' : '반대로 물은 문항에서 답이 엇갈렸습니다. 하나의 기준으로 답하세요.'} />
+          hint={R.consistencyOk ? '비슷한 문항에 비슷한 기준으로 응답함' : '비슷한 문항의 응답 기준이 달랐음 · 평소 행동을 기준으로 다시 점검'} />
         <Gauge label="솔직성 (사회적 바람직성)" value={R.social} ok={R.socialOk} invert
-          hint={R.socialOk ? '과장 없이 솔직하게 답했습니다. (낮을수록 좋음)' : '자신을 이상적으로 과장한 경향이 있습니다. 사소한 약점은 인정하세요. (낮을수록 좋음)'} />
+          hint={R.socialOk ? '과장 경향이 크지 않음' : '이상적인 모습으로 응답한 경향이 나타남 · 실제 행동을 기준으로 다시 점검'} />
         <div className="ps-inf">
           <span>성실 응답(비전형성)</span>
           <b style={{ color: R.infrequency.ok ? '#059669' : '#D97706' }}>
@@ -232,7 +232,7 @@ function ResultView({ result, onRetake }) {
       <div className="card ps-summary">
         <p className="ps-summary-title">💡 종합 조언</p>
         <CompactText text={summary} maxItemChars={68} />
-        <p className="ps-summary-note">실제 채용 인성검사는 200~360문항 규모입니다. 이 모의로 <b>일관·솔직·성실</b>한 응답 습관을 익히면 실전에서도 안정적으로 통과할 수 있습니다.</p>
+        <p className="ps-summary-note">실전 대비 핵심 · 문항 끝까지 읽기 · 평소 행동 기준 · 과장 없이 응답하기</p>
       </div>
 
       <button className="ps-primary" onClick={onRetake}>다시 응시</button>

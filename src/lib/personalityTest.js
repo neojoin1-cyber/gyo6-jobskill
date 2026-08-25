@@ -178,9 +178,9 @@ export function scorePersonality(responses) {
 
   // ── 종합 신뢰도 판정 ──
   const flags = []
-  if (!consistencyOk) flags.push('응답 일관성이 낮습니다. 같은 뜻을 반대로 물었을 때 답이 엇갈렸습니다. "평소의 나"라는 하나의 기준으로 답하세요.')
-  if (!socialOk)      flags.push('자신을 과장한 응답 경향이 보입니다(사회적 바람직성 높음). 사소한 약점은 솔직히 인정하는 것이 오히려 신뢰도를 높입니다.')
-  if (!infrequencyOk) flags.push('부주의하게 응답한 문항이 있습니다. 문항을 끝까지 읽고 성의껏 답하세요.')
+  if (!consistencyOk) flags.push('비슷한 문항의 응답 기준이 달랐음 · 평소 행동을 기준으로 다시 점검')
+  if (!socialOk)      flags.push('이상적인 모습으로 응답한 경향이 나타남 · 실제 행동을 기준으로 다시 점검')
+  if (!infrequencyOk) flags.push('일부 문항에서 응답 이탈 확인 · 문항을 끝까지 읽고 다시 점검')
   const reliable = consistencyOk && socialOk && infrequencyOk
 
   return {
@@ -200,10 +200,10 @@ export function scorePersonality(responses) {
 function buildSummary(profile, reliable) {
   const top = [...profile].sort((a, b) => b.score - a.score).slice(0, 2).map(p => p.name)
   const low = [...profile].sort((a, b) => a.score - b.score)[0]
-  let s = `강점 성향은 ${top.join('·')} 입니다. `
-  if (low.band === 'low') s += `${low.name}은(는) 상대적으로 낮게 나타났으니 관련 경험·습관을 보완하면 좋습니다. `
+  let s = `두드러진 성향 · ${top.join(' · ')}. `
+  if (low.band === 'low') s += `점검할 성향 · ${low.name}. 관련 행동과 습관을 돌아보세요. `
   s += reliable
-    ? '응답 신뢰도는 양호합니다. 이 태도를 실제 검사에서도 일관되게 유지하세요.'
-    : '무엇보다 응답 신뢰도부터 점검하세요 — 성향 점수보다 "일관·솔직·성실"이 통과의 열쇠입니다.'
+    ? '응답 신뢰도 양호 · 현재 결과를 자기 이해 자료로 활용하세요.'
+    : '응답 신뢰도 우선 점검 · 성향 점수 해석은 신뢰도를 확인한 뒤 진행하세요.'
   return s
 }

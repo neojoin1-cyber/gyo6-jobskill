@@ -129,7 +129,7 @@ function currentStageSupport(context, guide, materials) {
   const title = String(materials.heading || context.title || context.lessonLabel || guide.focus).replace(/\s+/g, ' ').trim()
   const shortTitle = title.length > 88 ? `${title.slice(0, 88)}…` : title
 
-  if (context.stage === 'concept') {
+  if (['concept', 'intro', 'point', 'recap', 'term', 'tip', 'end'].includes(context.stage)) {
     return {
       kicker: `${context.areaLabel || guide.label} · ${position}`,
       position,

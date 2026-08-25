@@ -218,6 +218,33 @@ function AppInner() {
 
   const trialRole = trialRoleFromEmail(session?.user?.email)
 
+  // 포털 iframe의 load 이벤트는 HTML 문서 수신만 뜻한다. React가 실제
+  // 로그인 또는 역할 화면을 그린 뒤 부모 창에 준비 완료를 알린다.
+  const appReady = updateState !== null && session !== undefined &&
+    (!session || (!profileLoading && Boolean(profile || profileError)))
+  useEffect(() => {
+    if (!appReady || Capacitor.isNativePlatform() || window.parent === window) return undefined
+    let cancelled = false
+    let secondFrame = 0
+    const firstFrame = window.requestAnimationFrame(() => {
+      secondFrame = window.requestAnimationFrame(() => {
+        if (cancelled) return
+        window.parent.postMessage({
+          type: 'SUGAR_SALT_APP_READY',
+          role: profile?.role || 'guest',
+          trialRole: trialRole || null,
+          path: window.location.pathname,
+          at: Date.now(),
+        }, '*')
+      })
+    })
+    return () => {
+      cancelled = true
+      window.cancelAnimationFrame(firstFrame)
+      window.cancelAnimationFrame(secondFrame)
+    }
+  }, [appReady, profile?.role, trialRole])
+
   useEffect(() => {
     if (!session || !trialRole || Capacitor.isNativePlatform()) {
       setTrialExpiresAt(0)

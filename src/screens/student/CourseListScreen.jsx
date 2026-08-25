@@ -13,9 +13,9 @@ const StudyScreen             = lazyChunk(() => import('./StudyScreen.jsx'), 'St
 const InterviewStudyScreen    = lazyChunk(() => import('./InterviewStudyScreen.jsx'), 'InterviewStudyScreen')
 const InterviewCareerLab      = lazyChunk(() => import('./InterviewCareerLab.jsx'), 'InterviewCareerLab')
 const InterviewPracticalScreen = lazyChunk(() => import('./InterviewPracticalScreen.jsx'), 'InterviewPracticalScreen')
-const UniversalLearnScreen    = lazyChunk(() => import('./UniversalLearnScreen.jsx'), 'UniversalLearnScreen')
 const MockAssessmentScreen    = lazyChunk(() => import('./MockAssessmentScreen.jsx'), 'MockAssessmentScreen')
-const TextbookReader          = lazyChunk(() => import('./TextbookReader.jsx'), 'TextbookReader')
+const PersonalityGuidedStudyScreen = lazyChunk(() => import('./PersonalityGuidedStudyScreen.jsx'), 'PersonalityGuidedStudyScreen')
+const CoverGuidedStudyScreen  = lazyChunk(() => import('./CoverGuidedStudyScreen.jsx'), 'CoverGuidedStudyScreen')
 const DiagnosticScreen        = lazyChunk(() => import('./DiagnosticScreen.jsx'), 'DiagnosticScreen')
 const PersonalityTestScreen   = lazyChunk(() => import('./PersonalityTestScreen.jsx'), 'PersonalityTestScreen')
 const JobCommonDiagnosticHub  = lazyChunk(() => import('./JobCommonDiagnosticHub.jsx'), 'JobCommonDiagnosticHub')
@@ -26,10 +26,6 @@ const MOCK_SUPPORTED = new Set(['job-common', 'ncs-basic', 'recruit-written', 'i
 // 잠그고 있어서, 모의가 없는 과목이 생기면 **진단까지 함께 잠긴다.**
 // 지금 값이 같다고 조건을 공유하면 나중에 조용히 틀린다.
 const DIAG_SUPPORTED = new Set(['job-common', 'ncs-basic', 'recruit-written', 'interview', 'cover-letter'])
-
-// 완전교재(리더) 노출 과목. 두 직업공통능력 교재는 서로 다른 공식 기준을
-// 자율학습 화면에서 제공하므로 구형 통합 완전교재로 폴백하지 않는다.
-const TEXTBOOK_READY = new Set(['personality'])
 
 // 고른 목표에 맞는 카드에 붙는 표시. 목표를 고르지 않았으면 아무 데도 안 붙는다.
 const goalPick = { display: 'inline-block', fontSize: 11.5, fontWeight: 800, color: '#166534',
@@ -115,7 +111,7 @@ const CATALOG = [
     tagColor: '#0F766E',
     bg: '#DDF7F0',
     desc: '개념·작성 기준을 익히고 지원처별 제출본까지 완성',
-    meta: '배우기 · 작성 기준 진단 · 실전 문항 평가 · 근거은행 · 작성 · 교사 첨삭',
+    meta: '자율학습 · 진단평가 · 모의고사 · 근거은행 · 작성 · 교사 첨삭',
     type: 'cover',
   },
   {
@@ -126,7 +122,7 @@ const CATALOG = [
     tagColor: '#0F766E',
     bg: '#CCFBF1',
     desc: '인성검사 이해·응답 전략 + 모의검사·결과분석 · 정답 없는 검사 대비',
-    meta: '완전교재 · 진단 · 실전 모의검사',
+    meta: '자율학습 · 진단평가 · 모의고사',
     type: 'personality',
   },
 ]
@@ -209,15 +205,6 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
     )
   }
 
-  // ── 완전교재 리더 모드 ──
-  if (selected && mode === 'textbook') {
-    return (
-      <Lazy onRetry={backToChooser}>
-        <TextbookReader subjectId={course} subjectName={selected.name} onBack={backToChooser} />
-      </Lazy>
-    )
-  }
-
   // ── 진단평가 모드 (자가 성취도 진단) ──
   if (selected && mode === 'diagnostic') {
     if (course === 'cover-letter') {
@@ -282,7 +269,10 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
       )
     }
     if (course === 'cover-letter') {
-      return <Lazy onRetry={backToChooser}><InterviewCareerLab section="cover" initialWorkspace="learn" onLearningContext={onContextChange} onBack={backToChooser} /></Lazy>
+      return <Lazy onRetry={backToChooser}><CoverGuidedStudyScreen onLearningContext={onContextChange} onChallenge={() => setMode('diagnostic')} onBack={backToChooser} /></Lazy>
+    }
+    if (course === 'personality') {
+      return <Lazy onRetry={backToChooser}><PersonalityGuidedStudyScreen onLearningContext={onContextChange} onChallenge={() => setMode('diagnostic')} onBack={backToChooser} /></Lazy>
     }
   }
 
@@ -317,7 +307,7 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
           : course === 'recruit-written'
             ? '지원 분야·문항 수·제한시간 선택\n중간 해설 없는 실제 필기 방식'
             : course === 'cover-letter'
-              ? '10·20문항과 제한시간 선택\n중간 해설 없이 작성 판단 기준 평가'
+              ? '지원 분야·항목·글자 수·제한시간 선택\n실제 자기소개서 1개 항목 작성·자가 점검'
               : '영역·문항 수·제한시간 선택\n중간 해설 없는 실제 시험 방식'
         : '과목별 모의고사 준비 중'
     return (
@@ -338,11 +328,11 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
             <p style={{ fontSize: 12, fontWeight: 800, color: 'var(--text)', marginBottom: 8 }}>원하는 학습 기능을 바로 선택하세요</p>
             <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
               {(isPersonality
-                ? [['📘', '학습방법', '익히기'], ['📊', '인성 진단', '자가진단'], ['📝', '실전 모의', '점검']]
+                ? [['📚', '자율학습', '검사 이해'], ['📊', '진단평가', '응답 점검'], ['📝', '모의고사', '실전 검사']]
                 : course === 'interview'
                   ? [['📚', '자율학습', '배우기·반복'], ['📊', '진단평가', '약점 처방'], ['📝', '모의면접', '답변 점검'], ['🎬', '실전면접', '행동 리허설']]
                   : course === 'cover-letter'
-                    ? [['📚', '개념·작성법', '배우기'], ['📊', '작성 기준', '진단'], ['📝', '실전 문항', '평가'], ['✍️', '실전자기소개서', '직접 완성']]
+                    ? [['📚', '자율학습', '작성법 이해'], ['📊', '진단평가', '기준 점검'], ['📝', '모의고사', '제한 작성'], ['✍️', '실전자기소개서', '직접 완성']]
                   : [['📚', '자율학습', '배우기·반복'], ['📊', '진단평가', '약점 처방'], ['📝', '모의고사', '실전 재현']]
               ).map(([icon, a, b]) => (
                 <div key={a} style={{ display: 'flex', alignItems: 'center', gap: 2, flex: 1 }}>
@@ -398,26 +388,6 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
 
           <p className="section-title">학습 방식 선택</p>
 
-          {TEXTBOOK_READY.has(course) && (
-            <button onClick={() => setMode('textbook')}
-              style={{
-                width: '100%', textAlign: 'left', background: 'var(--card)',
-                border: '2px solid var(--primary)', borderRadius: 14,
-                padding: '16px', marginBottom: 12, cursor: 'pointer',
-                display: 'flex', alignItems: 'center', gap: 14,
-              }}>
-              <div style={{ width: 48, height: 48, borderRadius: 12, flexShrink: 0, background: '#EDE9FE', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>📘</div>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <p style={{ fontWeight: 700, fontSize: 15, marginBottom: 3 }}>
-                  <span style={stepBadge}>선택 · 익히기</span>학습방법
-                </p>
-                <CompactText text={'검사 원리·응답 전략 학습\n처음이면 여기부터'} maxItemChars={68} style={{ fontSize: 12, color: 'var(--text-muted)' }} />
-              </div>
-              <span style={{ color: 'var(--text-muted)', fontSize: 20, flexShrink: 0 }}>›</span>
-            </button>
-          )}
-
-          {!isPersonality && (
           <button onClick={() => setMode('study')}
             style={{
               width: '100%', textAlign: 'left', background: 'var(--card)',
@@ -428,15 +398,16 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
             <div style={{ width: 48, height: 48, borderRadius: 12, flexShrink: 0, background: '#EDE9FE', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>📚</div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <p style={{ fontWeight: 700, fontSize: 15, marginBottom: 3 }}>
-                <span style={stepBadge}>선택 · 학습</span>{course === 'cover-letter' ? '자기소개서 배우기' : '자율학습'}
+                <span style={stepBadge}>선택 · 학습</span>자율학습
               </p>
-              <CompactText text={course === 'cover-letter'
-                ? '개념·질문 유형·항목별 작성법 학습\n좋은 예시·감점 예시·내 경험 찾는 법'
+              <CompactText text={isPersonality
+                ? '검사 원리·문항 형식·응답 습관 학습\n정답 만들기 없이 신뢰도·실전 루틴 성찰'
+                : course === 'cover-letter'
+                ? '질문 의도·항목별 작성법 학습\n좋은 예시·감점 예시·내 경험 찾는 법'
                 : '요점정리로 개념 학습\n문제 풀이로 반복\n오답노트로 복습 · 처음이면 여기부터'} maxItemChars={68} style={{ fontSize: 12, color: 'var(--text-muted)' }} />
             </div>
             <span style={{ color: 'var(--text-muted)', fontSize: 20, flexShrink: 0 }}>›</span>
           </button>
-          )}
 
           <button onClick={() => diagReady && setMode('diagnostic')}
             disabled={!diagReady}
@@ -451,7 +422,7 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
             <div style={{ width: 48, height: 48, borderRadius: 12, flexShrink: 0, background: '#E0E7FF', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>📊</div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <p style={{ fontWeight: 700, fontSize: 15, marginBottom: 3 }}>
-                <span style={{ ...stepBadge, background: '#E0E7FF', color: '#4338CA' }}>선택 · 진단</span>{isPersonality ? '인성 진단' : course === 'cover-letter' ? '작성 기준 진단' : '진단평가'}
+                <span style={{ ...stepBadge, background: '#E0E7FF', color: '#4338CA' }}>선택 · 진단</span>진단평가
                 {course === 'job-common' && goal && ASSESS_GOALS[goal].recommend === 'diagnostic' && <span style={goalPick}>내 목표에 맞음</span>}
               </p>
               <CompactText text={diagnosticCopy} maxItemChars={68} style={{ fontSize: 12, color: 'var(--text-muted)' }} />
@@ -472,7 +443,7 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
             <div style={{ width: 48, height: 48, borderRadius: 12, flexShrink: 0, background: '#DBEAFE', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>📝</div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <p style={{ fontWeight: 700, fontSize: 15, marginBottom: 3 }}>
-                <span style={{ ...stepBadge, background: '#DBEAFE', color: '#1D4ED8' }}>선택 · 실전</span>{isPersonality ? '실전 모의검사' : course === 'interview' ? '모의면접' : course === 'cover-letter' ? '실전 문항 평가' : '모의고사'}
+                <span style={{ ...stepBadge, background: '#DBEAFE', color: '#1D4ED8' }}>선택 · 실전</span>{course === 'interview' ? '모의면접' : '모의고사'}
                 {course === 'job-common' && goal && ASSESS_GOALS[goal].recommend === 'mock' && <span style={goalPick}>내 목표에 맞음</span>}
                 {!mockReady && <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-muted)', marginLeft: 6 }}>준비 중</span>}
               </p>

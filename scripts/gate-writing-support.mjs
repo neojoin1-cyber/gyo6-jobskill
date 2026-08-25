@@ -6,10 +6,13 @@ const checks = [
   ['근거은행 선택·작성 지원', 'src/screens/student/InterviewCareerLab.jsx', ['1. 전공·분야', '첫 문장 고르기', '근거은행에서 가져오기']],
   ['빈칸 작성 지원', 'src/screens/student/InterviewCareerLab.jsx', ['막막하면 한 칸씩 시작', '맞춤 구조 예시']],
   ['자기소개서 글자 수 지원', 'src/screens/student/InterviewCareerLab.jsx', ['권장 최소', '최대 글자 수', '공고 글자 수', 'cover-document-answer-box']],
-  ['자기소개서관 독립 학습 흐름', 'src/screens/student/CourseListScreen.jsx', ["id: 'cover-letter'", '자기소개서 배우기', '작성 기준 진단', '실전 문항 평가', 'initialWorkspace="diagnostic"', 'initialWorkspace="mock"']],
+  ['자기소개서관 독립 학습 흐름', 'src/screens/student/CourseListScreen.jsx', ["id: 'cover-letter'", 'CoverGuidedStudyScreen', '진단평가', '모의고사', 'initialWorkspace="diagnostic"', 'initialWorkspace="mock"']],
+  ['과목 공통 자율학습 구조', 'src/screens/student/GuidedStudyScreen.jsx', ['StudyModeToggle', 'StudyModeStrip', 'StudySummary', '학습 범위', '단원 선택', 'program.challengeLabel', "kind: 'summary'"]],
+  ['인성검사 공통 자율학습 연결', 'src/screens/student/PersonalityGuidedStudyScreen.jsx', ['GuidedStudyScreen', 'PERSONALITY_STUDY_PROGRAM']],
+  ['자기소개서 공통 자율학습 연결', 'src/screens/student/CoverGuidedStudyScreen.jsx', ['GuidedStudyScreen', 'COVER_STUDY_PROGRAM']],
   ['실전자기소개서 독립 모드', 'src/screens/student/CourseListScreen.jsx', ['실전자기소개서', "setMode('cover-practical')", 'initialWorkspace="practical"']],
   ['실전자기소개서 완성 동선', 'src/screens/student/InterviewCareerLab.jsx', ['4단계 완성 경로', '내 근거 준비', '실제 문항 구성', '완성·첨삭']],
-  ['자기소개서 진단·실전 문항 평가', 'src/screens/student/CoverLetterAssessment.jsx', ['COVER_DIAGNOSTIC_QUESTIONS', 'COVER_MOCK_QUESTIONS', '작성 기준 진단', '실전 문항 평가', '부족한 기준 학습']],
+  ['자기소개서 진단·실전 작성 모의', 'src/screens/student/CoverLetterAssessment.jsx', ['COVER_DIAGNOSTIC_QUESTIONS', '자기소개서 모의고사', '실제 지원 문항 1개', '글자 수', '제한 시간', '부족한 기준 학습']],
   ['자기소개서·면접 답변 연결', 'src/screens/student/InterviewCareerLab.jsx', ['coverLinkSignature', '최신 내용 다시 연결', "documentType: 'interview-script'", '연결된 자기소개서 원문', 'coverItems: linkedCoverItems']],
   ['면접 세 답변 연결', 'src/screens/student/InterviewCareerLab.jsx', ["closing: { label: '마지막 한마디'", '세 답변 근거 일치', '세 답변 교사 첨삭 요청']],
   ['면접 답변 구조 지원', 'src/screens/student/InterviewStudyScreen.jsx', ['답변 구조 힌트', '위 구조 힌트를 참고해']],
@@ -21,6 +24,10 @@ const checks = [
   ['학생 답장 빠른 선택', 'src/screens/student/NotificationsScreen.jsx', ['QUICK_REPLIES', 'setReplyBody(text)']],
   ['교사 메시지 빠른 시작', 'src/screens/teacher/TeacherMessageScreen.jsx', ['TEMPLATES', 'applyTemplate(template)']],
   ['교사 첨삭 빠른 평가', 'src/screens/teacher/CoverLetterReviewScreen.jsx', ['빠른 평가', '첨삭 유형 고르기', '전체 조언']],
+  ['공통 학습 차시별 교사 지도', 'src/screens/teacher/TeacherLearningPreview.jsx', ["!['area-choice', 'lesson-choice'].includes", '현재 단계 지도']],
+  ['웹 체험 준비 완료 신호', 'src/App.jsx', ['SUGAR_SALT_APP_READY', 'requestAnimationFrame', 'trialRole']],
+  ['오래된 청크 복구 화면', 'src/lib/lazyChunk.js', ['chunk-recovery-screen', '최신 학습 화면', 'app_retry']],
+  ['첫 화면 공용 UI 경량 분리', 'vite.config.js', ["name: 'compact-ui'", 'codeSplitting', 'includeDependenciesRecursively: false']],
 ]
 
 const failures = []
@@ -37,6 +44,9 @@ const duplicatedInnerRoutes = [
   "setWorkspace('diagnostic')",
   "setWorkspace('mock')",
 ]
+if (courseSource.includes('TextbookReader') || courseSource.includes("setMode('textbook')")) {
+  failures.push('인성검사 자율학습: 공통 학습 구조를 벗어나는 구형 전체화면 교재가 남음')
+}
 if (duplicatedInnerRoutes.some(needle => careerSource.includes(needle))) {
   failures.push('자기소개서 메뉴 위계: 배우기 내부에 진단·평가 전환이 다시 들어감')
 }

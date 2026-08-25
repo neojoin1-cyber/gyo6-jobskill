@@ -1,4 +1,13 @@
-import { lazy } from 'react'
+import { createElement, lazy } from 'react'
+
+function ChunkRecoveryScreen() {
+  return createElement('div', { className: 'chunk-recovery-screen', role: 'status' },
+    createElement('div', { className: 'spinner' }),
+    createElement('strong', null, '최신 학습 화면을 연결하고 있어요'),
+    createElement('p', null, '잠시 뒤 자동으로 다시 열립니다.'),
+    createElement('button', { type: 'button', onClick: () => window.location.reload() }, '지금 다시 열기'),
+  )
+}
 
 /**
  * 화면 청크를 늦게 불러오되, **실패하면 스스로 회복한다.**
@@ -36,9 +45,14 @@ export function lazyChunk(load, name = 'chunk') {
             const keys = await caches?.keys?.()
             await Promise.all((keys || []).map(k => caches.delete(k)))
           } catch { /* 지원하지 않는 브라우저 */ }
-          window.location.reload()
-          // 새로고침이 시작될 때까지 화면을 비워 둔다
-          return { default: () => null }
+          // 교체 중에도 흰 화면을 반환하지 않는다. 사용자는 복구 상태와
+          // 수동 재시도 버튼을 보고, 짧은 프레임 뒤 최신 index로 이동한다.
+          window.setTimeout(() => {
+            const url = new URL(window.location.href)
+            url.searchParams.set('app_retry', Date.now().toString(36))
+            window.location.replace(url.toString())
+          }, 120)
+          return { default: ChunkRecoveryScreen }
         }
         throw err
       }

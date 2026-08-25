@@ -24,7 +24,9 @@ export default function TeacherLearningPreview({ profile, initialSubject = null,
   const [deepLink, setDeepLink] = useState(initialLink)
   const [learningContext, setLearningContext] = useState({ subject: initialLink?.subject || initialSubject, mode: null })
   const [coachOpen, setCoachOpen] = useState(false)
-  const contextReady = ['concept', 'question'].includes(learningContext.stage)
+  const contextReady = Boolean(
+    learningContext.stage && !['area-choice', 'lesson-choice'].includes(learningContext.stage),
+  )
 
   function openStudy(subject) {
     setDeepLink(campusCourseTarget(subject))

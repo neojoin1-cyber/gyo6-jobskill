@@ -105,6 +105,23 @@ function strategyFor(value) {
 
 function toSampleQuestion(question, point) {
   if (!question) return null
+  if (question.type === 'reflection') {
+    return {
+      stem: plain(question.stem || question.question),
+      context: plain(question.context),
+      choices: (question.choices || []).map((choice, index) => ({
+        value: String.fromCharCode(65 + index),
+        text: plain(choice),
+      })),
+      answer: null,
+      type: 'reflection',
+      feedback: plain(question.feedback || question.explanation),
+      explanation: plain(question.feedback || question.explanation),
+      format: '응답 기준 성찰',
+      thinkingSteps: ['문장이 묻는 행동을 한 문장으로 정리', '좋아 보이는 답 대신 평소 행동 기준 확인', '선택 이유를 실제 경험과 연결'],
+      sourceQuestion: question,
+    }
+  }
   if (question.isInterview) {
     return {
       stem: plain(question.stem || question.question),
@@ -346,6 +363,8 @@ const COURSE_INTROS = {
   ncs: '고용노동부·한국산업인력공단 NCS 직업기초능력의 개념과 직무 적용 원리를 익힌 뒤 문제로 확인합니다.',
   recruitment: 'NCS 주과정을 바탕으로 지원 분야에서 추가로 요구되는 채용필기 심화 내용을 학습합니다.',
   interview: '면접 질문의 의도와 답변 구조를 이해하고, 자신의 경험으로 직접 말하고 고쳐 봅니다.',
+  personality: '정답을 만들지 않고 검사 형식과 자신의 평소 행동 기준을 이해한 뒤 안정적인 응답 습관을 익힙니다.',
+  'cover-letter': '자기소개서 질문의 의도와 작성 구조를 이해하고, 자신의 사실 근거로 직접 작성합니다.',
 }
 
 /**

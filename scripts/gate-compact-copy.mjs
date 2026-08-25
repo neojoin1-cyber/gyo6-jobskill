@@ -24,6 +24,11 @@ for (const example of examples) {
   }
 }
 
+const ordinaryAnswerSentence = compactTextLines('정답을 맞히는 시험이 아니라 평소 행동 경향을 살피는 자료입니다.')
+if (ordinaryAnswerSentence[0]?.text !== '정답을 맞히는 시험이 아니라 평소 행동 경향을 살피는 자료임') {
+  fail('정답으로 시작하는 일반 문장의 앞말이 잘림')
+}
+
 const htmlResult = compactInstructionHtml('<table><tr><td>보존</td></tr></table><p>첫째, 판단을 보류합니다. 둘째, 대안을 충분히 모읍니다.</p>')
 if (!htmlResult.includes('<table>') || !htmlResult.includes('compact-copy')) {
   fail('교사용 덱에서 표를 보존하며 문단을 목록으로 바꾸지 못함')

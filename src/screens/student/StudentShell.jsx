@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { Suspense, useState, useEffect, useRef } from 'react'
 import { useAuth } from '../../App.jsx'
 import { supabase } from '../../lib/supabase.js'
 import { pushBack, popBack } from '../../lib/backButton.js'
@@ -12,13 +12,19 @@ import {
   UserCircle,
 } from '@phosphor-icons/react'
 import StudentCampusHome     from './StudentCampusHome.jsx'
-import MissionScreen         from './MissionScreen.jsx'
-import RankingScreen         from './RankingScreen.jsx'
-import NotificationsScreen   from './NotificationsScreen.jsx'
-import CourseListScreen      from './CourseListScreen.jsx'
-import WrongAnswerScreen     from './WrongAnswerScreen.jsx'
 import { fetchMyClassSession, startPresence, stopPresence, setFocusListener } from '../../lib/presence.js'
 import { campusCourseTarget } from '../../lib/studentCampusRoutes.js'
+import { lazyChunk } from '../../lib/lazyChunk.js'
+
+const MissionScreen = lazyChunk(() => import('./MissionScreen.jsx'), 'MissionScreen')
+const RankingScreen = lazyChunk(() => import('./RankingScreen.jsx'), 'RankingScreen')
+const NotificationsScreen = lazyChunk(() => import('./NotificationsScreen.jsx'), 'NotificationsScreen')
+const CourseListScreen = lazyChunk(() => import('./CourseListScreen.jsx'), 'CourseListScreen')
+const WrongAnswerScreen = lazyChunk(() => import('./WrongAnswerScreen.jsx'), 'WrongAnswerScreen')
+
+function ScreenLoading() {
+  return <div className="screen shell-screen-loading"><div className="spinner" /><p>화면 준비 중</p></div>
+}
 
 /** ?open=study&subject=…&area=…&lesson= 를 읽는다. 없으면 null. */
 function readDeepLink() {
@@ -126,11 +132,13 @@ export default function StudentShell() {
 
   if (overlay?.screen === 'mission') {
     return (
-      <MissionScreen
-        mission={overlay.mission}
-        onBack={closeOverlay}
-        onViewWrongAnswers={() => { closeOverlay(); setTab('wrong') }}
-      />
+      <Suspense fallback={<ScreenLoading />}>
+        <MissionScreen
+          mission={overlay.mission}
+          onBack={closeOverlay}
+          onViewWrongAnswers={() => { closeOverlay(); setTab('wrong') }}
+        />
+      </Suspense>
     )
   }
 
@@ -208,14 +216,16 @@ export default function StudentShell() {
           />
         )}
 
-        {tab === 'study' && <CourseListScreen
-          key={deepLink ? [deepLink.subject, deepLink.mode ?? 'choose', deepLink.area, deepLink.lesson, deepLink.questionId, deepLink.index].join(':') : 'browse'}
-          deepLink={deepLink}
-          onBack={() => { setFollowLink(null); setTab('home') }} />}
+        <Suspense fallback={<ScreenLoading />}>
+          {tab === 'study' && <CourseListScreen
+            key={deepLink ? [deepLink.subject, deepLink.mode ?? 'choose', deepLink.area, deepLink.lesson, deepLink.questionId, deepLink.index].join(':') : 'browse'}
+            deepLink={deepLink}
+            onBack={() => { setFollowLink(null); setTab('home') }} />}
 
-        {tab === 'wrong'         && <WrongAnswerScreen profile={profile} />}
-        {tab === 'ranking'       && <RankingScreen />}
-        {tab === 'notifications' && <NotificationsScreen />}
+          {tab === 'wrong'         && <WrongAnswerScreen profile={profile} />}
+          {tab === 'ranking'       && <RankingScreen />}
+          {tab === 'notifications' && <NotificationsScreen />}
+        </Suspense>
       </div>
 
       {!immersive && (

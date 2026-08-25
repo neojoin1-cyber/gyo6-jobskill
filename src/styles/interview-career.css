@@ -658,3 +658,67 @@
   .cover-selected-questions article > header { grid-template-columns: 26px minmax(0,1fr); }
   .cover-question-order { grid-column: 2; justify-self: end; }
 }
+.cover-writing-mock-setup,
+.cover-writing-mock-run,
+.cover-writing-mock-result { padding: 14px; color: #172033; }
+.cover-writing-mock-setup > header { padding: 16px; border-left: 5px solid #1769f6; background: #eef6ff; }
+.cover-writing-mock-setup > header span { color: #1769f6; font-size: 10px; font-weight: 900; }
+.cover-writing-mock-setup > header h3 { margin: 4px 0 6px; font-size: 21px; }
+.cover-writing-mock-setup > header p { color: #52647a; font-size: 12.5px; line-height: 1.55; }
+.cover-writing-mock-steps { margin: 14px 0; display: flex; align-items: center; justify-content: center; gap: 6px; color: #52647a; font-size: 11px; font-weight: 800; }
+.cover-writing-mock-steps span { display: flex; align-items: center; gap: 4px; }
+.cover-writing-mock-steps b { width: 21px; height: 21px; display: grid; place-items: center; border-radius: 50%; background: #e8f1ff; color: #1769f6; }
+.cover-writing-mock-steps i { width: 18px; height: 1px; background: #cbd8e6; }
+.cover-writing-mock-setup fieldset { margin: 0 0 12px; padding: 0; border: 0; }
+.cover-writing-mock-setup legend,
+.cover-writing-mock-field > span { display: block; margin-bottom: 7px; color: #334155; font-size: 12px; font-weight: 900; }
+.cover-writing-mock-field { display: block; margin-bottom: 12px; }
+.cover-writing-mock-field select { width: 100%; min-height: 44px; padding: 0 10px; border: 1px solid #cbd8e6; border-radius: 8px; background: #fff; color: #172033; font-size: 13px; }
+.cover-writing-mock-preview { margin: 14px 0; padding: 13px; border-left: 5px solid #14977e; background: #effbf7; }
+.cover-writing-mock-preview span { color: #087f69; font-size: 11px; font-weight: 900; }
+.cover-writing-mock-preview p { margin: 6px 0 8px; font-size: 14px; font-weight: 800; line-height: 1.55; }
+.cover-writing-mock-preview small { color: #52647a; font-size: 11px; line-height: 1.5; }
+.cover-writing-mock-run > header { display: flex; align-items: center; gap: 10px; }
+.cover-writing-mock-run > header > div { flex: 1; min-width: 0; }
+.cover-writing-mock-run > header span,
+.cover-writing-mock-run > header b { display: block; }
+.cover-writing-mock-run > header span { color: #16806f; font-size: 10px; font-weight: 900; }
+.cover-writing-mock-run > header b { margin-top: 2px; font-size: 17px; }
+.cover-writing-mock-run time { padding: 7px 9px; display: flex; align-items: center; gap: 5px; border-radius: 8px; background: #e8f1ff; color: #145ac7; font-size: 13px; font-weight: 900; }
+.cover-writing-mock-run time.is-ending { background: #fff2d6; color: #9a5b00; }
+.cover-writing-mock-progress { height: 5px; margin: 10px 0 14px; overflow: hidden; border-radius: 999px; background: #e1e7ef; }
+.cover-writing-mock-progress i { display: block; height: 100%; border-radius: inherit; background: #14977e; }
+.cover-writing-mock-prompt { padding: 13px; border-left: 5px solid #1769f6; background: #eef6ff; }
+.cover-writing-mock-prompt > span { color: #1769f6; font-size: 10px; font-weight: 900; }
+.cover-writing-mock-prompt h3 { margin: 5px 0 9px; font-size: 15px; line-height: 1.55; }
+.cover-writing-mock-prompt div { display: flex; flex-wrap: wrap; gap: 5px; }
+.cover-writing-mock-prompt em { padding: 3px 7px; border-radius: 999px; background: #fff; color: #315f9b; font-size: 10.5px; font-style: normal; font-weight: 800; }
+.cover-writing-mock-editor { display: block; margin: 14px 0; }
+.cover-writing-mock-editor > span { margin-bottom: 7px; display: flex; justify-content: space-between; color: #334155; font-size: 12px; font-weight: 900; }
+.cover-writing-mock-editor b.is-short { color: #a96800; }
+.cover-writing-mock-editor b.is-ready { color: #087f69; }
+.cover-writing-mock-editor b.is-over { color: #c24141; }
+.cover-writing-mock-editor textarea { width: 100%; min-height: clamp(300px, 55vh, 560px); padding: 14px; resize: vertical; border: 1px solid #cbd8e6; border-radius: 8px; background: #fff; color: #172033; font: inherit; font-size: 14px; line-height: 1.75; }
+.cover-writing-mock-result > header { padding: 14px; display: flex; align-items: center; gap: 12px; border-left: 5px solid #14977e; background: #effbf7; }
+.cover-writing-mock-result > header.is-review { border-left-color: #e37b32; background: #fff5eb; }
+.cover-writing-mock-result > header > svg { width: 32px; height: 32px; color: #14977e; }
+.cover-writing-mock-result > header span,
+.cover-writing-mock-result > header strong,
+.cover-writing-mock-result > header p { display: block; }
+.cover-writing-mock-result > header span { font-size: 11px; font-weight: 900; }
+.cover-writing-mock-result > header strong { margin: 2px 0; font-size: 24px; }
+.cover-writing-mock-result > header p { color: #52647a; font-size: 11px; }
+.cover-writing-mock-result > article { margin: 12px 0; padding: 13px; border: 1px solid #d9e2ec; background: #fff; }
+.cover-writing-mock-result > article span { color: #1769f6; font-size: 10px; font-weight: 900; }
+.cover-writing-mock-result > article h3 { margin: 5px 0 10px; font-size: 14px; line-height: 1.5; }
+.cover-writing-mock-result > article p { max-height: 220px; overflow-y: auto; color: #334155; font-size: 13px; line-height: 1.7; white-space: pre-wrap; }
+.cover-writing-rubric { display: grid; gap: 6px; }
+.cover-writing-rubric > div { min-height: 43px; padding: 8px 10px; display: flex; align-items: center; gap: 8px; border: 1px solid #d9e2ec; border-radius: 8px; background: #fff; font-size: 12px; font-weight: 800; }
+.cover-writing-rubric svg { width: 18px; height: 18px; }
+.cover-writing-rubric .is-ok { color: #087f69; }
+.cover-writing-rubric .is-missing { color: #b45309; }
+.cover-writing-coach { margin-top: 12px; padding: 13px; border-left: 5px solid #1769f6; background: #eef6ff; }
+.cover-writing-coach > b { font-size: 12px; }
+.cover-writing-coach ol { margin: 8px 0; padding-left: 20px; }
+.cover-writing-coach li,
+.cover-writing-coach p { color: #334155; font-size: 12px; line-height: 1.55; }

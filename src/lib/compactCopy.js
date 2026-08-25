@@ -109,7 +109,9 @@ export function compactTextLines(value, { maxItemChars = 82 } = {}) {
     }
     line = line
       .replace(/^해설\s*[:：]\s*/, '')
-      .replace(/^정답(?:은|:)?\s*["'“‘]?(.+?)["'”’]?(?:입니다|이다|임)[.!]?$/u, '$1')
+      // "정답은 D입니다" 같은 해설 표지만 걷어낸다. "정답을 맞히는 시험"처럼
+      // 정답으로 시작하는 일반 문장은 건드리지 않는다.
+      .replace(/^정답(?:은|[:：])\s*["'“‘]?(.+?)["'”’]?(?:입니다|이다|임)[.!]?$/u, '$1')
       .trim()
     for (const [index, part] of splitLong(line, maxItemChars).entries()) {
       const textPart = noteEnding(part)

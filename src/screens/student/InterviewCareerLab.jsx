@@ -525,8 +525,8 @@ function CoverLetterBuilder({ initialWorkspace = 'learn', onLearningContext }) {
     : workspace === 'diagnostic'
       ? { eyebrow: 'WRITING CHECK-UP', title: '작성 기준 진단', description: '질문 의도·근거·구조·사실성 중 부족한 기준을 찾음.' }
       : workspace === 'mock'
-        ? { eyebrow: 'WRITING PRACTICE TEST', title: '실전 문항 평가', description: '중간 해설 없이 자기소개서 판단 기준을 문제로 점검함.' }
-        : { eyebrow: 'WRITING CLASS', title: '자기소개서 배우기', description: '개념부터 자주 묻는 항목별 작성법까지 단원 순서로 익힘.' }
+        ? { eyebrow: 'WRITING SIMULATION', title: '자기소개서 모의고사', description: '실제 지원 문항을 제한시간과 글자 수에 맞춰 직접 작성함.' }
+        : { eyebrow: 'WRITING CLASS', title: '자기소개서 자율학습', description: '개념부터 자주 묻는 항목별 작성법까지 단원 순서로 익힘.' }
 
   useEffect(() => {
     loadHistory()
@@ -741,7 +741,7 @@ function CoverLetterBuilder({ initialWorkspace = 'learn', onLearningContext }) {
       {workspace === 'practical' && <CoverPracticalHome evidenceCount={evidenceBank.length} questionCount={questionItems.length} completed={completed} total={COVER_LETTER_FIELDS.length} onEvidence={() => setWorkspace('evidence')} onWrite={() => setWorkspace('write')} />}
       {workspace === 'learn' && <CoverLearningLibrary onLearningContext={onLearningContext} />}
       {workspace === 'diagnostic' && <CoverLetterAssessment mode="diagnostic" onGoLearn={() => setWorkspace('learn')} />}
-      {workspace === 'mock' && <CoverLetterAssessment mode="mock" onGoLearn={() => setWorkspace('learn')} />}
+      {workspace === 'mock' && <CoverLetterAssessment mode="mock" onGoLearn={() => setWorkspace('learn')} onGoPractical={() => setWorkspace('practical')} />}
       {workspace === 'evidence' && <EvidenceWorkbench items={evidenceBank} onSave={saveEvidence} onDelete={deleteEvidence} onUse={useEvidence} />}
       {workspace === 'write' && <>
       <div className="cover-progress"><div><strong>{sector.headline}</strong><span>{completed}/{COVER_LETTER_FIELDS.length}</span></div><div><i style={{ width: `${pct}%` }} /></div><p>자동 저장됨 · 한 단계씩 점검한 뒤 완성본으로 연결함</p></div>
