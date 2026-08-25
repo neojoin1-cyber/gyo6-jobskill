@@ -11,10 +11,15 @@ const checks = [
   ['인성검사 공통 자율학습 연결', 'src/screens/student/PersonalityGuidedStudyScreen.jsx', ['GuidedStudyScreen', 'PERSONALITY_STUDY_PROGRAM']],
   ['자기소개서 공통 자율학습 연결', 'src/screens/student/CoverGuidedStudyScreen.jsx', ['GuidedStudyScreen', 'COVER_STUDY_PROGRAM']],
   ['실전자기소개서 독립 모드', 'src/screens/student/CourseListScreen.jsx', ['실전자기소개서', "setMode('cover-practical')", 'initialWorkspace="practical"']],
-  ['실전자기소개서 완성 동선', 'src/screens/student/InterviewCareerLab.jsx', ['4단계 완성 경로', '내 근거 준비', '실제 문항 구성', '완성·첨삭']],
+  ['실전자기소개서 다중 지원 동선', 'src/screens/student/InterviewCareerLab.jsx', ['작성실', '나의 근거', '진행 현황', '지원서 보관함', '새 지원서', '채용공고·회차 이름', '근거로 새 지원서']],
   ['자기소개서 진단·실전 작성 모의', 'src/screens/student/CoverLetterAssessment.jsx', ['COVER_DIAGNOSTIC_QUESTIONS', '자기소개서 모의고사', '실제 지원 문항 1개', '글자 수', '제한 시간', '부족한 기준 학습']],
+  ['자기소개서 실전 보기 균형', 'src/lib/coverAssessmentBank.js', ['practicalQuestion', 'isPractical: true', 'choices.splice(answer, 0, correct)', '공통 기준표를 제안했습니다']],
+  ['자기소개서 실전 고쳐쓰기', 'src/lib/coverStudyProgram.js', ["type: 'writing-practice'", '실전 고쳐쓰기', '감점 초안의 문제', '근거 재확인']],
+  ['면접 실전 상황 판단', 'src/lib/interviewLearning.js', ['CATEGORY_SITUATIONS', 'SHARED_SITUATIONS', 'isPractical: true', '현재 공식 채용공고']],
+  ['실전 과목 전용 학습 언어', 'src/screens/student/StudySummary.jsx', ['자기소개서 작성 실전', '면접 답변 실전', '용어 암기 없음', 'data-learning-question="writing-practice"']],
   ['자기소개서·면접 답변 연결', 'src/screens/student/InterviewCareerLab.jsx', ['coverLinkSignature', '최신 내용 다시 연결', "documentType: 'interview-script'", '연결된 자기소개서 원문', 'coverItems: linkedCoverItems']],
   ['면접 세 답변 연결', 'src/screens/student/InterviewCareerLab.jsx', ["closing: { label: '마지막 한마디'", '세 답변 근거 일치', '세 답변 교사 첨삭 요청']],
+  ['면접 다중 답변 세트', 'src/screens/student/InterviewCareerLab.jsx', ['INTERVIEW_SCRIPT_PORTFOLIO_KEY', '면접 답변 세트', '새 답변 세트', 'sourceCoverApplicationId', '이 답변의 기준 자기소개서']],
   ['면접 답변 구조 지원', 'src/screens/student/InterviewStudyScreen.jsx', ['답변 구조 힌트', '위 구조 힌트를 참고해']],
   ['학생 실전면접 리허설', 'src/screens/student/InterviewPracticalScreen.jsx', ['면접 동선 9단계', '전 과정 리허설 시작', '고정 예절 암기 금지']],
   ['교사 실전면접 코칭', 'src/screens/teacher/TeacherInterviewPracticeScreen.jsx', ['학생 관찰표', '지도 방법', '학생에게 피드백']],
@@ -40,6 +45,8 @@ for (const [name, file, needles] of checks) {
 
 const careerSource = fs.readFileSync('src/screens/student/InterviewCareerLab.jsx', 'utf8')
 const courseSource = fs.readFileSync('src/screens/student/CourseListScreen.jsx', 'utf8')
+const coverStudySource = fs.readFileSync('src/lib/coverStudyProgram.js', 'utf8')
+const interviewLearningSource = fs.readFileSync('src/lib/interviewLearning.js', 'utf8')
 const duplicatedInnerRoutes = [
   "setWorkspace('diagnostic')",
   "setWorkspace('mock')",
@@ -51,10 +58,14 @@ if (duplicatedInnerRoutes.some(needle => careerSource.includes(needle))) {
   failures.push('자기소개서 메뉴 위계: 배우기 내부에 진단·평가 전환이 다시 들어감')
 }
 if (!careerSource.includes('{practicalFlow && <nav className="cover-workspace-tabs"') ||
-    !careerSource.includes('준비 현황') ||
+    !careerSource.includes('진행 현황') ||
     !careerSource.includes('나의 근거') ||
     !careerSource.includes('작성실')) {
   failures.push('실전자기소개서 메뉴 위계: 근거·작성 도구가 실전 흐름에만 묶이지 않음')
+}
+const practicalTabs = careerSource.slice(careerSource.indexOf('aria-label="실전자기소개서 메뉴"'), careerSource.indexOf('aria-label="실전자기소개서 메뉴"') + 900)
+if (!(practicalTabs.indexOf('작성실') < practicalTabs.indexOf('나의 근거') && practicalTabs.indexOf('나의 근거') < practicalTabs.indexOf('진행 현황'))) {
+  failures.push('실전자기소개서 메뉴 순서: 작성실 → 나의 근거 → 진행 현황 순서가 아님')
 }
 if (!careerSource.includes("const assessmentFlow = workspace === 'diagnostic' || workspace === 'mock'") ||
     !careerSource.includes('{!assessmentFlow && <section className="cover-brand-panel">')) {
@@ -63,6 +74,12 @@ if (!careerSource.includes("const assessmentFlow = workspace === 'diagnostic' ||
 if (!courseSource.includes("setMode('cover-practical')") ||
     !courseSource.includes('initialWorkspace="practical"')) {
   failures.push('자기소개서 메뉴 위계: 실전자기소개서 상위 진입점이 없음')
+}
+if (coverStudySource.includes("term: '평가 의도'") || coverStudySource.includes("type: 'choice'")) {
+  failures.push('자기소개서 자율학습: 용어 맞히기 또는 선다형 출제 구조가 다시 들어감')
+}
+if (interviewLearningSource.includes('const questions = quizQuestions.filter')) {
+  failures.push('면접 자율학습: 기존 개념 퀴즈 원본을 실전 상황 판단에 다시 사용함')
 }
 if (!failures.length) console.log('PASS 자기소개서 상·하위 메뉴 중복 방지')
 

@@ -84,7 +84,11 @@ export default function GuidedStudyScreen({ program, onBack, onChallenge, onLear
           <span>SELF STUDY</span>
           <h2>{program.title}</h2>
           <CompactText text={program.description} maxItemChars={72} />
-          <ol><li><span>1</span>학습 범위 선택</li><li><span>2</span>개념·상황·사례 확인</li><li><span>3</span>진단으로 이해 확인</li></ol>
+          <ol>
+            <li><span>1</span>학습 범위 선택</li>
+            <li><span>2</span>{program.subjectId === 'cover-letter' ? '문항·감점 초안·작성 실습' : '개념·상황·사례 확인'}</li>
+            <li><span>3</span>{program.subjectId === 'cover-letter' ? '실전 작성 진단으로 확인' : '진단으로 이해 확인'}</li>
+          </ol>
         </section>
         <p className="guided-study-section-title">학습 범위 · {program.areas.length}개</p>
         <div className="guided-study-list">{program.areas.map((item, index) => {

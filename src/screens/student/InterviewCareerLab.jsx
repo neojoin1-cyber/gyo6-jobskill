@@ -4,6 +4,7 @@ import {
   ArrowDown,
   ArrowSquareOut,
   ArrowUp,
+  Archive,
   Bank,
   BookmarkSimple,
   BookOpen,
@@ -12,10 +13,12 @@ import {
   ChatCircleText,
   CheckCircle,
   ClipboardText,
+  Copy,
   DownloadSimple,
   Eye,
   Factory,
   FileText,
+  FolderOpen,
   MagnifyingGlass,
   NotePencil,
   PaperPlaneTilt,
@@ -77,6 +80,91 @@ const COVER_LENGTH_PRESETS = [
   { minLength: 700, limit: 1000, label: '1000자' },
   { minLength: 1050, limit: 1500, label: '1500자' },
 ]
+
+const COVER_PORTFOLIO_KEY = 'iv_cover_application_portfolio_v2'
+const INTERVIEW_SCRIPT_PORTFOLIO_KEY = 'iv_interview_script_portfolio_v2'
+const COVER_EVIDENCE_CACHE_KEY = 'iv_cover_evidence_cache_v2'
+const APPLICATION_STATUS = {
+  writing: '작성 중',
+  submitted: '지원 완료',
+  passed: '서류 합격',
+  not_selected: '미선발',
+  archived: '보관',
+}
+
+function newApplicationId() {
+  return `application-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
+}
+
+function hasCoverContent(draft = {}) {
+  return ['targetName', 'role', 'motivation', 'majorSkill', 'experience', 'action', 'result', 'contribution']
+    .some(key => String(draft[key] || '').trim())
+    || (Array.isArray(draft.coverItems) && draft.coverItems.some(item => String(item.answer || '').trim()))
+}
+
+function makeCoverApplication(baseDraft = {}, metadata = {}) {
+  const id = metadata.id || newApplicationId()
+  const now = new Date().toISOString()
+  const sector = metadata.sector || baseDraft.sector || 'finance'
+  const organization = INTERVIEW_ORGANIZATIONS.find(item => item.id === (metadata.organizationId || baseDraft.organizationId))
+  const targetName = metadata.targetName ?? baseDraft.targetName ?? organization?.name ?? ''
+  const role = metadata.role ?? baseDraft.role ?? organization?.roles?.[0] ?? ''
+  const recruitmentTitle = metadata.recruitmentTitle || baseDraft.recruitmentTitle || (targetName ? `${targetName} 채용` : '첫 지원서')
+  const status = metadata.status || baseDraft.applicationStatus || 'writing'
+  const prepared = {
+    ...baseDraft,
+    sector,
+    organizationId: metadata.organizationId ?? baseDraft.organizationId ?? '',
+    targetName,
+    role,
+    applicationProjectId: id,
+    recruitmentTitle,
+    applicationDeadline: metadata.deadline ?? baseDraft.applicationDeadline ?? '',
+    applicationStatus: status,
+  }
+  prepared.coverItems = Array.isArray(prepared.coverItems) && prepared.coverItems.length
+    ? prepared.coverItems.map(normalizeCoverItem)
+    : defaultCoverItems(sector, organization, prepared)
+  return {
+    id,
+    recruitmentTitle,
+    deadline: prepared.applicationDeadline,
+    status,
+    createdAt: metadata.createdAt || now,
+    updatedAt: metadata.updatedAt || now,
+    draft: prepared,
+  }
+}
+
+function readCoverPortfolio(seed = {}) {
+  let stored = null
+  try { stored = JSON.parse(localStorage.getItem(COVER_PORTFOLIO_KEY) || 'null') } catch { /* 새 보관함으로 시작 */ }
+  const projects = Array.isArray(stored?.projects)
+    ? stored.projects.map(project => makeCoverApplication(project.draft || {}, project))
+    : []
+  let activeId = stored?.activeId
+
+  if (!projects.length) {
+    let legacy = {}
+    try { legacy = JSON.parse(localStorage.getItem('iv_cover_draft') || '{}') } catch { /* 이전 초안 없음 */ }
+    const first = makeCoverApplication({ sector: 'finance', ...legacy, ...seed }, {
+      recruitmentTitle: seed.targetName ? `${seed.targetName} 채용` : hasCoverContent(legacy) ? `${legacy.targetName || '기존'} 작성본` : '첫 지원서',
+    })
+    projects.push(first)
+    activeId = first.id
+  } else if (seed.targetName) {
+    const matching = projects.find(project => project.draft.organizationId === seed.organizationId && project.draft.role === seed.role)
+    if (matching) activeId = matching.id
+    else {
+      const seeded = makeCoverApplication({ sector: 'finance', ...seed }, { recruitmentTitle: `${seed.targetName} 채용` })
+      projects.unshift(seeded)
+      activeId = seeded.id
+    }
+  }
+
+  if (!projects.some(project => project.id === activeId)) activeId = projects[0].id
+  return { projects, activeId }
+}
 
 function coverQuestionLimits(item = {}) {
   const limit = Math.max(100, Math.min(2000, Number(item.limit) || 700))
@@ -312,27 +400,84 @@ function speakingSeconds(text) {
   return Math.max(0, Math.round(String(text || '').trim().length / 5))
 }
 
-function InterviewScriptBuilder() {
-  const { profile } = useAuth() ?? {}
-  const coverDraft = useMemo(() => readLocalJson('iv_cover_draft'), [])
-  const [draft, setDraft] = useState(() => {
-    const saved = readLocalJson('iv_interview_script_draft')
-    return {
-      sector: coverDraft.sector || 'finance',
-      organizationId: coverDraft.organizationId || '',
-      targetName: coverDraft.targetName || '',
-      role: coverDraft.role || '',
+function newInterviewScriptId() {
+  return `interview-script-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
+}
+
+function makeInterviewScriptSet(coverApplication, baseDraft = {}, metadata = {}) {
+  const sourceDraft = coverApplication?.draft || {}
+  const id = metadata.id || baseDraft.applicationProjectId || newInterviewScriptId()
+  const now = new Date().toISOString()
+  const title = metadata.title || baseDraft.recruitmentTitle || `${sourceDraft.recruitmentTitle || sourceDraft.targetName || '지원처'} 면접 답변`
+  const sourceCoverApplicationId = metadata.sourceCoverApplicationId || baseDraft.sourceCoverApplicationId || coverApplication?.id || ''
+  return {
+    id,
+    title,
+    sourceCoverApplicationId,
+    status: metadata.status || baseDraft.interviewScriptStatus || 'writing',
+    createdAt: metadata.createdAt || now,
+    updatedAt: metadata.updatedAt || now,
+    draft: {
+      sector: sourceDraft.sector || 'finance',
+      organizationId: sourceDraft.organizationId || '',
+      targetName: sourceDraft.targetName || '',
+      role: sourceDraft.role || '',
       introduction: '',
       motivation: '',
       closing: '',
-      coverSignature: coverLinkSignature(coverDraft),
-      ...saved,
-    }
-  })
+      coverSignature: coverLinkSignature(sourceDraft),
+      ...baseDraft,
+      applicationProjectId: id,
+      sourceCoverApplicationId,
+      recruitmentTitle: title,
+    },
+  }
+}
+
+function readInterviewScriptPortfolio() {
+  const coverPortfolio = readCoverPortfolio()
+  const stored = readLocalJson(INTERVIEW_SCRIPT_PORTFOLIO_KEY, null)
+  const projects = Array.isArray(stored?.projects)
+    ? stored.projects.map(project => {
+        const coverApplication = coverPortfolio.projects.find(item => item.id === (project.sourceCoverApplicationId || project.draft?.sourceCoverApplicationId))
+          || coverPortfolio.projects[0]
+        return makeInterviewScriptSet(coverApplication, project.draft || {}, project)
+      })
+    : []
+  let activeId = stored?.activeId
+
+  if (!projects.length) {
+    const legacy = readLocalJson('iv_interview_script_draft')
+    const linkedCover = coverPortfolio.projects.find(item => item.id === legacy.sourceCoverApplicationId)
+      || coverPortfolio.projects.find(item => item.id === coverPortfolio.activeId)
+      || coverPortfolio.projects[0]
+    const first = makeInterviewScriptSet(linkedCover, legacy, {
+      title: legacy.recruitmentTitle || `${linkedCover?.recruitmentTitle || linkedCover?.draft?.targetName || '첫 지원처'} 면접 답변`,
+    })
+    projects.push(first)
+    activeId = first.id
+  }
+  if (!projects.some(project => project.id === activeId)) activeId = projects[0].id
+  return { projects, activeId, coverApplications: coverPortfolio.projects }
+}
+
+function InterviewScriptBuilder() {
+  const { profile } = useAuth() ?? {}
+  const initialPortfolio = useMemo(() => readInterviewScriptPortfolio(), [])
+  const [scriptSets, setScriptSets] = useState(initialPortfolio.projects)
+  const [activeScriptId, setActiveScriptId] = useState(initialPortfolio.activeId)
+  const [coverApplications] = useState(initialPortfolio.coverApplications)
+  const [showCreate, setShowCreate] = useState(false)
+  const [newCoverId, setNewCoverId] = useState(initialPortfolio.coverApplications.find(item => item.id === initialPortfolio.coverApplications[0]?.id)?.id || '')
+  const [newTitle, setNewTitle] = useState('')
   const [active, setActive] = useState('introduction')
   const [notice, setNotice] = useState(null)
   const [history, setHistory] = useState([])
   const [submitting, setSubmitting] = useState(false)
+  const activeSet = scriptSets.find(item => item.id === activeScriptId) || scriptSets[0]
+  const draft = activeSet?.draft || {}
+  const linkedCoverApplication = coverApplications.find(item => item.id === activeSet?.sourceCoverApplicationId) || coverApplications[0]
+  const coverDraft = linkedCoverApplication?.draft || {}
   const organization = INTERVIEW_ORGANIZATIONS.find(item => item.id === draft.organizationId)
   const linkedCoverItems = Array.isArray(coverDraft.coverItems)
     ? coverDraft.coverItems.filter(item => String(item.answer || '').trim())
@@ -350,10 +495,69 @@ function InterviewScriptBuilder() {
     supabase.rpc('rpc_my_cover_letters').then(({ data }) => setHistory(Array.isArray(data) ? data : []))
   }, [profile?.id])
 
+  useEffect(() => {
+    if (!activeSet) return
+    localStorage.setItem(INTERVIEW_SCRIPT_PORTFOLIO_KEY, JSON.stringify({ projects: scriptSets, activeId: activeScriptId }))
+    localStorage.setItem('iv_interview_script_draft', JSON.stringify(activeSet.draft))
+  }, [activeScriptId, activeSet, scriptSets])
+
   function persist(next) {
-    setDraft(next)
+    setScriptSets(current => current.map(item => item.id === activeScriptId ? {
+      ...item,
+      title: next.recruitmentTitle || item.title,
+      sourceCoverApplicationId: next.sourceCoverApplicationId || item.sourceCoverApplicationId,
+      status: next.interviewScriptStatus || item.status,
+      updatedAt: new Date().toISOString(),
+      draft: next,
+    } : item))
     localStorage.setItem('iv_interview_script_draft', JSON.stringify(next))
     setNotice(null)
+  }
+
+  function createScriptSet() {
+    const coverApplication = coverApplications.find(item => item.id === newCoverId) || coverApplications[0]
+    if (!coverApplication) {
+      setNotice({ ok: false, text: '먼저 실전자기소개서에서 지원서를 만들어 주세요.' })
+      return
+    }
+    const created = makeInterviewScriptSet(coverApplication, {}, {
+      title: newTitle.trim() || `${coverApplication.recruitmentTitle || coverApplication.draft?.targetName || '지원처'} 면접 답변`,
+    })
+    setScriptSets(current => [created, ...current])
+    setActiveScriptId(created.id)
+    setShowCreate(false)
+    setNewTitle('')
+    setNotice({ ok: true, text: '새 면접 답변 세트를 만들었어요. 세 답변을 동시에 작성할 수 있어요.' })
+  }
+
+  function removeScriptSet() {
+    if (scriptSets.length <= 1 || !activeSet) return
+    if (!window.confirm(`“${activeSet.title}” 답변 세트를 삭제할까요?`)) return
+    const remaining = scriptSets.filter(item => item.id !== activeSet.id)
+    setScriptSets(remaining)
+    setActiveScriptId(remaining[0].id)
+    setNotice({ ok: true, text: '선택한 면접 답변 세트를 삭제했어요.' })
+  }
+
+  function renameScriptSet(value) {
+    persist({ ...draft, recruitmentTitle: value.slice(0, 60) })
+  }
+
+  function changeLinkedCover(sourceCoverApplicationId) {
+    const coverApplication = coverApplications.find(item => item.id === sourceCoverApplicationId)
+    if (!coverApplication) return
+    const source = coverApplication.draft || {}
+    persist({
+      ...draft,
+      sector: source.sector || draft.sector,
+      organizationId: source.organizationId || '',
+      targetName: source.targetName || '',
+      role: source.role || '',
+      sourceCoverApplicationId: coverApplication.id,
+      coverSignature: coverLinkSignature(source),
+      linkedAt: new Date().toISOString(),
+    })
+    setNotice({ ok: true, text: '이 답변 세트에 연결할 자기소개서를 변경했어요.' })
   }
 
   function syncCover() {
@@ -367,6 +571,7 @@ function InterviewScriptBuilder() {
       organizationId: coverDraft.organizationId || '',
       targetName: coverDraft.targetName,
       role: coverDraft.role,
+      sourceCoverApplicationId: linkedCoverApplication?.id || '',
       coverSignature: coverLinkSignature(coverDraft),
       linkedAt: new Date().toISOString(),
     })
@@ -411,7 +616,13 @@ function InterviewScriptBuilder() {
     const submissionDraft = {
       ...draft,
       documentType: 'interview-script',
+      applicationProjectId: activeSet.id,
+      sourceCoverApplicationId: linkedCoverApplication?.id || '',
+      recruitmentTitle: activeSet.title,
+      interviewScriptStatus: 'submitted',
       sourceCover: {
+        applicationProjectId: linkedCoverApplication?.id || '',
+        recruitmentTitle: linkedCoverApplication?.recruitmentTitle || coverDraft.recruitmentTitle || '',
         targetName: coverDraft.targetName,
         role: coverDraft.role,
         organizationId: coverDraft.organizationId,
@@ -441,13 +652,30 @@ function InterviewScriptBuilder() {
       return
     }
     setNotice({ ok: true, text: '자기소개서와 연결된 면접 답변을 선생님께 보냈어요.' })
+    setScriptSets(current => current.map(item => item.id === activeSet.id ? { ...item, status: 'submitted', draft: { ...item.draft, interviewScriptStatus: 'submitted' }, updatedAt: new Date().toISOString() } : item))
     const { data: rows } = await supabase.rpc('rpc_my_cover_letters')
     setHistory(Array.isArray(rows) ? rows : [])
   }
 
+  const activeHistory = history.filter(item => {
+    const projectId = item.draft?.applicationProjectId || item.application_key
+    return projectId ? projectId === activeSet?.id : item.draft?.documentType === 'interview-script' && item.target_name === draft.targetName && item.role_name === draft.role
+  })
+
   return <div className="interview-script-builder">
+    <section className="script-portfolio-card">
+      <header><div><span>INTERVIEW ANSWER FILES</span><h2>면접 답변 세트</h2><p>지원처·직무·채용회차별로 여러 세트를 동시에 작성해요.</p></div><button onClick={() => setShowCreate(value => !value)}><Plus />새 답변 세트</button></header>
+      <div className="script-set-switcher">
+        <label><span>현재 작성 중</span><select value={activeSet?.id || ''} onChange={event => { setActiveScriptId(event.target.value); setNotice(null) }}>{scriptSets.map(item => <option key={item.id} value={item.id}>{item.title} · {item.status === 'submitted' ? '첨삭 요청함' : '작성 중'}</option>)}</select></label>
+        <button onClick={removeScriptSet} disabled={scriptSets.length <= 1} aria-label="현재 면접 답변 세트 삭제"><Trash /></button>
+      </div>
+      <label className="script-set-title"><span>답변 세트 이름</span><input value={activeSet?.title || ''} maxLength={60} onChange={event => renameScriptSet(event.target.value)} placeholder="예: 2026 NH농협은행 1차 면접" /></label>
+      {showCreate && <div className="script-create-panel"><label><span>연결할 자기소개서</span><select value={newCoverId} onChange={event => setNewCoverId(event.target.value)}>{coverApplications.map(item => <option key={item.id} value={item.id}>{item.recruitmentTitle} · {item.draft?.role || '직무 미정'}</option>)}</select></label><label><span>새 세트 이름</span><input value={newTitle} maxLength={60} onChange={event => setNewTitle(event.target.value)} placeholder="비워 두면 채용회차 이름으로 생성" /></label><button onClick={createScriptSet}><Plus />작성 시작</button></div>}
+    </section>
+
     <section className="script-link-card">
       <header><FileText weight="duotone" /><div><span>자기소개서 연결</span><h2>{draft.targetName || '지원처를 먼저 연결하세요'}</h2><p>{draft.role || '나를쓰다에서 지원 직무를 선택함'}</p></div></header>
+      <label className="script-cover-selector"><span>이 답변의 기준 자기소개서</span><select value={linkedCoverApplication?.id || ''} onChange={event => changeLinkedCover(event.target.value)}>{coverApplications.map(item => <option key={item.id} value={item.id}>{item.recruitmentTitle} · {item.draft?.targetName || '지원처 미정'} · {item.draft?.role || '직무 미정'}</option>)}</select></label>
       <div className="script-link-flow"><span>자기소개서</span><CaretRight /><b>같은 근거</b><CaretRight /><span>면접 답변</span></div>
       {sourceChanged && <p className="script-link-warning"><WarningCircle weight="fill" />자기소개서 내용이 바뀜 · 면접 답변과 다시 맞춰야 함</p>}
       {foreignOrganization && <p className="script-link-warning"><WarningCircle weight="fill" />다른 지원처명 발견: {foreignOrganization.name} · 제출 전 수정 필요</p>}
@@ -467,7 +695,7 @@ function InterviewScriptBuilder() {
     <section className="script-consistency-check"><h3>연결 점검</h3><div><span className={draft.targetName ? 'is-ok' : ''}><CheckCircle />지원처 일치</span><span className={draft.role ? 'is-ok' : ''}><CheckCircle />직무 일치</span><span className={introductionReady ? 'is-ok' : ''}><CheckCircle />자기소개 분량</span><span className={motivationReady ? 'is-ok' : ''}><CheckCircle />지원동기 분량</span><span className={closingReady ? 'is-ok' : ''}><CheckCircle />마지막 말 분량</span><span className={!foreignOrganization && !sourceChanged ? 'is-ok' : ''}><CheckCircle />세 답변 근거 일치</span></div></section>
     {notice && <p className={`cover-notice ${notice.ok ? 'is-ok' : 'is-error'}`}>{notice.ok ? <CheckCircle weight="fill" /> : <WarningCircle weight="fill" />}{notice.text}</p>}
     <button className="script-submit" onClick={submit} disabled={submitting}><PaperPlaneTilt weight="fill" />{submitting ? '보내는 중' : '세 답변 교사 첨삭 요청'}</button>
-    <CoverHistory history={history} />
+    <CoverHistory history={activeHistory} />
   </div>
 }
 
@@ -477,16 +705,10 @@ function CoverLetterBuilder({ initialWorkspace = 'learn', onLearningContext }) {
     try { return JSON.parse(localStorage.getItem('iv_cover_seed') || '{}') }
     catch { return {} }
   }, [])
-  const [draft, setDraft] = useState(() => {
-    try {
-      const restored = { sector: 'finance', ...JSON.parse(localStorage.getItem('iv_cover_draft') || '{}'), ...seed }
-      const organization = INTERVIEW_ORGANIZATIONS.find(item => item.id === restored.organizationId)
-      const coverItems = Array.isArray(restored.coverItems) && restored.coverItems.length
-        ? restored.coverItems.map(normalizeCoverItem)
-        : defaultCoverItems(restored.sector, organization, restored)
-      return { ...restored, coverItems }
-    } catch { return { sector: 'finance', coverItems: [], ...seed } }
-  })
+  const initialPortfolio = useMemo(() => readCoverPortfolio(seed), [seed])
+  const [applications, setApplications] = useState(initialPortfolio.projects)
+  const [activeApplicationId, setActiveApplicationId] = useState(initialPortfolio.activeId)
+  const [draft, setDraft] = useState(() => initialPortfolio.projects.find(item => item.id === initialPortfolio.activeId)?.draft || initialPortfolio.projects[0].draft)
   const [stepIndex, setStepIndex] = useState(0)
   const [workspace, setWorkspace] = useState(initialWorkspace)
   const [practicalFlow] = useState(initialWorkspace === 'practical')
@@ -496,7 +718,12 @@ function CoverLetterBuilder({ initialWorkspace = 'learn', onLearningContext }) {
   const [history, setHistory] = useState([])
   const [submitting, setSubmitting] = useState(false)
   const [pdfBusy, setPdfBusy] = useState(false)
-  const [evidenceBank, setEvidenceBank] = useState(() => Array.isArray(draft.evidenceBank) ? draft.evidenceBank : [])
+  const [evidenceBank, setEvidenceBank] = useState(() => {
+    try {
+      const cached = JSON.parse(localStorage.getItem(COVER_EVIDENCE_CACHE_KEY) || 'null')
+      return Array.isArray(cached) ? cached : Array.isArray(draft.evidenceBank) ? draft.evidenceBank : []
+    } catch { return Array.isArray(draft.evidenceBank) ? draft.evidenceBank : [] }
+  })
   const previewRef = useRef(null)
   const sector = COVER_LETTER_SECTOR_CONTENT[draft.sector] || COVER_LETTER_SECTOR_CONTENT.finance
   const organizations = INTERVIEW_ORGANIZATIONS.filter(item => item.sector === draft.sector)
@@ -520,6 +747,11 @@ function CoverLetterBuilder({ initialWorkspace = 'learn', onLearningContext }) {
     })
   const ready = missing.length === 0 && questionProblems.length === 0
   const generated = useMemo(() => buildCoverLetter(draft, organization), [draft, organization])
+  const activeApplication = applications.find(item => item.id === activeApplicationId) || applications[0]
+  const applicationHistory = history.filter(item => {
+    const projectId = item.draft?.applicationProjectId
+    return projectId ? projectId === activeApplicationId : item.target_name === draft.targetName && item.role_name === draft.role
+  })
   const flowMeta = practicalFlow
     ? { eyebrow: 'REAL APPLICATION', title: '실전자기소개서', description: '근거은행부터 지원처별 작성·PDF·교사 첨삭까지 한 흐름으로 완성함.' }
     : workspace === 'diagnostic'
@@ -532,6 +764,10 @@ function CoverLetterBuilder({ initialWorkspace = 'learn', onLearningContext }) {
     loadHistory()
     loadEvidenceBank()
   }, [profile?.id])
+
+  useEffect(() => {
+    localStorage.setItem(COVER_PORTFOLIO_KEY, JSON.stringify({ projects: applications, activeId: activeApplicationId }))
+  }, [activeApplicationId, applications])
 
   async function loadHistory() {
     const { data } = await supabase.rpc('rpc_my_cover_letters')
@@ -553,11 +789,7 @@ function CoverLetterBuilder({ initialWorkspace = 'learn', onLearningContext }) {
   }
 
   function persistEvidenceInDraft(items) {
-    setDraft(current => {
-      const next = { ...current, evidenceBank: items }
-      localStorage.setItem('iv_cover_draft', JSON.stringify(next))
-      return next
-    })
+    localStorage.setItem(COVER_EVIDENCE_CACHE_KEY, JSON.stringify(items))
   }
 
   async function saveEvidence(item) {
@@ -603,11 +835,89 @@ function CoverLetterBuilder({ initialWorkspace = 'learn', onLearningContext }) {
       result: `${item.result}${item.proof ? ` 확인 근거: ${item.proof}` : ''}`.trim(),
       evidenceBank,
     }
-    setDraft(next)
-    localStorage.setItem('iv_cover_draft', JSON.stringify(next))
+    commitDraft(next)
     setWorkspace('write')
     setStepIndex(COVER_LETTER_STEPS.findIndex(value => value.id === 'experience'))
     setNotice({ ok: true, text: '선택한 근거를 경험 단계에 연결했어요. 사실과 표현을 다시 확인해 주세요.' })
+  }
+
+  function commitDraft(nextDraft, projectPatch = {}) {
+    const next = {
+      ...nextDraft,
+      applicationProjectId: activeApplicationId,
+      recruitmentTitle: projectPatch.recruitmentTitle ?? activeApplication?.recruitmentTitle ?? nextDraft.recruitmentTitle ?? '',
+      applicationDeadline: projectPatch.deadline ?? activeApplication?.deadline ?? nextDraft.applicationDeadline ?? '',
+      applicationStatus: projectPatch.status ?? activeApplication?.status ?? nextDraft.applicationStatus ?? 'writing',
+    }
+    setDraft(next)
+    setApplications(current => current.map(project => project.id === activeApplicationId ? {
+      ...project,
+      ...projectPatch,
+      recruitmentTitle: projectPatch.recruitmentTitle ?? project.recruitmentTitle,
+      deadline: projectPatch.deadline ?? project.deadline,
+      status: projectPatch.status ?? project.status,
+      updatedAt: new Date().toISOString(),
+      draft: next,
+    } : project))
+    localStorage.setItem('iv_cover_draft', JSON.stringify(next))
+    localStorage.removeItem('iv_cover_seed')
+  }
+
+  function selectApplication(id, destination = 'write') {
+    const selected = applications.find(item => item.id === id)
+    if (!selected) return
+    setActiveApplicationId(id)
+    setDraft(selected.draft)
+    localStorage.setItem('iv_cover_draft', JSON.stringify(selected.draft))
+    setStepIndex(0)
+    setNotice(null)
+    setWorkspace(destination)
+  }
+
+  function createApplication(form, sourceId = null) {
+    const source = applications.find(item => item.id === sourceId)
+    const organization = INTERVIEW_ORGANIZATIONS.find(item => item.id === form.organizationId)
+    const reusable = source ? {
+      major: source.draft.major || '',
+      majorSkill: source.draft.majorSkill || '',
+      experience: source.draft.experience || '',
+      action: source.draft.action || '',
+      result: source.draft.result || '',
+    } : {}
+    const base = {
+      sector: form.sector || organization?.sector || 'finance',
+      organizationId: organization?.id || '',
+      targetName: organization?.name || form.targetName.trim(),
+      targetEvidence: organization?.identity || '',
+      role: form.role.trim() || organization?.roles?.[0] || '',
+      roleNeed: '',
+      motivation: '',
+      contribution: '',
+      ...reusable,
+      evidenceBank,
+    }
+    const project = makeCoverApplication(base, {
+      recruitmentTitle: form.recruitmentTitle.trim() || `${base.targetName || '새 지원처'} 채용`,
+      deadline: form.deadline,
+    })
+    const placeholders = applications.filter(item => hasCoverContent(item.draft) || item.id !== activeApplicationId)
+    setApplications([project, ...placeholders])
+    setActiveApplicationId(project.id)
+    setDraft(project.draft)
+    localStorage.setItem('iv_cover_draft', JSON.stringify(project.draft))
+    setStepIndex(0)
+    setWorkspace('write')
+    setNotice({ ok: true, text: source ? '개인 경험 근거만 가져왔어요. 지원처 근거와 문항 답변은 새로 확인해 주세요.' : '새 지원서를 만들었어요. 채용공고의 실제 문항과 글자 수부터 확인해 주세요.' })
+  }
+
+  function updateApplicationStatus(id, status) {
+    setApplications(current => current.map(project => project.id === id ? {
+      ...project,
+      status,
+      updatedAt: new Date().toISOString(),
+      draft: { ...project.draft, applicationStatus: status },
+    } : project))
+    if (id === activeApplicationId) setDraft(current => ({ ...current, applicationStatus: status }))
   }
 
   function update(key, value) {
@@ -632,9 +942,7 @@ function CoverLetterBuilder({ initialWorkspace = 'learn', onLearningContext }) {
       organizationDraft.coverItems = org ? defaultCoverItems(org.sector, org, organizationDraft) : defaultCoverItems(next.sector, null, organizationDraft)
       Object.assign(next, organizationDraft)
     }
-    setDraft(next)
-    localStorage.setItem('iv_cover_draft', JSON.stringify(next))
-    localStorage.removeItem('iv_cover_seed')
+    commitDraft(next)
     setNotice(null)
   }
 
@@ -691,8 +999,8 @@ function CoverLetterBuilder({ initialWorkspace = 'learn', onLearningContext }) {
         pdf.addPage()
         pdf.addImage(image, 'JPEG', margin, position, width, imageHeight)
       }
-      const safeName = String(draft.targetName || '지원처').replace(/[\\/:*?"<>|]/g, '')
-      pdf.save(`${safeName}_자기소개서_${new Date().toISOString().slice(0, 10)}.pdf`)
+      const safeName = String(`${draft.targetName || '지원처'}_${draft.recruitmentTitle || '자기소개서'}`).replace(/[\\/:*?"<>|]/g, '')
+      pdf.save(`${safeName}_${new Date().toISOString().slice(0, 10)}.pdf`)
       setNotice({ ok: true, text: 'PDF 파일을 저장했어요.' })
     } catch {
       setNotice({ ok: false, text: 'PDF를 만들지 못했어요. 잠시 뒤 다시 시도해 주세요.' })
@@ -705,12 +1013,14 @@ function CoverLetterBuilder({ initialWorkspace = 'learn', onLearningContext }) {
     if (!ready || submitting) { openPreview(); return }
     setSubmitting(true)
     setNotice(null)
-    const { data, error } = await supabase.rpc('rpc_submit_cover_letter', { p_sector: draft.sector, p_organization_id: draft.organizationId || null, p_target_name: draft.targetName, p_role: draft.role, p_draft: draft, p_generated_text: generated.map(item => `${item.title}\n${item.body}`).join('\n\n') })
+    const submissionDraft = { ...draft, evidenceBank, applicationProjectId: activeApplicationId, recruitmentTitle: activeApplication?.recruitmentTitle || draft.recruitmentTitle, applicationDeadline: activeApplication?.deadline || draft.applicationDeadline }
+    const { data, error } = await supabase.rpc('rpc_submit_cover_letter', { p_sector: draft.sector, p_organization_id: draft.organizationId || null, p_target_name: draft.targetName, p_role: draft.role, p_draft: submissionDraft, p_generated_text: generated.map(item => `${item.title}\n${item.body}`).join('\n\n') })
     setSubmitting(false)
     if (error || data?.error) {
       setNotice({ ok: false, text: data?.error === 'no_class' ? '소속 학급을 확인한 뒤 다시 요청해 주세요.' : '첨삭 요청을 보내지 못했어요. 연결 상태를 확인해 주세요.' })
       return
     }
+    updateApplicationStatus(activeApplicationId, 'submitted')
     setNotice({ ok: true, text: '담당 선생님께 첨삭을 요청했어요. 수정 전 초안도 이력에 남아요.' })
     loadHistory()
   }
@@ -722,7 +1032,7 @@ function CoverLetterBuilder({ initialWorkspace = 'learn', onLearningContext }) {
         <CoverPreview ref={previewRef} draft={draft} organization={organization} generated={generated} />
         {notice && <p className={`cover-notice ${notice.ok ? 'is-ok' : 'is-error'}`}>{notice.ok ? <CheckCircle weight="fill" /> : <WarningCircle weight="fill" />}{notice.text}</p>}
         <button className="cover-submit-review" onClick={submitForReview} disabled={submitting}><PaperPlaneTilt weight="fill" />{submitting ? '보내는 중' : '선생님께 첨삭 요청'}</button>
-        <CoverHistory history={history} />
+        <CoverHistory history={applicationHistory} />
       </div>
     )
   }
@@ -734,16 +1044,17 @@ function CoverLetterBuilder({ initialWorkspace = 'learn', onLearningContext }) {
         {practicalFlow && <b>{evidenceBank.length}<small>근거 카드</small></b>}
       </section>}
       {practicalFlow && <nav className="cover-workspace-tabs" aria-label="실전자기소개서 메뉴">
-        <button className={workspace === 'practical' ? 'is-on' : ''} onClick={() => setWorkspace('practical')}><PlayCircle />준비 현황</button>
-        <button className={workspace === 'evidence' ? 'is-on' : ''} onClick={() => setWorkspace('evidence')}><ClipboardText />나의 근거</button>
         <button className={workspace === 'write' ? 'is-on' : ''} onClick={() => setWorkspace('write')}><PencilSimple />작성실</button>
+        <button className={workspace === 'evidence' ? 'is-on' : ''} onClick={() => setWorkspace('evidence')}><ClipboardText />나의 근거</button>
+        <button className={workspace === 'practical' ? 'is-on' : ''} onClick={() => setWorkspace('practical')}><FolderOpen />진행 현황</button>
       </nav>}
-      {workspace === 'practical' && <CoverPracticalHome evidenceCount={evidenceBank.length} questionCount={questionItems.length} completed={completed} total={COVER_LETTER_FIELDS.length} onEvidence={() => setWorkspace('evidence')} onWrite={() => setWorkspace('write')} />}
+      {workspace === 'practical' && <CoverApplicationPortfolio applications={applications} activeId={activeApplicationId} history={history} evidenceCount={evidenceBank.length} onCreate={createApplication} onSelect={selectApplication} onStatus={updateApplicationStatus} onEvidence={() => setWorkspace('evidence')} />}
       {workspace === 'learn' && <CoverLearningLibrary onLearningContext={onLearningContext} />}
       {workspace === 'diagnostic' && <CoverLetterAssessment mode="diagnostic" onGoLearn={() => setWorkspace('learn')} />}
       {workspace === 'mock' && <CoverLetterAssessment mode="mock" onGoLearn={() => setWorkspace('learn')} onGoPractical={() => setWorkspace('practical')} />}
-      {workspace === 'evidence' && <EvidenceWorkbench items={evidenceBank} onSave={saveEvidence} onDelete={deleteEvidence} onUse={useEvidence} />}
+      {workspace === 'evidence' && <><CoverApplicationContext applications={applications} activeId={activeApplicationId} mode="evidence" onSelect={id => selectApplication(id, 'evidence')} onProgress={() => setWorkspace('practical')} /><EvidenceWorkbench items={evidenceBank} onSave={saveEvidence} onDelete={deleteEvidence} onUse={useEvidence} /></>}
       {workspace === 'write' && <>
+      <CoverApplicationContext applications={applications} activeId={activeApplicationId} mode="write" onSelect={id => selectApplication(id, 'write')} onProgress={() => setWorkspace('practical')} />
       <div className="cover-progress"><div><strong>{sector.headline}</strong><span>{completed}/{COVER_LETTER_FIELDS.length}</span></div><div><i style={{ width: `${pct}%` }} /></div><p>자동 저장됨 · 한 단계씩 점검한 뒤 완성본으로 연결함</p></div>
       <nav className="cover-step-tabs" aria-label="자기소개서 작성 단계">{COVER_LETTER_STEPS.map((item, index) => <button key={item.id} className={index === stepIndex ? 'is-current' : index < stepIndex ? 'is-past' : ''} onClick={() => setStepIndex(index)}><span>{index < stepIndex ? <CheckCircle weight="fill" /> : index + 1}</span><b>{item.title.replace(/^\d+\.\s*/, '')}</b></button>)}</nav>
       <section className="cover-step-heading"><span>STEP {stepIndex + 1}</span><h2>{step.title.replace(/^\d+\.\s*/, '')}</h2><p>{step.check}</p></section>
@@ -752,30 +1063,126 @@ function CoverLetterBuilder({ initialWorkspace = 'learn', onLearningContext }) {
       {step.id === 'audit' ? <section className="cover-ready"><FileText weight="duotone" /><h3>{ready ? '완성본을 만들 준비가 됐어요' : `${missing.length + questionProblems.length}가지를 더 확인해요`}</h3><p>{missing.length ? missing.map(item => item.label).join(' · ') : questionProblems.length ? questionProblems[0] : `${questionItems.length}개 문항을 화면에서 먼저 읽고 PDF 저장 또는 선생님 첨삭 요청으로 이어갈 수 있어요.`}</p><button onClick={openPreview} disabled={!ready}><Eye weight="fill" />완성본 생성·확인</button></section> : step.id !== 'questions' && <div className="cover-fields">{stepFields.map(field => <CoverField key={field.key} field={field} value={draft[field.key] || ''} sector={draft.sector} organization={organization} onChange={value => update(field.key, value)} />)}</div>}
       {notice && <p className={`cover-notice ${notice.ok ? 'is-ok' : 'is-error'}`}>{notice.ok ? <CheckCircle weight="fill" /> : <WarningCircle weight="fill" />}{notice.text}</p>}
       <footer className="cover-step-actions"><button onClick={() => setStepIndex(value => Math.max(0, value - 1))} disabled={stepIndex === 0}><ArrowLeft />이전</button>{stepIndex < COVER_LETTER_STEPS.length - 1 ? <button className="is-primary" onClick={goNext}>다음 단계<CaretRight /></button> : <button className="is-primary" onClick={openPreview} disabled={!ready}><Eye />완성본 보기</button>}</footer>
-      <CoverHistory history={history} />
+      <CoverHistory history={applicationHistory} />
       </>}
     </div>
   )
 }
 
-function CoverPracticalHome({ evidenceCount, questionCount, completed, total, onEvidence, onWrite }) {
-  const stages = [
-    { title: '내 근거 준비', value: `${evidenceCount}장`, ready: evidenceCount > 0, help: '전공·실습·프로젝트 경험을 행동과 결과로 저장함' },
-    { title: '지원처·직무 선택', value: completed > 0 ? '진행 중' : '시작 전', ready: completed > 0, help: '금융권·공공기관·대기업과 지원 직무를 연결함' },
-    { title: '실제 문항 구성', value: `${questionCount}개`, ready: questionCount >= 2, help: '공고 문항을 고르거나 직접 추가하고 글자 수를 정함' },
-    { title: '완성·첨삭', value: `${completed}/${total}`, ready: completed === total && questionCount >= 2, help: '미리보기·PDF 저장 후 담당 선생님께 첨삭을 요청함' },
-  ]
+function CoverApplicationContext({ applications, activeId, mode, onSelect, onProgress }) {
+  const active = applications.find(item => item.id === activeId) || applications[0]
+  const available = applications.filter(item => item.status !== 'archived')
+  return <section className="cover-active-application">
+    <div><span>{mode === 'evidence' ? '근거를 연결할 지원서' : '작성 중인 지원서 선택'}</span><label><select value={active?.id || ''} onChange={event => onSelect(event.target.value)} aria-label="현재 작업할 지원서">{available.map(item => <option key={item.id} value={item.id}>{item.recruitmentTitle} · {item.draft.targetName || '지원처 미정'}</option>)}</select></label><small>{active?.draft.targetName || '지원처 선택 전'} · {active?.draft.role || '직무 선택 전'}{active?.deadline ? ` · ${active.deadline} 마감` : ''}</small></div>
+    <button onClick={onProgress}><FolderOpen />진행 현황</button>
+  </section>
+}
+
+function CoverApplicationPortfolio({ applications, activeId, history, evidenceCount, onCreate, onSelect, onStatus, onEvidence }) {
+  const [showCreate, setShowCreate] = useState(false)
+  const [copySourceId, setCopySourceId] = useState(null)
+  const [showArchived, setShowArchived] = useState(false)
+  const [form, setForm] = useState({ sector: 'finance', organizationId: '', targetName: '', role: '', recruitmentTitle: '', deadline: '' })
+  const visible = applications.filter(item => showArchived || item.status !== 'archived')
+  const submittedCount = applications.filter(item => ['submitted', 'passed'].includes(item.status)).length
+  const passedCount = applications.filter(item => item.status === 'passed').length
+
+  function change(key, value) {
+    setForm(current => {
+      const next = { ...current, [key]: value }
+      if (key === 'sector') Object.assign(next, { organizationId: '', targetName: '', role: '' })
+      if (key === 'organizationId') {
+        const organization = INTERVIEW_ORGANIZATIONS.find(item => item.id === value)
+        Object.assign(next, { targetName: organization?.name || '', role: organization?.roles?.[0] || '', recruitmentTitle: organization ? `${organization.name} 채용` : current.recruitmentTitle })
+      }
+      return next
+    })
+  }
+
+  function openCreate(source = null) {
+    setCopySourceId(source?.id || null)
+    setForm({
+      sector: source?.draft.sector || 'finance',
+      organizationId: '',
+      targetName: '',
+      role: source?.draft.role || '',
+      recruitmentTitle: '',
+      deadline: '',
+    })
+    setShowCreate(true)
+  }
+
+  function submit() {
+    if (!form.targetName.trim() || !form.role.trim()) return
+    onCreate(form, copySourceId)
+    setShowCreate(false)
+    setCopySourceId(null)
+  }
+
+  function progressFor(project) {
+    const completed = COVER_LETTER_FIELDS.filter(field => String(project.draft[field.key] || '').trim().length >= field.minLength).length
+    const questions = Array.isArray(project.draft.coverItems) ? project.draft.coverItems : []
+    const completeQuestions = questions.filter(item => {
+      const { minLength, limit } = coverQuestionLimits(item)
+      const count = String(item.answer || '').trim().length
+      return count >= minLength && count <= limit
+    }).length
+    const total = COVER_LETTER_FIELDS.length + Math.max(questions.length, 2)
+    return Math.min(100, Math.round((completed + completeQuestions) / total * 100))
+  }
+
+  function latestReview(project) {
+    return history.find(item => item.draft?.applicationProjectId === project.id)
+  }
+
   return (
-    <section className="cover-practical-home">
-      <header><span>READY TO SUBMIT</span><h3>4단계 완성 경로</h3><p>빈 문서부터 시작하지 않음. 내 근거를 고르고 실제 지원처 문항과 분량에 맞춰 제출본을 완성함.</p></header>
-      <div className="cover-practical-route">
-        {stages.map((stage, index) => <article key={stage.title} className={stage.ready ? 'is-ready' : ''}><span>{stage.ready ? <CheckCircle weight="fill" /> : index + 1}</span><div><b>{stage.title}</b><p>{stage.help}</p></div><strong>{stage.value}</strong></article>)}
+    <section className="cover-application-portfolio">
+      <header>
+        <div><span>MY APPLICATIONS</span><h3>지원서 보관함</h3><p>지원처·직무·채용회차마다 자기소개서를 따로 관리하고, 나의 근거는 모든 지원서에서 함께 사용함.</p></div>
+        <button onClick={() => openCreate()}><Plus weight="bold" />새 지원서</button>
+      </header>
+      <div className="cover-portfolio-summary">
+        <div><b>{applications.filter(item => item.status !== 'archived').length}</b><span>전체 지원서</span></div>
+        <div><b>{applications.filter(item => item.status === 'writing').length}</b><span>작성 중</span></div>
+        <div><b>{submittedCount}</b><span>지원 완료</span></div>
+        <div><b>{passedCount}</b><span>서류 합격</span></div>
       </div>
-      <div className="cover-practical-actions">
-        <button onClick={onEvidence}><ClipboardText weight="fill" /><span><b>{evidenceCount ? '근거 더 채우기' : '근거부터 찾기'}</b><small>선택형 도움으로 경험 카드 만들기</small></span><CaretRight /></button>
-        <button className="is-primary" onClick={onWrite}><PencilSimple weight="fill" /><span><b>{completed ? '작성 이어가기' : '지원처부터 작성 시작'}</b><small>문항·분량·미리보기·PDF·첨삭</small></span><CaretRight /></button>
+
+      {showCreate && <section className="cover-application-create">
+        <header><div><b>{copySourceId ? '근거를 이어 새 지원서 만들기' : '새 지원서 만들기'}</b><p>{copySourceId ? '전공·경험·행동·결과만 가져오고 지원처 문장과 답변은 비워 둠.' : '지원하는 채용공고 한 건을 기준으로 작성 공간을 만듦.'}</p></div><button onClick={() => setShowCreate(false)} aria-label="새 지원서 만들기 닫기">×</button></header>
+        <div className="cover-application-form">
+          <label><span>지원 분야</span><select value={form.sector} onChange={event => change('sector', event.target.value)}>{SECTORS.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
+          <label><span>등록 지원처</span><select value={form.organizationId} onChange={event => change('organizationId', event.target.value)}><option value="">직접 입력</option>{INTERVIEW_ORGANIZATIONS.filter(item => item.sector === form.sector).map(item => <option key={item.id} value={item.id}>{item.name}</option>)}</select></label>
+          <label><span>기업·기관명</span><input value={form.targetName} onChange={event => change('targetName', event.target.value)} placeholder="예: 한국전력공사" /></label>
+          <label><span>지원 직무</span><input value={form.role} onChange={event => change('role', event.target.value)} placeholder="예: 전기설비" /></label>
+          <label className="is-wide"><span>채용공고·회차 이름</span><input value={form.recruitmentTitle} onChange={event => change('recruitmentTitle', event.target.value)} placeholder="예: 2026년 하반기 고졸 신입 채용" /></label>
+          <label><span>마감일</span><input type="date" value={form.deadline} onChange={event => change('deadline', event.target.value)} /></label>
+        </div>
+        <button className="cover-application-create-submit" onClick={submit} disabled={!form.targetName.trim() || !form.role.trim()}><FolderOpen weight="fill" />작성 공간 만들기</button>
+      </section>}
+
+      <div className="cover-application-list">
+        {visible.map(project => {
+          const progress = progressFor(project)
+          const review = latestReview(project)
+          return <article key={project.id} className={project.id === activeId ? 'is-active' : ''}>
+            <button className="cover-application-open" onClick={() => onSelect(project.id)}>
+              <span><FileText weight="duotone" /></span>
+              <div><small>{project.recruitmentTitle}</small><b>{project.draft.targetName || '지원처 미정'} · {project.draft.role || '직무 미정'}</b><p>{project.deadline ? `${project.deadline} 마감` : '마감일 미지정'} · 최근 저장 {new Date(project.updatedAt).toLocaleDateString('ko-KR')}</p><i><em style={{ width: `${progress}%` }} /></i></div>
+              <strong>{progress}%<CaretRight /></strong>
+            </button>
+            <footer>
+              <span className={`is-${review?.status || project.status}`}>{review ? STATUS_LABELS[review.status] || review.status : APPLICATION_STATUS[project.status]}</span>
+              <select value={project.status} onChange={event => onStatus(project.id, event.target.value)} aria-label={`${project.recruitmentTitle} 진행 상태`}><option value="writing">작성 중</option><option value="submitted">지원 완료</option><option value="passed">서류 합격</option><option value="not_selected">미선발</option><option value="archived">보관</option></select>
+              <button onClick={() => openCreate(project)}><Copy />근거로 새 지원서</button>
+              {project.status !== 'archived' && <button onClick={() => onStatus(project.id, 'archived')}><Archive />보관</button>}
+            </footer>
+          </article>
+        })}
       </div>
-      <aside><ShieldCheck weight="fill" /><p>예시는 구조 확인용임. 경험·역할·수치·결과는 학생이 설명하고 증명할 수 있는 사실만 사용함.</p></aside>
+      {!visible.length && <div className="cover-portfolio-empty"><Archive /><b>보관 중인 지원서만 있어요</b><button onClick={() => setShowArchived(true)}>보관함 보기</button></div>}
+      <div className="cover-portfolio-tools"><button onClick={onEvidence}><ClipboardText weight="fill" /><span><b>공용 근거은행 {evidenceCount}장</b><small>한 번 정리한 경험을 여러 지원서에 연결</small></span><CaretRight /></button><button onClick={() => setShowArchived(value => !value)}><Archive /><span><b>{showArchived ? '진행 중만 보기' : '보관 지원서 보기'}</b><small>미선발 지원서도 삭제하지 않고 다음 지원에 활용</small></span></button></div>
+      <aside><ShieldCheck weight="fill" /><p>새 지원서에는 개인 경험 근거만 재사용합니다. 기업명·공식 근거·지원동기·공고 문항은 현재 채용공고에 맞춰 반드시 다시 확인합니다.</p></aside>
     </section>
   )
 }

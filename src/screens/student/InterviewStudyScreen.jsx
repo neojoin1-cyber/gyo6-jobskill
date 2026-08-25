@@ -201,7 +201,7 @@ export default function InterviewStudyScreen({ onBack }) {
                       <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>{l.durationMin}분</span>
                       {(conceptCount > 0 || practiceCount > 0) && (
                         <span style={{ fontSize: 12, color: 'var(--primary)' }}>
-                          개념 {conceptCount} · 답변 {practiceCount}
+                          상황 판단 {conceptCount} · 답변 연습 {practiceCount}
                         </span>
                       )}
                       {pc && (
@@ -235,9 +235,9 @@ export default function InterviewStudyScreen({ onBack }) {
   const hasPractice = practiceQuestions.length > 0
 
   const TABS = [
-    { id: 'theory',   label: '1 개념 익히기' },
-    ...(hasQuiz      ? [{ id: 'quiz',     label: `2 개념 확인 ${lessonQuizQuestions.length}` }] : []),
-    ...(hasPractice  ? [{ id: 'practice', label: `3 답변 연습 ${practiceQuestions.length}` }] : []),
+    { id: 'theory',   label: '1 상황·답변 익히기' },
+    ...(hasQuiz      ? [{ id: 'quiz',     label: `2 실전 상황 ${lessonQuizQuestions.length}` }] : []),
+    ...(hasPractice  ? [{ id: 'practice', label: `3 직접 답변 ${practiceQuestions.length}` }] : []),
   ]
 
   return (
@@ -293,13 +293,13 @@ export default function InterviewStudyScreen({ onBack }) {
           {(hasQuiz || hasPractice) && (
             <button className="btn btn-primary btn-full" style={{ marginTop: 16 }}
               onClick={() => switchView(hasQuiz ? 'quiz' : 'practice')}>
-              {hasQuiz ? '개념 확인 시작 →' : '답변 연습 시작 →'}
+              {hasQuiz ? '실전 상황 확인 시작 →' : '직접 답변 연습 시작 →'}
             </button>
           )}
         </div>
       )}
 
-      {/* 개념 퀴즈 (선다형/OX) */}
+      {/* 실제 면접 상황 판단 */}
       {view === 'quiz' && hasQuiz && (
         <InterviewQuizView
           questions={lessonQuizQuestions}
@@ -539,7 +539,7 @@ function PracticeView({ questions, idx, setIdx, showModel, setShowModel, lessonI
           </button>
           <button className="btn btn-secondary btn-full"
             onClick={onReturnToTheory}>
-            ← 개념 다시 보기
+            ← 학습 내용 다시 보기
           </button>
         </div>
       </div>
@@ -628,7 +628,7 @@ function PracticeView({ questions, idx, setIdx, showModel, setShowModel, lessonI
           padding: '10px 14px', marginBottom: 14, border: '1px solid #ffc107',
         }}>
           <p style={{ fontSize: 12, fontWeight: 700, color: '#856404', marginBottom: 8 }}>
-            ☑️ 채점 기준
+            ☑️ 답변 점검
           </p>
           {pq.checkboxes.map((cb, i) => {
             const on = !!checked[`${pq.id ?? idx}:${i}`]
@@ -812,7 +812,7 @@ function ModelAnswerBlock({ pq }) {
   )
 }
 
-// ── 면접 개념 퀴즈 (선다형/OX) ─────────────────────────────────────────────
+// ── 실제 면접 상황 판단 (선다형) ───────────────────────────────────────────
 function InterviewQuizView({ questions, lessonId, onMarkProgress, onReturnToTheory, onStartPractice }) {
   const [idx, setIdx]               = useState(0)
   const [selected, setSelected]     = useState(null)
@@ -832,12 +832,12 @@ function InterviewQuizView({ questions, lessonId, onMarkProgress, onReturnToTheo
         <div style={{ fontSize: 64, marginBottom: 12 }}>
           {accuracy >= 80 ? '🎉' : accuracy >= 50 ? '💪' : '📚'}
         </div>
-        <p style={{ fontSize: 22, fontWeight: 700, marginBottom: 16 }}>퀴즈 완료!</p>
+        <p style={{ fontSize: 22, fontWeight: 700, marginBottom: 16 }}>상황 판단 완료!</p>
         <div style={{ display: 'flex', gap: 10, marginBottom: 24 }}>
           {[
-            { label: '정답',  val: correctCount,         bg: '#d1fae5', color: '#065f46' },
-            { label: '오답',  val: total - correctCount, bg: '#fee2e2', color: '#991b1b' },
-            { label: '정확도', val: `${accuracy}%`,      bg: '#e0f2fe', color: '#0369a1' },
+            { label: '적절한 대응', val: correctCount,         bg: '#d1fae5', color: '#065f46' },
+            { label: '다시 볼 대응', val: total - correctCount, bg: '#fee2e2', color: '#991b1b' },
+            { label: '적용률',       val: `${accuracy}%`,       bg: '#e0f2fe', color: '#0369a1' },
           ].map(({ label, val, bg, color }) => (
             <div key={label} style={{ background: bg, borderRadius: 10, padding: '12px 14px', minWidth: 72 }}>
               <p style={{ fontSize: 22, fontWeight: 900, color }}>{val}</p>
@@ -877,7 +877,7 @@ function InterviewQuizView({ questions, lessonId, onMarkProgress, onReturnToTheo
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10, width: '100%', maxWidth: 300 }}>
           {accuracy < 80 && (
             <button className="btn btn-secondary btn-full" onClick={onReturnToTheory}>
-              ← 개념 다시 보기
+              ← 학습 내용 다시 보기
             </button>
           )}
           <button className="btn btn-primary btn-full"
@@ -920,7 +920,7 @@ function InterviewQuizView({ questions, lessonId, onMarkProgress, onReturnToTheo
       <button type="button" className="btn btn-ghost"
         style={{ minHeight: 36, padding: '6px 10px', marginBottom: 10 }}
         onClick={onReturnToTheory}>
-        ← 개념으로
+        ← 학습으로
       </button>
       {/* 진행바 */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
@@ -1005,7 +1005,7 @@ function InterviewQuizView({ questions, lessonId, onMarkProgress, onReturnToTheo
           borderRadius: 12, padding: '12px 14px', marginBottom: 12,
         }}>
           <p style={{ fontSize: 14, fontWeight: 800, color: correct ? 'var(--success)' : 'var(--danger)', marginBottom: 6 }}>
-            {correct ? '🎉 정답입니다!' : `❌ 오답 · 정답: ${q.answer}`}
+            {correct ? '적절한 대응입니다' : `다시 생각할 대응 · 권장 ${String(q.answer).charCodeAt(0) - 64}번`}
           </p>
           {q.explanation && (
             <CompactText text={q.explanation} maxItemChars={70} style={{ fontSize: 12, color: 'var(--text)' }} />

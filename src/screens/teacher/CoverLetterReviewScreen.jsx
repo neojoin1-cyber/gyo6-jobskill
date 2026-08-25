@@ -28,6 +28,18 @@ function documentLabel(row) {
   return row?.draft?.documentType === 'interview-script' ? '면접 답변' : '자기소개서'
 }
 
+function applicationLabel(row) {
+  return row?.draft?.recruitmentTitle || row?.recruitment_title || `${row?.target_name || '지원처'} 채용`
+}
+
+function applicationDeadline(row) {
+  return row?.draft?.applicationDeadline || row?.application_deadline || ''
+}
+
+function applicationKey(row) {
+  return row?.draft?.applicationProjectId || row?.application_key || `${row?.student_id}-${row?.target_name}-${row?.role_name}`
+}
+
 const DRAFT_EVIDENCE_LABELS = {
   targetName: '지원처',
   role: '지원 직무',
@@ -37,6 +49,7 @@ const DRAFT_EVIDENCE_LABELS = {
   result: '확인된 결과',
   motivation: '지원동기 근거',
   contribution: '입사 후 기여',
+  recruitmentTitle: '채용회차',
   proof: '확인 자료',
   situation: '상황',
   task: '맡은 역할',
@@ -44,7 +57,8 @@ const DRAFT_EVIDENCE_LABELS = {
 
 const HIDDEN_DRAFT_KEYS = new Set([
   'coverSignature', 'documentType', 'introduction', 'motivation', 'organizationId',
-  'role', 'sector', 'targetName', 'linkedAt', 'generatedText',
+  'role', 'sector', 'targetName', 'linkedAt', 'generatedText', 'applicationProjectId',
+  'recruitmentTitle', 'applicationDeadline', 'applicationStatus',
 ])
 
 function draftEvidenceEntries(draft) {
@@ -56,15 +70,16 @@ function draftEvidenceEntries(draft) {
 
 function sourceEvidenceEntries(sourceCover) {
   return Object.entries(sourceCover || {})
-    .filter(([key, value]) => key !== 'organizationId' && typeof value === 'string' && value.trim())
+    .filter(([key, value]) => !['organizationId', 'applicationProjectId'].includes(key) && typeof value === 'string' && value.trim())
     .map(([key, value]) => ({ key, label: DRAFT_EVIDENCE_LABELS[key] || key, value }))
 }
 
 export default function CoverLetterReviewScreen({ onBack, initialClassId, demo = false }) {
-  const { profile } = useAuth() ?? {}
-  const demoItems = useMemo(() => demo ? demoRows() : [], [demo])
-  const [classes, setClasses] = useState(demo ? [{ id: 'c1', name: '3학년 2반' }] : [])
-  const [classId, setClassId] = useState(initialClassId || (demo ? 'c1' : ''))
+  const { profile, isTrial } = useAuth() ?? {}
+  const demoMode = demo || Boolean(isTrial)
+  const demoItems = useMemo(() => demoMode ? demoRows() : [], [demoMode])
+  const [classes, setClasses] = useState(demoMode ? [{ id: 'c1', name: '3학년 2반' }] : [])
+  const [classId, setClassId] = useState(initialClassId || (demoMode ? 'c1' : ''))
   const [rows, setRows] = useState(demoItems)
   const [selectedId, setSelectedId] = useState(demoItems[0]?.id || null)
   const [query, setQuery] = useState('')
@@ -74,12 +89,12 @@ export default function CoverLetterReviewScreen({ onBack, initialClassId, demo =
   const [selection, setSelection] = useState(null)
   const [selectionNote, setSelectionNote] = useState('')
   const [selectionColor, setSelectionColor] = useState('#fef08a')
-  const [loading, setLoading] = useState(!demo)
+  const [loading, setLoading] = useState(!demoMode)
   const [saving, setSaving] = useState(false)
   const [notice, setNotice] = useState(null)
 
-  useEffect(() => { if (!demo) loadClasses() }, [demo, profile?.id])
-  useEffect(() => { if (!demo) loadRows() }, [demo, profile?.id, classId])
+  useEffect(() => { if (!demoMode) loadClasses() }, [demoMode, profile?.id])
+  useEffect(() => { if (!demoMode) loadRows() }, [demoMode, profile?.id, classId])
 
   async function loadClasses() {
     const teacherId = profile?.id || (await supabase.auth.getUser()).data.user?.id
@@ -91,7 +106,7 @@ export default function CoverLetterReviewScreen({ onBack, initialClassId, demo =
   }
 
   async function loadRows() {
-    if (demo) return
+    if (demoMode) return
     setLoading(true)
     const { data, error } = await supabase.rpc('rpc_teacher_cover_letters', { p_class_id: classId || null, p_limit: 150 })
     setLoading(false)
@@ -105,11 +120,14 @@ export default function CoverLetterReviewScreen({ onBack, initialClassId, demo =
   }
 
   const visible = useMemo(() => rows.filter(item => {
-    const matchesQuery = !query || `${item.student_name} ${item.target_name} ${item.role_name}`.toLowerCase().includes(query.toLowerCase())
+    const matchesQuery = !query || `${item.student_name} ${item.target_name} ${item.role_name} ${applicationLabel(item)}`.toLowerCase().includes(query.toLowerCase())
     const matchesStatus = status === 'all' || (status === 'pending' ? ['submitted', 'in_review'].includes(item.status) : item.status === status)
     return matchesQuery && matchesStatus
   }), [rows, query, status])
-  const selected = rows.find(item => item.id === selectedId) || null
+  const selected = visible.find(item => item.id === selectedId) || null
+  const relatedVersions = useMemo(() => selected ? rows
+    .filter(item => applicationKey(item) === applicationKey(selected))
+    .sort((a, b) => b.revision_no - a.revision_no) : [], [rows, selected])
   const documentSections = useMemo(() => splitGeneratedText(selected?.generated_text, selected?.draft), [selected?.generated_text, selected?.draft])
   const highlights = Array.isArray(feedback.highlights) ? feedback.highlights : []
 
@@ -121,6 +139,10 @@ export default function CoverLetterReviewScreen({ onBack, initialClassId, demo =
     setSelectionNote('')
     setNotice(null)
   }, [selectedId])
+
+  useEffect(() => {
+    if (!visible.some(item => item.id === selectedId)) setSelectedId(visible[0]?.id || null)
+  }, [classId, query, rows, status])
 
   function captureSelection(sectionTitle, body) {
     const quote = window.getSelection()?.toString().trim().replace(/\s+/g, ' ') || ''
@@ -172,7 +194,7 @@ export default function CoverLetterReviewScreen({ onBack, initialClassId, demo =
     }
     setSaving(true)
     setNotice(null)
-    if (demo) {
+    if (demoMode) {
       setRows(current => current.map(item => item.id === selected.id ? { ...item, status: decision, feedback_summary: summary, section_feedback: feedback } : item))
       setSaving(false)
       setNotice({ ok: true, text: decision === 'approved' ? '첨삭 완료로 전달했습니다.' : '수정 조언을 학생에게 전달했습니다.' })
@@ -205,19 +227,20 @@ export default function CoverLetterReviewScreen({ onBack, initialClassId, demo =
         <aside className="cover-review-queue">
           <div className="cover-review-filters">
             <select value={classId} onChange={event => setClassId(event.target.value)}><option value="">담당 학급 전체</option>{classes.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}</select>
-            <label><MagnifyingGlass /><input value={query} onChange={event => setQuery(event.target.value)} placeholder="학생·지원처 검색" /></label>
+            <label><MagnifyingGlass /><input value={query} onChange={event => setQuery(event.target.value)} placeholder="학생·지원처·채용회차 검색" /></label>
             <div><button className={status === 'pending' ? 'is-on' : ''} onClick={() => setStatus('pending')}>대기</button><button className={status === 'revision_requested' ? 'is-on' : ''} onClick={() => setStatus('revision_requested')}>수정</button><button className={status === 'approved' ? 'is-on' : ''} onClick={() => setStatus('approved')}>완료</button><button className={status === 'all' ? 'is-on' : ''} onClick={() => setStatus('all')}>전체</button></div>
           </div>
           <div className="cover-review-list">
             {loading && <p className="cover-review-empty">첨삭 요청을 불러오는 중입니다.</p>}
             {!loading && visible.length === 0 && <p className="cover-review-empty">조건에 맞는 제출물이 없습니다.</p>}
-            {visible.map(item => <button key={item.id} className={selectedId === item.id ? 'is-on' : ''} onClick={() => setSelectedId(item.id)}><span><Student weight="duotone" /></span><div><header><b>{item.student_name}</b><em className={`is-${item.status}`}>{STATUS[item.status]}</em></header><strong>{item.target_name}</strong><small>{documentLabel(item)} · {item.role_name} · {item.class_name} · {item.revision_no}차</small></div></button>)}
+            {visible.map(item => <button key={item.id} data-application={applicationKey(item)} className={selectedId === item.id ? 'is-on' : ''} onClick={() => setSelectedId(item.id)}><span><Student weight="duotone" /></span><div><header><b>{item.student_name}</b><em className={`is-${item.status}`}>{STATUS[item.status]}</em></header><strong>{documentLabel(item)} · {applicationLabel(item)}</strong><small>{item.target_name} · {item.role_name} · 작성본 v{item.revision_no}{applicationDeadline(item) ? ` · ${applicationDeadline(item)} 마감` : ''}</small></div></button>)}
           </div>
         </aside>
 
         {!selected ? <section className="cover-review-no-selection"><FileText /><b>첨삭할 글을 선택하세요</b></section> : <>
           <section className="cover-review-document">
-            <header><div><span>{selected.student_name} 학생 · {selected.class_name}</span><h2>{selected.target_name}</h2><p>{documentLabel(selected)} · {selected.role_name} 지원 · {selected.revision_no}차</p></div><em>{STATUS[selected.status]}</em></header>
+            <header><div><span>{documentLabel(selected)} · {selected.student_name} 학생 · {selected.class_name}</span><h2>{applicationLabel(selected)}</h2><p>{selected.target_name} · {selected.role_name} 지원 · 작성본 v{selected.revision_no}{applicationDeadline(selected) ? ` · ${applicationDeadline(selected)} 마감` : ''}</p></div><em>{STATUS[selected.status]}</em></header>
+            <section className="cover-review-application-context"><b>{selected.draft?.documentType === 'interview-script' ? '답변 세트별 첨삭' : '지원 건별 첨삭'}</b><p>{selected.draft?.documentType === 'interview-script' ? `다른 면접 답변 세트와 분리되어 있으며, 연결 자기소개서 “${selected.draft?.sourceCover?.recruitmentTitle || selected.target_name}”의 근거와 함께 확인합니다.` : '같은 학생의 다른 기업·직무·채용회차 작성본과 분리된 문서입니다. 이 지원서 안에서 이전 버전과 수정 방향을 이어서 확인합니다.'}</p>{relatedVersions.length > 1 && <div>{relatedVersions.map(item => <button key={item.id} className={item.id === selected.id ? 'is-on' : ''} onClick={() => { setStatus('all'); setSelectedId(item.id) }}>v{item.revision_no} · {STATUS[item.status]}</button>)}</div>}</section>
             <p className="cover-review-select-help"><Highlighter weight="fill" />메모할 문장을 드래그하면 오른쪽 첨삭함에 선택됨.</p>
             {documentSections.map(item => <article key={item.title} className={item.limit ? 'has-length-guide' : ''} style={item.limit ? { minHeight: `${reviewAnswerBoxHeight(item.limit)}px` } : undefined}><header className="cover-review-section-head"><div><h3>{item.title}</h3>{item.limit && <small className={item.count < item.minLength ? 'is-short' : 'is-ready'}>{item.count}자 · 권장 {item.minLength}~{item.limit}자</small>}</div><button onClick={() => selectParagraph(item.title, item.body)}><Highlighter />문단 메모</button></header><p onMouseUp={() => captureSelection(item.title, item.body)}>{renderHighlightedText(item.body, highlights.filter(mark => mark.sectionTitle === item.title))}</p></article>)}
             <details><summary>학생이 입력한 원본 근거 보기</summary>{draftEvidenceEntries(selected.draft).map(item => <div key={item.key}><b>{item.label}</b><p>{item.value}</p></div>)}{sourceEvidenceEntries(selected.draft?.sourceCover).map(item => <div key={`source-${item.key}`}><b>연결 자기소개서 · {item.label}</b><p>{item.value}</p></div>)}{Array.isArray(selected.draft?.sourceCover?.coverItems) && selected.draft.sourceCover.coverItems.map(item => <div key={`source-item-${item.id}`}><b>연결 자기소개서 원문 · {item.label}</b><p>{item.answer}</p></div>)}{Array.isArray(selected.draft?.evidenceBank) && selected.draft.evidenceBank.map(item => <div key={item.id}><b>근거 카드 · {item.title}</b><p>{[item.situation, item.task, item.action, item.result].filter(Boolean).join(' ')}</p></div>)}</details>
@@ -283,6 +306,7 @@ function demoRows() {
     sector: 'finance', organization_id: 'ibk', target_name: 'IBK기업은행', role_name: '기업금융',
     revision_no: 2, status: 'submitted', created_at: new Date().toISOString(),
     draft: {
+      applicationProjectId: 'application-demo-ibk', recruitmentTitle: '2026년 하반기 고졸 신입 채용', applicationDeadline: '2026-09-18',
       targetEvidence: '중소기업의 성장과 금융 접근성을 지원하는 역할을 공식 자료에서 확인함.',
       roleNeed: '고객 요구를 정확히 확인하고 규정에 맞게 설명하는 능력과 개인정보 보호 태도',
       action: '거래 자료를 시간순으로 다시 분류하고 원본 영수증과 대조한 뒤 팀원과 수정 전후 금액을 검산함.',
@@ -295,5 +319,40 @@ function demoRows() {
       ],
     },
     generated_text: '1. 지원동기\n교내 정산 프로젝트에서 정확한 기록이 신뢰를 만든다는 점을 배웠습니다. 중소기업 금융 접근성을 지원하는 기관의 역할과 제 경험을 연결해 지원했습니다.\n\n2. 직무와 전공 역량\n스프레드시트로 거래 자료를 분류하고 원본과 대조하는 검산 과정을 수행했습니다.\n\n3. 경험으로 증명한 강점\n누락된 거래를 찾아 팀원과 수정 전후 금액을 재확인하고 검산표를 개선했습니다.\n\n4. 입사 후 기여\n상품과 규정을 정확히 익히고 고객이 이해하기 쉬운 안내에 기여하겠습니다.',
+  }, {
+    id: 'cover-demo-2', student_id: 's1', student_name: '이수현', class_id: 'c1', class_name: '3학년 2반',
+    sector: 'public', organization_id: 'kepco', target_name: '한국전력공사', role_name: '전기설비',
+    revision_no: 1, status: 'revision_requested', created_at: new Date(Date.now() - 86400000).toISOString(),
+    draft: {
+      applicationProjectId: 'application-demo-kepco', recruitmentTitle: '2026년 2차 고졸 채용', applicationDeadline: '2026-10-02',
+      targetEvidence: '안정적인 전력 공급과 설비 안전을 지원 직무의 핵심 기준으로 확인함.',
+      action: '배선 실습에서 회로도를 기준으로 측정 지점을 나누고 이상값이 나온 구간을 다시 결선함.',
+      result: '오결선 한 곳을 찾아 정상 측정값을 확보하고 점검 순서를 실습일지에 남김.',
+      coverItems: [
+        { id: 'motivation', label: '지원동기', minLength: 500, limit: 700 },
+        { id: 'job-competency', label: '직무역량', minLength: 500, limit: 700 },
+      ],
+    },
+    generated_text: '1. 지원동기\n전기설비 실습에서 작은 결선 오류도 안정적인 운영에 영향을 준다는 점을 배웠습니다. 전력 설비의 안전과 공급 신뢰를 지키는 업무에 이 경험을 연결하고자 지원했습니다.\n\n2. 직무역량\n회로도를 기준으로 측정 지점을 나누고 이상값이 나온 구간을 재확인했습니다. 오결선 한 곳을 바로잡아 정상 측정값을 확보했으며 점검 순서를 실습일지에 남겼습니다.',
+  }, {
+    id: 'interview-demo-1', student_id: 's2', student_name: '박민준', class_id: 'c1', class_name: '3학년 2반',
+    sector: 'finance', organization_id: 'ibk', target_name: 'IBK기업은행', role_name: '개인금융',
+    revision_no: 1, status: 'submitted', created_at: new Date(Date.now() - 3600000).toISOString(),
+    draft: {
+      documentType: 'interview-script', applicationProjectId: 'interview-script-demo-ibk-a', sourceCoverApplicationId: 'application-demo-ibk-a',
+      recruitmentTitle: 'IBK기업은행 1차 면접 답변 A', interviewScriptStatus: 'submitted',
+      sourceCover: {
+        applicationProjectId: 'application-demo-ibk-a', recruitmentTitle: '2026년 하반기 고졸 신입 채용',
+        targetName: 'IBK기업은행', role: '개인금융', targetEvidence: '중소기업과 고객의 성장을 지원하는 금융 역할을 공식 자료에서 확인함.',
+        action: '교내 매점 정산표의 누락 항목을 원본 영수증과 대조하고 팀원과 교차 검산함.', result: '누락 3건을 수정하고 다음 정산부터 검산 칸을 사용함.',
+        coverItems: [{ id: 'motivation', label: '지원동기', answer: '정확한 확인으로 신뢰를 지킨 경험을 고객 금융 업무와 연결해 작성했습니다.' }],
+      },
+      coverItems: [
+        { id: 'introduction', label: '1분 자기소개', minLength: 250, limit: 350 },
+        { id: 'motivation', label: '면접 지원동기', minLength: 220, limit: 350 },
+        { id: 'closing', label: '마지막 한마디', minLength: 100, limit: 180 },
+      ],
+    },
+    generated_text: '1. 1분 자기소개\n안녕하십니까. 정확한 확인과 꾸준한 개선을 실천해 온 개인금융 지원자입니다. 교내 매점 정산 과정에서 원본 영수증과 거래 자료를 대조해 누락 3건을 찾았고, 팀원과 교차 검산해 정산표를 바로잡았습니다. 이후 검산 칸을 추가해 같은 오류가 반복되지 않도록 했습니다. IBK기업은행에서도 고객의 정보를 정확히 확인하고 이해하기 쉬운 안내로 신뢰를 쌓겠습니다.\n\n2. 면접 지원동기\n정확한 기록과 확인이 고객 신뢰의 출발점이라는 것을 정산 경험에서 배웠습니다. 중소기업과 고객의 성장을 지원하는 IBK기업은행의 역할을 확인했고, 개인금융 업무에서 고객의 상황을 세심하게 듣고 규정에 맞는 안내를 제공하고자 지원했습니다.\n\n3. 마지막 한마디\n오늘 답변드린 교차 검산 경험처럼, 입행 후에도 작은 오류를 지나치지 않고 확인 가능한 행동으로 고객 신뢰에 기여하겠습니다. 면접 기회를 주셔서 감사합니다.',
   }]
 }

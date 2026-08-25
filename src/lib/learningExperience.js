@@ -44,7 +44,10 @@ function tokens(value) {
     .filter(token => !STOP_WORDS.has(token)))
 }
 
-export function learningVisualFor(value) {
+export function learningVisualFor(value, courseKind) {
+  if (courseKind === 'interview') return VISUALS[3]
+  if (courseKind === 'cover-letter') return VISUALS[0]
+  if (courseKind === 'personality') return VISUALS[4]
   const text = plain(value).toLowerCase()
   let best = VISUALS[0]
   let bestScore = -1
@@ -92,7 +95,7 @@ function strategyFor(value) {
     return ['구하려는 값·단위 먼저 표시', '주어진 수치·조건만 식에 대입', '결과의 단위·크기 재검산']
   }
   if (/(면접|자기소개|지원동기|star|prep|블라인드)/.test(text)) {
-    return ['경험·의견·직무 중 질문 의도부터 구분', 'STAR 또는 PREP으로 답변 순서 구성', '추상적 장점 대신 행동·결과 제시']
+    return ['경험·의견·직무 중 질문 요구부터 구분', 'STAR 또는 PREP으로 답변 순서 구성', '추상적 장점 대신 행동·결과 제시']
   }
   if (/(인성|윤리|태도|성찰|책임|정직|가치관)/.test(text)) {
     return ['좋아 보이는 답보다 실제 행동 기준 확인', '안전·정직·책임·협업 원칙과 상황 함께 검토', '비슷한 상황에서도 응답 기준 일관성 확인']
@@ -105,6 +108,21 @@ function strategyFor(value) {
 
 function toSampleQuestion(question, point) {
   if (!question) return null
+  if (question.type === 'writing-practice') {
+    return {
+      type: 'writing-practice',
+      format: question.format || '실전 고쳐쓰기',
+      stem: plain(question.stem),
+      context: plain(question.context),
+      draft: plain(question.draft),
+      checklist: (question.checklist || []).map(plain).filter(Boolean),
+      modelAnswer: plain(question.modelAnswer),
+      explanation: plain(question.explanation),
+      limit: Number(question.limit) || 700,
+      thinkingSteps: strategyFor(`자기소개서 ${point.topic ?? ''} ${point.learn ?? ''}`),
+      sourceQuestion: question,
+    }
+  }
   if (question.type === 'reflection') {
     return {
       stem: plain(question.stem || question.question),
@@ -210,7 +228,7 @@ export function buildLearningPoints(summary, questions = []) {
           explanation: point.sampleQuestion.explanation || plain(point.example),
         }, point)
       : toSampleQuestion(picked, point)
-    const visual = learningVisualFor(`${summary?.title ?? ''} ${point.topic ?? ''} ${point.learn ?? ''}`)
+    const visual = learningVisualFor(`${summary?.title ?? ''} ${point.topic ?? ''} ${point.learn ?? ''}`, summary?.courseKind)
     const situation = point.situation || sampleQuestion?.context || sampleQuestion?.stem
     const example = point.example || (typeof point.sampleQuestion === 'string' ? point.sampleQuestion : '')
     return { ...point, example, sampleQuestion, visual, situation }
@@ -362,9 +380,9 @@ const COURSE_INTROS = {
   'education-certification': '교육부·대한상공회의소 직업공통능력 인증의 공식 영역 안에서, 상황의 근거를 찾고 상위 등급 판단까지 연결합니다.',
   ncs: '고용노동부·한국산업인력공단 NCS 직업기초능력의 개념과 직무 적용 원리를 익힌 뒤 문제로 확인합니다.',
   recruitment: 'NCS 주과정을 바탕으로 지원 분야에서 추가로 요구되는 채용필기 심화 내용을 학습합니다.',
-  interview: '면접 질문의 의도와 답변 구조를 이해하고, 자신의 경험으로 직접 말하고 고쳐 봅니다.',
+  interview: '실제 면접 상황에서 적절한 대응을 판단하고, 자신의 경험으로 직접 답한 뒤 고쳐 봅니다.',
   personality: '정답을 만들지 않고 검사 형식과 자신의 평소 행동 기준을 이해한 뒤 안정적인 응답 습관을 익힙니다.',
-  'cover-letter': '자기소개서 질문의 의도와 작성 구조를 이해하고, 자신의 사실 근거로 직접 작성합니다.',
+  'cover-letter': '지원 문항의 필수 요구를 표시하고, 감점 초안을 자신의 사실 근거로 직접 고쳐 씁니다.',
 }
 
 /**

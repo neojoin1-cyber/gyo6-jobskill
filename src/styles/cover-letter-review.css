@@ -56,6 +56,12 @@
 .cover-review-document mark { padding: 1px 0; color: inherit; cursor: help; }
 .cover-review-select-help { display: flex; align-items: center; gap: 5px; margin: 12px 0 0; padding: 7px 9px; border-left: 3px solid #eab308; background: #fefce8; color: #713f12; font-size: 8.5px; }
 .cover-review-select-help svg { flex: 0 0 auto; }
+.cover-review-application-context { margin: 12px 0 0; padding: 9px 10px; border-left: 3px solid #2563eb; background: #eff6ff; }
+.cover-review-application-context b { display: block; color: #1d4ed8; font-size: 9px; }
+.cover-review-application-context p { margin: 3px 0 0; color: #475569; font-size: 8.5px; line-height: 1.45; }
+.cover-review-application-context > div { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 7px; }
+.cover-review-application-context button { min-height: 27px; padding: 0 8px; border: 1px solid #bfdbfe; border-radius: 5px; background: #fff; color: #1d4ed8; font-size: 8px; font-weight: 900; }
+.cover-review-application-context button.is-on { border-color: #2563eb; background: #2563eb; color: #fff; }
 .cover-review-document > details { margin-top: 14px; border: 1px solid #d8dee7; border-radius: 7px; }
 .cover-review-document > details summary { padding: 10px 12px; color: #1d4ed8; font-size: 9px; font-weight: 900; cursor: pointer; }
 .cover-review-document > details div { padding: 8px 12px; border-top: 1px solid #e1e6ec; }

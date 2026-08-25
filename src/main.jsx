@@ -4,6 +4,29 @@ import App from './App.jsx'
 import ErrorBoundary from './lib/ErrorBoundary.jsx'
 import './index.css'
 
+let reloadingForNewWorker = false
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (reloadingForNewWorker) return
+    reloadingForNewWorker = true
+    window.location.reload()
+  })
+
+  if (import.meta.env.DEV) {
+    window.addEventListener('load', async () => {
+      const key = 'sst.dev-sw-cleaned'
+      if (sessionStorage.getItem(key) === '1') return
+      const registrations = await navigator.serviceWorker.getRegistrations()
+      if (!registrations.length) return
+      sessionStorage.setItem(key, '1')
+      await Promise.all(registrations.map(registration => registration.unregister()))
+      const cacheKeys = await caches.keys()
+      await Promise.all(cacheKeys.filter(name => name.startsWith('gyo6-') || name.startsWith('workbox-')).map(name => caches.delete(name)))
+      window.location.reload()
+    })
+  }
+}
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ErrorBoundary label="root">

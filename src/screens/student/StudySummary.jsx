@@ -6,6 +6,54 @@ import CompactText from '../../components/CompactText.jsx'
 
 const EMPTY_QUESTIONS = []
 
+function learningLanguage(courseKind) {
+  if (courseKind === 'cover-letter') return {
+    practical: true,
+    practiceLabel: '자기소개서 작성 실전',
+    introMode: '문항 파악 · 초안 수정 · 독립 작성',
+    introCaption: '실제 지원 문항과 감점 초안을 보고, 내 사실 근거로 직접 고쳐 씁니다.',
+    countLabel: '작성 도구',
+    memoryLabel: '작성 기준',
+    understandLabel: '작성법 익히기',
+    pointLabel: '이번에 익힐 작성법',
+    learnLabel: '실제 작성은 이렇게',
+    revealLabel: '작성 실전 펼치기',
+    revealedLabel: '작성 실전',
+    toolLabel: '제출 전 작성 도구',
+    toolAction: '작성 도구 확인',
+  }
+  if (courseKind === 'interview') return {
+    practical: true,
+    practiceLabel: '면접 답변 실전',
+    introMode: '상황 판단 · 답변 구성 · 직접 말하기',
+    introCaption: '실제 면접 상황을 보고, 적절한 대응과 내 경험 답변을 직접 연습합니다.',
+    countLabel: '답변 도구',
+    memoryLabel: '답변 기준',
+    understandLabel: '상황·답변 익히기',
+    pointLabel: '이번에 익힐 대응',
+    learnLabel: '실제 면접에서는 이렇게',
+    revealLabel: '답변 실전 펼치기',
+    revealedLabel: '답변 실전',
+    toolLabel: '면접 직전 답변 도구',
+    toolAction: '답변 도구 확인',
+  }
+  return {
+    practical: false,
+    practiceLabel: '실제 출제형',
+    introMode: '개념 이해 · 실제 형식 · 독립 연습',
+    introCaption: '직무 상황을 먼저 보고, 개념과 실제 출제형을 연결합니다.',
+    countLabel: '용어',
+    memoryLabel: '시험 출제 암기',
+    understandLabel: '개념 이해',
+    pointLabel: '이번에 익힐 판단',
+    learnLabel: '개념을 이렇게 이해해요',
+    revealLabel: '시험엔 어떻게 나올까? — 탭하여 확인',
+    revealedLabel: '외부평가에서는 이렇게',
+    toolLabel: '정답 용어',
+    toolAction: '정답 용어 보기',
+  }
+}
+
 export function buildStudySummaryCards(summary, questions = EMPTY_QUESTIONS, preparedPoints, preparedMistakes) {
   const learningPoints = preparedPoints ?? buildLearningPoints(summary, questions)
   const learningMistakes = preparedMistakes ?? buildLearningMistakes(summary, questions)
@@ -53,7 +101,30 @@ function LearnLines({ text }) {
   )
 }
 
-function SampleQuestionCard({ sample, example, isOpen, selected, onSelect, onChange, onOpen }) {
+function SampleQuestionCard({ sample, example, courseKind, isOpen, selected, onSelect, onChange, onOpen }) {
+  const language = learningLanguage(courseKind)
+  if (sample.type === 'writing-practice') {
+    const answer = typeof selected === 'string' ? selected : ''
+    const limit = Number(sample.limit) || 700
+    return (
+      <div data-learning-question="writing-practice" className="learning-writing-practice" style={{ marginTop: 10, background: '#F8FAFF', border: '1.5px solid #A5B4FC', borderRadius: 10, padding: '12px 14px' }}>
+        <p style={{ fontSize: 12, fontWeight: 800, color: '#4338CA', marginBottom: 8 }}>{sample.format || '실전 고쳐쓰기'}</p>
+        {sample.context && <div style={{ background: '#EEF2FF', borderRadius: 8, padding: '9px 11px', marginBottom: 10 }}><b style={{ fontSize: 12, color: '#4338CA' }}>지원 문항</b><p style={{ marginTop: 4, fontSize: 13, lineHeight: 1.7 }}>{sample.context}</p></div>}
+        {sample.draft && <div style={{ background: '#FFF1F2', border: '1px solid #FECDD3', borderRadius: 8, padding: '9px 11px', marginBottom: 10 }}><b style={{ fontSize: 12, color: '#BE123C' }}>감점 초안</b><p style={{ marginTop: 4, fontSize: 13, lineHeight: 1.7 }}>{sample.draft}</p></div>}
+        <p style={{ fontSize: 13.5, fontWeight: 750, lineHeight: 1.65, marginBottom: 8 }}>{sample.stem}</p>
+        <label style={{ display: 'block' }}>
+          <span style={{ display: 'flex', justifyContent: 'space-between', gap: 8, marginBottom: 5, fontSize: 12, fontWeight: 750, color: '#4338CA' }}><span>내 문장</span><span>{[...answer].length}/{limit}자</span></span>
+          <textarea value={answer} maxLength={limit} rows={5} onChange={event => onChange(event.target.value)} placeholder="내 경험의 상황·행동·결과가 보이도록 직접 고쳐 씀" style={{ width: '100%', minHeight: 118, resize: 'vertical', border: '1px solid #C7D2FE', borderRadius: 8, padding: '10px 11px', font: 'inherit', fontSize: 13.5, lineHeight: 1.7, color: 'var(--text)', background: '#fff' }} />
+        </label>
+        {!isOpen && <button type="button" disabled={answer.trim().length < 20} onClick={onOpen} style={{ width: '100%', marginTop: 9, minHeight: 42, border: 0, borderRadius: 8, background: answer.trim().length < 20 ? '#E5E7EB' : '#4F46E5', color: answer.trim().length < 20 ? '#6B7280' : '#fff', fontWeight: 800, cursor: answer.trim().length < 20 ? 'default' : 'pointer' }}>{answer.trim().length < 20 ? '20자 이상 직접 쓴 뒤 점검 가능' : '작성 점검 보기'}</button>}
+        {isOpen && <div style={{ marginTop: 10, display: 'grid', gap: 9 }}>
+          {sample.checklist?.length > 0 && <div style={{ background: '#ECFDF5', border: '1px solid #A7F3D0', borderRadius: 8, padding: '10px 12px' }}><b style={{ fontSize: 12, color: '#047857' }}>내 문장 체크</b><ul style={{ margin: '7px 0 0', paddingLeft: 18 }}>{sample.checklist.map(item => <li key={item} style={{ fontSize: 12.5, lineHeight: 1.7 }}>{item}</li>)}</ul></div>}
+          {sample.modelAnswer && <div style={{ background: '#FFFBEB', border: '1px solid #FDE68A', borderRadius: 8, padding: '10px 12px' }}><b style={{ fontSize: 12, color: '#B45309' }}>개선 예시</b><p style={{ marginTop: 5, fontSize: 12.5, lineHeight: 1.75 }}>{sample.modelAnswer}</p></div>}
+          {sample.explanation && <p style={{ fontSize: 12, lineHeight: 1.65, color: 'var(--text-muted)' }}>{sample.explanation}</p>}
+        </div>}
+      </div>
+    )
+  }
   if (sample.type === 'reflection') {
     return (
       <div data-learning-question="reflection" className="learning-reflection-card">
@@ -106,7 +177,7 @@ function SampleQuestionCard({ sample, example, isOpen, selected, onSelect, onCha
     const filled = Object.values(selected || {}).filter(value => value != null).length
     return (
       <div data-learning-question="pulldown" style={{ marginTop: 10, background: '#FFFDE7', border: '1.5px solid #FFE082', borderRadius: 10, padding: '12px 14px' }}>
-        <p style={{ fontSize: 12, fontWeight: 800, color: '#B45309', marginBottom: 8 }}>실제 출제형 · 풀다운형</p>
+        <p style={{ fontSize: 12, fontWeight: 800, color: '#B45309', marginBottom: 8 }}>{language.practiceLabel} · 풀다운형</p>
         {sample.context && <p style={{ fontSize: 12.5, lineHeight: 1.75, whiteSpace: 'pre-wrap', marginBottom: 10 }}>{sample.context}</p>}
         <p style={{ fontSize: 'clamp(13px, 3.85vw, 14.5px)', fontWeight: 700, lineHeight: 1.75, color: 'var(--text)', marginBottom: 10 }}>{sample.stem}</p>
         <PulldownForm q={sample.sourceQuestion || sample} checked={isOpen} value={selected} onChange={onChange} />
@@ -123,7 +194,7 @@ function SampleQuestionCard({ sample, example, isOpen, selected, onSelect, onCha
   const answers = new Set(Array.isArray(sample.answer) ? sample.answer : [sample.answer])
   return (
     <div data-learning-question="choice" style={{ marginTop: 10, background: '#FFFDE7', border: '1.5px solid #FFE082', borderRadius: 10, padding: '12px 14px' }}>
-      <p style={{ fontSize: 12, fontWeight: 800, color: '#B45309', marginBottom: 8 }}>실제 출제형 · {sample.format || '선택형'}</p>
+      <p style={{ fontSize: 12, fontWeight: 800, color: '#B45309', marginBottom: 8 }}>{language.practiceLabel} · {sample.format || '선택형'}</p>
       {sample.sourceQuestion && <QuestionMedia q={sample.sourceQuestion} />}
       {sample.context && (
         <div style={{ background: '#f0f4ff', border: '1px solid #c7d7f5', borderRadius: 8, padding: '9px 11px', marginBottom: 10 }}>
@@ -175,7 +246,8 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, onS
   const { title, intro, keyPoints = [], mustRemember = [], terms = [], tips = [] } = summary || {}
   const learningPoints = useMemo(() => buildLearningPoints(summary, questions), [summary, questions])
   const learningMistakes = useMemo(() => buildLearningMistakes(summary, questions), [summary, questions])
-  const introVisual = useMemo(() => learningVisualFor(`${title ?? ''} ${intro ?? ''}`), [title, intro])
+  const introVisual = useMemo(() => learningVisualFor(`${title ?? ''} ${intro ?? ''}`, summary?.courseKind), [title, intro, summary?.courseKind])
+  const language = learningLanguage(summary?.courseKind)
 
   // 학생 화면과 교사용 현재 단계 지원이 같은 카드 순서를 공유함.
   const cards = useMemo(
@@ -250,12 +322,12 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, onS
                   personality: '정답 없는 인성검사',
                   'cover-letter': '고졸 공채 자기소개서',
                 }[summary.courseKind] || '자율학습'}</span>
-                <strong>{summary.courseKind === 'personality' ? '검사 이해 · 응답 성찰 · 실전 적응' : summary.courseKind === 'cover-letter' ? '질문 이해 · 사례 비교 · 독립 작성' : '개념 이해 · 실제 형식 · 독립 연습'}</strong>
+                <strong>{summary.courseKind === 'personality' ? '검사 이해 · 응답 성찰 · 실전 적응' : language.introMode}</strong>
               </div>
             )}
             <figure className="learning-scene learning-scene-intro">
               <img src={introVisual.src} alt={introVisual.alt} />
-              <figcaption>직무 상황을 먼저 보고, 개념과 실제 출제형을 연결합니다.</figcaption>
+              <figcaption>{language.introCaption}</figcaption>
             </figure>
             {intro && (
               <div style={{ background: 'var(--bg)', borderRadius: 10, padding: '12px 14px', border: '1px solid var(--border)' }}>
@@ -264,7 +336,7 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, onS
               </div>
             )}
             <p style={{ fontSize: 12, color: 'var(--primary)', marginTop: 14, fontWeight: 700, textAlign: 'center' }}>
-              핵심 {keyPoints.length}개 · 용어 {terms.length}개 — 한 장씩 넘기며 확인해요
+              핵심 {keyPoints.length}개 · {language.countLabel} {terms.length}개 — 한 장씩 넘기며 확인해요
             </p>
           </div>
         )}
@@ -281,7 +353,7 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, onS
                 {p.mode && (
                   <span style={{ fontSize: 12, fontWeight: 800, padding: '2px 8px', borderRadius: 999,
                     background: isMem ? '#FFF3E0' : '#E8EAF6', color: isMem ? '#E65100' : '#3949AB' }}>
-                    {isMem ? '🧠 시험 출제 암기' : '💡 개념 이해'}
+                    {isMem ? `🧠 ${language.memoryLabel}` : `💡 ${language.understandLabel}`}
                   </span>
                 )}
               </div>
@@ -306,7 +378,7 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, onS
               {p.topic && (
                 <div style={{ background: isMem ? '#FFF3E0' : '#EEF2FF', borderRadius: 8, padding: '9px 11px', marginBottom: 10 }}>
                   <p style={{ fontSize: 12, fontWeight: 800, color: isMem ? '#C05300' : '#4338CA', marginBottom: 3 }}>
-                    이번에 익힐 판단
+                    {language.pointLabel}
                   </p>
                   <p style={{ fontSize: 'clamp(13px, 3.9vw, 15px)', fontWeight: 700, lineHeight: 1.5, color: isMem ? '#7C2D12' : '#1E1B4B' }}>
                     {p.topic}
@@ -317,7 +389,7 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, onS
               {/* 핵심 내용: 구조별 스마트 렌더링 */}
               {p.learn && (
                 <div style={{ marginBottom: p.example ? 10 : 0 }}>
-                  <p className="learning-block-label">개념을 이렇게 이해해요</p>
+                  <p className="learning-block-label">{language.learnLabel}</p>
                   <LearnLines text={p.learn} />
                 </div>
               )}
@@ -328,6 +400,7 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, onS
                   <SampleQuestionCard
                     sample={p.sampleQuestion}
                     example={p.example}
+                    courseKind={summary.courseKind}
                     isOpen={isOpen}
                     selected={sampleSelections[step]}
                     onSelect={selectSample}
@@ -338,7 +411,7 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, onS
                   // 구 포맷: sampleQuestion이 string — 텍스트로 그대로 표시
                   isOpen ? (
                     <div style={{ marginTop: 10, background: '#FFFDE7', border: '1px solid #FFE082', borderRadius: 10, padding: '11px 13px' }}>
-                      <p style={{ fontSize: 12, fontWeight: 800, color: '#B45309', marginBottom: 6 }}>📝 외부평가에서는 이렇게</p>
+                      <p style={{ fontSize: 12, fontWeight: 800, color: '#B45309', marginBottom: 6 }}>📝 {language.revealedLabel}</p>
                     <p style={{ fontSize: 'clamp(12.5px, 3.7vw, 14px)', lineHeight: 1.72, whiteSpace: 'pre-wrap', color: 'var(--text)' }}>{p.sampleQuestion}</p>
                     </div>
                   ) : (
@@ -346,14 +419,14 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, onS
                       style={{ marginTop: 10, width: '100%', padding: '10px', borderRadius: 10,
                         border: '1.5px dashed #D97706', background: 'transparent', color: '#B45309',
                         fontWeight: 800, fontSize: 13, cursor: 'pointer' }}>
-                      📝 시험엔 어떻게 나올까? — 탭하여 확인
+                      📝 {language.revealLabel}
                     </button>
                   )
                 )
               ) : p.example ? (
                 isOpen ? (
                   <div style={{ marginTop: 10, background: '#FFFDE7', border: '1px solid #FFE082', borderRadius: 10, padding: '11px 13px' }}>
-                    <p style={{ fontSize: 12, fontWeight: 800, color: '#B45309', marginBottom: 6 }}>📝 외부평가에서는 이렇게</p>
+                    <p style={{ fontSize: 12, fontWeight: 800, color: '#B45309', marginBottom: 6 }}>📝 {language.revealedLabel}</p>
                     <p style={{ fontSize: 'clamp(12.5px, 3.7vw, 14px)', lineHeight: 1.72, whiteSpace: 'pre-wrap', color: 'var(--text)' }}>{p.example}</p>
                   </div>
                 ) : (
@@ -361,7 +434,7 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, onS
                     style={{ marginTop: 10, width: '100%', padding: '10px', borderRadius: 10,
                       border: '1.5px dashed #D97706', background: 'transparent', color: '#B45309',
                       fontWeight: 800, fontSize: 13, cursor: 'pointer' }}>
-                    📝 시험엔 어떻게 나올까? — 탭하여 확인
+                    📝 {language.revealLabel}
                   </button>
                 )
               ) : null}
@@ -407,12 +480,22 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, onS
             자가 채점이 명확하다. 생성 인출로 용어 정착을 강화한다. */}
         {card.type === 'term' && (
           <div className="card" style={{ borderLeft: '4px solid var(--success)' }}>
-            <p style={{ fontSize: 12, fontWeight: 800, color: 'var(--success)', marginBottom: 12, textAlign: 'center' }}>🧩 설명을 읽고 용어를 떠올려보세요</p>
-            {/* 뜻(프롬프트) — 항상 표시 */}
-            <div style={{ background: 'var(--bg)', borderRadius: 10, padding: '14px 16px', border: '1px solid var(--border)' }}>
-              <CompactText text={card.def} maxItemChars={72} style={{ fontSize: 'clamp(14px, 4vw, 16px)', color: 'var(--text)' }} />
-            </div>
-            {isOpen ? (
+            {language.practical ? (
+              <>
+                <p style={{ fontSize: 12, fontWeight: 800, color: 'var(--success)', marginBottom: 10 }}>{language.toolLabel}</p>
+                <div style={{ background: '#E8F5E9', borderRadius: 10, padding: '12px 14px', border: '1.5px solid var(--success)' }}>
+                  <p style={{ fontSize: 'clamp(16px, 4.8vw, 19px)', fontWeight: 800, lineHeight: 1.4, color: '#1b5e20', marginBottom: 7 }}>{card.term}</p>
+                  <CompactText text={card.def} maxItemChars={72} style={{ fontSize: 'clamp(13px, 3.8vw, 14.5px)', color: 'var(--text)' }} />
+                </div>
+                <p style={{ marginTop: 10, fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.65 }}>용어 암기 없음 · 실제 작성과 답변에서 바로 적용</p>
+              </>
+            ) : <>
+              <p style={{ fontSize: 12, fontWeight: 800, color: 'var(--success)', marginBottom: 12, textAlign: 'center' }}>🧩 설명을 읽고 용어를 떠올려보세요</p>
+              {/* 뜻(프롬프트) — 항상 표시 */}
+              <div style={{ background: 'var(--bg)', borderRadius: 10, padding: '14px 16px', border: '1px solid var(--border)' }}>
+                <CompactText text={card.def} maxItemChars={72} style={{ fontSize: 'clamp(14px, 4vw, 16px)', color: 'var(--text)' }} />
+              </div>
+              {isOpen ? (
               <>
                 {/* 정답 용어 공개 */}
                 <div style={{ marginTop: 12, background: '#E8F5E9', borderRadius: 10, padding: '12px 14px', border: '1.5px solid var(--success)', textAlign: 'center' }}>
@@ -430,12 +513,13 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, onS
                   </button>
                 </div>
               </>
-            ) : (
+              ) : (
               <button onClick={open}
                 style={{ width: '100%', marginTop: 12, padding: '13px', borderRadius: 10, border: '1.5px dashed var(--success)', background: 'transparent', color: 'var(--success)', fontWeight: 700, fontSize: 15, cursor: 'pointer' }}>
                 ✅ 정답 용어 보기
               </button>
-            )}
+              )}
+            </>}
           </div>
         )}
 

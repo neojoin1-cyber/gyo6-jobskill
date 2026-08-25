@@ -295,8 +295,10 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
           : course === 'recruit-written'
             ? '채용 트랙·세부 단원 범위 선택\n5~40문항으로 약점·보완 순서 확인\n실제 기관 합격 판정 아님'
             : course === 'cover-letter'
-              ? '질문 의도·지원처·근거·구조·사실성 진단\n부족한 작성 기준으로 바로 연결'
-              : '전체·영역·소단원 범위 선택\n이해도 진단 후 보완학습 바로 연결'
+              ? '실제 초안의 문항 요구·지원처·근거·구조·사실성 진단\n고쳐야 할 작성 단계로 바로 연결'
+              : course === 'interview'
+                ? '실제 면접 상황·답변 대응을 전체·영역·소단원별 진단\n약한 상황과 답변 연습으로 바로 연결'
+                : '전체·영역·소단원 범위 선택\n이해도 진단 후 보완학습 바로 연결'
     const mockCopy = isPersonality
       ? '190문항 · 약 51분 · 총 10회\n실전 응시 후 상세 결과 분석'
       : mockReady
@@ -308,7 +310,9 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
             ? '지원 분야·문항 수·제한시간 선택\n중간 해설 없는 실제 필기 방식'
             : course === 'cover-letter'
               ? '지원 분야·항목·글자 수·제한시간 선택\n실제 자기소개서 1개 항목 작성·자가 점검'
-              : '영역·문항 수·제한시간 선택\n중간 해설 없는 실제 시험 방식'
+              : course === 'interview'
+                ? '면접 영역·질문 수·제한시간 선택\n중간 해설 없이 실제 면접처럼 답변 점검'
+                : '영역·문항 수·제한시간 선택\n중간 해설 없는 실제 시험 방식'
         : '과목별 모의고사 준비 중'
     return (
       <div className="screen">
@@ -330,7 +334,7 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
               {(isPersonality
                 ? [['📚', '자율학습', '검사 이해'], ['📊', '진단평가', '응답 점검'], ['📝', '모의고사', '실전 검사']]
                 : course === 'interview'
-                  ? [['📚', '자율학습', '배우기·반복'], ['📊', '진단평가', '약점 처방'], ['📝', '모의면접', '답변 점검'], ['🎬', '실전면접', '행동 리허설']]
+                  ? [['📚', '자율학습', '상황·답변 연습'], ['📊', '진단평가', '대응 약점 확인'], ['📝', '모의면접', '답변 점검'], ['🎬', '실전면접', '행동 리허설']]
                   : course === 'cover-letter'
                     ? [['📚', '자율학습', '작성법 이해'], ['📊', '진단평가', '기준 점검'], ['📝', '모의고사', '제한 작성'], ['✍️', '실전자기소개서', '직접 완성']]
                   : [['📚', '자율학습', '배우기·반복'], ['📊', '진단평가', '약점 처방'], ['📝', '모의고사', '실전 재현']]
@@ -403,8 +407,10 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
               <CompactText text={isPersonality
                 ? '검사 원리·문항 형식·응답 습관 학습\n정답 만들기 없이 신뢰도·실전 루틴 성찰'
                 : course === 'cover-letter'
-                ? '질문 의도·항목별 작성법 학습\n좋은 예시·감점 예시·내 경험 찾는 법'
-                : '요점정리로 개념 학습\n문제 풀이로 반복\n오답노트로 복습 · 처음이면 여기부터'} maxItemChars={68} style={{ fontSize: 12, color: 'var(--text-muted)' }} />
+                ? '문항 요구·항목별 실전 작성법 학습\n감점 초안 고쳐쓰기·내 경험 근거 찾기'
+                : course === 'interview'
+                  ? '실제 면접 상황에서 대응 판단\n내 경험으로 직접 답변·녹화·수정 반복'
+                  : '요점정리로 개념 학습\n문제 풀이로 반복\n오답노트로 복습 · 처음이면 여기부터'} maxItemChars={68} style={{ fontSize: 12, color: 'var(--text-muted)' }} />
             </div>
             <span style={{ color: 'var(--text-muted)', fontSize: 20, flexShrink: 0 }}>›</span>
           </button>
