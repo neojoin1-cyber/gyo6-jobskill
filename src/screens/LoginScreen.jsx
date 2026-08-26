@@ -5,11 +5,10 @@ import { supabase } from '../lib/supabase.js'
 import { pushBack, popBack } from '../lib/backButton.js'
 import {
   TRIAL_ACCOUNTS,
-  TRIAL_PASSWORD,
   beginTrialSession,
   consumeTrialNotice,
+  requestTrialToken,
   requestedTrialRole,
-  trialRoleFromEmail,
   trialStartAvailability,
 } from '../lib/trialSession.js'
 
@@ -197,17 +196,8 @@ export default function LoginScreen() {
   async function handleLogin(e) {
     e.preventDefault(); reset(); setLoading(true)
     try {
-      const trialRole = trialRoleFromEmail(email)
-      if (trialRole) {
-        const availability = trialStartAvailability(trialRole)
-        if (!availability.allowed) {
-          setError(availability.reason)
-          return
-        }
-      }
       const { error: err } = await supabase.auth.signInWithPassword({ email: email.trim(), password })
       if (err) setError(fmtErr(err))
-      else if (trialRole) beginTrialSession(trialRole)
     } catch (ex) {
       setError(fmtErr(ex))
     } finally {
@@ -230,10 +220,10 @@ export default function LoginScreen() {
 
     setLoading(true)
     try {
-      const account = TRIAL_ACCOUNTS[role]
-      const { error: err } = await supabase.auth.signInWithPassword({
-        email: account.email,
-        password: TRIAL_PASSWORD,
+      const ticket = await requestTrialToken(role)
+      const { error: err } = await supabase.auth.verifyOtp({
+        token_hash: ticket.tokenHash,
+        type: 'magiclink',
       })
       if (err) {
         setTrialMessage(fmtErr(err))

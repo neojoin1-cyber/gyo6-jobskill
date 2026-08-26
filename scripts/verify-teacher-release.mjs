@@ -18,6 +18,10 @@ const bootstrapMigration = read('supabase/migrations/20260825000000_bootstrap_mi
 const css = read('src/index.css')
 const campusCss = read('src/styles/campus.css')
 const coverReviewCss = read('src/styles/cover-letter-review.css')
+const coverReview = read('src/screens/teacher/CoverLetterReviewScreen.jsx')
+const interviewCareer = read('src/screens/student/InterviewCareerLab.jsx')
+const interviewCareerCss = read('src/styles/interview-career.css')
+const courseList = read('src/screens/student/CourseListScreen.jsx')
 const practicalCss = read('src/styles/interview-practical.css')
 
 for (const id of ['moe', 'ncs', 'recruit', 'interview', 'personality']) {
@@ -44,6 +48,22 @@ if (!app.includes("localStorage.setItem(KEY, String(info.build || '0'))")) error
 if (!teacherLayout.includes("width >= 860 ? 'wide' : 'tall'")) errors.push('Narrow-screen wide-layout guard is missing')
 if (!bootstrapMigration.includes('ms.subject_id')) errors.push('Student bootstrap still drops mission subject_id')
 if (!css.includes('.screen-header {') || !css.includes('.classroom-entry {')) errors.push('Classroom lobby styling is missing')
+if (courseList.includes('원하는 학습 기능을 바로 선택하세요')) errors.push('Non-clickable learning legend still describes itself as selectable')
+if (!interviewCareer.includes('SECTOR_FORM_EXAMPLES') || interviewCareer.includes('placeholder="예: 한국전력공사"')) {
+  errors.push('Cover-letter application placeholders are not sector-specific')
+}
+if (!interviewCareerCss.includes('padding-bottom: calc(92px + env(safe-area-inset-bottom))')) {
+  errors.push('Cover-letter sticky actions can overlap the final content')
+}
+
+const demoAnswerLengths = [...coverReview.matchAll(/  (\w+): `([^`]*)`/g)]
+  .filter(([, key]) => /^(ibk|kepco)/.test(key))
+  .map(([, key, answer]) => [key, [...answer].length])
+if (demoAnswerLengths.length !== 6) errors.push(`Expected 6 complete cover-letter demo answers, found ${demoAnswerLengths.length}`)
+for (const [key, length] of demoAnswerLengths) {
+  const max = key === 'ibkContribution' ? 650 : 700
+  if (length < 500 || length > max) errors.push(`Cover-letter demo ${key} is outside its guide: ${length}/500-${max}`)
+}
 
 for (const [name, source, selector] of [
   ['Teacher message screen', campusCss, '.teacher-message'],

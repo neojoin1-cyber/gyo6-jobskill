@@ -250,7 +250,7 @@ export default function TeacherShell() {
       <header className="teacher-shellbar">
         <button className="teacher-shell-brand" onClick={() => { setTab('dashboard'); setScreen(null) }}>
           <span><Buildings weight="fill" /></span>
-          <div><b>스킬캠퍼스</b><small>TEACHER</small></div>
+          <div><b>설탕과소금 스킬캠퍼스</b><small>TEACHER</small></div>
         </button>
         <div className="teacher-shell-actions">
           <button className="teacher-shell-icon" onClick={() => navigate('student-campus')} title="학생 화면 그대로 보기" aria-label="학생 화면 그대로 보기">

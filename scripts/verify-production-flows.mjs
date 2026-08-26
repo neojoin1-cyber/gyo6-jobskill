@@ -1,4 +1,5 @@
 import fs from 'node:fs'
+import { randomUUID } from 'node:crypto'
 import { createClient } from '@supabase/supabase-js'
 
 const env = loadEnv('.env.local')
@@ -7,8 +8,8 @@ const anon = process.env.VITE_SUPABASE_ANON_KEY || env.VITE_SUPABASE_ANON_KEY
 const password = process.env.DEMO_PASSWORD
 const readOnlyTrial = process.env.PUBLIC_TRIAL_READ_ONLY === 'true'
 
-if (!url || !anon || !password) {
-  throw new Error('VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY and DEMO_PASSWORD are required')
+if (!url || !anon || (!readOnlyTrial && !password)) {
+  throw new Error('Supabase public environment and non-trial verification credentials are required')
 }
 
 const accounts = {
@@ -33,11 +34,31 @@ let createdEvidenceId = null
 
 try {
   for (const [expectedRole, email] of Object.entries(accounts)) {
-    if (!email) throw new Error(`Missing DEMO_${expectedRole.toUpperCase()}_EMAIL`)
     const client = createClient(url, anon, {
       auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
     })
-    const { data: login, error: loginError } = await client.auth.signInWithPassword({ email, password })
+    let login
+    let loginError
+    if (readOnlyTrial) {
+      const ticketResponse = await fetch(`${url}/functions/v1/public-trial-session`, {
+        method: 'POST',
+        headers: { apikey: anon, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ role: expectedRole, deviceId: randomUUID() }),
+      })
+      const ticket = await ticketResponse.json().catch(() => ({}))
+      if (!ticketResponse.ok || !ticket.tokenHash) {
+        loginError = new Error(ticket.message || `Trial broker returned ${ticketResponse.status}`)
+      } else {
+        const result = await client.auth.verifyOtp({ token_hash: ticket.tokenHash, type: 'magiclink' })
+        login = result.data
+        loginError = result.error
+      }
+    } else {
+      if (!email) throw new Error(`Missing DEMO_${expectedRole.toUpperCase()}_EMAIL`)
+      const result = await client.auth.signInWithPassword({ email, password })
+      login = result.data
+      loginError = result.error
+    }
     check(`${expectedRole} login`, !loginError && Boolean(login.user), loginError?.message)
     if (loginError) continue
 

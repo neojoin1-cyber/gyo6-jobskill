@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs'
+import { beginTrialSession, clearTrialSession } from '../src/lib/trialSession.js'
 
 const root = new URL('../', import.meta.url)
 const read = path => readFileSync(new URL(path, root), 'utf8')
@@ -12,6 +13,8 @@ const trialSource = read('src/lib/trialSession.js')
 const loginSource = read('src/screens/LoginScreen.jsx')
 const appSource = read('src/App.jsx')
 const serverGuard = read('supabase/migrations/20260825150000_public_trial_read_only.sql')
+const tokenBroker = read('supabase/migrations/20260826100000_public_trial_token_broker.sql')
+const edgeFunction = read('supabase/functions/public-trial-session/index.ts')
 if (!supabaseSource.includes('storage: window.sessionStorage')) {
   fail('웹 인증 저장소가 탭별 sessionStorage가 아님')
 }
@@ -50,6 +53,14 @@ if (!campusCss.includes('@container teacher-shell (max-width: 720px)')) {
 if (!loginSource.includes("handleTrialLogin('student')") || !loginSource.includes("handleTrialLogin('teacher')")) {
   fail('학생·교사 원클릭 체험 버튼이 없음')
 }
+if (!loginSource.includes('requestTrialToken(role)') || !loginSource.includes('verifyOtp')) {
+  fail('체험 로그인이 서버 발급 일회성 토큰을 사용하지 않음')
+}
+for (const [name, source] of [['trialSession.js', trialSource], ['LoginScreen.jsx', loginSource], ['App.jsx', appSource]]) {
+  if (/demo\.(student|teacher|admin)@/i.test(source) || /sugarsalt2026/i.test(source) || /VITE_TRIAL_PASSWORD/.test(source)) {
+    fail(`${name} 프런트 코드에 체험 계정 자격 증명이 남음`)
+  }
+}
 if (!loginSource.includes('requestedTrialRole()) return')) {
   fail('원클릭 체험 전에 불필요한 학교 목록을 먼저 요청함')
 }
@@ -79,6 +90,33 @@ if (!supabaseSource.includes('trialSafeFetch') || !supabaseSource.includes('X-Su
 if (!serverGuard.includes('public_trial_read_only') || !serverGuard.includes('reject_public_trial_write')) {
   fail('공개 체험 계정의 서버 쓰기 차단이 없음')
 }
+if (!trialSource.includes('localStorage.clear()') || !trialSource.includes('wasTrial')) {
+  fail('체험 종료 시 브라우저 작성·학습 자료 전체 정리가 없음')
+}
+if (!tokenBroker.includes('claim_public_trial_session') ||
+    !tokenBroker.includes('encrypted_password = extensions.crypt') ||
+    !tokenBroker.includes('CREATE EVENT TRIGGER ensure_public_trial_guard')) {
+  fail('체험 발급 제한·기존 비밀번호 폐기·향후 테이블 자동 보호가 완성되지 않음')
+}
+if (!edgeFunction.includes("admin.auth.admin.generateLink") || !edgeFunction.includes('hashed_token')) {
+  fail('서버 체험 함수가 일회성 토큰만 발급하지 않음')
+}
+
+class MemoryStorage {
+  #values = new Map()
+  get length() { return this.#values.size }
+  getItem(key) { return this.#values.get(key) ?? null }
+  setItem(key, value) { this.#values.set(key, String(value)) }
+  removeItem(key) { this.#values.delete(key) }
+  clear() { this.#values.clear() }
+}
+globalThis.sessionStorage = new MemoryStorage()
+globalThis.localStorage = new MemoryStorage()
+beginTrialSession('student', 1_000)
+localStorage.setItem('iv_cover_draft', '{"answer":"trial-only"}')
+localStorage.setItem('gyo6.studySummaries.v2', '{"progress":1}')
+clearTrialSession()
+if (localStorage.length !== 0) fail('체험 종료 뒤 작성·학습 로컬 자료가 남음')
 
 if (!process.exitCode) {
   console.log('[웹 체험 격리] 통과 - 원클릭 15분 체험·탭별 인증·저장 차단·교사 반응형 확인')

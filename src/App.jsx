@@ -12,7 +12,7 @@ import {
   formatTrialRemaining,
   requestedTrialRole,
   setTrialNotice,
-  trialRoleFromEmail,
+  trialRoleFromUser,
 } from './lib/trialSession.js'
 import LoginScreen from './screens/LoginScreen.jsx'
 const AdminShell = lazy(() => import('./screens/admin/AdminShell.jsx'))
@@ -217,7 +217,7 @@ function AppInner() {
     return () => { cancelled = true }
   }, [session?.user?.id, profileRetry])
 
-  const trialRole = trialRoleFromEmail(session?.user?.email)
+  const trialRole = trialRoleFromUser(session?.user)
   const requestedTrial = Capacitor.isNativePlatform() ? null : requestedTrialRole()
   const switchingTrialRole = Boolean(session && requestedTrial && requestedTrial !== trialRole)
 

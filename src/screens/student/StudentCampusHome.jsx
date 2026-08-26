@@ -19,6 +19,7 @@ import { supabase } from '../../lib/supabase.js'
 import { getBootstrap } from '../../lib/localFirst.js'
 import { getLevelInfo } from '../../lib/xp.js'
 import { STUDENT_CAMPUS_HALLS } from '../../lib/studentCampusRoutes.js'
+import { RETIRED_SUBJECT_IDS } from '../../lib/subjectCatalog.js'
 import '../../styles/campus.css'
 
 const HALL_PRESENTATION = {
@@ -113,7 +114,11 @@ export default function StudentCampusHome({
   }, [demo, profile?.id])
 
   const mission = useMemo(() => {
-    const active = (boot?.missions ?? []).filter(item => item.status === 'active' && !item.completed_at)
+    const active = (boot?.missions ?? []).filter(item =>
+      item.status === 'active'
+      && !item.completed_at
+      && !RETIRED_SUBJECT_IDS.has(item.subject_id)
+    )
     return active[0] ?? null
   }, [boot?.missions])
 
@@ -123,6 +128,9 @@ export default function StudentCampusHome({
   const missionMinutes = mission?.time_limit_min || 12
   const unread = boot?.unread_count ?? 0
   const continuing = useMemo(findContinueCourse, [])
+  const hasRecordedProgress = (boot?.xp?.total_xp ?? 0) > 0
+    || (boot?.streak?.current_streak ?? 0) > 0
+    || (boot?.wrong_count ?? 0) > 0
 
   function launchMission() {
     if (mission) onOpenMission?.(mission)
@@ -138,7 +146,7 @@ export default function StudentCampusHome({
       <header className="campus-topbar">
         <div className="campus-brand">
           <Buildings weight="fill" aria-hidden="true" />
-          <span>스킬캠퍼스</span>
+          <span>설탕과소금 스킬캠퍼스</span>
         </div>
         <div className="campus-level" aria-label={`${level.name}, ${level.progress}% 진행`}>
           <span className="level-mark"><GraduationCap weight="fill" /></span>
@@ -203,8 +211,8 @@ export default function StudentCampusHome({
             <i><Play weight="fill" /></i>
           </span>
           <span className="continue-copy">
-            <b>{continuing ? `${continuing.label} 이어하기` : '첫 학습 시작하기'}</b>
-            <small>{continuing ? `${continuing.activityCount}개 학습 기록에서 계속` : '관심 있는 학습관을 골라 보세요'}</small>
+            <b>{continuing ? `${continuing.label} 이어하기` : hasRecordedProgress ? '학습 기록 둘러보기' : '첫 학습 시작하기'}</b>
+            <small>{continuing ? `${continuing.activityCount}개 학습 기록에서 계속` : hasRecordedProgress ? '체험 계정의 예시 성취 기록을 확인해 보세요' : '관심 있는 학습관을 골라 보세요'}</small>
           </span>
           <strong>{continuing ? '이어가기' : 'START'}</strong>
           <ArrowRight />

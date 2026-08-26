@@ -67,6 +67,9 @@ const practicalTabs = careerSource.slice(careerSource.indexOf('aria-label="실�
 if (!(practicalTabs.indexOf('작성실') < practicalTabs.indexOf('나의 근거') && practicalTabs.indexOf('나의 근거') < practicalTabs.indexOf('진행 현황'))) {
   failures.push('실전자기소개서 메뉴 순서: 작성실 → 나의 근거 → 진행 현황 순서가 아님')
 }
+if (!careerSource.includes("useState(initialWorkspace === 'practical' ? 'write' : initialWorkspace)")) {
+  failures.push('실전자기소개서 첫 화면: 작성실이 기본 화면으로 열리지 않음')
+}
 if (!careerSource.includes("const assessmentFlow = workspace === 'diagnostic' || workspace === 'mock'") ||
     !careerSource.includes('{!assessmentFlow && <section className="cover-brand-panel">')) {
   failures.push('자기소개서 평가 화면: 중복 제목 방지 조건이 없음')

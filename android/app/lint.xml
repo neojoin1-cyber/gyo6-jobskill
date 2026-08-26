@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<lint>
+    <!-- Capacitor generates orientation and density variants for one splash composition. -->
+    <issue id="IconDipSize,IconDuplicatesConfig,IconLocation">
+        <ignore regexp=".*[\\/]res[\\/].*[\\/]splash\.png" />
+    </issue>
+    <!-- Cordova compatibility reads config.xml by file name at runtime. -->
+    <issue id="UnusedResources">
+        <ignore regexp=".*[\\/]res[\\/]xml[\\/]config\.xml" />
+    </issue>
+    <!-- The local working tree may retain the now-empty generated v24 directory. -->
+    <issue id="ObsoleteSdkInt">
+        <ignore regexp=".*[\\/]res[\\/]drawable-v24" />
+    </issue>
+</lint>

@@ -329,7 +329,7 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
           )}
           {/* 면접은 지식 점검 뒤 실제 행동 리허설까지 네 기능으로 완성한다. */}
           <div style={{ background: 'var(--card)', border: '1px solid var(--border)', borderRadius: 12, padding: '12px 14px', marginBottom: 16 }}>
-            <p style={{ fontSize: 12, fontWeight: 800, color: 'var(--text)', marginBottom: 8 }}>원하는 학습 기능을 바로 선택하세요</p>
+            <p style={{ fontSize: 12, fontWeight: 800, color: 'var(--text)', marginBottom: 8 }}>이 과목에서 제공하는 학습 기능</p>
             <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
               {(isPersonality
                 ? [['📚', '자율학습', '검사 이해'], ['📊', '진단평가', '응답 점검'], ['📝', '모의고사', '실전 검사']]

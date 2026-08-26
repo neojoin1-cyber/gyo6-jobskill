@@ -59,6 +59,12 @@ const SECTORS = [
   { id: 'enterprise', label: '대기업', icon: Factory },
 ]
 
+const SECTOR_FORM_EXAMPLES = {
+  finance: { targetName: '예: NH농협은행', role: '예: 개인금융·디지털금융' },
+  public: { targetName: '예: 한국전력공사', role: '예: 전기설비·사무행정' },
+  enterprise: { targetName: '예: 삼성전자', role: '예: 설비기술·생산관리' },
+}
+
 const SECTION_META = {
   pathways: { title: '지원처별 면접 심화', eyebrow: '기초 다음 단계' },
   institutions: { title: '기업·기관 연구소', eyebrow: '지원처 전수 준비' },
@@ -710,7 +716,7 @@ function CoverLetterBuilder({ initialWorkspace = 'learn', onLearningContext }) {
   const [activeApplicationId, setActiveApplicationId] = useState(initialPortfolio.activeId)
   const [draft, setDraft] = useState(() => initialPortfolio.projects.find(item => item.id === initialPortfolio.activeId)?.draft || initialPortfolio.projects[0].draft)
   const [stepIndex, setStepIndex] = useState(0)
-  const [workspace, setWorkspace] = useState(initialWorkspace)
+  const [workspace, setWorkspace] = useState(initialWorkspace === 'practical' ? 'write' : initialWorkspace)
   const [practicalFlow] = useState(initialWorkspace === 'practical')
   const assessmentFlow = workspace === 'diagnostic' || workspace === 'mock'
   const [view, setView] = useState('write')
@@ -1083,6 +1089,7 @@ function CoverApplicationPortfolio({ applications, activeId, history, evidenceCo
   const [copySourceId, setCopySourceId] = useState(null)
   const [showArchived, setShowArchived] = useState(false)
   const [form, setForm] = useState({ sector: 'finance', organizationId: '', targetName: '', role: '', recruitmentTitle: '', deadline: '' })
+  const formExamples = SECTOR_FORM_EXAMPLES[form.sector] || SECTOR_FORM_EXAMPLES.finance
   const visible = applications.filter(item => showArchived || item.status !== 'archived')
   const submittedCount = applications.filter(item => ['submitted', 'passed'].includes(item.status)).length
   const passedCount = applications.filter(item => item.status === 'passed').length
@@ -1153,8 +1160,8 @@ function CoverApplicationPortfolio({ applications, activeId, history, evidenceCo
         <div className="cover-application-form">
           <label><span>지원 분야</span><select value={form.sector} onChange={event => change('sector', event.target.value)}>{SECTORS.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
           <label><span>등록 지원처</span><select value={form.organizationId} onChange={event => change('organizationId', event.target.value)}><option value="">직접 입력</option>{INTERVIEW_ORGANIZATIONS.filter(item => item.sector === form.sector).map(item => <option key={item.id} value={item.id}>{item.name}</option>)}</select></label>
-          <label><span>기업·기관명</span><input value={form.targetName} onChange={event => change('targetName', event.target.value)} placeholder="예: 한국전력공사" /></label>
-          <label><span>지원 직무</span><input value={form.role} onChange={event => change('role', event.target.value)} placeholder="예: 전기설비" /></label>
+          <label><span>기업·기관명</span><input value={form.targetName} onChange={event => change('targetName', event.target.value)} placeholder={formExamples.targetName} /></label>
+          <label><span>지원 직무</span><input value={form.role} onChange={event => change('role', event.target.value)} placeholder={formExamples.role} /></label>
           <label className="is-wide"><span>채용공고·회차 이름</span><input value={form.recruitmentTitle} onChange={event => change('recruitmentTitle', event.target.value)} placeholder="예: 2026년 하반기 고졸 신입 채용" /></label>
           <label><span>마감일</span><input type="date" value={form.deadline} onChange={event => change('deadline', event.target.value)} /></label>
         </div>

@@ -9,21 +9,18 @@ export const TRIAL_ACCOUNTS = Object.freeze({
   student: {
     role: 'student',
     label: '학생',
-    email: 'demo.student@sugarsalt.kr',
   },
   teacher: {
     role: 'teacher',
     label: '교사',
-    email: 'demo.teacher@sugarsalt.kr',
   },
   school_admin: {
     role: 'school_admin',
     label: '학교관리자',
-    email: 'demo.admin@sugarsalt.kr',
   },
 })
 
-export const TRIAL_PASSWORD = import.meta.env.VITE_TRIAL_PASSWORD || 'sugarsalt2026'
+const DEVICE_COOKIE = 'sst_trial_device'
 
 function readJson(storage, key, fallback) {
   try {
@@ -37,9 +34,42 @@ function writeJson(storage, key, value) {
   try { storage.setItem(key, JSON.stringify(value)) } catch { /* private browsing */ }
 }
 
-export function trialRoleFromEmail(email = '') {
-  const normalized = String(email).trim().toLowerCase()
-  return Object.values(TRIAL_ACCOUNTS).find(account => account.email === normalized)?.role || null
+export function trialRoleFromUser(user) {
+  const metadata = user?.user_metadata || {}
+  const role = metadata.is_public_trial === true ? metadata.trial_role : null
+  return TRIAL_ACCOUNTS[role]?.role || null
+}
+
+export function getTrialDeviceId() {
+  if (typeof document === 'undefined') return ''
+  const existing = document.cookie
+    .split('; ')
+    .find(part => part.startsWith(`${DEVICE_COOKIE}=`))
+    ?.slice(DEVICE_COOKIE.length + 1)
+  if (existing && /^[a-zA-Z0-9-]{16,80}$/.test(existing)) return existing
+
+  const next = globalThis.crypto?.randomUUID?.()
+    ?? `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`
+  document.cookie = `${DEVICE_COOKIE}=${next}; Max-Age=31536000; Path=/; SameSite=Strict; Secure`
+  return next
+}
+
+export async function requestTrialToken(role) {
+  if (!TRIAL_ACCOUNTS[role]) throw new Error('지원하지 않는 체험 역할입니다.')
+  const endpoint = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/public-trial-session`
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      apikey: import.meta.env.VITE_SUPABASE_ANON_KEY,
+    },
+    body: JSON.stringify({ role, deviceId: getTrialDeviceId() }),
+  })
+  const payload = await response.json().catch(() => ({}))
+  if (!response.ok || !payload?.tokenHash) {
+    throw new Error(payload?.message || '체험을 시작하지 못했습니다. 잠시 후 다시 시도해 주세요.')
+  }
+  return payload
 }
 
 export function requestedTrialRole(search = globalThis.location?.search || '') {
@@ -104,6 +134,10 @@ export function beginTrialSession(role, now = Date.now()) {
 }
 
 export function clearTrialSession() {
+  const wasTrial = Boolean(getTrialSession()?.role)
+  if (wasTrial && typeof localStorage !== 'undefined') {
+    try { localStorage.clear() } catch { /* private browsing */ }
+  }
   try { sessionStorage.removeItem(SESSION_KEY) } catch { /* noop */ }
 }
 
@@ -127,4 +161,3 @@ export function formatTrialRemaining(ms) {
   const seconds = String(total % 60).padStart(2, '0')
   return `${minutes}:${seconds}`
 }
-

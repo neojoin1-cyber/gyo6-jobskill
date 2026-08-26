@@ -139,7 +139,7 @@
 .organization-cover-bridge button { grid-column: 1 / -1; min-height: 42px; display: flex; align-items: center; justify-content: center; gap: 5px; border: 0; border-radius: 7px; background: #0f766e; color: #fff; font-size: 12px; font-weight: 900; cursor: pointer; }
 
 /* 자기소개서 완성실 */
-.cover-builder { --cover-teal: #0f766e; --cover-blue: #1d4ed8; --cover-coral: #c2413a; padding-bottom: 18px; }
+.cover-builder { --cover-teal: #0f766e; --cover-blue: #1d4ed8; --cover-coral: #c2413a; padding-bottom: calc(92px + env(safe-area-inset-bottom)); }
 .cover-step-tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; padding: 12px 0; border-bottom: 1px solid var(--border); }
 .cover-step-tabs button { min-width: 0; min-height: 52px; display: grid; place-items: center; align-content: center; gap: 3px; padding: 5px 2px; border: 0; border-radius: 7px; background: transparent; color: var(--text-muted); cursor: pointer; }
 .cover-step-tabs button span { width: 22px; height: 22px; display: grid; place-items: center; border: 1px solid #cbd5e1; border-radius: 50%; font-size: 10px; font-weight: 900; }
