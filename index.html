@@ -19,10 +19,109 @@
   <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png" />
   <link rel="icon" type="image/png" sizes="512x512" href="/icons/icon-512.png" />
 
+  <style>
+    #boot-guard {
+      position: fixed;
+      inset: 0;
+      z-index: 2147483647;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: #f5f7fb;
+      color: #172033;
+      font-family: Arial, sans-serif;
+    }
+    #boot-guard[hidden] { display: none; }
+    .boot-guard__panel { width: min(100%, 360px); text-align: center; }
+    .boot-guard__mark {
+      display: grid;
+      place-items: center;
+      width: 58px;
+      height: 58px;
+      margin: 0 auto 18px;
+      border-radius: 14px;
+      background: #315de8;
+      color: #fff;
+      font-size: 25px;
+      font-weight: 800;
+    }
+    .boot-guard__title { margin: 0 0 9px; font-size: 21px; }
+    .boot-guard__message { margin: 0; color: #667085; font-size: 14px; line-height: 1.65; }
+    .boot-guard__spinner {
+      width: 30px;
+      height: 30px;
+      margin: 22px auto 0;
+      border: 3px solid #d9e0ef;
+      border-top-color: #315de8;
+      border-radius: 50%;
+      animation: boot-spin .8s linear infinite;
+    }
+    .boot-guard__actions { display: none; gap: 9px; margin-top: 22px; }
+    #boot-guard.is-error .boot-guard__spinner { display: none; }
+    #boot-guard.is-error .boot-guard__actions { display: grid; }
+    .boot-guard__button {
+      min-height: 48px;
+      border: 1px solid #cdd5e5;
+      border-radius: 7px;
+      background: #fff;
+      color: #172033;
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .boot-guard__button--primary { border-color: #315de8; background: #315de8; color: #fff; }
+    @keyframes boot-spin { to { transform: rotate(360deg); } }
+  </style>
+
   <title>설탕과소금 - 달콤한 취업 성공을 위한 짭짤한 실력 준비</title>
 </head>
 <body>
+  <div id="boot-guard" role="status" aria-live="polite">
+    <div class="boot-guard__panel">
+      <div class="boot-guard__mark" aria-hidden="true">S</div>
+      <h1 class="boot-guard__title">설탕과소금</h1>
+      <p class="boot-guard__message">학습 화면을 준비하고 있습니다.</p>
+      <div class="boot-guard__spinner" aria-hidden="true"></div>
+      <div class="boot-guard__actions">
+        <button class="boot-guard__button boot-guard__button--primary" type="button" data-boot-recover>최신 화면 다시 받기</button>
+        <button class="boot-guard__button" type="button" data-boot-reload>다시 열기</button>
+      </div>
+    </div>
+  </div>
   <div id="root"></div>
+  <script>
+    (() => {
+      const guard = document.getElementById('boot-guard')
+      const message = guard.querySelector('.boot-guard__message')
+      let ready = false
+      const showRecovery = () => {
+        if (ready) return
+        guard.classList.add('is-error')
+        message.textContent = '화면을 불러오지 못했습니다. 최신 화면을 다시 받아 주세요.'
+      }
+      window.__SUGAR_SALT_BOOT_READY__ = () => {
+        ready = true
+        guard.hidden = true
+        guard.remove()
+      }
+      window.addEventListener('error', showRecovery)
+      window.addEventListener('unhandledrejection', showRecovery)
+      window.setTimeout(showRecovery, 10000)
+      guard.querySelector('[data-boot-reload]').addEventListener('click', () => location.reload())
+      guard.querySelector('[data-boot-recover]').addEventListener('click', async () => {
+        message.textContent = '최신 화면을 다시 받고 있습니다.'
+        guard.classList.remove('is-error')
+        try {
+          const registrations = await navigator.serviceWorker?.getRegistrations?.()
+          await Promise.all((registrations || []).map(registration => registration.unregister()))
+          const keys = await caches?.keys?.()
+          await Promise.all((keys || []).map(key => caches.delete(key)))
+        } catch { /* unsupported browser */ }
+        const next = new URL(location.href)
+        next.searchParams.set('app_retry', Date.now().toString(36))
+        location.replace(next.toString())
+      })
+    })()
+  </script>
   <script type="module" src="/marketing-subjects.js"></script>
   <script type="module" src="/src/main.jsx"></script>
 </body>

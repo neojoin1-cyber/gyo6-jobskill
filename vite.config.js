@@ -2,10 +2,14 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     VitePWA({
+      // Capacitor serves packaged files from https://localhost. A PWA worker on
+      // that origin survives APK replacement and can return an old index that
+      // references chunks no longer present in the new APK.
+      disable: mode === 'native',
       registerType: 'autoUpdate',
       // 개발 중에도 SW 등록 (테스트용)
       devOptions: { enabled: false },
@@ -86,4 +90,4 @@ export default defineConfig({
       },
     },
   },
-})
+}))

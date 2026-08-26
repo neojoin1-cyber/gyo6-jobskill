@@ -34,3 +34,12 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     </ErrorBoundary>
   </React.StrictMode>
 )
+
+// The static guard exists before any module is downloaded, so a failed entry
+// script never leaves a white page. Remove it only after React has painted.
+window.requestAnimationFrame(() => {
+  window.requestAnimationFrame(() => {
+    window.__SUGAR_SALT_NATIVE_READY__ = true
+    window.__SUGAR_SALT_BOOT_READY__?.()
+  })
+})
