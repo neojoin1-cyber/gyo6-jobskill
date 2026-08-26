@@ -1,8 +1,10 @@
-const reflection = (stem, choices, feedback) => ({
+const reflection = (stem, choices, feedback, answer = 1) => ({
   type: 'reflection',
   label: '개념 확인 · 채점 없음',
   stem,
   choices,
+  // 개념 확인 은행은 두 번째 보기에 교정 기준을 두며, 성향 자체를 채점하지는 않음.
+  answer,
   feedback,
   explanation: feedback,
 })

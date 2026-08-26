@@ -11,12 +11,12 @@ function canSpeak() {
  * 듣기 지문 재생.
  *
  * ── 왜 한 번만 틀 수 있나 ─────────────────────────────────────────
- * 실제 듣기평가는 한 번만 들려준다. 학생 앱에서는 그 규칙이 맞다.
+ * 실제 듣기평가는 한 번만 들려준다. 평가 화면에서는 그 규칙이 맞다.
  *
  * ── 교실에서는 다르다 ─────────────────────────────────────────────
- * 교사가 「다시 한 번 들어 볼까요」를 해야 한다. 수업은 평가가 아니라
- * 배우는 자리다. 그래서 `unlimited` 를 켜면 몇 번이든 다시 튼다.
- * 학생 앱에서는 절대 켜지 않는다.
+ * 교사가 「다시 한 번 들어 볼까요」를 해야 하고, 학생 자율학습에서도
+ * 놓친 표현을 다시 들어야 한다. 배우는 화면에서는 `mode` 또는
+ * `unlimited` 로 몇 번이든 다시 들을 수 있게 한다.
  *
  * ── 무엇으로 소리를 내나 ──────────────────────────────────────────
  * ① 미리 만들어 둔 mp3 (기본)
@@ -28,7 +28,7 @@ function canSpeak() {
  *    mp3 가 없거나 못 받았을 때만 쓴다. 새 문항을 넣고 음성을 아직 안
  *    만들었을 때도 학생이 문항을 풀 수는 있어야 한다.
  */
-export default function ListeningPrompt({ q, revealTranscript = false, unlimited = false }) {
+export default function ListeningPrompt({ q, revealTranscript = false, unlimited = false, mode = 'assessment' }) {
   const text = String(q?.audioText || '').trim()
   const [played, setPlayed] = useState(false)
   const [speaking, setSpeaking] = useState(false)
@@ -43,11 +43,17 @@ export default function ListeningPrompt({ q, revealTranscript = false, unlimited
   const supported = useMemo(canSpeak, [])
   // 미리 만든 음성 파일 경로. 상대경로라 하위 폴더에 올려도 그대로 맞는다.
   const audioUrl = useMemo(
-    () => (q?.id ? new URL(`audio/listening/${q.id}.mp3`, document.baseURI).href : null),
+    () => (q?.id && typeof document !== 'undefined'
+      ? new URL(`audio/listening/${q.id}.mp3`, document.baseURI).href
+      : null),
     [q?.id],
   )
   const language = q?.audioLang || 'en-US'
   const isKorean = language.toLowerCase().startsWith('ko')
+  const repeatable = unlimited || mode === 'study' || mode === 'classroom'
+  const repeatCopy = mode === 'study'
+    ? '자율학습에서는 필요한 만큼 다시 들을 수 있습니다.'
+    : '수업에서는 필요한 만큼 다시 들을 수 있습니다.'
 
   useEffect(() => () => {
     // 화면을 떠나면 감시도 함께 멈춘다. 안 그러면 문항을 넘길 때마다
@@ -133,7 +139,7 @@ export default function ListeningPrompt({ q, revealTranscript = false, unlimited
     // ── 먼저 미리 만든 mp3 를 시도한다 ────────────────────────────
     // 브라우저 음성보다 자연스럽고 기기마다 달라지지 않는다.
     if (hasFile !== false) {
-      if (unlimited && audioRef.current) { audioRef.current.pause() }
+      if (repeatable && audioRef.current) { audioRef.current.pause() }
       else if (played || speaking) return
       setSpeaking(true); setFailed(false)
       const ok = await playFile()
@@ -144,7 +150,7 @@ export default function ListeningPrompt({ q, revealTranscript = false, unlimited
 
     if (!supported) { setFailed(true); return }
     // 수업 모드에서는 이미 들었어도, 재생 중이어도 다시 튼다.
-    if (unlimited) { window.speechSynthesis.cancel() }
+    if (repeatable) { window.speechSynthesis.cancel() }
     else if (played || speaking) return
     setSpeaking(true)
     setFailed(false)
@@ -214,7 +220,7 @@ export default function ListeningPrompt({ q, revealTranscript = false, unlimited
   const showTranscript = revealTranscript || showFallback
 
   return (
-    <div style={{
+    <div data-listening-prompt={mode} style={{
       background: '#EFF6FF',
       border: '1px solid #93C5FD',
       borderRadius: 12,
@@ -225,26 +231,26 @@ export default function ListeningPrompt({ q, revealTranscript = false, unlimited
         <button
           type="button"
           onClick={play}
-          disabled={!unlimited && (played || speaking)}
-          aria-label={unlimited
-            ? `${isKorean ? '한국어' : '영어'} 듣기 음성 재생 (수업 모드 · 다시 들을 수 있음)`
+          disabled={!repeatable && (played || speaking)}
+          aria-label={repeatable
+            ? `${isKorean ? '한국어' : '영어'} 듣기 음성 재생 (${mode === 'study' ? '자율학습' : '수업'} · 다시 들을 수 있음)`
             : (played ? '듣기 음성을 이미 한 번 재생했습니다'
                       : `${isKorean ? '한국어' : '영어'} 듣기 음성 한 번 재생`)}
           style={{
             border: 0,
             borderRadius: 10,
             padding: '10px 14px',
-            background: (played && !unlimited) ? '#CBD5E1' : '#1D4ED8',
-            color: (played && !unlimited) ? '#475569' : '#FFFFFF',
+            background: (played && !repeatable) ? '#CBD5E1' : '#1D4ED8',
+            color: (played && !repeatable) ? '#475569' : '#FFFFFF',
             fontWeight: 800,
             fontSize: 13,
-            cursor: played && !unlimited ? 'default' : 'pointer',
+            cursor: played && !repeatable ? 'default' : 'pointer',
             flexShrink: 0,
           }}
         >
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
             {speaking ? <StopCircle weight="fill" size={17} /> : <SpeakerHigh weight="fill" size={17} />}
-            {unlimited
+            {repeatable
               ? (speaking ? '처음부터' : played ? '다시 듣기' : '듣기 재생')
               : speaking ? '재생 중' : played ? '재생 완료' : '듣기 재생'}
           </span>
@@ -254,7 +260,7 @@ export default function ListeningPrompt({ q, revealTranscript = false, unlimited
             {isKorean ? '한국어 듣기 문항' : '영어 듣기 문항'}
           </p>
           <p style={{ fontSize: 12.5, color: '#475569', lineHeight: 1.5 }}>
-            {unlimited ? '수업에서는 필요한 만큼 다시 들을 수 있습니다.' : '인증진단 조건에 맞춰 한 번만 재생됩니다.'}
+            {repeatable ? repeatCopy : '인증진단 조건에 맞춰 한 번만 재생됩니다.'}
           </p>
         </div>
       </div>

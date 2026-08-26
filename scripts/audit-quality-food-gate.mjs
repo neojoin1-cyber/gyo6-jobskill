@@ -23,7 +23,6 @@ const studentShell = read('src/screens/student/StudentShell.jsx')
 const teacherWorkspace = read('src/screens/teacher/TeacherWorkspace.jsx')
 const classroom = read('src/screens/teacher/ClassroomScreen.jsx')
 const campusHome = read('src/screens/student/StudentCampusHome.jsx')
-const deckIndex = json('data/decks/index.json')
 
 for (const [name, source] of [
   ['학생 과목 목록', courseList],
@@ -35,7 +34,7 @@ for (const [name, source] of [
 }
 
 check(!courseList.includes('식음료서비스') && !courseList.includes('품질경영'), '학생 과목 화면에 폐지 과목명이 남아 있습니다.')
-check(deckIndex.every(subject => !retired.has(subject.id)), '교사용 수업 덱에 폐지 과목이 남아 있습니다.')
+check(classroom.includes('TeacherLearningPreview') && !classroom.includes('DeckProjector'), '교실 수업이 폐지 가능한 별도 수업 덱을 사용합니다.')
 check(!studentShell.includes('QualityMgmtScreen') && !studentShell.includes('QuestMapScreen'), '학생 앱이 폐지 과목 전용 화면을 불러옵니다.')
 check(campusHome.includes('!RETIRED_SUBJECT_IDS.has(item.subject_id)'), '학생 홈이 서버의 과거 폐지 과목 미션을 다시 노출할 수 있습니다.')
 
@@ -45,4 +44,4 @@ if (failures.length) {
   process.exit(1)
 }
 
-console.log(`폐지 과목 유령 방지 게이트 통과: 학생·교사 카탈로그 ${visibleIds.length}개, 수업 덱 ${deckIndex.length}개, 오답 필터 ${WRONG_NOTE_FILTERS.length}개`)
+console.log(`폐지 과목 유령 방지 게이트 통과: 학생·교사 공통 카탈로그 ${visibleIds.length}개, 오답 필터 ${WRONG_NOTE_FILTERS.length}개`)

@@ -47,7 +47,7 @@ function reasonOf(q) {
   return q.ncsElement || q.teenupBlueprint?.process || q.demandLevel || q.skillTag || q.lessonTitle || '개념 적용'
 }
 
-export default function DiagnosticScreen({ subjectId, subjectName, onBack, onGoTextbook }) {
+export default function DiagnosticScreen({ subjectId, subjectName, onBack, onGoTextbook, onLearningContext }) {
   const scopes = useMemo(() => getDiagnosticScopes(subjectId), [subjectId])
   const [scopeLevel, setScopeLevel] = useState('all')
   const [scopeKey, setScopeKey] = useState('__all__')
@@ -64,6 +64,23 @@ export default function DiagnosticScreen({ subjectId, subjectName, onBack, onGoT
   const countOptions = COUNT_PRESETS.filter(n => n <= selectedScope.count)
   const safeCountOptions = countOptions.length ? countOptions : [Math.max(1, selectedScope.count)]
   const hist = loadHist(subjectId, selectedScope.key)
+
+  useEffect(() => {
+    const question = phase === 'quiz' ? paper[i] : null
+    onLearningContext?.({
+      subject: subjectId,
+      mode: 'diagnostic',
+      stage: phase === 'quiz' ? 'question' : phase,
+      areaLabel: selectedScope.name,
+      lessonLabel: phase === 'quiz' ? `${i + 1}/${paper.length} 문항` : '진단 범위 선택',
+      questionId: question?.id,
+      index: phase === 'quiz' ? i : null,
+      position: phase === 'quiz' ? i + 1 : 1,
+      total: phase === 'quiz' ? paper.length : 1,
+      revealed: false,
+      content: question ? { kind: 'question', question } : undefined,
+    })
+  }, [i, onLearningContext, paper, phase, selectedScope.name, subjectId])
 
   useEffect(() => {
     const first = scopes.find(s => s.level === scopeLevel)

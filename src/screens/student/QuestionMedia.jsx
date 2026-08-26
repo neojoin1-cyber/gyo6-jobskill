@@ -4,7 +4,7 @@ export default function QuestionMedia({ q }) {
 
   if (visual.type === 'table') {
     return (
-      <figure style={figureStyle} aria-label={visual.caption || '문항 표 자료'}>
+      <figure data-question-media="table" style={figureStyle} aria-label={visual.caption || '문항 표 자료'}>
         {visual.caption && <figcaption style={captionStyle}>{visual.caption}</figcaption>}
         <div style={{ overflowX: 'auto' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 280 }}>
@@ -34,7 +34,7 @@ export default function QuestionMedia({ q }) {
   if (visual.type === 'bar') {
     const max = Math.max(...visual.items.map(item => Number(item.value) || 0), 1)
     return (
-      <figure style={figureStyle} aria-label={visual.caption || '문항 막대그래프 자료'}>
+      <figure data-question-media="bar" style={figureStyle} aria-label={visual.caption || '문항 막대그래프 자료'}>
         {visual.caption && <figcaption style={captionStyle}>{visual.caption}</figcaption>}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {visual.items.map(item => (

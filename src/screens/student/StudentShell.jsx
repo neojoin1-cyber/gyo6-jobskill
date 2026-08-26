@@ -14,6 +14,7 @@ import {
 import StudentCampusHome     from './StudentCampusHome.jsx'
 import { fetchMyClassSession, startPresence, stopPresence, setFocusListener } from '../../lib/presence.js'
 import { campusCourseTarget } from '../../lib/studentCampusRoutes.js'
+import { rememberStudentLearningContext } from '../../lib/studentLearningJourney.js'
 import { lazyChunk } from '../../lib/lazyChunk.js'
 
 const MissionScreen = lazyChunk(() => import('./MissionScreen.jsx'), 'MissionScreen')
@@ -180,7 +181,7 @@ export default function StudentShell() {
           </span>
           {/* 뒷자리에서 칠판 글씨가 안 보여도 자기 기기에서 같은 곳을 연다.
               선생님이 밀어 넣는 것이 아니라 학생이 눌러서 간다. */}
-          {classSession.focus?.kind === 'question' && (
+          {classSession.focus?.subject && (
             <button className="cs-follow" disabled={following} onClick={async () => {
               setFollowing(true)
               const latest = await fetchMyClassSession()
@@ -188,11 +189,12 @@ export default function StudentShell() {
               if (latest) setClassSession(latest)
               setFollowLink({
                 subject: focus.subject || 'job-common',
+                track: focus.track || null,
                 area: focus.area || null,
                 lesson: focus.lesson || null,
                 questionId: focus.questionId || null,
                 index: Number.isInteger(focus.index) ? focus.index : null,
-                mode: 'study',
+                mode: focus.mode || 'study',
               })
               setTab('study')
               setFollowing(false)
@@ -207,8 +209,8 @@ export default function StudentShell() {
           <StudentCampusHome
             profile={profile}
             onOpenMission={openMission}
-            onGoStudy={subject => {
-              setFollowLink(campusCourseTarget(subject))
+            onGoStudy={target => {
+              setFollowLink(typeof target === 'string' || target == null ? campusCourseTarget(target) : target)
               setTab('study')
             }}
             onGoWrong={() => setTab('wrong')}
@@ -220,6 +222,7 @@ export default function StudentShell() {
           {tab === 'study' && <CourseListScreen
             key={deepLink ? [deepLink.subject, deepLink.mode ?? 'choose', deepLink.area, deepLink.lesson, deepLink.questionId, deepLink.index].join(':') : 'browse'}
             deepLink={deepLink}
+            onContextChange={rememberStudentLearningContext}
             onBack={() => { setFollowLink(null); setTab('home') }} />}
 
           {tab === 'wrong'         && <WrongAnswerScreen profile={profile} />}

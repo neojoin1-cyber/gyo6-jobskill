@@ -8,13 +8,15 @@ import { pushBack, popBack } from '../../lib/backButton.js'
 import interviewStudy from '../../../data/interview-study.json'
 import interviewQuizData from '../../../data/interview-quiz.json'
 import { getSummary } from '../../lib/studySummaries.js'
-import StudySummary from './StudySummary.jsx'
+import StudySummary, { buildStudySummaryCards } from './StudySummary.jsx'
 import { saveWrongAnswer } from '../../lib/wrongAnswers.js'
 import { buildInterviewConceptChecks, buildInterviewLearningQuestions } from '../../lib/interviewLearning.js'
 import { studyQuestionsById } from '../../lib/assessmentPartition.js'
 import { Buildings, CaretRight, CheckCircle, ChatCircleText, Target } from '@phosphor-icons/react'
 import InterviewCareerLab from './InterviewCareerLab.jsx'
 import CompactText from '../../components/CompactText.jsx'
+import { getFirstClassFormative } from '../../lib/firstClassLessons.js'
+import '../../styles/interview-study.css'
 import {
   INTERVIEW_FOUNDATION_COURSES,
   interviewFoundationCategories,
@@ -34,14 +36,108 @@ const LEVEL_BADGE_BG = {
   '표준': '#e3f0ff', '심화': '#f3e5f5', '종합': '#ffebee',
 }
 
-export default function InterviewStudyScreen({ onBack }) {
+const PHASE_COPY = {
+  theory: {
+    badge: '1단계 · 기준 익히기',
+    description: '카드를 한 장씩 넘기며 좋은 답변의 기준과 근거를 익힙니다.',
+    next: '마지막 카드에서 2단계로 바로 이어집니다.',
+  },
+  quiz: {
+    badge: '2단계 · 답변 고쳐 고르기',
+    description: '제시된 답변의 약점을 찾고, 실전 면접에 더 적합한 수정안을 고릅니다.',
+    next: '각 문항의 근거를 확인한 뒤 3단계로 이어집니다.',
+  },
+  practice: {
+    badge: '3단계 · 내 경험으로 답하기',
+    description: '실제 질문에 내 경험으로 먼저 답하고, 예시와 비교해 다시 고칩니다.',
+    next: '20자 이상 작성 → 예시 비교 → 다음 질문 순서로 진행합니다.',
+  },
+}
+
+function referenceSectionText(section) {
+  return [section?.text, ...(section?.items || []), ...(section?.rows || []).flat()]
+    .filter(Boolean)
+    .join(' ')
+}
+
+function buildReferenceGroups(sections = []) {
+  const groups = []
+  let current = null
+  let parentTitle = ''
+
+  for (const section of sections) {
+    if (section.type === 'h3') {
+      parentTitle = section.text || ''
+      current = { title: parentTitle, parentTitle, sections: [] }
+      groups.push(current)
+      continue
+    }
+    if (section.type === 'h4') {
+      current = { title: section.text || parentTitle, parentTitle, sections: [] }
+      groups.push(current)
+      continue
+    }
+    if (!current) {
+      current = { title: '단원 핵심', parentTitle: '', sections: [] }
+      groups.push(current)
+    }
+    current.sections.push(section)
+  }
+
+  return groups.filter(group => group.sections.length > 0)
+}
+
+function referenceQuery(card, summary) {
+  if (!card) return summary?.intro || summary?.title || ''
+  if (card.type === 'point') {
+    const point = card.point || {}
+    return typeof point === 'string'
+      ? point
+      : [point.topic, point.learn, point.sampleQuestion, point.example].filter(Boolean).join(' ')
+  }
+  if (card.type === 'mission') return `내 답변 작성 실습 셀프 체크 ${summary?.mustRemember?.join(' ') || ''}`
+  if (card.type === 'end') return `3줄 요약 핵심 정리 ${summary?.mustRemember?.join(' ') || ''}`
+  return `${summary?.intro || ''} ${summary?.keyPoints?.[0]?.topic || ''}`
+}
+
+function selectReferenceGroup(sections, card, summary) {
+  const groups = buildReferenceGroups(sections)
+  if (!groups.length) return null
+
+  const query = referenceQuery(card, summary).replace(/[^0-9A-Za-z가-힣]+/g, ' ')
+  const tokens = [...new Set(query.split(/\s+/).filter(token => token.length >= 2))]
+  let best = groups[0]
+  let bestScore = -1
+
+  for (const group of groups) {
+    const title = `${group.parentTitle} ${group.title}`.replace(/[^0-9A-Za-z가-힣]+/g, ' ')
+    const body = group.sections.map(referenceSectionText).join(' ')
+    const score = tokens.reduce((sum, token) => {
+      if (title.includes(token)) return sum + 6
+      if (body.includes(token)) return sum + 1
+      return sum
+    }, 0)
+    if (score > bestScore) {
+      best = group
+      bestScore = score
+    }
+  }
+
+  return best
+}
+
+export default function InterviewStudyScreen({ initialArea = null, initialLesson = null, initialStep = 0, initialInteraction = null, onBack, onLearningContext }) {
   const [careerSection, setCareerSection] = useState(null)
-  const [category,    setCategory]    = useState(null)
-  const [lessonId,    setLessonId]    = useState(null)
+  const [category,    setCategory]    = useState(initialArea)
+  const [lessonId,    setLessonId]    = useState(initialLesson)
   const [view,           setView]           = useState('theory')
   const [practiceIdx,    setPracticeIdx]    = useState(0)
   const [showModel,      setShowModel]      = useState(false)
   const [showReference,  setShowReference]  = useState(false)
+  const [theoryStep,     setTheoryStep]     = useState(initialStep)
+  const [theoryInteraction, setTheoryInteraction] = useState(initialInteraction || {})
+  const [quizChecked, setQuizChecked] = useState(false)
+  const [phaseDone, setPhaseDone] = useState({ theory: false, quiz: false, practice: false })
   const [showReviewOnly, setShowReviewOnly] = useState(false)
   const [ivProgress, setIvProgress] = useState(() => {
     try { return JSON.parse(localStorage.getItem('iv_progress') || '{}') }
@@ -56,15 +152,88 @@ export default function InterviewStudyScreen({ onBack }) {
 
   const lesson = lessonId ? lessons.find(l => l.id === lessonId) : null
 
+  // Keep these objects stable while teacher support state is updating. StudySummary
+  // intentionally restarts when its summary or question set changes identity.
+  const lessonQuizQuestions = useMemo(
+    () => lesson ? buildInterviewConceptChecks(lesson, STUDY_QUIZ_QUESTIONS) : [],
+    [lesson],
+  )
+  const lessonSummary = useMemo(() => lesson ? getSummary(`iv:${lesson.id}`) : null, [lesson])
+  const theorySummary = useMemo(
+    () => lessonSummary ? { ...lessonSummary, courseKind: 'interview' } : null,
+    [lessonSummary],
+  )
+  const interviewLearningQuestions = useMemo(
+    () => lesson ? buildInterviewLearningQuestions(lesson, STUDY_QUIZ_QUESTIONS) : [],
+    [lesson],
+  )
+  const practiceQuestions = useMemo(
+    () => interviewLearningQuestions.filter(question => question.isInterview).map(question => ({
+      ...question,
+      question: question.question || question.stem,
+      structHint: question.structHint || question.context,
+      hints: question.hints?.length ? question.hints : question.answerPoints,
+    })),
+    [interviewLearningQuestions],
+  )
+  const formativeAssessment = useMemo(
+    () => getFirstClassFormative('interview', { areaId: category, lessonId }),
+    [category, lessonId],
+  )
+  const theoryCards = useMemo(
+    () => theorySummary ? buildStudySummaryCards(theorySummary, interviewLearningQuestions, undefined, undefined, formativeAssessment) : [],
+    [theorySummary, interviewLearningQuestions, formativeAssessment],
+  )
+  const activeTheoryCard = theoryCards[theoryStep] || theoryCards[0] || null
+  const activeReference = useMemo(
+    () => lesson ? selectReferenceGroup(lesson.sections, activeTheoryCard, theorySummary) : null,
+    [activeTheoryCard, lesson, theorySummary],
+  )
+
   const selectedCourse = interviewFoundationCourseById(category)
   const catLessons = useMemo(() => {
     const categories = interviewFoundationCategories(category)
     return categories.length ? lessons.filter(lesson => categories.includes(lesson.category)) : []
   }, [category])
 
+  useEffect(() => {
+    const careerLabel = {
+      pathways: '지원처별 면접 심화',
+      institutions: '기업·기관 연구소',
+      scripts: '답변 연결실',
+      cover: '자기소개서 연결',
+    }[careerSection]
+    const activeInteraction = theoryInteraction.step === theoryStep ? theoryInteraction : null
+    const activeQuestion = view === 'quiz'
+      ? lessonQuizQuestions[practiceIdx] || null
+      : view === 'practice'
+        ? practiceQuestions[practiceIdx] || null
+        : null
+    onLearningContext?.({
+      subject: 'interview',
+      mode: 'study',
+      stage: lesson ? (view === 'theory' ? activeTheoryCard?.type || 'concept' : 'question') : category ? 'lesson-choice' : careerSection ? 'concept' : 'area-choice',
+      areaId: category,
+      areaLabel: careerLabel || selectedCourse?.label || '고졸 공정채용 면접',
+      lessonId,
+      lessonLabel: lesson?.title || careerLabel || (category ? '단원 선택' : '학습 범위 선택'),
+      title: lesson?.title || careerLabel || selectedCourse?.label,
+      position: view === 'theory' ? theoryStep + 1 : practiceIdx + 1,
+      step: view === 'theory' ? theoryStep : null,
+      total: view === 'theory' ? theoryCards.length : view === 'quiz' ? lessonQuizQuestions.length : practiceQuestions.length,
+      revealed: view === 'quiz' ? quizChecked : Boolean(activeInteraction?.revealed),
+      questionId: activeQuestion?.id || null,
+      content: view === 'theory' && theorySummary
+        ? { kind: 'summary', summary: theorySummary, card: activeTheoryCard, interaction: activeInteraction }
+        : activeQuestion
+          ? { kind: 'question', question: activeQuestion }
+          : null,
+    })
+  }, [activeTheoryCard, careerSection, category, lesson?.title, lessonId, lessonQuizQuestions, onLearningContext, practiceIdx, practiceQuestions, quizChecked, selectedCourse?.label, theoryCards.length, theoryInteraction, theoryStep, theorySummary, view])
+
   function openLesson(id) {
     setLessonId(id); setView('theory')
-    setPracticeIdx(0); setShowModel(false); setShowReference(false)
+    setPracticeIdx(0); setShowModel(false); setShowReference(false); setTheoryStep(0); setTheoryInteraction({}); setQuizChecked(false); setPhaseDone({ theory: false, quiz: false, practice: false })
   }
   function goBack() {
     if (lessonId) { setLessonId(null); return }
@@ -84,12 +253,13 @@ export default function InterviewStudyScreen({ onBack }) {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
   function switchView(v) {
     setView(v)
-    setPracticeIdx(0); setShowModel(false)
+    setPracticeIdx(0); setShowModel(false); setShowReference(false); setQuizChecked(false)
   }
 
   if (careerSection) {
     return <InterviewCareerLab
       section={careerSection}
+      onLearningContext={onLearningContext}
       onBack={() => setCareerSection(null)}
       onOpenCover={() => setCareerSection('cover')}
     />
@@ -201,7 +371,7 @@ export default function InterviewStudyScreen({ onBack }) {
                       <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>{l.durationMin}분</span>
                       {(conceptCount > 0 || practiceCount > 0) && (
                         <span style={{ fontSize: 12, color: 'var(--primary)' }}>
-                          상황 판단 {conceptCount} · 답변 연습 {practiceCount}
+                          답변 고쳐 고르기 {conceptCount} · 내 경험으로 답하기 {practiceCount}
                         </span>
                       )}
                       {pc && (
@@ -222,91 +392,94 @@ export default function InterviewStudyScreen({ onBack }) {
   }
 
   // ── 단원 학습 ─────────────────────────────────────────────────────────
-  const lessonQuizQuestions = buildInterviewConceptChecks(lesson, STUDY_QUIZ_QUESTIONS)
   const hasQuiz = lessonQuizQuestions.length > 0
-  const lessonSummary = getSummary(`iv:${lesson.id}`)
-  const interviewLearningQuestions = buildInterviewLearningQuestions(lesson, STUDY_QUIZ_QUESTIONS)
-  const practiceQuestions = interviewLearningQuestions.filter(question => question.isInterview).map(question => ({
-        ...question,
-        question: question.question || question.stem,
-        structHint: question.structHint || question.context,
-        hints: question.hints?.length ? question.hints : question.answerPoints,
-      }))
   const hasPractice = practiceQuestions.length > 0
 
   const TABS = [
-    { id: 'theory',   label: '1 상황·답변 익히기' },
-    ...(hasQuiz      ? [{ id: 'quiz',     label: `2 실전 상황 ${lessonQuizQuestions.length}` }] : []),
-    ...(hasPractice  ? [{ id: 'practice', label: `3 직접 답변 ${practiceQuestions.length}` }] : []),
+    { id: 'theory', label: '기준 익히기' },
+    ...(hasQuiz ? [{ id: 'quiz', label: '답변 고쳐 고르기', count: `${lessonQuizQuestions.length}문항` }] : []),
+    ...(hasPractice ? [{ id: 'practice', label: '내 경험으로 답하기', count: `${practiceQuestions.length}질문` }] : []),
   ]
+  const activePhaseIndex = TABS.findIndex(tab => tab.id === view)
 
   return (
-    <div className="screen">
-      <div className="appbar">
+    <div className="screen interview-study-unit">
+      <div className="appbar interview-study-unit-head">
         <button className="appbar-back" onClick={goBack}>←</button>
-        <span className="appbar-title" style={{ fontSize: 12 }}>{lesson.title}</span>
-        <span style={{
-          fontSize: 12, fontWeight: 700, padding: '2px 7px', borderRadius: 999,
+        <span className="appbar-title">{lesson.title}</span>
+        <span className="interview-study-level" style={{
           background: LEVEL_BADGE_BG[lesson.level] ?? '#f0f4f8',
           color: LEVEL_COLOR[lesson.level] ?? '#666',
         }}>{lesson.level}</span>
       </div>
 
-      {/* 탭 바 */}
+      {/* 수업 단계는 이동 버튼이 아니라 현재 위치를 알려 주는 진행표임. */}
       {TABS.length > 1 && (
-        <div style={{ display: 'flex', borderBottom: '2px solid var(--border)' }}>
-          {TABS.map(t => (
-            <button key={t.id} onClick={() => switchView(t.id)}
-              style={{
-                flex: 1, padding: '10px 0', border: 'none', cursor: 'pointer',
-                background: view === t.id ? 'var(--primary-light)' : 'transparent',
-                color: view === t.id ? 'var(--primary)' : 'var(--text-muted)',
-                fontWeight: view === t.id ? 700 : 400, fontSize: 12,
-                borderBottom: view === t.id ? '2px solid var(--primary)' : 'none',
-              }}>
-              {t.label}
-            </button>
+        <ol className="interview-study-unit-tabs" aria-label="면접 단원 학습 순서"
+          style={{ gridTemplateColumns: `repeat(${TABS.length}, minmax(0, 1fr))` }}>
+          {TABS.map((t, index) => (
+            <li key={t.id} aria-current={view === t.id ? 'step' : undefined}
+              className={`${view === t.id ? 'is-active' : ''} ${phaseDone[t.id] ? 'is-done' : ''} ${index > activePhaseIndex && !phaseDone[t.id] ? 'is-upcoming' : ''}`}>
+              <span><b>{index + 1}</b>{t.label}</span>
+              <small>{phaseDone[t.id] ? '완료' : view === t.id ? '지금 진행' : `${index - activePhaseIndex}단계 뒤 자동 시작`}</small>
+            </li>
           ))}
-        </div>
+        </ol>
       )}
+
+      <div className={`interview-study-phase-note is-${view}`}>
+        <strong>{PHASE_COPY[view].badge}</strong>
+        <div><span>{PHASE_COPY[view].description}</span><small>{PHASE_COPY[view].next}</small></div>
+      </div>
 
       {/* 이론 본문 */}
       {view === 'theory' && (
-        <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', padding: '14px 16px' }}>
+        <div className="interview-study-theory">
           {lessonSummary && (
-            <div style={{ marginBottom: 18, paddingBottom: 16, borderBottom: '2px solid var(--border)' }}>
+            <div className="interview-study-summary-wrap">
               <StudySummary
-                summary={{ ...lessonSummary, courseKind: 'interview' }}
+                summary={theorySummary}
                 questions={interviewLearningQuestions}
+                formativeAssessment={formativeAssessment}
+                initialStep={initialStep}
+                initialInteraction={initialInteraction}
+                onStepChange={setTheoryStep}
+                onInteractionChange={setTheoryInteraction}
+                introStartLabel="1단계 기준 익히기 시작 →"
+                startQuizLabel={hasQuiz ? `2단계 답변 고쳐 고르기 ${lessonQuizQuestions.length}문항 →` : `3단계 내 경험으로 답하기 ${practiceQuestions.length}질문 →`}
+                onStartQuiz={(hasQuiz || hasPractice) ? () => { setPhaseDone(current => ({ ...current, theory: true })); switchView(hasQuiz ? 'quiz' : 'practice') } : null}
               />
             </div>
           )}
-          {lessonSummary && (
-            <button className="btn btn-secondary btn-full" style={{ marginBottom: showReference ? 14 : 0 }}
+          {lessonSummary && activeReference && (
+            <button className="interview-reference-toggle" type="button" aria-expanded={showReference}
               onClick={() => setShowReference(open => !open)}>
-              {showReference ? '상세 참고자료 접기' : '상세 참고자료 펼치기'}
+              <span>{showReference ? '현재 카드 보충자료 접기' : '현재 카드 보충자료 보기'}</span>
+              <small>{activeReference.title}</small>
             </button>
           )}
-          {(!lessonSummary || showReference) && lesson.sections.map((sec, i) => (
-              <SectionBlock key={i} sec={sec} />
-            ))}
-          {(hasQuiz || hasPractice) && (
-            <button className="btn btn-primary btn-full" style={{ marginTop: 16 }}
-              onClick={() => switchView(hasQuiz ? 'quiz' : 'practice')}>
-              {hasQuiz ? '실전 상황 확인 시작 →' : '직접 답변 연습 시작 →'}
-            </button>
+          {lessonSummary && showReference && activeReference && (
+            <CurrentReference group={activeReference} step={theoryStep} total={theoryCards.length} />
+          )}
+          {!lessonSummary && (
+            <div className="interview-current-reference is-full-fallback">
+              {lesson.sections.map((sec, i) => <SectionBlock key={i} sec={sec} />)}
+            </div>
           )}
         </div>
       )}
 
-      {/* 실제 면접 상황 판단 */}
+      {/* 답변 고쳐 고르기 */}
       {view === 'quiz' && hasQuiz && (
         <InterviewQuizView
           questions={lessonQuizQuestions}
           lessonId={lesson.id}
           onMarkProgress={markLessonProgress}
+          onQuestionChange={setPracticeIdx}
+          onRevealChange={setQuizChecked}
           onReturnToTheory={() => switchView('theory')}
           onStartPractice={hasPractice ? () => switchView('practice') : null}
+          onComplete={() => setPhaseDone(current => ({ ...current, quiz: true }))}
         />
       )}
 
@@ -322,9 +495,33 @@ export default function InterviewStudyScreen({ onBack }) {
           onMarkProgress={markLessonProgress}
           summaryTips={lessonSummary?.tips}
           onReturnToTheory={() => switchView('theory')}
+          onComplete={() => setPhaseDone(current => ({ ...current, practice: true }))}
         />
       )}
     </div>
+  )
+}
+
+function CurrentReference({ group, step, total }) {
+  const visibleSections = group.sections.slice(0, 10)
+  return (
+    <aside className="interview-current-reference" aria-label="현재 카드 보충자료">
+      <header>
+        <div>
+          <span>현재 카드 {Math.min(step + 1, total)}/{total} 보충</span>
+          <h3>{group.title}</h3>
+        </div>
+        {group.parentTitle && group.parentTitle !== group.title && <small>{group.parentTitle}</small>}
+      </header>
+      <div className="interview-current-reference-body">
+        {visibleSections.map((section, index) => <SectionBlock key={index} sec={section} />)}
+      </div>
+      {group.sections.length > visibleSections.length && (
+        <p className="interview-current-reference-note">
+          이 단계에 필요한 핵심만 표시했습니다. 작성 실습과 사례 비교는 뒤의 학습 단계에서 이어집니다.
+        </p>
+      )}
+    </aside>
   )
 }
 
@@ -483,7 +680,7 @@ const loadDrafts = id => loadJson(DRAFT_KEY(id))
 const loadChecks = id => loadJson(CHECK_KEY(id))
 
 // ── 실습 문항 뷰 ──────────────────────────────────────────────────────────────
-function PracticeView({ questions, idx, setIdx, showModel, setShowModel, lessonId, onMarkProgress, summaryTips, onReturnToTheory }) {
+function PracticeView({ questions, idx, setIdx, showModel, setShowModel, lessonId, onMarkProgress, summaryTips, onReturnToTheory, onComplete }) {
   const [practiceDone, setPracticeDone]   = useState(false)
   const [selfEvalSaved, setSelfEvalSaved] = useState(null)
   // 답변 초안과 채점 기준 체크. 문항마다 따로 보관하고 기기에만 남긴다
@@ -493,15 +690,18 @@ function PracticeView({ questions, idx, setIdx, showModel, setShowModel, lessonI
 
   const pq    = questions[idx]
   const total = questions.length
+  const activeDraft = (drafts[pq?.id ?? idx] || '').trim()
+  const draftReady = activeDraft.length >= 20
+  const comparisonDone = draftReady && showModel
 
   // ── 실습 완료 화면 ─────────────────────────────────────────────────────
   if (practiceDone) {
     return (
-      <div style={{ flex: 1, overflowY: 'auto', padding: '24px 16px', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+      <div className="interview-study-activity interview-study-practice is-complete" style={{ flex: 1, overflowY: 'auto', padding: '24px 16px', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
         <div style={{ fontSize: 64, marginBottom: 12 }}>🎉</div>
-        <p style={{ fontSize: 22, fontWeight: 700, marginBottom: 8 }}>실습 완료!</p>
+        <p style={{ fontSize: 22, fontWeight: 700, marginBottom: 8 }}>내 답변 연습 완료!</p>
         <p style={{ fontSize: 14, color: 'var(--text-muted)', marginBottom: 20, lineHeight: 1.6 }}>
-          총 <strong>{total}문항</strong>을 모두 풀었습니다.
+          총 <strong>{total}개 질문</strong>에 내 경험으로 직접 답했습니다.
         </p>
 
         {onMarkProgress && (
@@ -547,27 +747,27 @@ function PracticeView({ questions, idx, setIdx, showModel, setShowModel, lessonI
   }
 
   return (
-    <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', padding: '14px 16px' }}>
+    <div className="interview-study-activity interview-study-practice" style={{ flex: 1, minHeight: 0, overflowY: 'auto', padding: '14px 16px' }}>
 
       {/* 단원 학습 팁 */}
       {summaryTips?.length > 0 && <TipsBox tips={summaryTips} />}
 
-      {/* 진행 표시 + 점프 */}
+      {/* 문항 번호는 이동 버튼이 아니라 현재 위치를 알려 주는 진행표임. */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
         <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--primary)' }}>
           실습 {idx + 1} / {total}
         </p>
         <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
           {questions.map((_, i) => (
-            <button key={i} onClick={() => setIdx(i)}
+            <span key={i} aria-current={i === idx ? 'step' : undefined}
               style={{
                 width: 28, height: 28, borderRadius: 6, fontSize: 12, fontWeight: 700,
                 border: `2px solid ${i === idx ? 'var(--primary)' : 'var(--border)'}`,
                 background: i === idx ? 'var(--primary)' : 'var(--card)',
                 color: i === idx ? '#fff' : 'var(--text-muted)',
-                cursor: 'pointer',
+                display: 'grid', placeItems: 'center',
               }}>{i + 1}
-            </button>
+            </span>
           ))}
         </div>
       </div>
@@ -681,8 +881,8 @@ function PracticeView({ questions, idx, setIdx, showModel, setShowModel, lessonI
             fontFamily: 'inherit', background: 'var(--card)', color: 'var(--text)',
           }} />
         <p style={{ fontSize: 11.5, color: 'var(--text-muted)', marginTop: 5 }}>
-          {(drafts[pq.id ?? idx] || '').trim().length}자
-          {(drafts[pq.id ?? idx] || '').trim().length >= 150 && ' · 1분 30초 분량에 가까워요'}
+          {activeDraft.length}자 · 20자 이상 쓰면 예시와 비교할 수 있어요
+          {activeDraft.length >= 150 && ' · 1분 30초 분량에 가까워요'}
         </p>
       </div>
 
@@ -692,10 +892,11 @@ function PracticeView({ questions, idx, setIdx, showModel, setShowModel, lessonI
           type="button"
           className="btn btn-secondary btn-full"
           aria-expanded="false"
+          disabled={!draftReady}
           style={{ marginBottom: 14 }}
           onClick={() => setShowModel(true)}
         >
-          📖 모범답안 펼치기
+          {draftReady ? '📖 내 답변과 예시 비교하기' : '내 답변을 20자 이상 먼저 작성해 주세요'}
         </button>
       ) : (
         <ModelAnswerBlock pq={pq} />
@@ -713,13 +914,14 @@ function PracticeView({ questions, idx, setIdx, showModel, setShowModel, lessonI
           onClick={() => setIdx(idx - 1)}>← 이전</button>
         {idx === total - 1 ? (
           <button className="btn btn-primary" style={{ flex: 1, background: 'var(--success)' }}
-            onClick={() => { setPracticeDone(true); recordActivity('quiz') }}>
-            답변 연습 마치기
+            disabled={!comparisonDone}
+            onClick={() => { setPracticeDone(true); onComplete?.(); recordActivity('quiz') }}>
+            {comparisonDone ? '답변 연습 마치기' : '예시 비교 후 마칠 수 있어요'}
           </button>
         ) : (
           <button className="btn btn-primary" style={{ flex: 1 }}
-            disabled={idx === total - 1}
-            onClick={() => setIdx(idx + 1)}>다음 →</button>
+            disabled={!comparisonDone}
+            onClick={() => setIdx(idx + 1)}>{comparisonDone ? '다음 질문 →' : '예시 비교 후 다음으로'}</button>
         )}
       </div>
     </div>
@@ -812,8 +1014,8 @@ function ModelAnswerBlock({ pq }) {
   )
 }
 
-// ── 실제 면접 상황 판단 (선다형) ───────────────────────────────────────────
-function InterviewQuizView({ questions, lessonId, onMarkProgress, onReturnToTheory, onStartPractice }) {
+// ── 답변 고쳐 고르기 (선다형) ──────────────────────────────────────────────
+function InterviewQuizView({ questions, lessonId, onMarkProgress, onQuestionChange, onRevealChange, onReturnToTheory, onStartPractice, onComplete }) {
   const [idx, setIdx]               = useState(0)
   const [selected, setSelected]     = useState(null)
   const [checked, setChecked]       = useState(false)
@@ -825,18 +1027,21 @@ function InterviewQuizView({ questions, lessonId, onMarkProgress, onReturnToTheo
   const isOx = q?.type === 'ox'
   const total = questions.length
 
+  useEffect(() => { onQuestionChange?.(idx) }, [idx, onQuestionChange])
+  useEffect(() => { onRevealChange?.(checked) }, [checked, onRevealChange])
+
   if (quizCompleted) {
     const accuracy = total > 0 ? Math.round(correctCount / total * 100) : 0
     return (
-      <div style={{ flex: 1, overflowY: 'auto', padding: '24px 16px', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+      <div className="interview-study-activity interview-study-quiz is-complete" style={{ flex: 1, overflowY: 'auto', padding: '24px 16px', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
         <div style={{ fontSize: 64, marginBottom: 12 }}>
           {accuracy >= 80 ? '🎉' : accuracy >= 50 ? '💪' : '📚'}
         </div>
-        <p style={{ fontSize: 22, fontWeight: 700, marginBottom: 16 }}>상황 판단 완료!</p>
+        <p style={{ fontSize: 22, fontWeight: 700, marginBottom: 16 }}>답변 고쳐 고르기 완료!</p>
         <div style={{ display: 'flex', gap: 10, marginBottom: 24 }}>
           {[
-            { label: '적절한 대응', val: correctCount,         bg: '#d1fae5', color: '#065f46' },
-            { label: '다시 볼 대응', val: total - correctCount, bg: '#fee2e2', color: '#991b1b' },
+            { label: '적절한 수정', val: correctCount,         bg: '#d1fae5', color: '#065f46' },
+            { label: '다시 볼 선택', val: total - correctCount, bg: '#fee2e2', color: '#991b1b' },
             { label: '적용률',       val: `${accuracy}%`,       bg: '#e0f2fe', color: '#0369a1' },
           ].map(({ label, val, bg, color }) => (
             <div key={label} style={{ background: bg, borderRadius: 10, padding: '12px 14px', minWidth: 72 }}>
@@ -882,7 +1087,7 @@ function InterviewQuizView({ questions, lessonId, onMarkProgress, onReturnToTheo
           )}
           <button className="btn btn-primary btn-full"
             onClick={onStartPractice || (() => { setIdx(0); setCorrectCount(0); setQuizCompleted(false); setSelfEvalSaved(null); setSelected(null); setChecked(false) })}>
-            {onStartPractice ? '답변 연습으로 →' : '다시 확인하기'}
+            {onStartPractice ? '3단계 내 경험으로 답하기 →' : '다시 확인하기'}
           </button>
         </div>
       </div>
@@ -916,12 +1121,7 @@ function InterviewQuizView({ questions, lessonId, onMarkProgress, onReturnToTheo
   const correct = checked && selected === q.answer
 
   return (
-    <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', padding: '14px 16px' }}>
-      <button type="button" className="btn btn-ghost"
-        style={{ minHeight: 36, padding: '6px 10px', marginBottom: 10 }}
-        onClick={onReturnToTheory}>
-        ← 학습으로
-      </button>
+    <div className="interview-study-activity interview-study-quiz" style={{ flex: 1, minHeight: 0, overflowY: 'auto', padding: '14px 16px' }}>
       {/* 진행바 */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
         <div style={{ flex: 1, height: 5, background: 'var(--border)', borderRadius: 999, overflow: 'hidden' }}>
@@ -934,7 +1134,7 @@ function InterviewQuizView({ questions, lessonId, onMarkProgress, onReturnToTheo
       <div className="card" style={{ marginBottom: 12 }}>
         {q.context && (
           <div style={{ background: '#f0f4ff', border: '1px solid #c7d7f5', borderRadius: 8, padding: '9px 11px', marginBottom: 10 }}>
-            <p style={{ fontSize: 12, fontWeight: 800, color: '#3b5bdb', marginBottom: 4 }}>📋 상황</p>
+            <p style={{ fontSize: 12, fontWeight: 800, color: '#3b5bdb', marginBottom: 4 }}>📋 현재 답변 상황</p>
             <p style={{ fontSize: 12, lineHeight: 1.7, color: '#1a237e' }}>{q.context}</p>
           </div>
         )}
@@ -1005,7 +1205,7 @@ function InterviewQuizView({ questions, lessonId, onMarkProgress, onReturnToTheo
           borderRadius: 12, padding: '12px 14px', marginBottom: 12,
         }}>
           <p style={{ fontSize: 14, fontWeight: 800, color: correct ? 'var(--success)' : 'var(--danger)', marginBottom: 6 }}>
-            {correct ? '적절한 대응입니다' : `다시 생각할 대응 · 권장 ${String(q.answer).charCodeAt(0) - 64}번`}
+            {correct ? '면접용 수정으로 적절합니다' : `다시 볼 선택 · 권장 ${String(q.answer).charCodeAt(0) - 64}번`}
           </p>
           {q.explanation && (
             <CompactText text={q.explanation} maxItemChars={70} style={{ fontSize: 12, color: 'var(--text)' }} />
@@ -1020,7 +1220,7 @@ function InterviewQuizView({ questions, lessonId, onMarkProgress, onReturnToTheo
           {idx < total - 1
             ? <button className="btn btn-primary" style={{ flex: 2 }} onClick={next}>다음 →</button>
             : <button className="btn btn-primary" style={{ flex: 2, background: 'var(--success)' }}
-                onClick={() => setQuizCompleted(true)}>🏁 결과 보기</button>
+                onClick={() => { setQuizCompleted(true); onComplete?.() }}>🏁 결과 보기</button>
           }
         </div>
       )}

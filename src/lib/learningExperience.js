@@ -111,9 +111,13 @@ function toSampleQuestion(question, point) {
   if (question.type === 'writing-practice') {
     return {
       type: 'writing-practice',
+      questionId: question.questionId,
       format: question.format || '실전 고쳐쓰기',
       stem: plain(question.stem),
       context: plain(question.context),
+      purpose: plain(question.purpose),
+      required: (question.required || []).map(plain).filter(Boolean),
+      structure: (question.structure || []).map(plain).filter(Boolean),
       draft: plain(question.draft),
       checklist: (question.checklist || []).map(plain).filter(Boolean),
       modelAnswer: plain(question.modelAnswer),
@@ -229,7 +233,8 @@ export function buildLearningPoints(summary, questions = []) {
         }, point)
       : toSampleQuestion(picked, point)
     const visual = learningVisualFor(`${summary?.title ?? ''} ${point.topic ?? ''} ${point.learn ?? ''}`, summary?.courseKind)
-    const situation = point.situation || sampleQuestion?.context || sampleQuestion?.stem
+    // 발문 자체를 별도의 '상황'으로 중복 표시하지 않음. 실제 맥락이 있을 때만 상황 영역을 만듦.
+    const situation = point.situation || sampleQuestion?.context || ''
     const example = point.example || (typeof point.sampleQuestion === 'string' ? point.sampleQuestion : '')
     return { ...point, example, sampleQuestion, visual, situation }
   })

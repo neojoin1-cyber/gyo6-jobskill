@@ -128,6 +128,7 @@ export default function TeacherShell() {
   useEffect(() => {
     let cancelled = false
     async function loadPending() {
+      if (!profile?.id) return
       const { data: tc } = await supabase.from('teacher_classes').select('class_id').eq('teacher_id', profile.id)
       const classIds = (tc ?? []).map(r => r.class_id)
       if (classIds.length === 0) return
@@ -167,7 +168,15 @@ export default function TeacherShell() {
     if (screen.name === 'classroom')
       return (
         <Suspense fallback={<div className="loading-screen"><div className="spinner" /></div>}>
-          <ClassroomScreen onBack={closeScreen} />
+          <ClassroomScreen
+            initialSubject={screen.subject}
+            initialContext={screen.initialContext}
+            initialClassId={screen.classId}
+            initialClassName={screen.className}
+            initialCoachOpen={screen.openCoach}
+            onBack={closeScreen}
+            onOpenMessages={(params = {}) => navigate('messages', params)}
+          />
         </Suspense>
       )
     if (screen.name === 'messages')
@@ -226,7 +235,14 @@ export default function TeacherShell() {
             initialSubject={screen.subject}
             teachingMode={screen.teachingMode}
             onBack={closeScreen}
-            onOpenClassroom={() => navigate('classroom')}
+            onOpenClassroom={context => {
+              const next = typeof context === 'string' ? { subject: context } : context || {}
+              navigate('classroom', {
+                subject: next.subject,
+                initialContext: next,
+                openCoach: Boolean(next.coachOpen),
+              })
+            }}
             onOpenMessages={(params = {}) => navigate('messages', params)}
           />
         </Suspense>
@@ -287,7 +303,7 @@ export default function TeacherShell() {
           workspaceState={workspaceState} onRefresh={loadWorkspace}
           pendingCount={pendingCount} tab={tab} onTab={setTab}
           onNavigate={navigate}
-          onOpenClassroom={() => navigate('classroom')}
+          onOpenClassroom={(context = {}) => navigate('classroom', context)}
           onOpenMessages={(params = {}) => navigate('messages', params)}
           onOpenCoverReviews={classId => navigate('cover-reviews', { classId })}
           onOpenInterviewCoach={classId => navigate('interview-coaching', { classId })}

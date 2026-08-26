@@ -106,15 +106,16 @@ function areaBasedProgress(subjectId) {
     const a = info.idToArea.get(qid)
     if (a) perArea.set(a, (perArea.get(a) || 0) + 1)
   }
-  let sum = 0, done = 0
+  let sum = 0, done = 0, nextArea = null
   for (const a of info.areas) {
     const target = Math.min(TARGET_PER_AREA, info.areaCount.get(a) || TARGET_PER_AREA)
     const score = target > 0 ? Math.min(1, (perArea.get(a) || 0) / target) : 0
     sum += score
     if (score >= 1) done += 1
+    else if (!nextArea) nextArea = a.includes(':') ? a.split(':').slice(1).join(':') : a
   }
   const total = info.areas.length
-  return { pct: Math.round((sum / total) * 100), done, total, answered: answeredCount(subjectId) }
+  return { pct: Math.round((sum / total) * 100), done, total, answered: answeredCount(subjectId), nextLabel: nextArea }
 }
 
 // (2) 품질: 단원 게임 최고점 기반(패시브로는 점수 못 냄)
@@ -137,15 +138,16 @@ function interviewProgress() {
   if (INTERVIEW_LESSONS.length === 0) return null
   let iv = {}
   try { iv = JSON.parse(localStorage.getItem('iv_progress') || '{}') } catch { iv = {} }
-  let sum = 0, done = 0
-  for (const id of INTERVIEW_LESSONS) {
-    const st = iv[id]
+  let sum = 0, done = 0, nextLabel = null
+  for (const lesson of (interviewStudy.lessons || [])) {
+    const st = iv[lesson.id]
     const score = st === 'done' ? 1 : st === 'review' ? 0.5 : 0
     sum += score
     if (score >= 1) done += 1
+    else if (!nextLabel) nextLabel = lesson.title
   }
   const total = INTERVIEW_LESSONS.length
-  return { pct: Math.round((sum / total) * 100), done, total, answered: null }
+  return { pct: Math.round((sum / total) * 100), done, total, answered: null, nextLabel }
 }
 
 /**

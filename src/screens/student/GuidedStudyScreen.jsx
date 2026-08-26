@@ -1,22 +1,31 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { ArrowLeft, BookOpen, CaretRight, CheckCircle, Compass, Target } from '@phosphor-icons/react'
 import { pushBack, popBack } from '../../lib/backButton.js'
 import StudySummary, { buildStudySummaryCards } from './StudySummary.jsx'
 import StudyModeToggle, { StudyModeStrip } from './StudyModeToggle.jsx'
 import CompactText from '../../components/CompactText.jsx'
+import { getFirstClassFormative } from '../../lib/firstClassLessons.js'
 
-export default function GuidedStudyScreen({ program, onBack, onChallenge, onLearningContext }) {
-  const [areaId, setAreaId] = useState(null)
-  const [lessonId, setLessonId] = useState(null)
-  const [step, setStep] = useState(0)
+export default function GuidedStudyScreen({ program, initialArea = null, initialLesson = null, initialStep = 0, initialInteraction = null, onBack, onChallenge, onLearningContext }) {
+  const [areaId, setAreaId] = useState(initialArea)
+  const [lessonId, setLessonId] = useState(initialLesson)
+  const [step, setStep] = useState(initialStep)
+  const [interaction, setInteraction] = useState(initialInteraction || {})
   const area = program.areas.find(item => item.id === areaId)
   const lesson = area?.lessons.find(item => item.id === lessonId)
-  const cards = useMemo(() => lesson?.summary ? buildStudySummaryCards(lesson.summary) : [], [lesson])
+  const formativeAssessment = useMemo(
+    () => getFirstClassFormative(program.subjectId, { areaId, lessonId }),
+    [program.subjectId, areaId, lessonId],
+  )
+  const cards = useMemo(
+    () => lesson?.summary ? buildStudySummaryCards(lesson.summary, undefined, undefined, undefined, formativeAssessment) : [],
+    [lesson, formativeAssessment],
+  )
 
   const backRef = useRef(null)
   backRef.current = () => {
-    if (lessonId) { setLessonId(null); setStep(0); return }
-    if (areaId) { setAreaId(null); return }
+    if (lessonId) { setLessonId(null); setStep(0); setInteraction({}); return }
+    if (areaId) { setAreaId(null); setInteraction({}); return }
     onBack?.()
   }
   useEffect(() => {
@@ -35,19 +44,23 @@ export default function GuidedStudyScreen({ program, onBack, onChallenge, onLear
       return
     }
     const card = cards[step]
+    const activeInteraction = interaction.step === step ? interaction : null
     onLearningContext({
       subject: program.subjectId,
       mode: 'study',
       stage: card?.type || 'concept',
+      areaId,
       areaLabel: area.label,
+      lessonId,
       lessonLabel: lesson.label,
       title: lesson.summary.title,
       position: step + 1,
+      step,
       total: cards.length,
-      revealed: true,
-      content: { kind: 'summary', cardKind: card?.type || 'intro', summary: lesson.summary, card },
+      revealed: Boolean(activeInteraction?.revealed),
+      content: { kind: 'summary', cardKind: card?.type || 'intro', summary: lesson.summary, card, interaction: activeInteraction },
     })
-  }, [area, cards, lesson, onLearningContext, program.subjectId, program.title, step])
+  }, [area, areaId, cards, interaction, lesson, lessonId, onLearningContext, program.subjectId, program.title, step])
 
   function selectMode(mode) {
     if (mode === 'game') onChallenge?.()
@@ -56,6 +69,7 @@ export default function GuidedStudyScreen({ program, onBack, onChallenge, onLear
   function openArea(id) {
     const selected = program.areas.find(item => item.id === id)
     setAreaId(id)
+    setInteraction({})
     if (selected?.lessons.length === 1) setLessonId(selected.lessons[0].id)
   }
 
@@ -64,10 +78,20 @@ export default function GuidedStudyScreen({ program, onBack, onChallenge, onLear
     try { return new Set(JSON.parse(localStorage.getItem(doneKey) || '[]')) }
     catch { return new Set() }
   })
-  function markDone(id) {
-    const next = new Set(done); next.add(id); setDone(next)
-    try { localStorage.setItem(doneKey, JSON.stringify([...next])) } catch { /* 저장 불가 환경 */ }
-  }
+  const markDone = useCallback(id => {
+    setDone(current => {
+      if (current.has(id)) return current
+      const next = new Set(current)
+      next.add(id)
+      try { localStorage.setItem(doneKey, JSON.stringify([...next])) } catch { /* 저장 불가 환경 */ }
+      return next
+    })
+  }, [doneKey])
+
+  const handleSummaryStepChange = useCallback(value => {
+    setStep(value)
+    if (lesson?.id && value >= cards.length - 1) markDone(lesson.id)
+  }, [cards.length, lesson?.id, markDone])
 
   const headerTitle = lesson?.label || area?.label || program.title
   return <div className="screen guided-study-screen">
@@ -85,9 +109,9 @@ export default function GuidedStudyScreen({ program, onBack, onChallenge, onLear
           <h2>{program.title}</h2>
           <CompactText text={program.description} maxItemChars={72} />
           <ol>
-            <li><span>1</span>학습 범위 선택</li>
-            <li><span>2</span>{program.subjectId === 'cover-letter' ? '문항·감점 초안·작성 실습' : '개념·상황·사례 확인'}</li>
-            <li><span>3</span>{program.subjectId === 'cover-letter' ? '실전 작성 진단으로 확인' : '진단으로 이해 확인'}</li>
+            <li><span className="guided-step-number">1</span><b>학습 범위 선택</b></li>
+            <li><span className="guided-step-number">2</span><b>{program.subjectId === 'cover-letter' ? '문항 파악·초안 수정' : '개념·상황·사례 확인'}</b></li>
+            <li><span className="guided-step-number">3</span><b>{program.subjectId === 'cover-letter' ? '실전 작성 진단' : '진단으로 이해 확인'}</b></li>
           </ol>
         </section>
         <p className="guided-study-section-title">학습 범위 · {program.areas.length}개</p>
@@ -103,7 +127,7 @@ export default function GuidedStudyScreen({ program, onBack, onChallenge, onLear
 
       {area && !lesson && <>
         <section className="guided-study-area-head"><BookOpen weight="duotone" /><div><span>선택한 범위</span><h2>{area.label}</h2><CompactText text={area.description} maxItemChars={72} /></div></section>
-        <div className="guided-study-list">{area.lessons.map((item, index) => <button key={item.id} onClick={() => { setLessonId(item.id); setStep(0) }}>
+        <div className="guided-study-list">{area.lessons.map((item, index) => <button key={item.id} onClick={() => { setLessonId(item.id); setStep(0); setInteraction({}) }}>
           <span className={done.has(item.id) ? 'is-done' : ''}>{done.has(item.id) ? <CheckCircle weight="fill" /> : index + 1}</span>
           <div><b>{item.label}</b><p>{item.summary.keyPoints.length}개 핵심 · 실제 상황 · 확인 활동</p></div><CaretRight />
         </button>)}</div>
@@ -111,11 +135,11 @@ export default function GuidedStudyScreen({ program, onBack, onChallenge, onLear
 
       {lesson && <StudySummary
         summary={lesson.summary}
+        formativeAssessment={formativeAssessment}
         initialStep={step}
-        onStepChange={value => {
-          setStep(value)
-          if (value >= cards.length - 1) markDone(lesson.id)
-        }}
+        initialInteraction={initialInteraction}
+        onInteractionChange={setInteraction}
+        onStepChange={handleSummaryStepChange}
         onStartQuiz={onChallenge}
       />}
     </main>

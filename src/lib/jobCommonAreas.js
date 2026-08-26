@@ -362,6 +362,7 @@ export const englishStudyQuestions = (englishBank.questions || []).map(q => ({
   ...(q.kind === 'dialog' ? {
     audioText: q.context,
     transcript: q.context,
+    audioLang: 'en-US',
     context: null,
     mediaType: 'audio',
     maxPlays: 1,

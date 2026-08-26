@@ -20,6 +20,7 @@ import { getBootstrap } from '../../lib/localFirst.js'
 import { getLevelInfo } from '../../lib/xp.js'
 import { STUDENT_CAMPUS_HALLS } from '../../lib/studentCampusRoutes.js'
 import { RETIRED_SUBJECT_IDS } from '../../lib/subjectCatalog.js'
+import { buildStudentLearningRoutes } from '../../lib/studentLearningJourney.js'
 import '../../styles/campus.css'
 
 const HALL_PRESENTATION = {
@@ -87,6 +88,7 @@ export default function StudentCampusHome({
 }) {
   const [boot, setBoot] = useState(EMPTY_BOOT)
   const [message, setMessage] = useState(null)
+  const [subjectProgress, setSubjectProgress] = useState([])
   const [loading, setLoading] = useState(!demo)
 
   useEffect(() => {
@@ -98,15 +100,14 @@ export default function StudentCampusHome({
       setBoot(next ?? EMPTY_BOOT)
 
       if (profile?.id) {
-        const { data } = await supabase
-          .from('notifications')
-          .select('id, title, body, created_at, is_read, sender_id')
-          .eq('user_id', profile.id)
-          .not('sender_id', 'is', null)
-          .order('created_at', { ascending: false })
-          .limit(1)
-          .maybeSingle()
-        if (alive) setMessage(data ?? null)
+        const [noticeResult, progressResult] = await Promise.all([
+          supabase.from('notifications').select('id, title, body, created_at, is_read, sender_id').eq('user_id', profile.id).not('sender_id', 'is', null).order('created_at', { ascending: false }).limit(1).maybeSingle(),
+          supabase.from('student_subject_progress').select('subject_id, pct, sections_done, sections_total').eq('student_id', profile.id),
+        ])
+        if (alive) {
+          setMessage(noticeResult.data ?? null)
+          setSubjectProgress(progressResult.data ?? [])
+        }
       }
       if (alive) setLoading(false)
     })()
@@ -128,6 +129,7 @@ export default function StudentCampusHome({
   const missionMinutes = mission?.time_limit_min || 12
   const unread = boot?.unread_count ?? 0
   const continuing = useMemo(findContinueCourse, [])
+  const learningRoutes = useMemo(() => buildStudentLearningRoutes(subjectProgress), [subjectProgress])
   const hasRecordedProgress = (boot?.xp?.total_xp ?? 0) > 0
     || (boot?.streak?.current_streak ?? 0) > 0
     || (boot?.wrong_count ?? 0) > 0
@@ -217,6 +219,28 @@ export default function StudentCampusHome({
           <strong>{continuing ? '이어가기' : 'START'}</strong>
           <ArrowRight />
         </button>
+      </section>
+
+      <section className="campus-section learning-compass" aria-labelledby="learning-compass-title">
+        <div className="campus-section-head">
+          <div><span>LEARNING ROUTE</span><h2 id="learning-compass-title">과목별 목표와 다음 학습</h2></div>
+          <small>한 과목씩 이어서 완료하세요</small>
+        </div>
+        <div className="learning-route-list">
+          {learningRoutes.map(route => {
+            const Icon = HALL_PRESENTATION[route.id]?.icon || (route.id === 'interview' ? ChatCircleDots : BookOpenText)
+            const pct = route.pct
+            return <button key={route.id} onClick={() => onGoStudy?.(route.target)}>
+              <span className={`is-${HALL_PRESENTATION[route.id]?.tone || 'blue'}`}><Icon weight="duotone" /></span>
+              <div>
+                <header><b>{route.label}</b><small>{route.status}</small></header>
+                <p>{route.goal}</p>
+                <footer><i><em style={{ width: `${pct}%` }} /></i><strong>{route.hasResume ? '이어가기' : pct > 0 ? `${pct}% · 다음` : '먼저'}: {route.nextLabel}</strong></footer>
+              </div>
+              <ArrowRight />
+            </button>
+          })}
+        </div>
       </section>
 
       <section className="campus-section stamps-section">

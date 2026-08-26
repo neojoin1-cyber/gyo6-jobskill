@@ -23,6 +23,9 @@
     "verify:public-trial": "node scripts/verify-public-trial.mjs",
     "verify:rls-isolation": "node scripts/verify-rls-isolation.mjs",
     "verify:teacher-release": "node scripts/verify-teacher-release.mjs",
+    "verify:guidance-routes": "npx esbuild scripts/audit-guidance-routes.mjs --bundle --platform=node --format=esm --loader:.json=json --outfile=.cache/audit-guidance-routes.mjs --log-level=error && node .cache/audit-guidance-routes.mjs",
+    "verify:first-class": "npx esbuild scripts/audit-first-class-lessons.mjs --bundle --platform=node --format=esm --loader:.json=json --outfile=.cache/audit-first-class-lessons.mjs --log-level=error && node .cache/audit-first-class-lessons.mjs",
+    "verify:autonomous-close": "npx esbuild scripts/audit-autonomous-formative.mjs --bundle --platform=node --format=esm --loader:.json=json --outfile=.cache/audit-autonomous-formative.mjs --log-level=error && node .cache/audit-autonomous-formative.mjs",
     "verify:wrong-repeat": "node scripts/verify-wrong-repeat.mjs",
     "verify:practical-choices": "node scripts/audit-practical-choice-quality.mjs",
     "verify:learning-experience": "npx esbuild scripts/audit-learning-experience.mjs --bundle --platform=node --format=esm --loader:.json=json --outfile=.cache/audit-learning-experience.mjs --log-level=error && node .cache/audit-learning-experience.mjs",
@@ -44,7 +47,7 @@
     "gate:release-security": "node scripts/gate-release-security.mjs --source",
     "gate:paid-api": "node scripts/gate-paid-api-boundary.mjs",
     "gate:questions": "python scripts/gate-question-quality.py",
-    "prebuild": "node scripts/gate-campus-release.mjs && node scripts/gate-student-navigation.mjs && npm run gate:korean-copy && npm run gate:compact-copy && npm run gate:writing-support && npm run gate:trial-isolation && npm run gate:boot-recovery && npm run gate:release-security && npm run gate:paid-api && npm run verify:quality-food && npm run verify:official && npm run verify:teacher-release && npm run verify:wrong-repeat && npm run verify:practical-choices && npm run verify:learning-experience && npm run verify:learning-render && npm run verify:learning-capacity && npm run verify:assessment-separation && npm run verify:assessment-identity && python scripts/gate-question-quality.py && python scripts/gate-hook-order.py && npm run gate:exam",
+    "prebuild": "node scripts/gate-campus-release.mjs && node scripts/gate-student-navigation.mjs && npm run gate:korean-copy && npm run gate:compact-copy && npm run gate:writing-support && npm run gate:trial-isolation && npm run gate:boot-recovery && npm run gate:release-security && npm run gate:paid-api && npm run verify:quality-food && npm run verify:official && npm run verify:teacher-release && npm run verify:guidance-routes && npm run verify:first-class && npm run verify:autonomous-close && npm run verify:wrong-repeat && npm run verify:practical-choices && npm run verify:learning-experience && npm run verify:learning-render && npm run verify:learning-capacity && npm run verify:assessment-separation && npm run verify:assessment-identity && python scripts/gate-question-quality.py && python scripts/gate-hook-order.py && npm run gate:exam",
     "gate:hooks": "python scripts/gate-hook-order.py",
     "gate:exam": "npx esbuild scripts/gate-exam-fidelity.mjs --bundle --platform=node --format=esm --loader:.json=json --outfile=.cache/gate-exam.mjs --log-level=error && node .cache/gate-exam.mjs"
   },

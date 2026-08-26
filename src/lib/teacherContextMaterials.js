@@ -115,6 +115,14 @@ function summarySource(content) {
     mistake,
     checklist: mistake.checklist,
   }
+  if (card.type === 'mission') return {
+    heading: card.practical ? '실전 답변 마무리' : '다음 문제 행동 정하기',
+    situation: card.practical
+      ? '학생이 가장 먼저 고칠 기준과 실제 수정 문장 또는 답변 행동을 직접 확정하는 단계임.'
+      : '학생이 다음 문제에서 가장 먼저 실행할 판단 기준을 직접 선택하는 단계임.',
+    explanation: card.criteria,
+    checklist: card.criteria,
+  }
   return {
     heading: summary.title || '단원 마무리',
     explanation: summary.mustRemember,
@@ -205,6 +213,9 @@ export function buildTeacherContextMaterials(context = {}, guide = {}, { publicV
   if (!good.length && explanation.length) {
     good.push({ title: '좋은 설명', text: explanation[0], detail: explanation[1] || '' })
   }
+  if (!good.length) {
+    good.push(...(guide.good || []).slice(0, 4).map(([title, text, detail]) => ({ title, text, detail })))
+  }
 
   const bad = mayShowAnswer
     ? wrong.slice(0, 3).map((choice, index) => ({
@@ -220,11 +231,15 @@ export function buildTeacherContextMaterials(context = {}, guide = {}, { publicV
       detail: plain(mistake.trap || mistake.whyWrong),
     })
   }
+  if (!bad.length) {
+    bad.push(...(guide.improve || []).slice(0, 4).map(([title, text, detail]) => ({ title, text, detail })))
+  }
 
   const examples = unique([
     source.example ? { title: '추가 적용 예시', text: clip(source.example, 260) } : [],
     source.situation ? { title: '현재 상황의 핵심', text: clip(source.situation, 300) } : [],
     question.stem ? { title: '연결 문항', text: clip(question.stem, 220) } : [],
+    !source.example && guide.activity ? { title: '현재 단계 적용 활동', text: guide.activity } : [],
   ], 4)
 
   const heading = plain(source.heading || context.title || context.lessonLabel || guide.focus)
@@ -234,6 +249,7 @@ export function buildTeacherContextMaterials(context = {}, guide = {}, { publicV
     quotedSituation ? { text: `“${quotedSituation}”에서 판단 근거가 되는 정보는 무엇인가요?` } : [],
     choices.length ? { text: '가장 타당해 보이는 선택지와 탈락시킬 선택지를 한 개씩 근거와 함께 말해 볼까요?' } : [],
     mistakeDetails.length ? { text: `“${mistakeDetails[0]}” 실수를 막으려면 무엇부터 확인해야 할까요?` } : [],
+    ...(!source.prompts?.length ? (guide.prompts || []).map(text => ({ text })) : []),
     { text: `${heading || '현재 내용'} 내용을 다른 직무 상황에 적용하면 어떤 행동이 달라지나요?` },
   ], 5).map(item => plain(item.text))
 
@@ -241,16 +257,22 @@ export function buildTeacherContextMaterials(context = {}, guide = {}, { publicV
     ...items(source.checklist),
     ...items(question.thinkingSteps),
     ...mistakeDetails.slice(0, 3),
+    ...(!source.checklist ? items(guide.checklist) : []),
   ], 6).map(item => plain(typeof item === 'string' ? item : item.text))
+
+  const resolvedExplanations = explanation.length ? explanation : items(guide.explain)
+  const resolvedMistakes = mistakeDetails.length
+    ? mistakeDetails
+    : (guide.improve || []).map(item => plain(item[1] || item[0])).filter(Boolean)
 
   return {
     heading,
     situation: plain(source.situation),
-    explanations: explanation.length ? explanation : [clip(source.situation || heading, 180)].filter(Boolean),
+    explanations: resolvedExplanations.length ? resolvedExplanations : [clip(source.situation || heading, 180)].filter(Boolean),
     examples,
     good,
     bad,
-    mistakes: mistakeDetails,
+    mistakes: resolvedMistakes,
     prompts,
     checklist: checklist.length ? checklist : [`${heading || '현재 내용'}의 핵심 조건을 화면에서 직접 짚음`],
     answerSummary: mayShowAnswer && correct.length

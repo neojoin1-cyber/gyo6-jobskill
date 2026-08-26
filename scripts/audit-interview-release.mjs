@@ -171,7 +171,11 @@ check(studyText.includes('전국 공통 고정 배점 시험이 아님'), '면�
 check(studyText.includes('채용공고와 직무기술서'), '면접 직무기술서 기반 안내 누락')
 check(quizText.includes('메라비언의 제한된 연구 수치를 면접 평가비중으로 일반화하면 안 됩니다'), '7-38-55 오용 교정 문항 누락')
 
-check(screen.includes('모범답안 펼치기'), '면접 모범답안 펼치기 조작 누락')
+check(screen.includes('내 답변과 예시 비교하기'), '면접 답변·예시 비교 조작 누락')
+check(screen.includes('disabled={!draftReady}'), '면접 답변 작성 전 예시 공개 차단 누락')
+check(screen.includes('disabled={!comparisonDone}'), '면접 답변·예시 비교 전 다음 단계 차단 누락')
+check(screen.includes('<ol className="interview-study-unit-tabs"'), '면접 수업 단계 진행표 누락')
+check(!screen.includes('role="tablist"'), '면접 수업 단계가 임의 이동 탭으로 남아 있음')
 check(screen.includes('INTERVIEW_FOUNDATION_COURSES'), '면접 학습 화면의 6개 과정 분류 누락')
 check(screen.includes('먼저 답을 떠올린 뒤'), '면접 인출연습 안내 누락')
 check(/const\s*\[showModel\s*,\s*setShowModel\]\s*=\s*useState\(false\)/.test(screen), '면접 모범답안 초기 접힘 상태 관리 누락')

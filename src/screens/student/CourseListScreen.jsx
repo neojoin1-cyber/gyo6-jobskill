@@ -154,10 +154,17 @@ function MasteryBar({ subjectId, canSync }) {
 }
 
 export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, deepLink, onContextChange } = {}) {
-  // 수업 덱의 링크로 들어오면 교재·모드 고르기를 건너뛰고 그 차시를 바로 연다.
+  // 교실 수업의 「따라가기」도 학생이 직접 고른 것과 같은 모드로 연다.
+  // 예전 수업 덱은 무조건 자율학습으로 바꿨지만, 이제 진단·모의·실전까지
+  // 학생 앱 자체가 교실 콘텐츠이므로 원래 모드를 잃으면 안 된다.
   const [course, setCourse] = useState(deepLink?.subject ?? null)
-  // 홈의 학습관은 과목 소개·방식 선택부터 열고, 교사 수업 링크만 자율학습으로 직행한다.
-  const [mode,   setMode]   = useState(deepLink?.subject ? (deepLink.mode === null ? null : 'study') : null)   // null=모드선택 | 'study' | 'mock'
+  const linkedMode = deepLink?.mode === null
+    ? null
+    : ['study', 'diagnostic', 'mock', 'practical', 'cover-practical'].includes(deepLink?.mode)
+      ? deepLink.mode
+      : 'study'
+  // 홈의 학습관은 과목 소개·방식 선택부터 열고, 교사 수업 링크는 같은 학습 모드로 직행한다.
+  const [mode,   setMode]   = useState(deepLink?.subject ? linkedMode : null)
   const [remediation, setRemediation] = useState(null)
   // 직업공통능력만 학년별로 진단 규모가 다르다. 기기에만 저장한다(서버 왕복 없음).
   const [goal,   setGoalState] = useState(getAssessGoal)
@@ -200,7 +207,7 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
   if (selected && selected.type === 'personality' && (mode === 'diagnostic' || mode === 'mock')) {
     return (
       <Lazy onRetry={backToChooser}>
-        <PersonalityTestScreen subjectName={selected.name} mode={mode === 'diagnostic' ? 'quick' : 'full'} onBack={backToChooser} />
+        <PersonalityTestScreen subjectName={selected.name} mode={mode === 'diagnostic' ? 'quick' : 'full'} onLearningContext={onContextChange} onBack={backToChooser} />
       </Lazy>
     )
   }
@@ -220,7 +227,7 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
     return (
       <Lazy onRetry={backToChooser}>
         <DiagnosticScreen subjectId={course} subjectName={selected.name}
-          onBack={backToChooser} onGoTextbook={target => { setRemediation(target); setMode('study') }} />
+          onLearningContext={onContextChange} onBack={backToChooser} onGoTextbook={target => { setRemediation(target); setMode('study') }} />
       </Lazy>
     )
   }
@@ -232,13 +239,13 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
     }
     return (
       <Lazy onRetry={backToChooser}>
-        <MockAssessmentScreen subjectId={course} subjectName={selected.name} onBack={backToChooser} />
+        <MockAssessmentScreen subjectId={course} subjectName={selected.name} onLearningContext={onContextChange} onBack={backToChooser} />
       </Lazy>
     )
   }
 
   if (selected && course === 'interview' && mode === 'practical') {
-    return <Lazy onRetry={backToChooser}><InterviewPracticalScreen onBack={backToChooser} /></Lazy>
+    return <Lazy onRetry={backToChooser}><InterviewPracticalScreen onLearningContext={onContextChange} onBack={backToChooser} /></Lazy>
   }
 
   if (selected && course === 'cover-letter' && mode === 'cover-practical') {
@@ -252,10 +259,13 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
         <Lazy onRetry={backToChooser}>
           <StudyScreen
             initialSubject={course}
+            initialTrack={deepLink?.track ?? undefined}
             initialArea={remediation?.area ?? deepLink?.area ?? undefined}
             initialLesson={remediation?.lesson ?? deepLink?.lesson ?? undefined}
             initialQuestionId={deepLink?.questionId ?? undefined}
             initialQuestionIndex={deepLink?.index ?? undefined}
+            initialStep={deepLink?.step ?? 0}
+            initialInteraction={deepLink?.interaction ?? null}
             onLearningContext={onContextChange}
             onBack={backToChooser} />
         </Lazy>
@@ -264,15 +274,22 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
     if (course === 'interview') {
       return (
         <Lazy onRetry={backToChooser}>
-          <InterviewStudyScreen onBack={backToChooser} />
+          <InterviewStudyScreen
+            initialArea={deepLink?.area ?? undefined}
+            initialLesson={deepLink?.lesson ?? undefined}
+            initialStep={deepLink?.step ?? 0}
+            initialInteraction={deepLink?.interaction ?? null}
+            onLearningContext={onContextChange}
+            onBack={backToChooser}
+          />
         </Lazy>
       )
     }
     if (course === 'cover-letter') {
-      return <Lazy onRetry={backToChooser}><CoverGuidedStudyScreen onLearningContext={onContextChange} onChallenge={() => setMode('diagnostic')} onBack={backToChooser} /></Lazy>
+      return <Lazy onRetry={backToChooser}><CoverGuidedStudyScreen initialArea={deepLink?.area ?? undefined} initialLesson={deepLink?.lesson ?? undefined} initialStep={deepLink?.step ?? 0} initialInteraction={deepLink?.interaction ?? null} onLearningContext={onContextChange} onChallenge={() => setMode('diagnostic')} onBack={backToChooser} /></Lazy>
     }
     if (course === 'personality') {
-      return <Lazy onRetry={backToChooser}><PersonalityGuidedStudyScreen onLearningContext={onContextChange} onChallenge={() => setMode('diagnostic')} onBack={backToChooser} /></Lazy>
+      return <Lazy onRetry={backToChooser}><PersonalityGuidedStudyScreen initialArea={deepLink?.area ?? undefined} initialLesson={deepLink?.lesson ?? undefined} initialStep={deepLink?.step ?? 0} initialInteraction={deepLink?.interaction ?? null} onLearningContext={onContextChange} onChallenge={() => setMode('diagnostic')} onBack={backToChooser} /></Lazy>
     }
   }
 
@@ -334,7 +351,7 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
               {(isPersonality
                 ? [['📚', '자율학습', '검사 이해'], ['📊', '진단평가', '응답 점검'], ['📝', '모의고사', '실전 검사']]
                 : course === 'interview'
-                  ? [['📚', '자율학습', '상황·답변 연습'], ['📊', '진단평가', '대응 약점 확인'], ['📝', '모의면접', '답변 점검'], ['🎬', '실전면접', '행동 리허설']]
+                  ? [['📚', '자율학습', '기준·수정·답변 연습'], ['📊', '진단평가', '대응 약점 확인'], ['📝', '모의면접', '답변 점검'], ['🎬', '실전면접', '행동 리허설']]
                   : course === 'cover-letter'
                     ? [['📚', '자율학습', '작성법 이해'], ['📊', '진단평가', '기준 점검'], ['📝', '모의고사', '제한 작성'], ['✍️', '실전자기소개서', '직접 완성']]
                   : [['📚', '자율학습', '배우기·반복'], ['📊', '진단평가', '약점 처방'], ['📝', '모의고사', '실전 재현']]
@@ -409,7 +426,7 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
                 : course === 'cover-letter'
                 ? '문항 요구·항목별 실전 작성법 학습\n감점 초안 고쳐쓰기·내 경험 근거 찾기'
                 : course === 'interview'
-                  ? '실제 면접 상황에서 대응 판단\n내 경험으로 직접 답변·녹화·수정 반복'
+                  ? '좋은 답변 기준을 익히고 수정안을 고름\n내 경험으로 직접 답변·녹화·수정 반복'
                   : '요점정리로 개념 학습\n문제 풀이로 반복\n오답노트로 복습 · 처음이면 여기부터'} maxItemChars={68} style={{ fontSize: 12, color: 'var(--text-muted)' }} />
             </div>
             <span style={{ color: 'var(--text-muted)', fontSize: 20, flexShrink: 0 }}>›</span>

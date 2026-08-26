@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
   ArrowLeft,
   CaretRight,
@@ -19,7 +19,7 @@ function readProgress() {
   catch { return {} }
 }
 
-export default function InterviewPracticalScreen({ onBack }) {
+export default function InterviewPracticalScreen({ onBack, onLearningContext }) {
   const [view, setView] = useState('route')
   const [stageId, setStageId] = useState(INTERVIEW_PRACTICAL_STAGES[0].id)
   const [progress, setProgress] = useState(readProgress)
@@ -30,6 +30,20 @@ export default function InterviewPracticalScreen({ onBack }) {
   const doneCount = Object.values(progress).filter(Boolean).length
   const scenario = stage.scenarios[scenarioIndex % stage.scenarios.length]
   const percent = Math.round(doneCount / INTERVIEW_PRACTICAL_STAGES.length * 100)
+
+  useEffect(() => {
+    const current = view === 'run' ? INTERVIEW_PRACTICAL_STAGES[runStep] : stage
+    onLearningContext?.({
+      subject: 'interview',
+      mode: 'practical',
+      stage: view === 'route' ? 'area-choice' : view === 'complete' ? 'result' : 'concept',
+      areaLabel: '실전면접 9단계 리허설',
+      lessonLabel: current?.title || '면접 동선 선택',
+      title: current?.goal || '대기부터 퇴장까지 실전 연습',
+      position: view === 'run' ? runStep + 1 : scenarioIndex + 1,
+      total: view === 'run' ? INTERVIEW_PRACTICAL_STAGES.length : stage.scenarios.length,
+    })
+  }, [onLearningContext, runStep, scenarioIndex, stage, view])
 
   function saveDone(id, value = true) {
     const next = { ...progress, [id]: value }

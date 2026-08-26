@@ -56,10 +56,11 @@ for (const path of ['src/screens/student/StudyScreen.jsx', 'src/screens/student/
     fail(`${path}에서 지문 또는 문항을 간결 문구로 변환함`)
   }
 }
-if (!read('src/screens/teacher/DeckProjector.jsx').includes('compactInstructionHtml')) {
-  fail('교사용 가로 덱에 간결 문구 변환이 연결되지 않음')
+const classroomSource = read('src/screens/teacher/ClassroomScreen.jsx')
+if (!classroomSource.includes('TeacherLearningPreview') || classroomSource.includes('DeckProjector')) {
+  fail('교실 수업이 학생 앱 공통 학습 화면을 사용하지 않음')
 }
 
 if (!process.exitCode) {
-  console.log('[간결 학습문구] 통과 — 학생 해설·개념·오답 및 교사용 가로 덱을 목록형 문구로 통일')
+  console.log('[간결 학습문구] 통과 — 학생 해설·개념·오답과 공통 교실 화면을 목록형 문구로 통일')
 }

@@ -1,0 +1,413 @@
+.interview-study-unit {
+  background: #f5f7fb;
+}
+
+.interview-study-unit-head .appbar-title {
+  min-width: 0;
+  overflow: hidden;
+  color: #172033;
+  font-size: 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.interview-study-level {
+  flex: 0 0 auto;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.interview-study-unit-tabs {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  list-style: none;
+  flex: 0 0 auto;
+  border-bottom: 1px solid #d8e1eb;
+  background: #fff;
+}
+
+.interview-study-unit-tabs li {
+  min-width: 0;
+  min-height: 48px;
+  padding: 7px 5px;
+  display: grid;
+  place-content: center;
+  gap: 2px;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  background: transparent;
+  color: #64748b;
+  font: inherit;
+  font-size: 11.5px;
+  font-weight: 750;
+  line-height: 1.35;
+  overflow-wrap: break-word;
+  word-break: keep-all;
+}
+
+.interview-study-unit-tabs li > span {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-size: inherit;
+  line-height: 1.35;
+}
+
+.interview-study-unit-tabs li > span > b {
+  width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 18px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  color: #64748b;
+  font-size: 10px;
+}
+
+.interview-study-unit-tabs li > small {
+  color: #8492a6;
+  font-size: 9.5px;
+  font-weight: 750;
+  line-height: 1.25;
+}
+
+.interview-study-unit-tabs li.is-done > small {
+  color: #0f766e;
+  font-weight: 900;
+}
+
+.interview-study-unit-tabs li.is-done > small::before {
+  content: '✓ ';
+}
+
+.interview-study-unit-tabs li.is-active {
+  border-bottom-color: #4f46e5;
+  background: #eef2ff;
+  color: #4338ca;
+  font-weight: 900;
+}
+
+.interview-study-unit-tabs li.is-active > span > b {
+  background: #4f46e5;
+  color: #fff;
+}
+
+.interview-study-unit-tabs li.is-done:not(.is-active) > span > b {
+  background: #0f766e;
+  color: #fff;
+}
+
+.interview-study-unit-tabs li.is-upcoming { color: #94a3b8; }
+
+.interview-study-phase-note {
+  min-height: 42px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex: 0 0 auto;
+  border-bottom: 1px solid #cbd5e1;
+  background: #f8fafc;
+  color: #475569;
+  font-size: 11.5px;
+  line-height: 1.45;
+}
+
+.interview-study-phase-note strong {
+  flex: 0 0 auto;
+  padding: 3px 7px;
+  border-radius: 5px;
+  background: #e0e7ff;
+  color: #3730a3;
+  font-size: 10.5px;
+}
+
+.interview-study-phase-note > div {
+  min-width: 0;
+  display: grid;
+  gap: 1px;
+}
+
+.interview-study-phase-note > div > span,
+.interview-study-phase-note > div > small {
+  display: block;
+  overflow-wrap: break-word;
+  word-break: keep-all;
+}
+
+.interview-study-phase-note > div > small {
+  color: #718096;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.interview-study-phase-note.is-quiz strong {
+  background: #fff1d6;
+  color: #9a4d05;
+}
+
+.interview-study-phase-note.is-practice strong {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.interview-study-theory {
+  min-height: 0;
+  padding: 14px 16px 22px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.interview-study-summary-wrap {
+  margin-bottom: 14px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #d8e1eb;
+}
+
+.interview-reference-toggle {
+  width: 100%;
+  min-height: 54px;
+  padding: 9px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border: 1px solid #c7d2fe;
+  border-radius: 8px;
+  background: #eef2ff;
+  color: #3730a3;
+  text-align: left;
+  cursor: pointer;
+}
+
+.interview-reference-toggle span {
+  flex: 0 0 auto;
+  font-size: 12.5px;
+  font-weight: 900;
+}
+
+.interview-reference-toggle small {
+  min-width: 0;
+  overflow: hidden;
+  color: #536277;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.interview-current-reference {
+  margin-top: 12px;
+  overflow: hidden;
+  border: 1px solid #cbd5e1;
+  border-left: 5px solid #4f46e5;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.interview-current-reference > header {
+  padding: 12px 14px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid #dbe3ec;
+  background: #f8fafc;
+}
+
+.interview-current-reference > header span {
+  color: #4f46e5;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.interview-current-reference > header h3 {
+  margin-top: 3px;
+  color: #172033;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.interview-current-reference > header small {
+  color: #64748b;
+  font-size: 10px;
+  text-align: right;
+}
+
+.interview-current-reference-body {
+  padding: 2px 14px 12px;
+}
+
+.interview-current-reference-body > h3:first-child,
+.interview-current-reference-body > p:first-child {
+  margin-top: 13px !important;
+}
+
+.interview-current-reference-note {
+  margin: 0;
+  padding: 10px 14px;
+  border-top: 1px solid #dbe3ec;
+  background: #f8fafc;
+  color: #52647a;
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.interview-current-reference.is-full-fallback {
+  margin-top: 0;
+  padding: 0 14px 18px;
+}
+
+@media (min-width: 1000px) {
+  .teacher-learning-preview.is-teaching .interview-study-unit-head {
+    min-height: 68px;
+    padding-inline: 28px;
+  }
+
+  .teacher-learning-preview.is-teaching .interview-study-unit-head .appbar-title {
+    font-size: 19px;
+  }
+
+  .teacher-learning-preview.is-teaching .interview-study-level {
+    padding: 5px 10px;
+    font-size: 13px;
+  }
+
+  .teacher-learning-preview.is-teaching .interview-study-unit-tabs li {
+    min-height: 58px;
+    font-size: 16px;
+  }
+
+  .teacher-learning-preview.is-teaching .interview-study-unit-tabs li > small {
+    font-size: 12px;
+  }
+
+  .teacher-learning-preview.is-teaching .interview-study-phase-note {
+    min-height: 48px;
+    padding-inline: 28px;
+    gap: 12px;
+    font-size: 15px;
+  }
+
+  .teacher-learning-preview.is-teaching .interview-study-phase-note strong {
+    padding: 5px 9px;
+    font-size: 13px;
+  }
+
+  .teacher-learning-preview.is-teaching .interview-study-phase-note > div > small {
+    font-size: 12px;
+  }
+
+  .teacher-learning-preview.is-teaching .interview-study-theory {
+    padding: 22px 30px 34px;
+  }
+
+  .teacher-learning-preview.is-teaching .interview-reference-toggle,
+  .teacher-learning-preview.is-teaching .interview-current-reference {
+    width: min(100%, 1480px);
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .teacher-learning-preview.is-teaching .interview-reference-toggle {
+    min-height: 62px;
+    padding: 12px 18px;
+  }
+
+  .teacher-learning-preview.is-teaching .interview-reference-toggle span {
+    font-size: 16px;
+  }
+
+  .teacher-learning-preview.is-teaching .interview-reference-toggle small {
+    font-size: 14px;
+  }
+
+  .teacher-learning-preview.is-teaching .interview-current-reference > header {
+    padding: 18px 22px;
+  }
+
+  .teacher-learning-preview.is-teaching .interview-current-reference > header span,
+  .teacher-learning-preview.is-teaching .interview-current-reference > header small {
+    font-size: 13px;
+  }
+
+  .teacher-learning-preview.is-teaching .interview-current-reference > header h3 {
+    font-size: 21px;
+  }
+
+  .teacher-learning-preview.is-teaching .interview-current-reference-body {
+    padding: 4px 22px 18px;
+  }
+
+  .teacher-learning-preview.is-teaching .interview-current-reference-body p,
+  .teacher-learning-preview.is-teaching .interview-current-reference-body li,
+  .teacher-learning-preview.is-teaching .interview-current-reference-body table {
+    font-size: 16px !important;
+  }
+
+  .teacher-learning-preview.is-teaching .interview-current-reference-note {
+    padding: 13px 22px;
+    font-size: 14px;
+  }
+
+  .teacher-learning-preview.is-teaching .interview-study-activity {
+    padding: 22px 30px 34px !important;
+  }
+
+  .teacher-learning-preview.is-teaching .interview-study-activity > * {
+    width: min(100%, 1500px);
+    margin-right: auto !important;
+    margin-left: auto !important;
+  }
+
+  .teacher-learning-preview.is-teaching .interview-study-activity .card {
+    padding: 20px 22px;
+  }
+
+  .teacher-learning-preview.is-teaching .interview-study-activity p,
+  .teacher-learning-preview.is-teaching .interview-study-activity li,
+  .teacher-learning-preview.is-teaching .interview-study-activity label,
+  .teacher-learning-preview.is-teaching .interview-study-activity textarea {
+    font-size: 16px !important;
+  }
+
+  .teacher-learning-preview.is-teaching .interview-study-activity .card > p,
+  .teacher-learning-preview.is-teaching .interview-study-activity .card > div > p:last-child {
+    font-size: 18px !important;
+  }
+
+  .teacher-learning-preview.is-teaching .interview-study-activity button {
+    min-height: 50px;
+    font-size: 16px !important;
+  }
+
+  .teacher-learning-preview.is-teaching .study-summary .btn {
+    min-height: 54px;
+    font-size: 17px;
+  }
+}
+
+@media (max-width: 420px) {
+  .interview-study-unit-tabs li {
+    font-size: 10.5px;
+  }
+
+  .interview-study-phase-note {
+    align-items: flex-start;
+  }
+
+  .interview-reference-toggle {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .interview-reference-toggle small {
+    max-width: 100%;
+  }
+}

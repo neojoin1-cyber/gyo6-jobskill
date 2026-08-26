@@ -16,6 +16,7 @@ import {
   MagnifyingGlass,
   Monitor,
   PaperPlaneTilt,
+  Play,
   Plus,
   PresentationChart,
   Sparkle,
@@ -27,6 +28,7 @@ import {
 } from '@phosphor-icons/react'
 import { supabase } from '../../lib/supabase.js'
 import { STUDENT_CAMPUS_HALLS } from '../../lib/studentCampusRoutes.js'
+import { demoClassLessonJourney, summarizeClassLessonJourney } from '../../lib/classLessonJourney.js'
 import ClassDiagnosticsScreen from './ClassDiagnosticsScreen.jsx'
 import ClassWeaknessScreen from './ClassWeaknessScreen.jsx'
 import ClassProgressScreen from './ClassProgressScreen.jsx'
@@ -58,6 +60,12 @@ const CAMPUS_SPOTS = STUDENT_CAMPUS_HALLS
 const INTERVIEW_HALL = STUDENT_CAMPUS_HALLS.find(hall => hall.id === 'interview')
 
 const campusAsset = (name) => `${import.meta.env.BASE_URL}images/campus/${name}`
+const classPickerKey = profileId => `sst.teacher.active-class.${profileId || 'preview'}`
+
+function loadActiveClass(profileId) {
+  try { return localStorage.getItem(classPickerKey(profileId)) || null }
+  catch { return null }
+}
 
 export default function TeacherWorkspace({
   profile, classes, missions, pendingCount,
@@ -65,12 +73,18 @@ export default function TeacherWorkspace({
   workspaceState = 'ready', onRefresh,
   demo = false,
 }) {
-  const demoClasses = useMemo(() => demo ? [{ id: 'c1', name: '3학년 2반', class_code: 'CAMPUS32' }] : [], [demo])
+  const demoClasses = useMemo(() => demo ? [
+    { id: 'c1', name: '3학년 2반', class_code: 'CAMPUS32' },
+    { id: 'c2', name: '2학년 취업반', class_code: 'CAMPUS21' },
+    { id: 'c3', name: '1학년 진로반', class_code: 'CAMPUS11' },
+  ] : [], [demo])
   const sourceClasses = demo ? demoClasses : (classes ?? [])
   const teacherName = String(profile?.display_name || '선생님').replace(/\s*(?:선생님|선생)$/, '') || '선생'
-  const [classId, setClassId] = useState(null)
+  const [classId, setClassId] = useState(() => loadActiveClass(profile?.id))
   const [pane, setPane] = useState('students')
   const [live, setLive] = useState(demo ? demoLive() : null)
+  const [journey, setJourney] = useState(() => demoClassLessonJourney('c1'))
+  const [journeyLoading, setJourneyLoading] = useState(false)
   const [query, setQuery] = useState('')
   const [showClassForm, setShowClassForm] = useState(false)
   const [newClassName, setNewClassName] = useState('')
@@ -79,8 +93,13 @@ export default function TeacherWorkspace({
   const [classError, setClassError] = useState('')
 
   useEffect(() => {
-    if (!classId && sourceClasses.length) setClassId(sourceClasses[0].id)
+    if (sourceClasses.length && !sourceClasses.some(item => item.id === classId)) setClassId(sourceClasses[0].id)
   }, [sourceClasses, classId])
+
+  useEffect(() => {
+    if (!classId) return
+    try { localStorage.setItem(classPickerKey(profile?.id), classId) } catch { /* 기기 저장 불가 시 현재 화면에서만 유지 */ }
+  }, [classId, profile?.id])
 
   const cls = useMemo(() => sourceClasses.find(item => item.id === classId) ?? null, [sourceClasses, classId])
 
@@ -92,6 +111,34 @@ export default function TeacherWorkspace({
   }
 
   useEffect(() => { loadLive() }, [classId, demo])
+
+  useEffect(() => {
+    if (!classId) return
+    if (demo) {
+      setJourney(demoClassLessonJourney(classId))
+      return
+    }
+    let active = true
+    setJourneyLoading(true)
+    Promise.all([
+      supabase.from('class_sessions')
+        .select('id, title, started_at, ended_at, focus')
+        .eq('class_id', classId)
+        .order('started_at', { ascending: false })
+        .limit(60),
+      supabase.from('class_lesson_progress')
+        .select('subject_id, area_id, lesson_id, last_focus, started_at, updated_at, completed_at')
+        .eq('class_id', classId)
+        .order('updated_at', { ascending: false }),
+    ]).then(([sessionsResult, lessonsResult]) => {
+        if (!active) return
+        setJourney(sessionsResult.error
+          ? summarizeClassLessonJourney([])
+          : summarizeClassLessonJourney(sessionsResult.data || [], lessonsResult.error ? [] : lessonsResult.data || []))
+        setJourneyLoading(false)
+      })
+    return () => { active = false }
+  }, [classId, demo])
 
   const myMissions = (missions ?? []).filter(item => item.class_id === classId)
   const Pane = TABS.find(item => item.id === pane)?.C ?? null
@@ -126,6 +173,17 @@ export default function TeacherWorkspace({
     { id: 'ranking', icon: ChartBar, label: '성장 순위' },
   ]
 
+  function openClassroom(context = null) {
+    if (!cls) return
+    const initialContext = context || journey?.next?.context || null
+    onOpenClassroom?.({
+      classId: cls.id,
+      className: cls.name,
+      subject: initialContext?.subject || null,
+      initialContext,
+    })
+  }
+
   return (
     <div className="teacher-campus">
       <aside className="teacher-campus-rail">
@@ -148,7 +206,7 @@ export default function TeacherWorkspace({
         </nav>
 
         <div className="teacher-quick-actions">
-          <button className="start-class" onClick={onOpenClassroom}><Broadcast weight="fill" /> 수업 시작</button>
+          <button className="start-class" onClick={() => openClassroom()} disabled={!cls}><Broadcast weight="fill" /> 수업 시작</button>
           <button onClick={() => onOpenStudentCampus?.()}><BookOpenText /> 학생 화면 보기</button>
           <button onClick={() => onOpenMessages?.({ scope: 'class', target: classId })}><ChatCircleDots /> 메시지</button>
           <button onClick={() => onOpenCoverReviews?.(classId)}><FileText /> 자소서 첨삭</button>
@@ -208,7 +266,7 @@ export default function TeacherWorkspace({
             <section className="teacher-bonus-section">
               <header><span>선생님 보너스 패스</span><h2>가르치고, 살피고, 바로 도와주는 도구</h2></header>
               <div className="teacher-bonus-grid">
-                <button className="is-class" onClick={onOpenClassroom}><span><Broadcast weight="fill" /></span><b>수업 스튜디오</b><small>문항·훈화·수업 덱</small><ArrowRight /></button>
+                <button className="is-class" onClick={onOpenClassroom}><span><Broadcast weight="fill" /></span><b>교실 함께 배우기</b><small>학생 앱 콘텐츠 그대로</small><ArrowRight /></button>
                 <button onClick={() => onNavigate?.('textbook-browse')}><span><BookOpenText weight="fill" /></span><b>교재 미리보기</b><small>학생 학습 그대로</small><ArrowRight /></button>
                 <button onClick={() => onOpenMessages?.()}><span><ChatCircleDots weight="fill" /></span><b>소통·상담</b><small>공지·개별 메시지</small><ArrowRight /></button>
                 <button onClick={() => onOpenCoverReviews?.()}><span><FileText weight="fill" /></span><b>자소서 첨삭</b><small>형광펜·메모·총평</small><ArrowRight /></button>
@@ -236,6 +294,14 @@ export default function TeacherWorkspace({
               <button className="teacher-refresh" onClick={loadLive} disabled={demo}><ArrowClockwise /> 새로고침</button>
             </header>
 
+            <ClassLessonJourney
+              className={cls.name}
+              journey={journey}
+              loading={journeyLoading}
+              onContinue={() => openClassroom()}
+              onOpenSubject={subject => openClassroom(subject.context)}
+            />
+
             <section className="teacher-class-launch" aria-label="오늘 수업 준비">
               <TeacherCampusMap className="teacher-live-map" onOpenStudentCampus={onOpenStudentCampus} />
               <div className="teacher-launch-panel">
@@ -245,10 +311,10 @@ export default function TeacherWorkspace({
                     <span className="is-blue"><BookOpenText weight="fill" /></span><div><small>같이 배우기</small><b>학생 화면으로 준비</b></div><ArrowRight />
                   </button>
                   <button onClick={() => onOpenStudentCampus?.(null, { teachingMode: true })}>
-                    <span className="is-mint"><Lightbulb weight="fill" /></span><div><small>차시별 지도 함께</small><b>학생앱 활용 수업</b></div><ArrowRight />
+                    <span className="is-mint"><Lightbulb weight="fill" /></span><div><small>교사 지원과 함께</small><b>학생 앱 수업 준비</b></div><ArrowRight />
                   </button>
-                  <button className="is-classroom" onClick={onOpenClassroom}>
-                    <span><Monitor weight="fill" /></span><div><small>대형 화면</small><b>교실 화면 시작</b></div><ArrowRight />
+                  <button className="is-classroom" onClick={() => openClassroom()}>
+                    <span><Monitor weight="fill" /></span><div><small>학생 앱 그대로</small><b>교실 함께 배우기</b></div><ArrowRight />
                   </button>
                 </div>
                 <nav className="teacher-launch-tools" aria-label="교사 보너스 도구">
@@ -331,6 +397,34 @@ export default function TeacherWorkspace({
         )}
       </section>
     </div>
+  )
+}
+
+function ClassLessonJourney({ className, journey, loading, onContinue, onOpenSubject }) {
+  if (loading) return <section className="teacher-class-journey is-loading" aria-label={`${className} 수업 흐름`}><span className="spinner" /><b>학급별 수업 위치를 확인하고 있어요</b></section>
+  const next = journey?.next
+  return (
+    <section className="teacher-class-journey" aria-label={`${className} 수업 흐름`}>
+      <header>
+        <div><span>CLASS ROUTE</span><h2>{className} 수업은 여기까지 왔어요</h2><p>{journey?.touchedSubjects || 0}/6개 학습관 수업 · 최근 기록부터 바로 이어집니다.</p></div>
+        <button className="teacher-journey-continue" onClick={onContinue}><Play weight="fill" /><span><small>다음 수업</small><b>{next?.nextLabel || '첫 단원 시작'}</b></span><ArrowRight /></button>
+      </header>
+      <div className="teacher-journey-subjects">
+        {(journey?.subjects || []).map(subject => {
+          const presentation = HALL_PRESENTATION[subject.id]
+          const Icon = presentation?.icon || (subject.id === 'interview' ? ChatCircleDots : BookOpenText)
+          const hasHistory = subject.lessonCount > 0 || subject.sessionCount > 0
+          const progressLabel = subject.lessonCount
+            ? `${subject.completedCount}개 완료 · ${subject.inProgressCount}개 진행`
+            : subject.sessionCount ? `${subject.sessionCount}회 수업 · 이어가기` : '아직 수업 전'
+          return <button key={subject.id} className={hasHistory ? 'has-history' : 'is-new'} onClick={() => onOpenSubject(subject)}>
+            <span className={`is-${presentation?.tone || 'blue'}`}><Icon weight="duotone" /></span>
+            <div><small>{progressLabel}</small><b>{subject.label}</b><p>{subject.nextLabel}</p></div>
+            <ArrowRight />
+          </button>
+        })}
+      </div>
+    </section>
   )
 }
 

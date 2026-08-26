@@ -42,6 +42,7 @@ import MatchingBoard, { isMatchingCorrect } from './MatchingBoard.jsx'
 import PulldownForm, { isPulldownCorrect } from './PulldownForm.jsx'
 import { studyQuestions } from '../../lib/assessmentPartition.js'
 import CompactText from '../../components/CompactText.jsx'
+import { getFirstClassFormative } from '../../lib/firstClassLessons.js'
 
 const ncsExtrasMap  = new Map(ncsExtras.map(e => [e.lessonId, e]))
 
@@ -54,6 +55,8 @@ function summaryCardTitle(card, summary) {
   if (card.type === 'recap') return '꼭 기억할 것'
   if (card.type === 'term') return `${card.term || '핵심 용어'} 확인`
   if (card.type === 'tip') return card.mistake?.stem || '실제 오답으로 고쳐 보기'
+  if (card.type === 'mission') return card.practical ? '실전 답변 마무리' : '다음 문제 행동 정하기'
+  if (card.type === 'formative') return '수업 마무리 형성평가'
   if (card.type === 'end') return '요점 학습 완료'
   return summary?.title || '개념 학습'
 }
@@ -85,9 +88,9 @@ const SUBJECTS = [
 // 교육부·대한상의 직업공통능력 인증 = 5개 인증영역.
 const JOB_AREAS = buildJcOfficialAreas()
 
-export default function StudyScreen({ initialSubject, initialArea, initialLesson, initialQuestionId, initialQuestionIndex, onLearningContext, onBack }) {
+export default function StudyScreen({ initialSubject, initialTrack, initialArea, initialLesson, initialQuestionId, initialQuestionIndex, initialStep = 0, initialInteraction = null, onLearningContext, onBack }) {
   const subjectId = initialSubject ?? 'job-common'
-  const [trackId,          setTrackId]          = useState(null)
+  const [trackId,          setTrackId]          = useState(initialTrack ?? null)
   // 교사가 준 링크(수업 덱의 QR)로 들어오면 과목 고르기부터 다시 하지 않고
   // 그 차시를 바로 연다. 교실에서 "학습 → NCS → 자율학습 → 영역 → 차시"를
   // 스무 명이 각자 더듬는 시간이 통째로 사라진다.
@@ -95,7 +98,8 @@ export default function StudyScreen({ initialSubject, initialArea, initialLesson
   const [lessonId,         setLessonId]         = useState(initialLesson ?? null)
   const [learnIdx,         setLearnIdx]         = useState(0)
   const [gameIdx,          setGameIdx]          = useState(0)
-  const [learnCardStep,    setLearnCardStep]    = useState(0)
+  const [learnCardStep,    setLearnCardStep]    = useState(initialStep)
+  const [summaryInteraction, setSummaryInteraction] = useState(initialInteraction || {})
   const [studyMode,        setStudyMode]        = useState(initialQuestionId ? 'game' : 'learn')
   const [gameAnswers,      setGameAnswers]      = useState({})   // { idx → ci }
   const [gameChecked,      setGameChecked]      = useState({})   // { idx → bool } 즉시 피드백 공개됨
@@ -224,18 +228,26 @@ export default function StudyScreen({ initialSubject, initialArea, initialLesson
     })
   }, [subjectId, areaId, lessonId, areas, lessons, questionPool])
 
+  const formativeAssessment = useMemo(
+    () => getFirstClassFormative(subjectId, { trackId, areaId, lessonId }),
+    [subjectId, trackId, areaId, lessonId],
+  )
+
   const contextQuestion = questionPool[questionIdx] ?? null
   const contextSummaryCards = useMemo(
-    () => lessonSummary ? buildStudySummaryCards(lessonSummary, questionPool) : [],
-    [lessonSummary, questionPool],
+    () => lessonSummary ? buildStudySummaryCards(lessonSummary, questionPool, undefined, undefined, formativeAssessment) : [],
+    [lessonSummary, questionPool, formativeAssessment],
   )
   const contextSummaryCard = contextSummaryCards[learnCardStep] ?? null
+  const activeSummaryInteraction = summaryInteraction.step === learnCardStep ? summaryInteraction : null
   const contextAreaLabel = areas.find(area => area.id === areaId)?.label || areaId || ''
   const contextLessonLabel = lessonId === '__all__'
     ? `${contextAreaLabel} 전체 학습`
     : lessons.find(lesson => lesson.id === lessonId)?.label || contextQuestion?.lessonTitle || lessonId || ''
   const contextRevealed = studyMode === 'learn'
-    ? Boolean(learnRevealed[contextQuestion?.id ?? questionIdx])
+    ? lessonSummary
+      ? Boolean(activeSummaryInteraction?.revealed)
+      : Boolean(learnRevealed[contextQuestion?.id ?? questionIdx])
     : Boolean(gameChecked[questionIdx])
 
   useEffect(() => {
@@ -244,10 +256,12 @@ export default function StudyScreen({ initialSubject, initialArea, initialLesson
       mode: 'study',
       stage: !areaId ? 'area-choice' : !lessonId ? 'lesson-choice' : (studyMode === 'learn' && lessonSummary ? 'concept' : 'question'),
       areaId,
+      trackId,
       areaLabel: contextAreaLabel,
       lessonId,
       lessonLabel: contextLessonLabel,
       position: studyMode === 'learn' && lessonSummary ? learnCardStep + 1 : questionIdx + 1,
+      step: studyMode === 'learn' && lessonSummary ? learnCardStep : null,
       total: studyMode === 'learn' && lessonSummary ? contextSummaryCards.length : questionPool.length,
       studyMode,
       revealed: contextRevealed,
@@ -256,19 +270,19 @@ export default function StudyScreen({ initialSubject, initialArea, initialLesson
         : contextQuestion?.stem || contextLessonLabel,
       questionId: contextQuestion?.id || null,
       content: studyMode === 'learn' && lessonSummary
-        ? { kind: 'summary', summary: lessonSummary, card: contextSummaryCard }
+        ? { kind: 'summary', summary: lessonSummary, card: contextSummaryCard, interaction: activeSummaryInteraction }
         : { kind: 'question', question: contextQuestion },
     })
-  }, [onLearningContext, subjectId, areaId, lessonId, contextAreaLabel, contextLessonLabel, studyMode, lessonSummary, contextSummaryCards.length, contextSummaryCard, learnCardStep, questionIdx, questionPool.length, contextQuestion, contextRevealed])
+  }, [onLearningContext, subjectId, trackId, areaId, lessonId, contextAreaLabel, contextLessonLabel, studyMode, lessonSummary, contextSummaryCards.length, contextSummaryCard, activeSummaryInteraction, learnCardStep, questionIdx, questionPool.length, contextQuestion, contextRevealed])
 
   function resetGame() { setGameAnswers({}); setGameResult(null); setGameChecked({}) }
 
   function selectArea(id) {
     setAreaId(id); setLessonId(null)
-    setLearnIdx(0); setGameIdx(0); setLearnCardStep(0); resetGame()
+    setLearnIdx(0); setGameIdx(0); setLearnCardStep(0); setSummaryInteraction({}); resetGame()
   }
   function selectLesson(id) {
-    setLessonId(id); setLearnIdx(0); setGameIdx(0); setLearnCardStep(0); resetGame()
+    setLessonId(id); setLearnIdx(0); setGameIdx(0); setLearnCardStep(0); setSummaryInteraction({}); resetGame()
   }
   function goQuestion(i) {
     if (studyMode === 'learn') setLearnIdx(i)
@@ -277,6 +291,7 @@ export default function StudyScreen({ initialSubject, initialArea, initialLesson
   function switchMode(m) {
     if (m === studyMode) return
     if (m === 'game') { setGameIdx(0); resetGame() }
+    if (m === 'learn') setSummaryInteraction({})
     setStudyMode(m)
   }
 
@@ -814,8 +829,11 @@ export default function StudyScreen({ initialSubject, initialArea, initialLesson
           <StudySummary
             summary={lessonSummary}
             questions={questionPool}
+            formativeAssessment={formativeAssessment}
             initialStep={learnCardStep}
+            initialInteraction={initialInteraction}
             onStepChange={setLearnCardStep}
+            onInteractionChange={setSummaryInteraction}
             onStartQuiz={() => switchMode('game')}
           />
         </div>
@@ -1208,7 +1226,7 @@ function LearnCard({ q, qType, correctIdx, revealed, onReveal }) {
           </div>
           <p style={{ fontSize: 14, lineHeight: 1.8, fontWeight: 700 }}>{stemQ}</p>
         </div>
-        <ListeningPrompt key={q?.id} q={q} revealTranscript={false} />
+        <ListeningPrompt key={q?.id} q={q} mode="study" revealTranscript={false} />
         <QuestionMedia q={q} />
         {ctxText && (
           <div style={{ background: '#f0f4ff', borderRadius: 12, padding: '12px 14px', border: '1px solid #c7d7f5', marginBottom: 10 }}>
@@ -1281,7 +1299,7 @@ function LearnCard({ q, qType, correctIdx, revealed, onReveal }) {
         <p style={{ fontSize: 12, fontWeight: 800, color: 'var(--primary)', marginBottom: 5, letterSpacing: 0.5 }}>[문제]</p>
         <p style={{ fontSize: 14, lineHeight: 1.8, fontWeight: 700 }}>{stemQ}</p>
       </div>
-      <ListeningPrompt key={q?.id} q={q} revealTranscript />
+      <ListeningPrompt key={q?.id} q={q} mode="study" revealTranscript />
       <QuestionMedia q={q} />
       {ctxText && (
         <div style={{ background: '#f0f4ff', borderRadius: 12, padding: '12px 14px', border: '1px solid #c7d7f5', marginBottom: 10 }}>

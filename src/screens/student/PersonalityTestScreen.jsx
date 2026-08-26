@@ -22,7 +22,7 @@ const MODE_META = {
     desc: '실전 규모로 응시하며 집중 지속·속도·일관성을 훈련하고 상세 프로필 분석을 받습니다. 전체 1,030문항 뱅크에서 균형 배분해, 어느 두 회차를 골라도 겹치는 문항이 약 10%뿐입니다. 모든 회차를 풀면 전 문항을 빠짐없이 접합니다.', xp: 50 },
 }
 
-export default function PersonalityTestScreen({ subjectName = '인성검사', mode = 'full', onBack }) {
+export default function PersonalityTestScreen({ subjectName = '인성검사', mode = 'full', onBack, onLearningContext }) {
   const meta = MODE_META[mode] || MODE_META.full
   const rounds = paperCount(mode)
   const [paperNo, setPaperNo] = useState(1)
@@ -39,6 +39,19 @@ export default function PersonalityTestScreen({ subjectName = '인성검사', mo
   const timeLimitSec = total * SEC_PER_ITEM
   const minutes = Math.round(timeLimitSec / 60)   // 화면 표시용(약 N분)
   const [timeLeft, setTimeLeft] = useState(null)
+
+  useEffect(() => {
+    onLearningContext?.({
+      subject: 'personality',
+      mode: mode === 'quick' ? 'diagnostic' : 'mock',
+      stage: phase === 'test' ? 'question' : phase,
+      areaLabel: meta.title,
+      lessonLabel: phase === 'test' ? `${answered + 1}/${total} 응답` : meta.role,
+      position: phase === 'test' ? Math.min(answered + 1, total) : 1,
+      total: phase === 'test' ? total : 1,
+      title: meta.title,
+    })
+  }, [answered, meta.role, meta.title, mode, onLearningContext, phase, total])
 
   const backRef = useRef(null)
   backRef.current = () => {

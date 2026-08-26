@@ -109,7 +109,7 @@ const AREA_BUILDERS = {
   'interview':    () => buildAreasFromPool(interviewMock, 'interview'),
 }
 
-export default function MockAssessmentScreen({ subjectId, subjectName, onBack }) {
+export default function MockAssessmentScreen({ subjectId, subjectName, onBack, onLearningContext }) {
   const [confirmArea,   setConfirmArea]   = useState(null)  // 시작 확인 모달 대상
   const [mockConfig,    setMockConfig]    = useState(null)  // 기관별 맞춤 모의 { area, count, minutes }
   const [activeMission, setActiveMission] = useState(null)  // 응시 중인 합성 미션
@@ -121,6 +121,17 @@ export default function MockAssessmentScreen({ subjectId, subjectName, onBack })
   const [fullBreak,     setFullBreak]     = useState(null)  // { paperNo, nextIndex, completedArea }
 
   const areas = useMemo(() => (AREA_BUILDERS[subjectId]?.() ?? []), [subjectId])
+
+  useEffect(() => {
+    onLearningContext?.({
+      subject: subjectId,
+      mode: 'mock',
+      stage: activeMission ? 'question' : passData ? 'result' : 'intro',
+      areaLabel: mockConfig?.area?.displayName || subjectName,
+      lessonLabel: activeMission?.title || (passData ? '모의평가 결과' : '모의평가 범위 선택'),
+      title: activeMission?.title || subjectName,
+    })
+  }, [activeMission, mockConfig?.area?.displayName, onLearningContext, passData, subjectId, subjectName])
 
   // 교사가 오픈한 과목별 모의고사 조회(RLS: 내 학급 + 열린 것만)
   useEffect(() => {

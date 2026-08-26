@@ -11,8 +11,12 @@ function coverSummary(label, items) {
       learn: `문항 요구｜${item.purpose}\n작성 순서｜${content.structure.join(' → ')}\n반드시 넣을 사실｜${item.required.join(' · ')}`,
       sampleQuestion: {
         type: 'writing-practice',
+        questionId: item.id,
         format: '실전 고쳐쓰기',
         context: item.question,
+        purpose: item.purpose,
+        required: item.required,
+        structure: content.structure,
         draft: content.trap,
         stem: '감점 초안의 문제를 찾아 내 경험과 사실로 고쳐 쓰세요.',
         checklist: [

@@ -5,17 +5,28 @@ import NotificationsScreen from './student/NotificationsScreen.jsx'
 import TeacherWorkspace from './teacher/TeacherWorkspace.jsx'
 import TeacherMessageScreen from './teacher/TeacherMessageScreen.jsx'
 import CoverLetterReviewScreen from './teacher/CoverLetterReviewScreen.jsx'
+import GuidedStudyScreen from './student/GuidedStudyScreen.jsx'
+import InterviewStudyScreen from './student/InterviewStudyScreen.jsx'
+import TeacherLearningPreview from './teacher/TeacherLearningPreview.jsx'
+import CourseListScreen from './student/CourseListScreen.jsx'
+import { campusCourseTarget } from '../lib/studentCampusRoutes.js'
+import { rememberStudentLearningContext } from '../lib/studentLearningJourney.js'
+import { buildStudySummaryCards } from './student/StudySummary.jsx'
+import { PERSONALITY_STUDY_PROGRAM } from '../lib/guidedLearningPrograms.js'
 import '../styles/campus.css'
 
 const STUDENT_PROFILE = { id: 'preview-student', display_name: '민준', role: 'student' }
 const TEACHER_PROFILE = { id: 'preview-teacher', display_name: '김선생', role: 'teacher' }
 
 export default function DesignPreview() {
-  const initial = new URLSearchParams(window.location.search).get('preview') || 'student'
-  const bare = new URLSearchParams(window.location.search).get('bare') === '1'
+  const params = new URLSearchParams(window.location.search)
+  const initial = params.get('preview') || 'student'
+  const bare = params.get('bare') === '1'
   const [mode, setMode] = useState(initial)
   const [messageTarget, setMessageTarget] = useState({})
-  const student = mode.startsWith('student')
+  const [classroomContext, setClassroomContext] = useState(null)
+  const [studentTarget, setStudentTarget] = useState(null)
+  const student = mode.startsWith('student') || mode === 'interview-first' || (mode === 'personality-wording' && params.get('layout') === 'student')
 
   useEffect(() => {
     document.documentElement.classList.toggle('teacher-mode', !student)
@@ -45,21 +56,59 @@ export default function DesignPreview() {
           <div className="preview-phone">
             <StudentCampusHome profile={STUDENT_PROFILE} demo
               onGoMessages={() => setMode('student-messages')}
-              onGoStudy={() => {}}
+              onGoStudy={target => { setStudentTarget(typeof target === 'string' || target == null ? campusCourseTarget(target) : target); setMode('student-study') }}
               onGoWrong={() => {}}
               onOpenMission={() => {}} />
             <PreviewBottomNav onMessages={() => setMode('student-messages')} />
           </div>
         )}
+        {mode === 'student-study' && <div className="preview-learning"><CourseListScreen
+          deepLink={studentTarget}
+          onContextChange={rememberStudentLearningContext}
+          onBack={() => setMode('student')}
+        /></div>}
         {mode === 'student-messages' && (
           <div className="preview-phone"><NotificationsScreen demo /><PreviewBottomNav active="messages" onMessages={() => {}} /></div>
         )}
+        {mode === 'personality-wording' && (() => {
+          const lesson = PERSONALITY_STUDY_PROGRAM.areas.find(area => area.id === 'response')?.lessons.find(item => item.id === 'personality-wording')
+          const cards = buildStudySummaryCards(lesson?.summary)
+          const requestedStep = params.get('card') === 'formative'
+            ? cards.findIndex(card => card.type === 'formative')
+            : Number(params.get('step') || 1)
+          return <div className="preview-learning"><GuidedStudyScreen
+            program={PERSONALITY_STUDY_PROGRAM}
+            initialArea="response"
+            initialLesson="personality-wording"
+            initialStep={Math.max(0, requestedStep)}
+            onBack={() => {}}
+            onChallenge={() => {}}
+          /></div>
+        })()}
+        {mode === 'interview-first' && (
+          <div className="preview-learning"><InterviewStudyScreen
+            initialArea="interview-foundation"
+            initialLesson="A01"
+            onBack={() => {}}
+          /></div>
+        )}
         {mode === 'teacher' && (
           <TeacherWorkspace profile={TEACHER_PROFILE} demo tab="dashboard" pendingCount={3} missions={[]}
-            onTab={() => {}} onNavigate={() => {}} onOpenClassroom={() => {}}
+            onTab={() => {}} onNavigate={() => {}} onOpenClassroom={context => { setClassroomContext(context); setMode('teacher-classroom') }}
             onOpenMessages={params => { setMessageTarget(params || {}); setMode('teacher-messages') }}
             onOpenCoverReviews={() => setMode('teacher-cover')} />
         )}
+        {mode === 'teacher-classroom' && <TeacherLearningPreview
+          profile={TEACHER_PROFILE}
+          demoMode
+          teachingMode
+          initialSubject={classroomContext?.subject}
+          initialContext={classroomContext?.initialContext}
+          initialClassId={classroomContext?.classId}
+          initialClassName={classroomContext?.className}
+          onBack={() => setMode('teacher')}
+          onOpenMessages={() => {}}
+        />}
         {mode === 'teacher-empty' && (
           <TeacherWorkspace profile={TEACHER_PROFILE} classes={[]} tab="dashboard" pendingCount={0} missions={[]}
             workspaceState="ready" onRefresh={() => {}} onTab={() => {}} onNavigate={() => {}}

@@ -19,6 +19,8 @@ import { studyQuestions, studyQuestionsById } from '../src/lib/assessmentPartiti
 import interviewStudy from '../data/interview-study.json'
 import interviewQuizData from '../data/interview-quiz.json'
 import { buildInterviewLearningQuestions } from '../src/lib/interviewLearning.js'
+import { COVER_STUDY_PROGRAM } from '../src/lib/coverStudyProgram.js'
+import { PERSONALITY_STUDY_PROGRAM } from '../src/lib/guidedLearningPrograms.js'
 
 const failures = []
 const metrics = {
@@ -52,7 +54,15 @@ function auditSummary(scope, summary, questions, { requireMistakes = true } = {}
       const values = choices.map(choice => choice?.value).filter(Boolean)
       const answers = Array.isArray(sample.answer) ? sample.answer : [sample.answer]
       const sourceLabel = sample.sourceQuestion?.id || sample.stem || 'id 없음'
-      if (type === 'pulldown') {
+      if (type === 'writing-practice') {
+        if (!sample.context || !sample.draft || !sample.modelAnswer || !sample.checklist?.length) {
+          failures.push(`${scope} 핵심 ${index + 1}: 작성 실습의 지원 문항·감점 초안·점검 기준·개선 예시 누락 (${sourceLabel})`)
+        }
+      } else if (type === 'reflection') {
+        if (choices.length < 2 || sample.answer != null || !sample.feedback) {
+          failures.push(`${scope} 핵심 ${index + 1}: 정답 없는 성찰 선택지·피드백 구조 오류 (${sourceLabel})`)
+        }
+      } else if (type === 'pulldown') {
         const blanks = sample.blanks || []
         if (!blanks.length) failures.push(`${scope} 핵심 ${index + 1}: 풀다운 빈칸 누락 (${sourceLabel})`)
         if (blanks.some(blank => !Array.isArray(blank.options) || blank.options.length < 2 || !Number.isInteger(blank.answer) || !blank.options[blank.answer])) {
@@ -136,6 +146,12 @@ for (const lesson of interviewStudy.lessons || []) {
   const summary = studySummaries[`iv:${lesson.id}`]
   const questions = buildInterviewLearningQuestions(lesson, interviewQuiz)
   auditSummary(`면접/${lesson.id}`, summary ? { ...summary, courseKind: 'interview' } : null, questions)
+}
+
+for (const program of [COVER_STUDY_PROGRAM, PERSONALITY_STUDY_PROGRAM]) {
+  for (const area of program.areas || []) for (const lesson of area.lessons || []) {
+    auditSummary(`${program.title}/${area.id}/${lesson.id}`, lesson.summary, [], { requireMistakes: false })
+  }
 }
 
 for (const name of ['documents', 'data', 'teamwork', 'interview', 'reflection']) {
