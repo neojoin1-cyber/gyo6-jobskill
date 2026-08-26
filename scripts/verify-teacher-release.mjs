@@ -51,6 +51,7 @@ if (teacherShell.includes("if (layout.effective !== 'wide') return")) errors.pus
 if (teacherShell.includes("navigate('mission-create')")) errors.push('Teacher mission shortcut uses an unhandled route')
 if (!teacherWorkspace.includes('teacher-empty-workspace')) errors.push('Teacher no-class workspace is missing preparation tools')
 if (!teacherWorkspace.includes('ClassLessonJourney') || !teacherWorkspace.includes(".from('class_sessions')")) errors.push('Teacher class-specific lesson journey is missing')
+if (!teacherShell.includes('demo={Boolean(isTrial)}')) errors.push('Public teacher trial does not demonstrate multiple class journeys')
 if (!teacherWorkspace.includes('initialContext') || !teacherShell.includes('initialClassId={screen.classId}')) errors.push('Selected class and resume position do not reach the classroom')
 if (!classJourney.includes('STUDENT_CAMPUS_HALLS.map') || !classJourney.includes('completedCount') || !classJourney.includes('inProgressCount')) errors.push('Six-hall class journey states are incomplete')
 if (!classProgressMigration.includes('class_lesson_progress') || !classProgressMigration.includes('completed_at') || !classProgressMigration.includes('rpc_set_class_focus')) errors.push('Class lesson progress persistence is missing')

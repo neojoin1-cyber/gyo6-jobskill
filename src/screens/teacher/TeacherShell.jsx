@@ -42,7 +42,7 @@ const TeacherLearningPreview = lazyChunk(() => import('./TeacherLearningPreview.
 const TeacherInterviewPracticeScreen = lazyChunk(() => import('./TeacherInterviewPracticeScreen.jsx'), 'TeacherInterviewPracticeScreen')
 
 export default function TeacherShell() {
-  const { profile } = useAuth() ?? {}
+  const { profile, isTrial } = useAuth() ?? {}
   const teacherName = String(profile?.display_name || '선생님').replace(/\s*(?:선생님|선생)$/, '') || '선생'
   const [tab,         setTab]         = useState('dashboard')
   const [screen,      setScreen]      = useState(null)
@@ -300,6 +300,7 @@ export default function TeacherShell() {
       {tab === 'dashboard' ? (
         <TeacherWorkspace
           profile={profile} classes={wsClasses} missions={wsMissions}
+          demo={Boolean(isTrial)}
           workspaceState={workspaceState} onRefresh={loadWorkspace}
           pendingCount={pendingCount} tab={tab} onTab={setTab}
           onNavigate={navigate}
