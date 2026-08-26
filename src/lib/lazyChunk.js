@@ -1,11 +1,34 @@
 import { createElement, lazy } from 'react'
 
+const RETRY_PREFIX = 'sst.reloaded.'
+
+function retryKey(name) {
+  return `${RETRY_PREFIX}${name}`
+}
+
+function clearRetryMarker(name) {
+  try { sessionStorage.removeItem(retryKey(name)) } catch { /* private browsing */ }
+}
+
+export async function reloadLatestApp() {
+  try {
+    const registrations = await navigator.serviceWorker?.getRegistrations?.()
+    await Promise.all((registrations || []).map(registration => registration.unregister()))
+    const keys = await caches?.keys?.()
+    await Promise.all((keys || []).map(key => caches.delete(key)))
+  } catch { /* unsupported browser or temporary cleanup failure */ }
+
+  const url = new URL(window.location.href)
+  url.searchParams.set('app_retry', Date.now().toString(36))
+  window.location.replace(url.toString())
+}
+
 function ChunkRecoveryScreen() {
   return createElement('div', { className: 'chunk-recovery-screen', role: 'status' },
     createElement('div', { className: 'spinner' }),
     createElement('strong', null, '최신 학습 화면을 연결하고 있어요'),
     createElement('p', null, '잠시 뒤 자동으로 다시 열립니다.'),
-    createElement('button', { type: 'button', onClick: () => window.location.reload() }, '지금 다시 열기'),
+    createElement('button', { type: 'button', onClick: reloadLatestApp }, '지금 다시 열기'),
   )
 }
 
@@ -27,35 +50,31 @@ function ChunkRecoveryScreen() {
  * 계속 실패하는 경우에는 무한 새로고침 대신 오류 화면이 뜨는 편이 낫다.
  */
 export function lazyChunk(load, name = 'chunk') {
-  return lazy(() =>
-    load().catch(async (err) => {
+  return lazy(async () => {
+    try {
+      const module = await load()
+      clearRetryMarker(name)
+      return module
+    } catch (err) {
       try {
-        return await load()          // 순간적인 네트워크 끊김이면 이걸로 끝난다
+        const module = await load()  // 순간적인 네트워크 끊김이면 이걸로 끝난다
+        clearRetryMarker(name)
+        return module
       } catch {
-        const key = `sst.reloaded.${name}`
+        const key = retryKey(name)
         let already = false
         try { already = sessionStorage.getItem(key) === '1' } catch { /* 사생활 모드 */ }
         if (!already) {
           try { sessionStorage.setItem(key, '1') } catch { /* 무시 */ }
           // 낡은 서비스워커가 옛 파일을 붙들고 있으면 새로고침만으로는
           // 부족하다. 등록을 풀고 캐시를 비운 뒤 다시 받게 한다.
-          try {
-            const regs = await navigator.serviceWorker?.getRegistrations?.()
-            await Promise.all((regs || []).map(r => r.unregister()))
-            const keys = await caches?.keys?.()
-            await Promise.all((keys || []).map(k => caches.delete(k)))
-          } catch { /* 지원하지 않는 브라우저 */ }
           // 교체 중에도 흰 화면을 반환하지 않는다. 사용자는 복구 상태와
           // 수동 재시도 버튼을 보고, 짧은 프레임 뒤 최신 index로 이동한다.
-          window.setTimeout(() => {
-            const url = new URL(window.location.href)
-            url.searchParams.set('app_retry', Date.now().toString(36))
-            window.location.replace(url.toString())
-          }, 120)
+          window.setTimeout(reloadLatestApp, 120)
           return { default: ChunkRecoveryScreen }
         }
         throw err
       }
-    })
-  )
+    }
+  })
 }

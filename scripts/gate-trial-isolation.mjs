@@ -1,5 +1,9 @@
 import { readFileSync } from 'node:fs'
-import { beginTrialSession, clearTrialSession } from '../src/lib/trialSession.js'
+import {
+  beginTrialSession,
+  clearTrialSession,
+  shouldSwitchTrialRole,
+} from '../src/lib/trialSession.js'
 
 const root = new URL('../', import.meta.url)
 const read = path => readFileSync(new URL(path, root), 'utf8')
@@ -10,6 +14,7 @@ const fail = message => {
 
 const supabaseSource = read('src/lib/supabase.js')
 const trialSource = read('src/lib/trialSession.js')
+const lazyChunkSource = read('src/lib/lazyChunk.js')
 const loginSource = read('src/screens/LoginScreen.jsx')
 const appSource = read('src/App.jsx')
 const serverGuard = read('supabase/migrations/20260825150000_public_trial_read_only.sql')
@@ -80,9 +85,17 @@ if (!appSource.includes('TrialSessionBar') || !appSource.includes("signOut({ sco
 if (!appSource.includes('SUGAR_SALT_APP_READY')) {
   fail('포털이 실제 화면 준비 완료를 판별할 신호가 없음')
 }
-if (!appSource.includes('requestedTrial && requestedTrial !== trialRole') ||
+if (!appSource.includes('shouldSwitchTrialRole(session.user, requestedTrial)') ||
     !appSource.includes('switchingTrialRole')) {
   fail('같은 iframe에서 학생·교사 체험 역할을 바꾸는 흐름이 없음')
+}
+if (!appSource.includes("lazyChunk(() => import('./screens/teacher/TeacherShell.jsx'), 'TeacherShell')")) {
+  fail('배포 교체 중 최상위 교사 화면의 청크 자동 복구가 없음')
+}
+if (!lazyChunkSource.includes('clearRetryMarker(name)') ||
+    !lazyChunkSource.includes('window.setTimeout(reloadLatestApp, 120)') ||
+    !lazyChunkSource.includes('registration.unregister()')) {
+  fail('오래된 청크 복구 후 재시도 표식·서비스워커·캐시 정리가 완전하지 않음')
 }
 if (!supabaseSource.includes('trialSafeFetch') || !supabaseSource.includes('X-Sugar-Salt-Trial')) {
   fail('체험 데이터의 클라이언트 저장 차단이 없음')
@@ -117,6 +130,12 @@ localStorage.setItem('iv_cover_draft', '{"answer":"trial-only"}')
 localStorage.setItem('gyo6.studySummaries.v2', '{"progress":1}')
 clearTrialSession()
 if (localStorage.length !== 0) fail('체험 종료 뒤 작성·학습 로컬 자료가 남음')
+
+const trialTeacher = { user_metadata: { is_public_trial: true, trial_role: 'teacher' } }
+const regularTeacher = { user_metadata: { role: 'teacher' } }
+if (!shouldSwitchTrialRole(trialTeacher, 'student')) fail('체험 교사에서 체험 학생으로 역할 전환을 감지하지 못함')
+if (shouldSwitchTrialRole(trialTeacher, 'teacher')) fail('동일 체험 역할을 전환으로 오인함')
+if (shouldSwitchTrialRole(regularTeacher, 'teacher')) fail('정식 교사 로그인을 체험 역할 전환으로 오인함')
 
 if (!process.exitCode) {
   console.log('[웹 체험 격리] 통과 - 원클릭 15분 체험·탭별 인증·저장 차단·교사 반응형 확인')

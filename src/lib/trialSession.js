@@ -40,6 +40,11 @@ export function trialRoleFromUser(user) {
   return TRIAL_ACCOUNTS[role]?.role || null
 }
 
+export function shouldSwitchTrialRole(user, requestedRole) {
+  const activeTrialRole = trialRoleFromUser(user)
+  return Boolean(activeTrialRole && TRIAL_ACCOUNTS[requestedRole] && requestedRole !== activeTrialRole)
+}
+
 export function getTrialDeviceId() {
   if (typeof document === 'undefined') return ''
   const existing = document.cookie

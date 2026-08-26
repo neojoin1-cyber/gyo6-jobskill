@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../../lib/supabase.js'
 import { getMockScopes, MOCK_COUNT, MOCK_SUBJECTS } from '../../lib/mockData.js'
-import { lazy, Suspense } from 'react'
-const TeacherMessageScreen = lazy(() => import('./TeacherMessageScreen.jsx'))
-const ClassroomScreen     = lazy(() => import('./ClassroomScreen.jsx'))
+import { Suspense } from 'react'
+import { lazyChunk } from '../../lib/lazyChunk.js'
+const TeacherMessageScreen = lazyChunk(() => import('./TeacherMessageScreen.jsx'), 'TeacherMessageScreen')
+const ClassroomScreen = lazyChunk(() => import('./ClassroomScreen.jsx'), 'ClassroomScreen')
 
 // 수업자료 허브 주소. 배포처가 정해지면 .env 의 VITE_TEACHER_MATERIALS_URL 로 지정한다.
 const MATERIALS_URL = import.meta.env.VITE_TEACHER_MATERIALS_URL || ''

@@ -1,4 +1,5 @@
 import { Component } from 'react'
+import { reloadLatestApp } from './lazyChunk.js'
 
 function isLazyChunkError(error) {
   const message = String(error?.message || '').toLowerCase()
@@ -36,6 +37,10 @@ export default class ErrorBoundary extends Component {
   }
 
   handleReload = () => {
+    if (isLazyChunkError(this.state.error)) {
+      reloadLatestApp()
+      return
+    }
     try { window.location.reload() } catch { /* noop */ }
   }
 

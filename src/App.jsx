@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, createContext, useContext, lazy, Suspense } from 'react'
+import { useState, useEffect, useRef, createContext, useContext, Suspense } from 'react'
 import { Capacitor } from '@capacitor/core'
 import { App as CapApp } from '@capacitor/app'
 import { resetWebAuthSession, supabase } from './lib/supabase.js'
@@ -12,14 +12,16 @@ import {
   formatTrialRemaining,
   requestedTrialRole,
   setTrialNotice,
+  shouldSwitchTrialRole,
   trialRoleFromUser,
 } from './lib/trialSession.js'
+import { lazyChunk } from './lib/lazyChunk.js'
 import LoginScreen from './screens/LoginScreen.jsx'
-const AdminShell = lazy(() => import('./screens/admin/AdminShell.jsx'))
-const SchoolAdminShell = lazy(() => import('./screens/schooladmin/SchoolAdminShell.jsx'))
-const TeacherShell = lazy(() => import('./screens/teacher/TeacherShell.jsx'))
-const StudentShell = lazy(() => import('./screens/student/StudentShell.jsx'))
-const DesignPreview = lazy(() => import('./screens/DesignPreview.jsx'))
+const AdminShell = lazyChunk(() => import('./screens/admin/AdminShell.jsx'), 'AdminShell')
+const SchoolAdminShell = lazyChunk(() => import('./screens/schooladmin/SchoolAdminShell.jsx'), 'SchoolAdminShell')
+const TeacherShell = lazyChunk(() => import('./screens/teacher/TeacherShell.jsx'), 'TeacherShell')
+const StudentShell = lazyChunk(() => import('./screens/student/StudentShell.jsx'), 'StudentShell')
+const DesignPreview = lazyChunk(() => import('./screens/DesignPreview.jsx'), 'DesignPreview')
 
 export const AuthCtx = createContext(null)
 export function useAuth() { return useContext(AuthCtx) }
@@ -219,7 +221,7 @@ function AppInner() {
 
   const trialRole = trialRoleFromUser(session?.user)
   const requestedTrial = Capacitor.isNativePlatform() ? null : requestedTrialRole()
-  const switchingTrialRole = Boolean(session && requestedTrial && requestedTrial !== trialRole)
+  const switchingTrialRole = Boolean(session && shouldSwitchTrialRole(session.user, requestedTrial))
 
   // The portal reuses one iframe while switching between student and teacher.
   // Drop the previous local auth session so LoginScreen can honor the new role.

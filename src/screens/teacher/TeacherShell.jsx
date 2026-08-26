@@ -1,10 +1,11 @@
-import { useState, useEffect, useRef, lazy, Suspense } from 'react'
+import { useState, useEffect, useRef, Suspense } from 'react'
 import { useAuth } from '../../App.jsx'
 import { supabase } from '../../lib/supabase.js'
 import { App } from '@capacitor/app'
 import { Capacitor } from '@capacitor/core'
 import { pushBack, popBack } from '../../lib/backButton.js'
 import { ThemeToggle } from '../../lib/theme.jsx'
+import { lazyChunk } from '../../lib/lazyChunk.js'
 import {
   Buildings,
   CaretDown,
@@ -34,11 +35,11 @@ import TeacherWorkspace from './TeacherWorkspace.jsx'
 
 // 수업 모드와 메시지는 무겁고 대시보드에서만 열렸다. 가로 작업대의 왼쪽
 // 메뉴에서도 열 수 있어야 하므로 셸이 길을 갖는다.
-const ClassroomScreen      = lazy(() => import('./ClassroomScreen.jsx'))
-const TeacherMessageScreen = lazy(() => import('./TeacherMessageScreen.jsx'))
-const CoverLetterReviewScreen = lazy(() => import('./CoverLetterReviewScreen.jsx'))
-const TeacherLearningPreview = lazy(() => import('./TeacherLearningPreview.jsx'))
-const TeacherInterviewPracticeScreen = lazy(() => import('./TeacherInterviewPracticeScreen.jsx'))
+const ClassroomScreen = lazyChunk(() => import('./ClassroomScreen.jsx'), 'ClassroomScreen')
+const TeacherMessageScreen = lazyChunk(() => import('./TeacherMessageScreen.jsx'), 'TeacherMessageScreen')
+const CoverLetterReviewScreen = lazyChunk(() => import('./CoverLetterReviewScreen.jsx'), 'CoverLetterReviewScreen')
+const TeacherLearningPreview = lazyChunk(() => import('./TeacherLearningPreview.jsx'), 'TeacherLearningPreview')
+const TeacherInterviewPracticeScreen = lazyChunk(() => import('./TeacherInterviewPracticeScreen.jsx'), 'TeacherInterviewPracticeScreen')
 
 export default function TeacherShell() {
   const { profile } = useAuth() ?? {}
