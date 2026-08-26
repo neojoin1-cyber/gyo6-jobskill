@@ -56,14 +56,14 @@
 
 | 항목 | 결과 |
 |---|---|
-| 버전 | `versionName 4.8.1`, `versionCode 29795102` |
+| 버전 | `versionName 4.8.1`, `versionCode 29795109` |
 | 빌드 | `clean lintRelease testReleaseUnitTest bundleRelease` 성공 |
 | App Lint | 0건 |
 | 서명 | release AAB 서명 성공 |
-| AAB | `android/app/build/outputs/bundle/release/app-release.aab` (15,718,658 bytes) |
-| SHA-256 | `695E39260FA9412297EDEFA6E71F87BD08AE9ADB116A016E9EF2CFA60429BF61` |
+| AAB | `android/app/build/outputs/bundle/release/app-release.aab` (15,738,615 bytes) |
+| SHA-256 | `7A73FE786B7B1CA73214986C81167E69D4E56BA204EBB2419D0483FB77202114` |
 | 난독화 | R8 mapping 포함 |
-| 네이티브 심볼 | `ndk.debugSymbolLevel FULL` 적용 |
+| 네이티브 심볼 | `ndk.debugSymbolLevel FULL` 적용. `androidx.datastore:1.2.1`이 제공하는 `libdatastore_shared_counter.so`는 공급 AAR 단계에서 디버그 심볼이 제거되어 AAB 심볼 메타데이터를 생성하지 못함. 앱 자체 네이티브 코드는 없음 |
 
 ## 7. 남은 사람 검증
 
