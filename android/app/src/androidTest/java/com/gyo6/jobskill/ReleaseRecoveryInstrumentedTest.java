@@ -47,7 +47,11 @@ public class ReleaseRecoveryInstrumentedTest {
             if ("true".equals(evaluate(scenario, "Boolean(window.__SUGAR_SALT_NATIVE_READY__)"))) return;
             Thread.sleep(300L);
         }
-        assertTrue("네이티브 학습 화면이 준비되지 않았습니다.", false);
+        String diagnostic = evaluate(
+            scenario,
+            "JSON.stringify({href:location.href,ready:document.readyState,root:Boolean(document.getElementById('root')?.childElementCount),scripts:document.scripts.length})"
+        );
+        assertTrue("네이티브 학습 화면이 준비되지 않았습니다. " + diagnostic, false);
     }
 
     private String evaluate(ActivityScenario<MainActivity> scenario, String script) throws Exception {

@@ -35,11 +35,14 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   </React.StrictMode>
 )
 
-// The static guard exists before any module is downloaded, so a failed entry
-// script never leaves a white page. Remove it only after React has painted.
-window.requestAnimationFrame(() => {
-  window.requestAnimationFrame(() => {
-    window.__SUGAR_SALT_NATIVE_READY__ = true
-    window.__SUGAR_SALT_BOOT_READY__?.()
-  })
-})
+// A hidden/headless Android WebView can pause requestAnimationFrame entirely.
+// Keep the double-frame paint path, with a timer fallback after React rendered.
+let nativeReadySignalled = false
+const signalNativeReady = () => {
+  if (nativeReadySignalled) return
+  nativeReadySignalled = true
+  window.__SUGAR_SALT_NATIVE_READY__ = true
+  window.__SUGAR_SALT_BOOT_READY__?.()
+}
+window.setTimeout(signalNativeReady, 1000)
+window.requestAnimationFrame(() => window.requestAnimationFrame(signalNativeReady))
