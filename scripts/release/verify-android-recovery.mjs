@@ -88,7 +88,7 @@ for (let cycle = 1; cycle <= 2; cycle += 1) {
   adbRun(serial, ['logcat', '-c'])
   const launch = adbRun(serial, ['shell', 'am', 'start', '-W', '-n', `${appId}/.MainActivity`]).stdout
   if (!/Status:\s*ok/i.test(launch)) throw new Error(`Android ${cycle}차 재실행 실패\n${launch}`)
-  const deadline = Date.now() + 25_000
+  const deadline = Date.now() + 60_000
   let ready = false
   while (Date.now() < deadline) {
     await sleep(1000)

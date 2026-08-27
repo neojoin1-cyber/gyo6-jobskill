@@ -17,7 +17,9 @@ import java.util.concurrent.atomic.AtomicReference;
 
 @RunWith(AndroidJUnit4.class)
 public class ReleaseRecoveryInstrumentedTest {
-    private static final long WAIT_SECONDS = 25L;
+    // GitHub's software-rendered API 36 emulator can need well over 25 seconds
+    // for the first packaged WebView paint even though real devices are faster.
+    private static final long WAIT_SECONDS = 90L;
 
     @Test
     public void localStorageSurvivesActivityRestart() throws Exception {
