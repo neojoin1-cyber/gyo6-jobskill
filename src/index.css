@@ -1630,6 +1630,11 @@ html.classroom-focus-mode .trial-session-bar { display: none; }
 .guided-study-appbar > div:first-of-type b { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .guided-study-appbar > div:first-of-type span { margin-bottom: 2px; color: #16806f; font-size: 10px; font-weight: 900; }
 .guided-study-appbar > div:first-of-type b { color: #172033; font-size: 15px; }
+.guided-study-position,
+.study-scene-position {
+  flex: 0 0 auto; padding: 5px 8px; border: 1px solid #c9d8ea; border-radius: 6px;
+  background: #f8fafc; color: #52647a; font-size: 10.5px; font-weight: 900; white-space: nowrap;
+}
 .guided-study-body { padding: 14px 14px 24px; }
 .guided-study-intro {
   position: relative; padding: 18px 16px; overflow: hidden; border-left: 5px solid #14977e;
@@ -1670,6 +1675,7 @@ html.classroom-focus-mode .trial-session-bar { display: none; }
 }
 .guided-study-challenge svg { width: 19px; height: 19px; }
 .guided-study-challenge svg:last-child { margin-left: auto; }
+.guided-study-challenge:disabled { background: #d7dee7; color: #667085; cursor: default; }
 
 .study-summary { max-width: 600px; min-height: 360px; display: flex; flex-direction: column; margin: 0 auto; }
 .study-summary-intro-grid,
@@ -1788,6 +1794,9 @@ html.classroom-focus-mode .trial-session-bar { display: none; }
   .teacher-learning-preview.is-teaching .guided-study-list > button b { font-size: 17px; }
   .teacher-learning-preview.is-teaching .guided-study-list > button p { font-size: 13px; }
   .teacher-learning-preview.is-teaching .guided-study-area-head { padding: 20px 22px; }
+  .teacher-learning-preview.is-teaching .study-scene-position,
+  .teacher-learning-preview.is-teaching .guided-study-position { padding: 7px 11px; font-size: 12px; }
+  .teacher-learning-preview.is-teaching .study-question-body { padding: 16px clamp(24px,2.4vw,48px) 12px !important; }
 
   .teacher-learning-preview.is-teaching .study-summary { width: 100%; max-width: 1480px; min-height: 100%; padding: 0 12px; }
   .teacher-learning-preview.is-teaching.is-focus .study-summary { max-width: 1760px; }

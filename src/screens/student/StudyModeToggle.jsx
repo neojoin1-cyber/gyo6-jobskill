@@ -8,7 +8,7 @@
 
 import { STUDY_MODES, MODE_ORDER, modeOf } from '../../lib/studyModes.js'
 
-export default function StudyModeToggle({ mode, onChange, compact = false }) {
+export default function StudyModeToggle({ mode, onChange, compact = false, labels = null }) {
   const cur = modeOf(mode)
   return (
     <div style={{
@@ -32,7 +32,7 @@ export default function StudyModeToggle({ mode, onChange, compact = false }) {
               color: on ? '#fff' : 'var(--text-muted)',
               transition: 'background .15s',
             }}>
-            <span style={{ fontSize: 13 }}>{m.icon}</span>{m.label}
+            <span style={{ fontSize: 13 }}>{m.icon}</span>{labels?.[id] || m.label}
           </button>
         )
       })}

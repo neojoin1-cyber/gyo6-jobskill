@@ -37,7 +37,7 @@ export const STUDY_MODES = {
     tint: '#4338CA',
     soft: '#EEF2FF',
     line: '#C7D2FE',
-    strip: '고르고 확인하면 바로 채점돼요 · 틀린 문항은 오답노트로',
+    strip: '이 단원의 문제를 고르고 바로 확인해요 · 틀린 문항은 오답노트로',
     goal: '맞히면 XP, 틀리면 복습으로',
   },
 }

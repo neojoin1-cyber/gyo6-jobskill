@@ -36,7 +36,7 @@ export const PERSONALITY_STUDY_PROGRAM = {
   title: '인성검사 자율학습',
   authority: '정답 없는 응답 경향 검사',
   description: '검사 원리부터 응답 습관·신뢰도·실전 루틴까지 같은 순서로 익힘.',
-  challengeLabel: '인성 진단으로 확인',
+  challengeLabel: '인성 학습 종합 진단 시작',
   areas: [
     {
       id: 'foundation', label: '검사 이해', description: '무엇을 측정하고 어떻게 활용하는지 구분함',

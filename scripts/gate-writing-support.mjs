@@ -9,7 +9,7 @@ const checks = [
   ['빈칸 작성 지원', 'src/screens/student/InterviewCareerLab.jsx', ['막막하면 한 칸씩 시작', '맞춤 구조 예시']],
   ['자기소개서 글자 수 지원', 'src/screens/student/InterviewCareerLab.jsx', ['권장 최소', '최대 글자 수', '공고 글자 수', 'cover-document-answer-box']],
   ['자기소개서관 독립 학습 흐름', 'src/screens/student/CourseListScreen.jsx', ["id: 'cover-letter'", 'CoverGuidedStudyScreen', '진단평가', '모의고사', 'initialWorkspace="diagnostic"', 'initialWorkspace="mock"']],
-  ['과목 공통 자율학습 구조', 'src/screens/student/GuidedStudyScreen.jsx', ['StudyModeToggle', 'StudyModeStrip', 'StudySummary', '학습 범위', '단원 선택', 'program.challengeLabel', "kind: 'summary'"]],
+  ['과목 공통 자율학습 구조', 'src/screens/student/GuidedStudyScreen.jsx', ['StudyModeStrip', 'StudySummary', '학습 범위', '단원 선택', '모든 단원 학습 후 종합 진단', '다음 단원 학습', 'program.challengeLabel', "kind: 'summary'"]],
   ['인성검사 공통 자율학습 연결', 'src/screens/student/PersonalityGuidedStudyScreen.jsx', ['GuidedStudyScreen', 'PERSONALITY_STUDY_PROGRAM']],
   ['자기소개서 공통 자율학습 연결', 'src/screens/student/CoverGuidedStudyScreen.jsx', ['GuidedStudyScreen', 'COVER_STUDY_PROGRAM']],
   ['실전자기소개서 독립 모드', 'src/screens/student/CourseListScreen.jsx', ['실전자기소개서', "setMode('cover-practical')", 'initialWorkspace="practical"']],

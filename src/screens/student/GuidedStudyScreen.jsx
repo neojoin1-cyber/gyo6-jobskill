@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { ArrowLeft, BookOpen, CaretRight, CheckCircle, Compass, Target } from '@phosphor-icons/react'
-import { pushBack, popBack } from '../../lib/backButton.js'
+import { pushBack, popBack, triggerBack } from '../../lib/backButton.js'
 import StudySummary, { buildStudySummaryCards } from './StudySummary.jsx'
-import StudyModeToggle, { StudyModeStrip } from './StudyModeToggle.jsx'
+import { StudyModeStrip } from './StudyModeToggle.jsx'
 import CompactText from '../../components/CompactText.jsx'
 import { getFirstClassFormative } from '../../lib/firstClassLessons.js'
 
@@ -24,8 +24,8 @@ export default function GuidedStudyScreen({ program, initialArea = null, initial
 
   const backRef = useRef(null)
   backRef.current = () => {
-    if (lessonId) { setLessonId(null); setStep(0); setInteraction({}); return }
-    if (areaId) { setAreaId(null); setInteraction({}); return }
+    if (lesson) { setLessonId(null); setStep(0); setInteraction({}); return }
+    if (area) { setAreaId(null); setInteraction({}); return }
     onBack?.()
   }
   useEffect(() => {
@@ -62,10 +62,6 @@ export default function GuidedStudyScreen({ program, initialArea = null, initial
     })
   }, [area, areaId, cards, interaction, lesson, lessonId, onLearningContext, program.subjectId, program.title, step])
 
-  function selectMode(mode) {
-    if (mode === 'game') onChallenge?.()
-  }
-
   function openArea(id) {
     const selected = program.areas.find(item => item.id === id)
     setAreaId(id)
@@ -88,17 +84,37 @@ export default function GuidedStudyScreen({ program, initialArea = null, initial
     })
   }, [doneKey])
 
+  const orderedLessons = useMemo(
+    () => program.areas.flatMap(areaItem => areaItem.lessons.map(lessonItem => ({ areaId: areaItem.id, lesson: lessonItem }))),
+    [program.areas],
+  )
+  const currentLessonIndex = orderedLessons.findIndex(item => item.lesson.id === lessonId)
+  const nextLesson = currentLessonIndex >= 0 ? orderedLessons[currentLessonIndex + 1] || null : null
+  const allDone = orderedLessons.length > 0 && orderedLessons.every(item => done.has(item.lesson.id))
+
   const handleSummaryStepChange = useCallback(value => {
     setStep(value)
     if (lesson?.id && value >= cards.length - 1) markDone(lesson.id)
   }, [cards.length, lesson?.id, markDone])
 
+  function continueAfterLesson() {
+    if (lesson?.id) markDone(lesson.id)
+    if (nextLesson) {
+      setAreaId(nextLesson.areaId)
+      setLessonId(nextLesson.lesson.id)
+      setStep(0)
+      setInteraction({})
+      return
+    }
+    onChallenge?.()
+  }
+
   const headerTitle = lesson?.label || area?.label || program.title
   return <div className="screen guided-study-screen">
     <header className="guided-study-appbar">
-      <button onClick={() => backRef.current()} aria-label="이전 화면"><ArrowLeft /></button>
+      <button onClick={triggerBack} aria-label="이전 화면"><ArrowLeft /></button>
       <div><span>{program.authority}</span><b>{headerTitle}</b></div>
-      <StudyModeToggle mode="learn" onChange={selectMode} compact />
+      {lesson && <span className="guided-study-position" aria-label={`현재 학습 장면 ${step + 1}/${Math.max(1, cards.length)}`}>{step + 1}/{Math.max(1, cards.length)}</span>}
     </header>
     <StudyModeStrip mode="learn" right={lesson ? `${step + 1}/${Math.max(1, cards.length)}` : null} />
     <main className="screen-body guided-study-body">
@@ -140,9 +156,12 @@ export default function GuidedStudyScreen({ program, initialArea = null, initial
         initialInteraction={initialInteraction}
         onInteractionChange={setInteraction}
         onStepChange={handleSummaryStepChange}
-        onStartQuiz={onChallenge}
+        onStartQuiz={continueAfterLesson}
+        startQuizLabel={nextLesson ? '다음 단원 학습 →' : `${program.challengeLabel} →`}
       />}
     </main>
-    {!area && <button className="guided-study-challenge" onClick={onChallenge}><Target weight="fill" />{program.challengeLabel}<CaretRight /></button>}
+    {!area && <button className="guided-study-challenge" onClick={onChallenge} disabled={!allDone}>
+      <Target weight="fill" />{allDone ? program.challengeLabel : '모든 단원 학습 후 종합 진단'}<CaretRight />
+    </button>}
   </div>
 }

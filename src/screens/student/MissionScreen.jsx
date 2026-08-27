@@ -13,6 +13,7 @@ import ListeningPrompt from './ListeningPrompt.jsx'
 import QuestionMedia from './QuestionMedia.jsx'
 import DifficultyBadge from './DifficultyBadge.jsx'
 import CompactText from '../../components/CompactText.jsx'
+import { popBack, pushBack, triggerBack } from '../../lib/backButton.js'
 
 // 직업공통 풀 = 기존 문항 + 영어 + 2026 듣기·시각자료 보완 문항
 const QUESTION_POOLS = {
@@ -201,6 +202,28 @@ export default function MissionScreen({ mission, onBack, onViewWrongAnswers }) {
   const textareaRef = useRef(null)
   const autoSubmitted = useRef(false)
   const scrollRef = useRef(null)
+
+  const backRef = useRef(null)
+  backRef.current = () => {
+    if (examPopup) {
+      setExamPopup(null)
+      return
+    }
+    if (phase === 'quiz' && idx > 0) {
+      tryGoTo(idx - 1)
+      return
+    }
+    if (phase === 'quiz' && Object.keys(answers).length > 0) {
+      if (window.confirm('퀴즈를 종료할까요? 진행상황이 사라집니다.')) onBack?.()
+      return
+    }
+    onBack?.()
+  }
+
+  useEffect(() => {
+    const id = pushBack(() => backRef.current())
+    return () => popBack(id)
+  }, [])
 
   useEffect(() => { loadQuestions() }, [])
 
@@ -408,7 +431,7 @@ export default function MissionScreen({ mission, onBack, onViewWrongAnswers }) {
   // ── 에러 ──
   if (phase === 'error') return (
     <div className="screen">
-      <div className="appbar"><button className="appbar-back" onClick={onBack}>←</button><span className="appbar-title">오류</span></div>
+      <div className="appbar"><button className="appbar-back" onClick={triggerBack} aria-label="이전 화면">←</button><span className="appbar-title">오류</span></div>
       <div className="empty-state">
         <span className="empty-state-icon">⚠️</span>
         <span className="empty-state-title">문항을 불러올 수 없습니다</span>
@@ -420,7 +443,7 @@ export default function MissionScreen({ mission, onBack, onViewWrongAnswers }) {
 
   if (phase === 'loading') return (
     <div className="screen">
-      <div className="appbar"><button className="appbar-back" onClick={onBack}>←</button><span className="appbar-title">{mission.title}</span></div>
+      <div className="appbar"><button className="appbar-back" onClick={triggerBack} aria-label="이전 화면">←</button><span className="appbar-title">{mission.title}</span></div>
       <div className="loading-screen"><div className="spinner" /></div>
     </div>
   )
@@ -435,7 +458,7 @@ export default function MissionScreen({ mission, onBack, onViewWrongAnswers }) {
 
     return (
       <div className="screen">
-        <div className="appbar"><span className="appbar-title">{mission.mock ? '모의고사 결과' : '미션 결과'}</span></div>
+        <div className="appbar"><button className="appbar-back" onClick={triggerBack} aria-label="이전 화면">←</button><span className="appbar-title">{mission.mock ? '모의고사 결과' : '미션 결과'}</span></div>
         <div className="screen-body">
           <div style={{ textAlign: 'center', padding: '32px 0 24px' }}>
             <div style={{ fontSize: 64 }}>{mission.mock ? '📝' : surveyTotal > 0 ? '🧭' : isPending ? '📬' : pct >= 80 ? '🎉' : pct >= 60 ? '😊' : '💪'}</div>
@@ -599,11 +622,7 @@ export default function MissionScreen({ mission, onBack, onViewWrongAnswers }) {
     return (
       <div className="screen">
         <div className="appbar">
-          <button className="appbar-back" onClick={() => {
-            if (Object.keys(answers).length === 0 || window.confirm('퀴즈를 종료할까요? 진행상황이 사라집니다.')) {
-              setExamPopup(null); onBack()
-            }
-          }}>←</button>
+          <button className="appbar-back" onClick={triggerBack} aria-label="이전 화면">←</button>
           <span className="appbar-title">{mission.title}</span>
         </div>
         <div className="screen-body" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh' }}>
@@ -623,9 +642,7 @@ export default function MissionScreen({ mission, onBack, onViewWrongAnswers }) {
   return (
     <div className="screen">
       <div className="appbar">
-        <button className="appbar-back" onClick={() => {
-          if (window.confirm('퀴즈를 종료할까요? 진행상황이 사라집니다.')) onBack()
-        }}>←</button>
+        <button className="appbar-back" onClick={triggerBack} aria-label="이전 화면">←</button>
         <span className="appbar-title">{mission.title}</span>
         <span style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
           {timeLeft != null && (

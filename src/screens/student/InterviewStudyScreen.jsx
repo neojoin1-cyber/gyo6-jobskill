@@ -4,7 +4,7 @@
  */
 import { useState, useMemo, useRef, useEffect } from 'react'
 import { recordActivity } from '../../lib/activity.js'
-import { pushBack, popBack } from '../../lib/backButton.js'
+import { pushBack, popBack, triggerBack } from '../../lib/backButton.js'
 import interviewStudy from '../../../data/interview-study.json'
 import interviewQuizData from '../../../data/interview-quiz.json'
 import { getSummary } from '../../lib/studySummaries.js'
@@ -270,7 +270,7 @@ export default function InterviewStudyScreen({ initialArea = null, initialLesson
     return (
       <div className="screen">
         <div className="appbar">
-          {onBack && <button className="appbar-back" onClick={onBack}>←</button>}
+          {onBack && <button className="appbar-back" onClick={triggerBack} aria-label="이전 화면">←</button>}
           <span className="appbar-title">🎤 면접 학습</span>
           <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>{lessons.length}개 단원</span>
         </div>
@@ -328,7 +328,7 @@ export default function InterviewStudyScreen({ initialArea = null, initialLesson
     return (
       <div className="screen">
         <div className="appbar">
-          <button className="appbar-back" onClick={goBack}>←</button>
+          <button className="appbar-back" onClick={triggerBack} aria-label="이전 화면">←</button>
           <span className="appbar-title">{selectedCourse?.label ?? category}</span>
           {hasReviewLessons && (
             <button onClick={() => setShowReviewOnly(v => !v)}
@@ -405,7 +405,7 @@ export default function InterviewStudyScreen({ initialArea = null, initialLesson
   return (
     <div className="screen interview-study-unit">
       <div className="appbar interview-study-unit-head">
-        <button className="appbar-back" onClick={goBack}>←</button>
+        <button className="appbar-back" onClick={triggerBack} aria-label="이전 화면">←</button>
         <span className="appbar-title">{lesson.title}</span>
         <span className="interview-study-level" style={{
           background: LEVEL_BADGE_BG[lesson.level] ?? '#f0f4f8',

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import DiagnosticScreen from './DiagnosticScreen.jsx'
 import JobAdaptationScreen from './JobAdaptationScreen.jsx'
 import MissionScreen from './MissionScreen.jsx'
@@ -9,6 +9,7 @@ import {
   JC_SELF_DIAG_SPECS,
 } from '../../lib/jobCommonAreas.js'
 import { COMMON_ABILITY_COURSES } from '../../lib/officialStandards.js'
+import { popBack, pushBack, triggerBack } from '../../lib/backButton.js'
 
 const COGNITIVE_AREAS = ['의사소통 국어', '의사소통 영어', '수리활용', '문제해결']
 
@@ -20,6 +21,27 @@ export default function JobCommonDiagnosticHub({ onBack }) {
   const [certPaperNo] = useState(() => {
     try { return (Number(localStorage.getItem('sst.jc.certPaper') || 0) % 3) + 1 } catch { return 1 }
   })
+
+  const backRef = useRef(null)
+  backRef.current = () => {
+    if (officialMission) {
+      setOfficialMission(null)
+      return
+    }
+    if (officialBreak) {
+      setOfficialBreak(null)
+      return
+    }
+    if (section) {
+      setSection(null)
+      return
+    }
+    onBack?.()
+  }
+  useEffect(() => {
+    const id = pushBack(() => backRef.current())
+    return () => popBack(id)
+  }, [])
 
   // ── 3학년 인증진단(342문항·240분) 전체 흐름 ─────────────────────────
   //
@@ -108,7 +130,7 @@ export default function JobCommonDiagnosticHub({ onBack }) {
     return (
       <div className="screen">
         <div className="appbar">
-          <button className="appbar-back" onClick={() => setOfficialBreak(null)}>←</button>
+          <button className="appbar-back" onClick={triggerBack} aria-label="이전 화면">←</button>
           <span className="appbar-title">{isCert ? '인증진단' : '자가진단'} 교시 완료</span>
         </div>
         <div className="screen-body" style={{ display: 'flex', alignItems: 'center' }}>
@@ -162,7 +184,7 @@ export default function JobCommonDiagnosticHub({ onBack }) {
     return (
       <div className="screen">
         <div className="appbar">
-          <button className="appbar-back" onClick={() => setSection(null)}>←</button>
+          <button className="appbar-back" onClick={triggerBack} aria-label="이전 화면">←</button>
           <span className="appbar-title">1·2학년 자가진단 완료</span>
         </div>
         <div className="screen-body" style={{ display: 'flex', alignItems: 'center' }}>
@@ -183,7 +205,7 @@ export default function JobCommonDiagnosticHub({ onBack }) {
   return (
     <div className="screen">
       <div className="appbar">
-        <button className="appbar-back" onClick={onBack}>←</button>
+        <button className="appbar-back" onClick={triggerBack} aria-label="이전 화면">←</button>
         <span className="appbar-title">교육부 직업공통능력 인증</span>
       </div>
       <div className="screen-body">

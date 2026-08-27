@@ -30,7 +30,7 @@ import {
   Trash,
   WarningCircle,
 } from '@phosphor-icons/react'
-import { pushBack, popBack } from '../../lib/backButton.js'
+import { pushBack, popBack, triggerBack } from '../../lib/backButton.js'
 import { supabase } from '../../lib/supabase.js'
 import { useAuth } from '../../App.jsx'
 import CompactText from '../../components/CompactText.jsx'
@@ -228,7 +228,7 @@ function LabFrame({ meta, onBack, children }) {
   return (
     <div className="screen interview-career-screen">
       <header className="appbar interview-career-appbar">
-        <button className="appbar-back" onClick={onBack} aria-label="이전 화면으로 돌아가기"><ArrowLeft /></button>
+        <button className="appbar-back" onClick={triggerBack} aria-label="이전 화면으로 돌아가기"><ArrowLeft /></button>
         <div><span className="interview-career-eyebrow">{meta.eyebrow}</span><span className="appbar-title">{meta.title}</span></div>
       </header>
       <div className="screen-body interview-career-body">{children}</div>
@@ -279,7 +279,7 @@ function TrackDetail({ track, onBack }) {
     const lessonKey = `${module.id}:${lessonIndex}`
     return (
       <div className="screen interview-career-screen">
-        <header className="appbar interview-career-appbar"><button className="appbar-back" onClick={() => setModuleId(null)} aria-label="모듈 목록으로 돌아가기"><ArrowLeft /></button><div><span className="interview-career-eyebrow">{track.label} · {lessonIndex + 1}/{module.lessons.length}</span><span className="appbar-title">{module.title}</span></div></header>
+        <header className="appbar interview-career-appbar"><button className="appbar-back" onClick={triggerBack} aria-label="모듈 목록으로 돌아가기"><ArrowLeft /></button><div><span className="interview-career-eyebrow">{track.label} · {lessonIndex + 1}/{module.lessons.length}</span><span className="appbar-title">{module.title}</span></div></header>
         <div className="screen-body interview-career-body">
           <div className="track-lesson-progress"><span>{module.lessons.map((item, index) => <i key={item.title} className={index <= lessonIndex ? 'is-on' : ''} />)}</span><b>{done.has(lessonKey) ? '학습 완료' : '학습 중'}</b></div>
           <section className="track-lesson-card">
@@ -296,7 +296,7 @@ function TrackDetail({ track, onBack }) {
   }
   return (
     <div className="screen interview-career-screen">
-      <header className="appbar interview-career-appbar"><button className="appbar-back" onClick={onBack} aria-label="지원처별 면접 심화로 돌아가기"><ArrowLeft /></button><div><span className="interview-career-eyebrow">지원처별 심화</span><span className="appbar-title">{track.label}</span></div></header>
+      <header className="appbar interview-career-appbar"><button className="appbar-back" onClick={triggerBack} aria-label="지원처별 면접 심화로 돌아가기"><ArrowLeft /></button><div><span className="interview-career-eyebrow">지원처별 심화</span><span className="appbar-title">{track.label}</span></div></header>
       <div className="screen-body interview-career-body">
         <div className="interview-track-heading"><Icon size={28} weight="duotone" /><CompactText text={track.description} maxItemChars={72} /></div>
         <div className="track-completion-strip"><span>{done.size}/{track.modules.reduce((sum, item) => sum + item.lessons.length, 0)} 핵심 완료</span><div><i style={{ width: `${done.size / track.modules.reduce((sum, item) => sum + item.lessons.length, 0) * 100}%` }} /></div></div>
@@ -365,7 +365,7 @@ function OrganizationDetail({ organization, onBack, onOpenCover }) {
 
   return (
     <div className="screen interview-career-screen">
-      <header className="appbar interview-career-appbar"><button className="appbar-back" onClick={onBack} aria-label="기업·기관 목록으로 돌아가기"><ArrowLeft /></button><div><span className="interview-career-eyebrow">{sectorLabel} · {organization.group}</span><span className="appbar-title">{organization.name}</span></div></header>
+      <header className="appbar interview-career-appbar"><button className="appbar-back" onClick={triggerBack} aria-label="기업·기관 목록으로 돌아가기"><ArrowLeft /></button><div><span className="interview-career-eyebrow">{sectorLabel} · {organization.group}</span><span className="appbar-title">{organization.name}</span></div></header>
       <div className="screen-body interview-career-body">
         <section className="interview-org-identity"><h2>핵심 정체성</h2><CompactText text={organization.identity} maxItemChars={72} /></section>
         <section className="interview-detail-section organization-course"><header><div><h3>이 지원처 면접 완성과정</h3><p className="interview-section-help">기관 이름만 외우지 않고 5개 결과물을 차례로 완성함.</p></div><b>{courseDone.size}/5</b></header>{organization.interviewCourse.map((stage, index) => <details key={stage.id} open={index === 0}><summary><span>{courseDone.has(stage.id) ? <CheckCircle weight="fill" /> : index + 1}</span><div><strong>{stage.title}</strong><small>{stage.goal}</small></div><CaretRight /></summary><div className="organization-course-body"><ul>{stage.tasks.map(task => <li key={task}>{task}</li>)}</ul><p><b>완성 결과물</b>{stage.output}</p><button className={courseDone.has(stage.id) ? 'is-done' : ''} onClick={() => toggleCourse(stage.id)}>{courseDone.has(stage.id) ? '완료 취소' : '이 단계 완료'}</button></div></details>)}</section>

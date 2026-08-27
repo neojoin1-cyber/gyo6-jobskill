@@ -110,6 +110,40 @@
   .interview-org-list { display: grid; grid-template-columns: 1fr 1fr; column-gap: 20px; }
 }
 
+/* 교실 수업은 휴대폰 미리보기가 아니다. 진단도 익히기와 같은 폭을 쓰고,
+   넓어진 자리는 문장만 길게 늘이지 않고 문제와 응답 영역으로 나눈다. */
+@media (min-width: 760px) {
+  .teacher-learning-preview.is-teaching .interview-career-body {
+    width: 100%; max-width: none; margin: 0; padding: 20px clamp(28px,3vw,58px) 34px;
+  }
+  .teacher-learning-preview.is-teaching .cover-builder { width: 100%; max-width: 1600px; margin-inline: auto; }
+  .teacher-learning-preview.is-teaching .cover-assessment-setup {
+    display: grid; grid-template-columns: minmax(280px,.82fr) minmax(360px,1.18fr);
+    grid-template-rows: auto auto auto; gap: 14px 24px; align-items: stretch;
+  }
+  .teacher-learning-preview.is-teaching .cover-assessment-setup > header {
+    grid-row: 1 / span 3; display: grid; align-content: center; min-height: 250px; padding: 26px 28px;
+  }
+  .teacher-learning-preview.is-teaching .cover-assessment-setup > header h3 { font-size: 28px; }
+  .teacher-learning-preview.is-teaching .cover-assessment-setup > header p { font-size: 15px; }
+  .teacher-learning-preview.is-teaching .cover-assessment-scopes { align-content: start; padding-top: 0; }
+  .teacher-learning-preview.is-teaching .cover-assessment-ready { min-height: 86px; margin: 0; padding: 18px; }
+  .teacher-learning-preview.is-teaching .cover-assessment-ready b { font-size: 18px; }
+  .teacher-learning-preview.is-teaching .cover-assessment-ready p { font-size: 13px; }
+  .teacher-learning-preview.is-teaching .cover-assessment-run {
+    max-width: 1600px; margin-inline: auto; display: grid;
+    grid-template-columns: minmax(280px,.8fr) minmax(360px,1.2fr); gap: 14px 24px; align-items: start;
+  }
+  .teacher-learning-preview.is-teaching .cover-assessment-run > header { grid-column: 1 / -1; margin-bottom: 2px; }
+  .teacher-learning-preview.is-teaching .cover-assessment-run > article { grid-column: 1; grid-row: 2 / span 2; min-height: 220px; padding: 26px 24px; }
+  .teacher-learning-preview.is-teaching .cover-assessment-run > article h3 { font-size: 23px; }
+  .teacher-learning-preview.is-teaching .cover-assessment-choices { grid-column: 2; margin: 0; }
+  .teacher-learning-preview.is-teaching .cover-assessment-choices button { min-height: 60px; padding: 12px 15px; font-size: 15px; }
+  .teacher-learning-preview.is-teaching .cover-diagnostic-explain { grid-column: 2; margin: 0; }
+  .teacher-learning-preview.is-teaching .cover-assessment-run > .cover-assessment-next { grid-column: 2; }
+  .teacher-learning-preview.is-teaching .cover-assessment-result { max-width: 1500px; margin-inline: auto; }
+}
+
 /* 기관 연구: 답변 근거와 공식자료 점검을 한 흐름으로 읽는다. */
 .interview-section-help { margin: -3px 0 11px; color: var(--text-muted); font-size: 11.5px; line-height: 1.55; }
 .organization-evidence { display: grid; gap: 9px; }

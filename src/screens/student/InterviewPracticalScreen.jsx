@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import {
   ArrowLeft,
   CaretRight,
@@ -12,6 +12,7 @@ import {
   WarningCircle,
 } from '@phosphor-icons/react'
 import { INTERVIEW_OBSERVATION_AREAS, INTERVIEW_PRACTICAL_STAGES, practicalProgressKey } from '../../lib/interviewPracticalContent.js'
+import { popBack, pushBack, triggerBack } from '../../lib/backButton.js'
 import '../../styles/interview-practical.css'
 
 function readProgress() {
@@ -30,6 +31,33 @@ export default function InterviewPracticalScreen({ onBack, onLearningContext }) 
   const doneCount = Object.values(progress).filter(Boolean).length
   const scenario = stage.scenarios[scenarioIndex % stage.scenarios.length]
   const percent = Math.round(doneCount / INTERVIEW_PRACTICAL_STAGES.length * 100)
+
+  const backRef = useRef(null)
+  backRef.current = () => {
+    if (view === 'stage') {
+      if (scenarioIndex > 0) {
+        setChoice(null)
+        setScenarioIndex(value => value - 1)
+      } else {
+        setView('route')
+      }
+      return
+    }
+    if (view === 'run') {
+      if (runStep > 0) setRunStep(value => value - 1)
+      else setView('route')
+      return
+    }
+    if (view === 'complete') {
+      setView('route')
+      return
+    }
+    onBack?.()
+  }
+  useEffect(() => {
+    const id = pushBack(() => backRef.current())
+    return () => popBack(id)
+  }, [])
 
   useEffect(() => {
     const current = view === 'run' ? INTERVIEW_PRACTICAL_STAGES[runStep] : stage
@@ -69,7 +97,7 @@ export default function InterviewPracticalScreen({ onBack, onLearningContext }) 
   }
 
   if (view === 'stage') return (
-    <PracticalFrame title={stage.title} eyebrow={`${stage.timing} · ${stage.goal}`} onBack={() => setView('route')}>
+    <PracticalFrame title={stage.title} eyebrow={`${stage.timing} · ${stage.goal}`} onBack={() => backRef.current()}>
       <section className="practical-stage-lead"><Target weight="fill" /><div><span>이번 연습 기준</span><h2>{stage.goal}</h2></div></section>
       <section className="practical-check-card">
         <header><ClipboardText weight="duotone" /><div><span>STUDENT CHECK</span><h3>내 행동 먼저 확인</h3></div></header>
@@ -93,7 +121,7 @@ export default function InterviewPracticalScreen({ onBack, onLearningContext }) 
     const current = INTERVIEW_PRACTICAL_STAGES[runStep]
     const isLast = runStep === INTERVIEW_PRACTICAL_STAGES.length - 1
     return (
-      <PracticalFrame title="전 과정 리허설" eyebrow={`${runStep + 1}/${INTERVIEW_PRACTICAL_STAGES.length} · 멈추지 않고 끝까지`} onBack={() => setView('route')}>
+      <PracticalFrame title="전 과정 리허설" eyebrow={`${runStep + 1}/${INTERVIEW_PRACTICAL_STAGES.length} · 멈추지 않고 끝까지`} onBack={() => backRef.current()}>
         <section className="practical-run-progress"><span>{INTERVIEW_PRACTICAL_STAGES.map((item, index) => <i key={item.id} className={index <= runStep ? 'is-on' : ''} />)}</span><b>{current.short}</b></section>
         <section className="practical-run-card">
           <div className="practical-run-clock"><Clock weight="duotone" /><span>{current.timing}</span></div>
@@ -113,13 +141,13 @@ export default function InterviewPracticalScreen({ onBack, onLearningContext }) 
   }
 
   if (view === 'complete') return (
-    <PracticalFrame title="실전면접 리허설" eyebrow="전 과정 1회 완료" onBack={() => setView('route')}>
+    <PracticalFrame title="실전면접 리허설" eyebrow="전 과정 1회 완료" onBack={() => backRef.current()}>
       <section className="practical-complete"><CheckCircle weight="fill" /><span>FULL RUN COMPLETE</span><h2>입장 전부터 건물 밖까지 완주</h2><p>다음 회차에는 고칠 행동을 하나만 정함. 답변 내용과 전달 행동을 함께 녹화해 비교함.</p><button onClick={startRun}><Repeat />다시 리허설</button></section>
     </PracticalFrame>
   )
 
   return (
-    <PracticalFrame title="실전면접" eyebrow="학습 다음 · 행동으로 완성" onBack={onBack}>
+    <PracticalFrame title="실전면접" eyebrow="학습 다음 · 행동으로 완성" onBack={() => backRef.current()}>
       <section className="practical-hero">
         <div><span>INTERVIEW FULL RUN</span><h2>대기부터 퇴장까지<br />한 번에 연습</h2><p>외운 예절보다 안내 확인·직무 답변·상황 회복을 익힘.</p></div>
         <div className="practical-score"><b>{percent}%</b><span>{doneCount}/{INTERVIEW_PRACTICAL_STAGES.length} 단계</span></div>
@@ -134,6 +162,6 @@ export default function InterviewPracticalScreen({ onBack, onLearningContext }) 
   )
 }
 
-function PracticalFrame({ title, eyebrow, onBack, children }) {
-  return <div className="screen interview-practical-screen"><header className="appbar practical-appbar"><button className="appbar-back" onClick={onBack} aria-label="이전 화면"><ArrowLeft /></button><div><small>{eyebrow}</small><span className="appbar-title">{title}</span></div></header><main className="screen-body interview-practical-body">{children}</main></div>
+function PracticalFrame({ title, eyebrow, children }) {
+  return <div className="screen interview-practical-screen"><header className="appbar practical-appbar"><button className="appbar-back" onClick={triggerBack} aria-label="이전 화면"><ArrowLeft /></button><div><small>{eyebrow}</small><span className="appbar-title">{title}</span></div></header><main className="screen-body interview-practical-body">{children}</main></div>
 }

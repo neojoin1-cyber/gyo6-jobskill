@@ -20,6 +20,7 @@ import WrongAnswerScreen from '../student/WrongAnswerScreen.jsx'
 import NotificationsScreen from '../student/NotificationsScreen.jsx'
 import RankingScreen from '../student/RankingScreen.jsx'
 import { campusCourseTarget } from '../../lib/studentCampusRoutes.js'
+import { popBack, pushBack, triggerBack } from '../../lib/backButton.js'
 import { supabase } from '../../lib/supabase.js'
 import { enterProjection, exitProjection, onFullscreenChange } from '../../lib/orientation.js'
 import TeacherLessonCoach from './TeacherLessonCoach.jsx'
@@ -108,6 +109,33 @@ export default function TeacherLearningPreview({
     learningContext.stage &&
     !['area-choice', 'lesson-choice'].includes(learningContext.stage),
   )
+
+  const previewBackRef = useRef(null)
+  previewBackRef.current = () => {
+    if (coachOpen) { setCoachOpen(false); return }
+    if (tab !== 'home') { setDeepLink(null); setTab('home'); return }
+    leavePreview()
+  }
+  useEffect(() => {
+    const id = pushBack(() => previewBackRef.current())
+    return () => popBack(id)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // 집중 화면과 교사 지원은 사용자가 방금 연 별도 단계다. PC/Android 뒤로
+  // 가기는 학습 내용을 건드리기 전에 이 층부터 닫는다.
+  useEffect(() => {
+    if (!focusMode) return undefined
+    const id = pushBack(() => {
+      setFocusMode(false)
+      exitProjection()
+    })
+    return () => popBack(id)
+  }, [focusMode])
+  useEffect(() => {
+    if (!coachOpen) return undefined
+    const id = pushBack(() => setCoachOpen(false))
+    return () => popBack(id)
+  }, [coachOpen])
 
   useEffect(() => {
     if (!restoreCoachRef.current || !contextReady) return
@@ -262,6 +290,12 @@ export default function TeacherLearningPreview({
     onBack?.()
   }
 
+  function goPrevious() {
+    if (coachOpen) { setCoachOpen(false); return }
+    if (tab !== 'home' && triggerBack()) return
+    leavePreview()
+  }
+
   useEffect(() => {
     if (!teachingMode || !classId || session || sessionBusy || !autoStartRef.current) return
     autoStartRef.current = false
@@ -279,7 +313,7 @@ export default function TeacherLearningPreview({
   return (
     <div ref={rootRef} className={`screen teacher-learning-preview ${teachingMode ? 'is-teaching' : ''} ${focusMode ? 'is-focus' : ''}`}>
       <header className="teacher-preview-context">
-        <button type="button" className="teacher-preview-back" onClick={leavePreview} aria-label="교사 캠퍼스로 돌아가기">
+        <button type="button" className="teacher-preview-back" onClick={goPrevious} aria-label="이전 화면으로 돌아가기">
           <ArrowLeft weight="bold" />
         </button>
         <span className="teacher-preview-mark"><Buildings weight="fill" /></span>

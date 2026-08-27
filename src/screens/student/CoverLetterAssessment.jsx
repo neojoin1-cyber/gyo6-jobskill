@@ -129,9 +129,9 @@ function CoverKnowledgeDiagnostic({ onGoLearn }) {
 
   if (!started) {
     return <section className="cover-assessment-setup">
-      <header><span>WRITING CHECK-UP</span><h3>실전 작성 진단</h3><p>초안을 읽고 실제로 고칠 부분을 판단함</p></header>
+      <header><span>COURSE FINAL CHECK</span><h3>자기소개서 종합 진단</h3><p>각 단원의 장면 확인과 형성평가를 마친 뒤, 작성 기준 전체를 새로운 초안 상황에 적용함.</p></header>
       <div className="cover-assessment-scopes"><button className={scope === 'all' ? 'is-on' : ''} onClick={() => setScope('all')}>전체</button>{areasOf(bank).map(area => <button key={area} className={scope === area ? 'is-on' : ''} onClick={() => setScope(area)}>{AREAS[area]}</button>)}</div>
-      <div className="cover-assessment-ready"><Target weight="duotone" /><div><b>{questions.length}문항 준비됨</b><p>완료 후 약한 기준과 학습 위치 안내</p></div></div>
+      <div className="cover-assessment-ready"><Target weight="duotone" /><div><b>{questions.length}문항 · 학습 전체 확인</b><p>완료 후 약한 작성 기준과 다시 볼 단원을 안내함</p></div></div>
       <button className="cover-assessment-start" onClick={start}><Play weight="fill" />진단 시작</button>
     </section>
   }

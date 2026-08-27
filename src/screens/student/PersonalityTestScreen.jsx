@@ -4,7 +4,7 @@
  * mode: 'quick'(진단 간이 ~48문항) | 'full'(모의 실전 ~190문항). 제한시간=문항수×SEC_PER_ITEM.
  */
 import { useState, useMemo, useRef, useEffect } from 'react'
-import { pushBack, popBack } from '../../lib/backButton.js'
+import { pushBack, popBack, triggerBack } from '../../lib/backButton.js'
 import { addXp } from '../../lib/xp.js'
 import { buildPersonalityItems, scorePersonality, SCALE, DIMENSIONS, paperCount } from '../../lib/personalityTest.js'
 import { savePersonalityResult } from '../../lib/personalityResults.js'
@@ -106,7 +106,7 @@ export default function PersonalityTestScreen({ subjectName = '인성검사', mo
     <div className="screen">
       <style>{PS_CSS}</style>
       <div className="appbar">
-        <button className="appbar-back" onClick={() => backRef.current()}>←</button>
+        <button className="appbar-back" onClick={triggerBack} aria-label="이전 화면">←</button>
         <span className="appbar-title">🧭 {meta.title}</span>
       </div>
 

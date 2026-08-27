@@ -5,7 +5,7 @@
  * (자율학습과 분리된 별도 mock_assessments 테이블에 저장 — 랭킹에 영향 없음)
  */
 import { useState, useMemo, useEffect, useRef } from 'react'
-import { pushBack, popBack } from '../../lib/backButton.js'
+import { pushBack, popBack, triggerBack } from '../../lib/backButton.js'
 import { supabase }         from '../../lib/supabase.js'
 import MissionScreen        from './MissionScreen.jsx'
 import JobAdaptationScreen  from './JobAdaptationScreen.jsx'
@@ -216,6 +216,7 @@ export default function MockAssessmentScreen({ subjectId, subjectName, onBack, o
   const backRef = useRef(null)
   backRef.current = () => {
     if (activeMission) { return }
+    if (fullComplete)  { setFullComplete(false); return }
     if (fullBreak)     { setFullBreak(null); return }
     if (passData)      { setPassData(null); return }
     if (mockConfig)    { setMockConfig(null); return }
@@ -350,7 +351,7 @@ export default function MockAssessmentScreen({ subjectId, subjectName, onBack, o
     return (
       <div className="screen">
         <div className="appbar">
-          <button className="appbar-back" onClick={() => setFullBreak(null)}>←</button>
+          <button className="appbar-back" onClick={triggerBack} aria-label="이전 화면">←</button>
           <span className="appbar-title">교시 완료</span>
         </div>
         <div className="screen-body" style={{ display: 'flex', alignItems: 'center' }}>
@@ -393,7 +394,7 @@ export default function MockAssessmentScreen({ subjectId, subjectName, onBack, o
     return (
       <div className="screen">
         <div className="appbar">
-          <button className="appbar-back" onClick={() => setFullComplete(false)}>←</button>
+          <button className="appbar-back" onClick={triggerBack} aria-label="이전 화면">←</button>
           <span className="appbar-title">교육부 직업공통능력 인증 실전 완료</span>
         </div>
         <div className="screen-body" style={{ display: 'flex', alignItems: 'center' }}>
@@ -423,7 +424,7 @@ export default function MockAssessmentScreen({ subjectId, subjectName, onBack, o
     return (
       <div className="screen">
         <div className="appbar">
-          <button className="appbar-back" onClick={() => setPassData(null)}>←</button>
+          <button className="appbar-back" onClick={triggerBack} aria-label="이전 화면">←</button>
           <span className="appbar-title">🎯 외부평가 대비 학습 준비도</span>
         </div>
         <div className="screen-body">
@@ -511,7 +512,7 @@ export default function MockAssessmentScreen({ subjectId, subjectName, onBack, o
   return (
     <div className="screen">
       <div className="appbar">
-        <button className="appbar-back" onClick={onBack}>←</button>
+        <button className="appbar-back" onClick={triggerBack} aria-label="이전 화면">←</button>
         <span className="appbar-title">📝 {subjectName} 모의고사</span>
       </div>
 

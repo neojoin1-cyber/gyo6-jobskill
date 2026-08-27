@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { pushBack, popBack } from '../../lib/backButton.js'
+import { pushBack, popBack, triggerBack } from '../../lib/backButton.js'
 import { buildDiagnosticPaper, diagnosticGroupOfQuestion, getDiagnosticScopes } from '../../lib/mockData.js'
 import { saveWrongAnswer } from '../../lib/wrongAnswers.js'
 import { addXp } from '../../lib/xp.js'
@@ -166,7 +166,7 @@ export default function DiagnosticScreen({ subjectId, subjectName, onBack, onGoT
     const hasUnits = scopes.some(s => s.level === 'unit')
     return (
       <div className="screen">
-        <div className="appbar"><button className="appbar-back" onClick={onBack}>←</button><span className="appbar-title">{subjectName} 진단평가</span></div>
+        <div className="appbar"><button className="appbar-back" onClick={triggerBack} aria-label="이전 화면">←</button><span className="appbar-title">{subjectName} 진단평가</span></div>
         <div className="screen-body">
           <div style={{ ...card, border: '1px solid #818CF8' }}>
             <p style={{ fontSize: 12, fontWeight: 800, color: '#4338CA', marginBottom: 5 }}>학습 처방형 진단</p>
@@ -225,7 +225,7 @@ export default function DiagnosticScreen({ subjectId, subjectName, onBack, onGoT
     const pct = Math.round((i / paper.length) * 100)
     return (
       <div className="screen">
-        <div className="appbar"><button className="appbar-back" onClick={() => backRef.current()}>←</button><span className="appbar-title">진단 {i + 1} / {paper.length}</span></div>
+        <div className="appbar"><button className="appbar-back" onClick={triggerBack} aria-label="이전 화면">←</button><span className="appbar-title">진단 {i + 1} / {paper.length}</span></div>
         <div style={{ height: 5, background: 'var(--border)' }}><div style={{ height: '100%', width: `${pct}%`, background: 'var(--primary)' }} /></div>
         <div className="screen-body">
           <div style={{ maxWidth: 640, margin: '0 auto' }}>
@@ -259,7 +259,7 @@ export default function DiagnosticScreen({ subjectId, subjectName, onBack, onGoT
   const focus = r.weak[0] || r.units[0] || r.areas[0]
   return (
     <div className="screen">
-      <div className="appbar"><button className="appbar-back" onClick={onBack}>←</button><span className="appbar-title">진단 결과</span></div>
+      <div className="appbar"><button className="appbar-back" onClick={triggerBack} aria-label="이전 화면">←</button><span className="appbar-title">진단 결과</span></div>
       <div className="screen-body">
         <div style={{ ...card, background: onTrack ? '#ECFDF5' : '#FFF7ED', border: `1px solid ${onTrack ? '#10B981' : '#FB923C'}` }}>
           <p style={{ fontSize: 12, fontWeight: 800, color: onTrack ? '#047857' : '#C2410C' }}>{r.scope.name} · 학습 진단</p>

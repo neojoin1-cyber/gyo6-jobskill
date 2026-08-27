@@ -10,7 +10,7 @@ import { noteStudied } from '../../lib/dailyChallenge.js'
 import DemandCoach, { DemandChip } from './DemandCoach.jsx'
 import StudyModeToggle, { StudyModeStrip } from './StudyModeToggle.jsx'
 import { learningModeOf } from '../../lib/learningMode.js'
-import { pushBack, popBack } from '../../lib/backButton.js'
+import { pushBack, popBack, triggerBack } from '../../lib/backButton.js'
 import { recordActivity } from '../../lib/activity.js'
 import { saveWrongAnswer } from '../../lib/wrongAnswers.js'
 import { addXp }           from '../../lib/xp.js'
@@ -392,10 +392,7 @@ export default function StudyScreen({ initialSubject, initialTrack, initialArea,
       <div className="screen">
         <div className="appbar">
           {onBack && (
-            <button className="appbar-back" onClick={() => {
-              if (subjectId === 'recruit-written' && trackId) setTrackId(null)
-              else onBack()
-            }}>←</button>
+            <button className="appbar-back" onClick={triggerBack} aria-label="이전 화면">←</button>
           )}
           <span className="appbar-title">{subject?.label ?? '학습하기'}</span>
         </div>
@@ -509,7 +506,7 @@ export default function StudyScreen({ initialSubject, initialTrack, initialArea,
     return (
       <div className="screen">
         <div className="appbar">
-          <button className="appbar-back" onClick={() => { setAreaId(null); setLessonId(null) }}>←</button>
+          <button className="appbar-back" onClick={triggerBack} aria-label="이전 화면">←</button>
           <span className="appbar-title">{selectedArea?.label}</span>
         </div>
         <div className="screen-body">
@@ -604,7 +601,7 @@ export default function StudyScreen({ initialSubject, initialTrack, initialArea,
     return (
       <div className="screen">
         <div className="appbar">
-          <button className="appbar-back" onClick={() => setLessonId(null)}>←</button>
+          <button className="appbar-back" onClick={triggerBack} aria-label="이전 화면">←</button>
           <span className="appbar-title">학습</span>
         </div>
         <div className="screen-body">
@@ -650,7 +647,7 @@ export default function StudyScreen({ initialSubject, initialTrack, initialArea,
     return (
       <div className="screen">
         <div className="appbar">
-          <button className="appbar-back" onClick={handleBack}>←</button>
+          <button className="appbar-back" onClick={triggerBack} aria-label="이전 화면">←</button>
           <span className="appbar-title">🏆 게임 결과</span>
         </div>
         <div className="screen-body">
@@ -815,12 +812,14 @@ export default function StudyScreen({ initialSubject, initialTrack, initialArea,
           display: 'flex', alignItems: 'center', gap: 6, padding: '0 8px', height: 44,
           borderBottom: '1px solid var(--border)', background: 'var(--card)', flexShrink: 0,
         }}>
-          <button onClick={handleBack}
+          <button onClick={triggerBack} aria-label="이전 화면으로 돌아가기"
             style={{ background: 'none', border: 'none', fontSize: 20, cursor: 'pointer', color: 'var(--primary)', padding: '0 4px', flexShrink: 0 }}>←</button>
           <span style={{ flex: 1, fontSize: 13, fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             📖 {backTitle}
           </span>
-          <StudyModeToggle mode={studyMode} onChange={switchMode} compact />
+          <span className="study-scene-position" aria-label={`현재 학습 장면 ${learnCardStep + 1}/${Math.max(1, contextSummaryCards.length)}`}>
+            장면 {learnCardStep + 1}/{Math.max(1, contextSummaryCards.length)}
+          </span>
         </div>
         {/* 요점정리 화면에도 같은 띠를 띄운다. 한쪽에만 있으면 "두 모드가
             뭐가 다른지 모르겠다"는 말을 그대로 듣게 된다. */}
@@ -835,6 +834,7 @@ export default function StudyScreen({ initialSubject, initialTrack, initialArea,
             onStepChange={setLearnCardStep}
             onInteractionChange={setSummaryInteraction}
             onStartQuiz={() => switchMode('game')}
+            startQuizLabel="단원 도전 시작 →"
           />
         </div>
       </div>
@@ -850,14 +850,14 @@ export default function StudyScreen({ initialSubject, initialTrack, initialArea,
         borderBottom: '1px solid var(--border)',
         background: 'var(--card)', flexShrink: 0,
       }}>
-        <button onClick={handleBack}
+        <button onClick={triggerBack} aria-label="이전 화면으로 돌아가기"
           style={{ background: 'none', border: 'none', fontSize: 20, cursor: 'pointer', color: 'var(--primary)', minWidth: 44, minHeight: 44, padding: 0, flexShrink: 0 }}>
           ←
         </button>
         <span style={{ flex: 1, fontSize: 13, fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
           {backTitle}
         </span>
-        <StudyModeToggle mode={studyMode} onChange={switchMode} />
+        <StudyModeToggle mode={studyMode} onChange={switchMode} labels={{ game: '단원 도전' }} />
         <span style={{ fontSize: 12, color: 'var(--text-muted)', fontWeight: 600, flexShrink: 0 }}>
           {questionIdx + 1}/{total}
         </span>
@@ -875,7 +875,7 @@ export default function StudyScreen({ initialSubject, initialTrack, initialArea,
         right={isLearn ? null : `${gameCorrect}개 맞힘 · ${answeredCount}/${total}`} />
 
       {/* 콘텐츠 */}
-      <div ref={scrollRef} style={{ flex: 1, minHeight: 0, overflowY: 'auto', padding: '10px 14px 8px' }}
+      <div ref={scrollRef} className="study-question-body" style={{ flex: 1, minHeight: 0, overflowY: 'auto', padding: '10px 14px 8px' }}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >

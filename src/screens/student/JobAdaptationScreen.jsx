@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { pushBack, popBack } from '../../lib/backButton.js'
+import { pushBack, popBack, triggerBack } from '../../lib/backButton.js'
 import CompactText from '../../components/CompactText.jsx'
 import {
   JOB_ADAPTATION_SCALE,
@@ -120,7 +120,7 @@ export default function JobAdaptationScreen({
     <div className="screen">
       <style>{CSS}</style>
       <div className="appbar">
-        <button className="appbar-back" onClick={() => backRef.current()}>←</button>
+        <button className="appbar-back" onClick={triggerBack} aria-label="이전 화면">←</button>
         <span className="appbar-title">{meta.title}</span>
       </div>
 

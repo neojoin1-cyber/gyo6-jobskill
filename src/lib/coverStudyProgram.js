@@ -64,6 +64,6 @@ export const COVER_STUDY_PROGRAM = {
   title: '자기소개서 자율학습',
   authority: '고졸 공채 취업서류',
   description: '문항 요구·감점 초안·직접 고쳐쓰기·근거 점검을 한 장씩 실습함.',
-  challengeLabel: '실전 작성 진단으로 확인',
+  challengeLabel: '자기소개서 종합 진단 시작',
   areas: buildCoverAreas(),
 }
