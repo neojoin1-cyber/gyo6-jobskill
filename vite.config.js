@@ -71,7 +71,7 @@ export default defineConfig(({ mode }) => ({
       manifest: false,
     }),
   ],
-  base: process.env.GITHUB_ACTIONS ? '/gyo6-jobskill/' : '/',
+  base: mode === 'native' ? '/' : process.env.GITHUB_ACTIONS ? '/gyo6-jobskill/' : '/',
   server: { port: 5173, strictPort: true },
   build: {
     outDir: 'dist',

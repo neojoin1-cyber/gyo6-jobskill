@@ -17,6 +17,9 @@ if (existsSync(`${outputRoot}/sw.js`) || existsSync(`${outputRoot}/registerSW.js
 if (/registerSW\.js|navigator\.serviceWorker\.register/.test(index)) {
   fail('Capacitor index still registers a service worker')
 }
+if (androidMode && index.includes('/gyo6-jobskill/')) {
+  fail('Capacitor index contains the GitHub Pages base path')
+}
 if (!index.includes('id="boot-guard"') || !index.includes('data-boot-recover')) {
   fail('static pre-React recovery screen is missing')
 }
