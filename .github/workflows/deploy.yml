@@ -80,12 +80,19 @@ jobs:
       - name: Build native web bundle and sync Android
         run: npm run android:sync
 
+      - name: Enable Android emulator acceleration
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
       - name: Verify Android install, exit, and recovery
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 36
           arch: x86_64
           profile: pixel_6
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -no-metrics
           script: npm run release:android -- --skip-web-build
 
   build:

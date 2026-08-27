@@ -13,10 +13,10 @@ if (!existsSync(keystore) || !existsSync(properties)) {
 if (!skipSync) runNpm(['run', 'android:sync'], { stdio: 'inherit' })
 
 const gradle = resolve(ROOT, 'android', process.platform === 'win32' ? 'gradlew.bat' : 'gradlew')
-const command = process.platform === 'win32' ? (process.env.ComSpec || 'cmd.exe') : gradle
+const command = process.platform === 'win32' ? (process.env.ComSpec || 'cmd.exe') : 'sh'
 const args = process.platform === 'win32'
   ? ['/d', '/c', `${gradle} app:bundleRelease --no-daemon`]
-  : ['app:bundleRelease', '--no-daemon']
+  : [gradle, 'app:bundleRelease', '--no-daemon']
 run(command, args, { cwd: resolve(ROOT, 'android'), stdio: 'inherit' })
 
 const source = resolve(ROOT, 'android/app/build/outputs/bundle/release/app-release.aab')

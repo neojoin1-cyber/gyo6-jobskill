@@ -62,10 +62,10 @@ if (!skipWebBuild) runNpm(['run', 'android:sync'], { stdio: 'inherit' })
 const serial = await ensureEmulator()
 
 const gradleArgs = ['app:assembleDebug', 'app:assembleDebugAndroidTest', '--no-daemon']
-const gradleCommand = process.platform === 'win32' ? (process.env.ComSpec || 'cmd.exe') : gradle
+const gradleCommand = process.platform === 'win32' ? (process.env.ComSpec || 'cmd.exe') : 'sh'
 const commandArgs = process.platform === 'win32'
   ? ['/d', '/c', `${gradle} ${gradleArgs.join(' ')}`]
-  : gradleArgs
+  : [gradle, ...gradleArgs]
 run(gradleCommand, commandArgs, {
   cwd: resolve(ROOT, 'android'),
   stdio: 'inherit',
