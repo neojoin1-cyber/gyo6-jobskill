@@ -1,7 +1,7 @@
 import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
 import { resolve } from 'node:path'
-import { ROOT, logPass, run, runNpm } from './release-utils.mjs'
+import { gradleEnv, ROOT, logPass, run, runNpm } from './release-utils.mjs'
 
 const skipSync = process.argv.includes('--skip-sync')
 const keystore = resolve(ROOT, 'android/app/jobhigh-release.jks')
@@ -17,7 +17,7 @@ const command = process.platform === 'win32' ? (process.env.ComSpec || 'cmd.exe'
 const args = process.platform === 'win32'
   ? ['/d', '/c', `${gradle} app:bundleRelease --no-daemon`]
   : [gradle, 'app:bundleRelease', '--no-daemon']
-run(command, args, { cwd: resolve(ROOT, 'android'), stdio: 'inherit' })
+run(command, args, { cwd: resolve(ROOT, 'android'), env: gradleEnv(), stdio: 'inherit' })
 
 const source = resolve(ROOT, 'android/app/build/outputs/bundle/release/app-release.aab')
 if (!existsSync(source)) throw new Error('서명된 내부 테스트 AAB를 찾지 못했습니다.')

@@ -2,7 +2,7 @@ import { existsSync, readdirSync } from 'node:fs'
 import { spawn, spawnSync } from 'node:child_process'
 import { homedir } from 'node:os'
 import { join, resolve } from 'node:path'
-import { logPass, run, runNpm, ROOT } from './release-utils.mjs'
+import { gradleEnv, logPass, run, runNpm, ROOT } from './release-utils.mjs'
 
 const sleep = ms => new Promise(resolvePromise => setTimeout(resolvePromise, ms))
 const sdk = process.env.ANDROID_SDK_ROOT || process.env.ANDROID_HOME
@@ -68,6 +68,7 @@ const commandArgs = process.platform === 'win32'
   : [gradle, ...gradleArgs]
 run(gradleCommand, commandArgs, {
   cwd: resolve(ROOT, 'android'),
+  env: gradleEnv(),
   stdio: 'inherit',
   shell: false,
 })

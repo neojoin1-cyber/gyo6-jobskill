@@ -59,6 +59,21 @@ export function runNpm(args, options) {
   return run(process.execPath, [cli, ...args], options)
 }
 
+export function gradleEnv() {
+  const probe = spawnSync('java', ['-XshowSettings:properties', '-version'], {
+    encoding: 'utf8',
+    shell: false,
+  })
+  const output = `${probe.stdout ?? ''}\n${probe.stderr ?? ''}`
+  const version = output.match(/^\s*java\.version\s*=\s*(\S+)/m)?.[1]
+  const javaHome = output.match(/^\s*java\.home\s*=\s*(.+)$/m)?.[1]?.trim()
+  const major = Number(version?.match(/^(?:1\.)?(\d+)/)?.[1])
+  if (probe.status !== 0 || !javaHome || !Number.isFinite(major) || major < 21) {
+    throw new Error('Android 빌드에는 PATH에서 실행 가능한 Java 21 이상이 필요합니다.')
+  }
+  return { ...process.env, JAVA_HOME: javaHome }
+}
+
 export function parseJsonOutput(output, label) {
   const start = Math.min(...['{', '[']
     .map(token => output.indexOf(token))
