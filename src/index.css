@@ -1903,6 +1903,7 @@ html.classroom-focus-mode .trial-session-bar { display: none; }
 }
 
 .save-exit-icon svg { width: 28px; height: 28px; }
+.save-exit-icon.is-warning { color: #b91c1c; background: #fee2e2; }
 .save-exit-card h2 { margin: 0 0 8px; font-size: 20px; line-height: 1.35; }
 .save-exit-card > p { margin: 0; color: var(--text-muted); font-size: 14px; line-height: 1.6; }
 
@@ -1924,6 +1925,24 @@ html.classroom-focus-mode .trial-session-bar { display: none; }
 .save-exit-status b { font-size: 14px; }
 .save-exit-status small { color: #475569; font-size: 12px; line-height: 1.45; }
 .save-exit-error { display: flex; gap: 7px; align-items: flex-start; margin-top: 12px !important; color: #b91c1c !important; text-align: left; }
+
+.save-exit-loss {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  margin-top: 20px;
+  padding: 13px 14px;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #b91c1c;
+  background: #fff7f7;
+  text-align: left;
+}
+
+.save-exit-loss > svg { flex: 0 0 auto; width: 22px; height: 22px; }
+.save-exit-loss span { display: grid; gap: 3px; }
+.save-exit-loss b { font-size: 14px; line-height: 1.45; }
+.save-exit-loss small { color: #475569; font-size: 12px; line-height: 1.5; }
 
 .save-exit-card footer {
   display: grid;
@@ -1953,10 +1972,45 @@ html.classroom-focus-mode .trial-session-bar { display: none; }
   color: #fff;
 }
 
-.save-exit-card footer.has-discard .is-discard {
+.save-exit-card footer button svg { flex: 0 0 auto; width: 17px; height: 17px; }
+
+.save-exit-card footer .is-discard {
   grid-column: 1 / -1;
-  border-color: #fecaca;
-  color: #b91c1c;
+  min-height: auto;
+  padding: 8px 10px;
+  border-color: transparent;
+  background: transparent;
+  color: #64748b;
+  font-size: 13px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.save-exit-card footer .is-discard small {
+  display: block;
+  margin-top: 3px;
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-decoration: none;
+}
+
+.save-exit-card footer button.is-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border-color: #b91c1c;
+  background: #b91c1c;
+  color: #fff;
+}
+
+.save-exit-card.is-discard-confirm footer button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
 }
 
 .save-exit-card footer button:disabled { cursor: wait; opacity: 0.68; }

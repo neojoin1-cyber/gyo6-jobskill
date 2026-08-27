@@ -39,6 +39,83 @@ function clip(value, max = 220) {
   return [...text].length > max ? `${[...text].slice(0, max).join('').trim()}...` : text
 }
 
+function engagementSubject(point = {}) {
+  const sample = typeof point.sampleQuestion === 'object' ? point.sampleQuestion : {}
+  const value = point.topic || sample.stem || point.situation || sample.context || '이 장면의 판단'
+  return clip(value.replace(/[?？.!。]+$/g, ''), 34)
+}
+
+/**
+ * 학습 장면별 판단 문구를 만든다. 콘텐츠에 직접 작성한 문구가 있으면 항상 우선한다.
+ * 과목 공통 문구만 반복하지 않고 현재 주제·자료 유형·응답 방식을 문장에 반영한다.
+ */
+export function buildEngagementCopy({ courseKind, point = {}, contextKind = '', isListening = false } = {}) {
+  const custom = point.engagementCopy || point.engagement || {}
+  if (custom.first && custom.reveal && custom.twist) return custom
+
+  const sample = typeof point.sampleQuestion === 'object' ? point.sampleQuestion : {}
+  const source = sample.sourceQuestion || {}
+  const subject = engagementSubject(point)
+  const quoted = `“${subject}”`
+  const hasVisual = Boolean(source.visual || sample.visual || point.visual)
+  const isWriting = sample.type === 'writing-practice' || courseKind === 'cover-letter'
+  const isInterview = Boolean(sample.isInterview) || courseKind === 'interview'
+  const isReflection = sample.type === 'reflection' || courseKind === 'personality'
+
+  let generated
+  if (isListening) generated = {
+    first: `음성을 먼저 듣고, 질문 ${quoted}에 답할 단서를 한 가지 메모하세요.`,
+    reveal: `질문 ${quoted}의 결정 단서가 실제 음성의 어느 표현에 있었는지 확인하세요.`,
+    twist: `음성을 한 번만 다시 들을 수 있다면 해당 질문과 관련된 어떤 표현을 먼저 확인할까요?`,
+  }
+  else if (isWriting) generated = {
+    first: `지원 문항에서 주제 ${quoted}에 필요한 사실을 표시한 뒤 첫 문장을 직접 고쳐 쓰세요.`,
+    reveal: `내 문장의 행동과 결과가 주제 ${quoted}와 어떻게 연결되는지 확인하세요.`,
+    twist: `지원 직무가 바뀐다면 주제 ${quoted}에 맞는 근거도 그대로 사용할 수 있을까요?`,
+  }
+  else if (isInterview) generated = {
+    first: `질문 ${quoted}에 답할 내 경험 한 가지를 고른 뒤 20초 동안 먼저 말해 보세요.`,
+    reveal: `내 답에서 해당 질문과 연결되는 본인 행동과 확인 가능한 결과를 찾으세요.`,
+    twist: `면접관이 질문 ${quoted}에 대해 “본인이 직접 한 일은 무엇인가요?”라고 되묻는다면?`,
+  }
+  else if (isReflection) generated = {
+    first: `주제 ${quoted}에 가장 가까운 평소 행동을 고르고 실제 장면 하나를 떠올리세요.`,
+    reveal: `선택한 응답이 해당 주제와 관련된 평소 행동과 일관되는지 확인하세요.`,
+    twist: `상대와 장소가 달라져도 주제 ${quoted}에 같은 기준으로 답할 수 있을까요?`,
+  }
+  else if (contextKind === 'misread') generated = {
+    first: `제시문과 잘못 읽은 뜻을 비교해 질문 ${quoted}에서 달라지는 행동을 먼저 말하세요.`,
+    reveal: `질문 ${quoted}의 판단을 바꾼 원문 표현을 정확히 짚으세요.`,
+    twist: `오해한 표현이 반대 의미였다면 질문 ${quoted}에 대한 판단도 바뀌어야 할까요?`,
+  }
+  else if (contextKind === 'mistake') generated = {
+    first: `상황 속 실수를 찾아 질문 ${quoted}의 기준으로 가장 먼저 고칠 행동을 고르세요.`,
+    reveal: `그 행동이 질문 ${quoted}의 원칙과 어긋난 구체적인 이유를 확인하세요.`,
+    twist: `실수의 원인이 개인이 아니라 업무 절차였다면 질문 ${quoted}의 해결 순서도 달라질까요?`,
+  }
+  else if (hasVisual) generated = {
+    first: `자료에서 질문 ${quoted}에 답할 숫자·표현·조건을 먼저 하나 표시하세요.`,
+    reveal: `표시한 자료가 질문 ${quoted}의 결론과 어떻게 연결되는지 확인하세요.`,
+    twist: `자료의 핵심 수치나 조건 하나가 달라지면 질문 ${quoted}의 판단도 바뀔까요?`,
+  }
+  else if (courseKind === 'recruitment' || courseKind === 'ncs') generated = {
+    first: `질문 ${quoted}에 답하기 전에 제시문에서 결정 조건 하나를 표시하세요.`,
+    reveal: `질문 ${quoted}의 정답 근거와 가장 그럴듯한 함정의 차이를 한 문장으로 설명하세요.`,
+    twist: `결정 조건 하나가 반대로 바뀐다면 질문 ${quoted}의 선택도 바뀌어야 할까요?`,
+  }
+  else generated = {
+    first: `질문 ${quoted}에 맞는 행동을 먼저 고르고 상황 속 근거를 한 가지 짚으세요.`,
+    reveal: `처음 판단이 질문 ${quoted}의 실제 기준과 어디에서 같거나 달랐는지 확인하세요.`,
+    twist: `현장 조건 하나가 달라져도 질문 ${quoted}에 같은 판단을 유지할 수 있을까요?`,
+  }
+
+  return {
+    first: custom.first || generated.first,
+    reveal: custom.reveal || generated.reveal,
+    twist: custom.twist || generated.twist,
+  }
+}
+
 function tokens(value) {
   return new Set((plain(value).toLowerCase().match(/[가-힣]{2,}|[a-z]{3,}|\d+(?:\.\d+)?/g) || [])
     .filter(token => !STOP_WORDS.has(token)))

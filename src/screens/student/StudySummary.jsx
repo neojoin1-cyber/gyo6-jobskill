@@ -3,7 +3,7 @@ import QuestionMedia from './QuestionMedia.jsx'
 import QuestionPriorityBadge from './QuestionPriorityBadge.jsx'
 import ListeningPrompt from './ListeningPrompt.jsx'
 import PulldownForm from './PulldownForm.jsx'
-import { buildLearningMistakes, buildLearningPoints, learningVisualFor } from '../../lib/learningExperience.js'
+import { buildEngagementCopy, buildLearningMistakes, buildLearningPoints, learningVisualFor } from '../../lib/learningExperience.js'
 import { analyzeWritingDraft } from '../../lib/writingDraftCheck.js'
 import { buildAutonomousFormative } from '../../lib/autonomousFormative.js'
 import { learningCaseProvenance } from '../../lib/learningCaseProvenance.js'
@@ -129,44 +129,6 @@ function buildMissionCriteria(mustRemember = [], terms = [], mistakes = []) {
     ...mistakes.map(mistake => mistake.point),
   ]
   return [...new Set(candidates.map(value => String(value || '').replace(/\s+/g, ' ').trim()).filter(Boolean))].slice(0, 6)
-}
-
-function engagementCopy(courseKind, isListening = false) {
-  if (isListening) return {
-    first: '음성을 먼저 듣고, 들린 단서만으로 판단하세요.',
-    reveal: '들은 단서와 해설을 맞대어 확인하세요.',
-    twist: '한 번만 다시 들을 수 있다면 어떤 단서를 먼저 메모할까요?',
-  }
-  if (courseKind === 'cover-letter') return {
-    first: '채용 담당자가 처음 15초만 읽는다고 생각하고 직접 고쳐 쓰세요.',
-    reveal: '내 문장 속 실제 근거와 문항 요구가 연결되는지 확인하세요.',
-    twist: '지원 기업이 바뀌어도 이 문장을 그대로 제출할 수 있을까요?',
-  }
-  if (courseKind === 'interview') return {
-    first: '모범 답변을 보기 전에 20초 동안 실제로 소리 내어 답해 보세요.',
-    reveal: '내 답과 핵심 구조를 비교하고 빠진 행동 근거를 찾으세요.',
-    twist: '면접관이 “그래서 본인이 직접 한 일은 무엇인가요?”라고 되묻는다면?',
-  }
-  if (courseKind === 'personality') return {
-    first: '좋아 보이는 답이 아니라 평소 행동과 가까운 쪽을 먼저 고르세요.',
-    reveal: '비슷한 상황에서도 같은 기준으로 답할 수 있는지 확인하세요.',
-    twist: '친한 사람과 낯선 사람이 함께 있을 때도 같은 선택을 할까요?',
-  }
-  if (courseKind === 'recruitment') return {
-    first: '해설을 보기 전에 제한 시간 안에 조건부터 표시하고 판단하세요.',
-    reveal: '정답보다 먼저, 내 판단을 바꾼 결정적 조건을 찾으세요.',
-    twist: '풀이 시간이 절반이라면 어떤 조건부터 확인해야 할까요?',
-  }
-  if (courseKind === 'ncs') return {
-    first: '현장 조건을 먼저 읽고 가장 타당한 행동을 예측하세요.',
-    reveal: '정답 근거와 함정 선지의 차이를 한 문장으로 설명하세요.',
-    twist: '조건 하나가 달라지면 지금 선택도 달라져야 할까요?',
-  }
-  return {
-    first: '설명을 읽기 전에 현장에서 내가 할 행동을 먼저 판단하세요.',
-    reveal: '처음 판단과 실제 기준이 어디서 갈렸는지 확인하세요.',
-    twist: '현장 조건이 하나 바뀌어도 같은 판단을 유지할 수 있을까요?',
-  }
 }
 
 function reconsiderFollowUp(choice, topic) {
@@ -560,7 +522,13 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, for
     const sourceQuestion = point && typeof point.sampleQuestion === 'object'
       ? point.sampleQuestion.sourceQuestion
       : null
-    const beat = point ? engagementCopy(summary?.courseKind, Boolean(sourceQuestion?.audioText)) : null
+    const context = point ? learningContext(point.situation, Boolean(sourceQuestion?.audioText)) : null
+    const beat = point ? buildEngagementCopy({
+      courseKind: summary?.courseKind,
+      point,
+      contextKind: context?.kind,
+      isListening: Boolean(sourceQuestion?.audioText),
+    }) : null
     onInteractionChange({
       step,
       cardType: activeCard?.type || '',
@@ -683,7 +651,12 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, for
           const sourceQuestion = typeof p.sampleQuestion === 'object' ? p.sampleQuestion.sourceQuestion : null
           const isListeningPoint = !!sourceQuestion?.audioText
           const context = learningContext(p.situation, isListeningPoint)
-          const beat = engagementCopy(summary.courseKind, isListeningPoint)
+          const beat = buildEngagementCopy({
+            courseKind: summary.courseKind,
+            point: p,
+            contextKind: context.kind,
+            isListening: isListeningPoint,
+          })
           const hasPrompt = Boolean(p.sampleQuestion || p.example)
           const showEvidence = isOpen || !hasPrompt
           const selectedReconsider = reconsidered[step]

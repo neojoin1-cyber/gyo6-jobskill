@@ -50,6 +50,9 @@ export default function AdminShell({ profile }) {
           if (Capacitor.isNativePlatform()) App.exitApp()
           return result
         }}
+        onDiscardExit={confirmExit === 'logout' && isSharedDevice()
+          ? () => logoutSafely({ clearDevice: true, discardLocal: true })
+          : undefined}
         title={confirmExit === 'logout' ? '운영 기록을 저장하고 로그아웃할까요?' : '현재 내용을 저장하고 종료할까요?'}
         description={confirmExit === 'logout' && isSharedDevice() ? '동기화가 끝나면 이 공용 PC에서 현재 계정의 기기 사본을 제거합니다.' : '현재 운영 위치와 변경 내용을 저장한 뒤 안전하게 종료합니다.'}
         actionLabel={confirmExit === 'logout' ? '저장 후 로그아웃' : '저장 후 종료'}
