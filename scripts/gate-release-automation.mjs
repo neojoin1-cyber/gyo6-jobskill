@@ -26,12 +26,12 @@ for (const name of ['release:migrations', 'release:sync', 'release:android', 're
 requireText(pkg.scripts?.prebuild ?? '', 'gate:release-automation', '일반 빌드에서 출시 자동화 연결 상태를 검사하지 않음')
 
 const workflow = read('.github/workflows/deploy.yml')
-for (const token of ['production-approval:', 'OPERATIONS_APPROVED', 'remote-preflight:', 'android-preflight:', 'release:migrations -- --apply', 'release:sync', 'release:android -- --skip-web-build', 'needs: [remote-preflight, android-preflight]']) {
+for (const token of ['production-approval:', 'OPERATIONS_APPROVED', 'supabase link --project-ref', 'remote-preflight:', 'android-preflight:', 'release:migrations -- --apply', 'release:sync', 'release:android -- --skip-web-build', 'needs: [remote-preflight, android-preflight]']) {
   requireText(workflow, token, `GitHub 출시 게이트 누락: ${token}`)
 }
 
 const internal = read('.github/workflows/internal-test.yml')
-for (const token of ['"codex/**"', 'release:migrations', 'release:sync', 'release:android -- --skip-web-build', 'actions/upload-artifact@v4']) {
+for (const token of ['"codex/**"', 'supabase link --project-ref', 'release:migrations', 'release:sync', 'release:android -- --skip-web-build', 'actions/upload-artifact@v4']) {
   requireText(internal, token, `GitHub 내부 테스트 게이트 누락: ${token}`)
 }
 
