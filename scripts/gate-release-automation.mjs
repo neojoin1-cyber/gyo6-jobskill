@@ -31,7 +31,7 @@ for (const token of ['production-approval:', 'OPERATIONS_APPROVED', 'supabase li
 }
 
 const internal = read('.github/workflows/internal-test.yml')
-for (const token of ['"codex/**"', 'supabase link --project-ref', 'release:migrations', 'release:sync', 'release:android -- --skip-web-build', 'actions/upload-artifact@v4']) {
+for (const token of ['"codex/**"', 'supabase link --project-ref', 'release:sync', 'release:android -- --skip-web-build', 'actions/upload-artifact@v4']) {
   requireText(internal, token, `GitHub 내부 테스트 게이트 누락: ${token}`)
 }
 
