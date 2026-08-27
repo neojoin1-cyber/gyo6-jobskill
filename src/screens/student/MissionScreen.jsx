@@ -12,6 +12,7 @@ import { englishStudyQuestions, jobCommonMediaQuestions } from '../../lib/jobCom
 import ListeningPrompt from './ListeningPrompt.jsx'
 import QuestionMedia from './QuestionMedia.jsx'
 import DifficultyBadge from './DifficultyBadge.jsx'
+import QuestionPriorityBadge from './QuestionPriorityBadge.jsx'
 import CompactText from '../../components/CompactText.jsx'
 import { popBack, pushBack, triggerBack } from '../../lib/backButton.js'
 
@@ -701,6 +702,7 @@ export default function MissionScreen({ mission, onBack, onViewWrongAnswers }) {
                 }}>📚 {topicOf(q)}</span>
               : <span />}
             <span style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0 }}>
+              <QuestionPriorityBadge q={q} subjectId={mission.subject_id} />
               <DifficultyBadge q={q} />
               <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>문항 {idx+1}</span>
             </span>

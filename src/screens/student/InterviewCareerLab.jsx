@@ -497,6 +497,9 @@ function InterviewScriptBuilder() {
   const motivationReady = String(draft.motivation || '').trim().length >= INTERVIEW_SCRIPT_LIMITS.motivation.minLength
   const closingReady = String(draft.closing || '').trim().length >= INTERVIEW_SCRIPT_LIMITS.closing.minLength
   const ready = draft.targetName && draft.role && introductionReady && motivationReady && closingReady && !sourceChanged && !foreignOrganization
+  const scriptOrder = ['introduction', 'motivation', 'closing']
+  const scriptReady = { introduction: introductionReady, motivation: motivationReady, closing: closingReady }
+  const activeIndex = scriptOrder.indexOf(active)
 
   useEffect(() => {
     supabase.rpc('rpc_my_cover_letters').then(({ data }) => setHistory(Array.isArray(data) ? data : []))
@@ -532,9 +535,10 @@ function InterviewScriptBuilder() {
     })
     setScriptSets(current => [created, ...current])
     setActiveScriptId(created.id)
+    setActive('introduction')
     setShowCreate(false)
     setNewTitle('')
-    setNotice({ ok: true, text: '새 면접 답변 세트를 만들었어요. 세 답변을 동시에 작성할 수 있어요.' })
+    setNotice({ ok: true, text: '새 면접 답변 세트를 만들었어요. 1분 자기소개부터 순서대로 작성합니다.' })
   }
 
   function removeScriptSet() {
@@ -589,6 +593,18 @@ function InterviewScriptBuilder() {
     const current = String(draft[active] || '').trim()
     const nextValue = `${current}${current ? ' ' : ''}${text}`.slice(0, config.limit)
     persist({ ...draft, [active]: nextValue })
+  }
+
+  function continueScript() {
+    if (!scriptReady[active]) {
+      setNotice({ ok: false, text: `${config.label}을 권장 최소 ${config.minLength}자까지 먼저 완성해 주세요.` })
+      return
+    }
+    const next = scriptOrder[activeIndex + 1]
+    if (next) {
+      setActive(next)
+      setNotice(null)
+    }
   }
 
   const assists = active === 'introduction'
@@ -690,18 +706,22 @@ function InterviewScriptBuilder() {
       {linkedCoverItems.length > 0 && <details className="script-linked-source"><summary><Eye />연결된 자기소개서 원문 {linkedCoverItems.length}개 확인<CaretRight /></summary><div>{linkedCoverItems.map(item => <article key={item.id}><b>{item.label}</b><p>{item.answer}</p></article>)}</div></details>}
     </section>
 
-    <nav className="script-type-tabs"><button className={active === 'introduction' ? 'is-on' : ''} onClick={() => setActive('introduction')}>1분 자기소개</button><button className={active === 'motivation' ? 'is-on' : ''} onClick={() => setActive('motivation')}>지원동기</button><button className={active === 'closing' ? 'is-on' : ''} onClick={() => setActive('closing')}>마지막 한마디</button></nav>
+    <nav className="script-type-tabs" aria-label="면접 답변 작성 단계">{scriptOrder.map((id, index) => {
+      const unlocked = index === 0 || scriptOrder.slice(0, index).every(key => scriptReady[key])
+      return <button key={id} className={active === id ? 'is-on' : index < activeIndex ? 'is-done' : ''} disabled={!unlocked} onClick={() => { if (unlocked && index <= activeIndex) setActive(id) }}><span>{scriptReady[id] ? <CheckCircle weight="fill" /> : index + 1}</span>{INTERVIEW_SCRIPT_LIMITS[id].label}</button>
+    })}</nav>
 
     <section className="script-writing-card">
       <header><div><span>{active === 'introduction' ? '전공·강점 → 대표 근거 → 기여' : active === 'motivation' ? '개인 계기 → 지원처 근거 → 직무 기여' : '핵심 강점 회수 → 첫 행동 → 감사'}</span><h3>{config.label} 완성</h3></div><b className={value.length < config.minLength ? 'is-short' : 'is-ready'}>{value.length}/{config.limit}자<small>약 {speakingSeconds(value)}초</small></b></header>
       <div className="script-assist-list">{assists.map(item => <button key={item.label} onClick={() => append(item.text)}><Plus /><span><b>{item.label}</b><small>{item.text}</small></span></button>)}</div>
       <label><span>내 답변 <small>권장 {config.minLength}~{config.limit}자</small></span><textarea value={value} maxLength={config.limit} rows={active === 'closing' ? 6 : 8} onChange={event => persist({ ...draft, [active]: event.target.value })} placeholder={active === 'introduction' ? '전공과 직무를 연결한 한 문장부터 시작함' : active === 'motivation' ? '지원처를 선택한 나의 계기부터 시작함' : '면접에서 확인된 강점 하나를 짧게 회수함'} /></label>
       <details className="script-model"><summary><Eye />지원처·내 근거를 반영한 구조 예시<CaretRight /></summary><p>{model}</p><small>문장 복사보다 구조 확인 · 사실과 표현은 내 것으로 바꿈</small></details>
+      {active !== 'closing' && <button className="script-next-step" onClick={continueScript}>다음 단계 · {INTERVIEW_SCRIPT_LIMITS[scriptOrder[activeIndex + 1]].label}<CaretRight /></button>}
     </section>
 
-    <section className="script-consistency-check"><h3>연결 점검</h3><div><span className={draft.targetName ? 'is-ok' : ''}><CheckCircle />지원처 일치</span><span className={draft.role ? 'is-ok' : ''}><CheckCircle />직무 일치</span><span className={introductionReady ? 'is-ok' : ''}><CheckCircle />자기소개 분량</span><span className={motivationReady ? 'is-ok' : ''}><CheckCircle />지원동기 분량</span><span className={closingReady ? 'is-ok' : ''}><CheckCircle />마지막 말 분량</span><span className={!foreignOrganization && !sourceChanged ? 'is-ok' : ''}><CheckCircle />세 답변 근거 일치</span></div></section>
+    {active === 'closing' && <section className="script-consistency-check"><h3>4단계 · 연결 점검</h3><div><span className={draft.targetName ? 'is-ok' : ''}><CheckCircle />지원처 일치</span><span className={draft.role ? 'is-ok' : ''}><CheckCircle />직무 일치</span><span className={introductionReady ? 'is-ok' : ''}><CheckCircle />자기소개 분량</span><span className={motivationReady ? 'is-ok' : ''}><CheckCircle />지원동기 분량</span><span className={closingReady ? 'is-ok' : ''}><CheckCircle />마지막 말 분량</span><span className={!foreignOrganization && !sourceChanged ? 'is-ok' : ''}><CheckCircle />세 답변 근거 일치</span></div></section>}
     {notice && <p className={`cover-notice ${notice.ok ? 'is-ok' : 'is-error'}`}>{notice.ok ? <CheckCircle weight="fill" /> : <WarningCircle weight="fill" />}{notice.text}</p>}
-    <button className="script-submit" onClick={submit} disabled={submitting}><PaperPlaneTilt weight="fill" />{submitting ? '보내는 중' : '세 답변 교사 첨삭 요청'}</button>
+    {active === 'closing' && <button className="script-submit" onClick={submit} disabled={submitting || !ready}><PaperPlaneTilt weight="fill" />{submitting ? '보내는 중' : ready ? '세 답변 교사 첨삭 요청' : '세 답변과 연결 점검을 먼저 완료'}</button>}
     <CoverHistory history={activeHistory} />
   </div>
 }
@@ -717,7 +737,7 @@ function CoverLetterBuilder({ initialWorkspace = 'learn', onLearningContext }) {
   const [activeApplicationId, setActiveApplicationId] = useState(initialPortfolio.activeId)
   const [draft, setDraft] = useState(() => initialPortfolio.projects.find(item => item.id === initialPortfolio.activeId)?.draft || initialPortfolio.projects[0].draft)
   const [stepIndex, setStepIndex] = useState(0)
-  const [workspace, setWorkspace] = useState(initialWorkspace === 'practical' ? 'write' : initialWorkspace)
+  const [workspace, setWorkspace] = useState(initialWorkspace === 'practical' ? 'practical' : initialWorkspace)
   const [practicalFlow] = useState(initialWorkspace === 'practical')
   const assessmentFlow = workspace === 'diagnostic' || workspace === 'mock'
   const [view, setView] = useState('write')
@@ -1050,24 +1070,22 @@ function CoverLetterBuilder({ initialWorkspace = 'learn', onLearningContext }) {
         <div><span>{flowMeta.eyebrow}</span><h2>{flowMeta.title}</h2><p>{flowMeta.description}</p></div>
         {practicalFlow && <b>{evidenceBank.length}<small>근거 카드</small></b>}
       </section>}
-      {practicalFlow && <nav className="cover-workspace-tabs" aria-label="실전자기소개서 메뉴">
-        <button className={workspace === 'write' ? 'is-on' : ''} onClick={() => setWorkspace('write')}><PencilSimple />작성실</button>
-        <button className={workspace === 'evidence' ? 'is-on' : ''} onClick={() => setWorkspace('evidence')}><ClipboardText />나의 근거</button>
-        <button className={workspace === 'practical' ? 'is-on' : ''} onClick={() => setWorkspace('practical')}><FolderOpen />진행 현황</button>
-      </nav>}
       {workspace === 'practical' && <CoverApplicationPortfolio applications={applications} activeId={activeApplicationId} history={history} evidenceCount={evidenceBank.length} onCreate={createApplication} onSelect={selectApplication} onStatus={updateApplicationStatus} onEvidence={() => setWorkspace('evidence')} />}
       {workspace === 'learn' && <CoverLearningLibrary onLearningContext={onLearningContext} />}
       {workspace === 'diagnostic' && <CoverLetterAssessment mode="diagnostic" onGoLearn={() => setWorkspace('learn')} />}
       {workspace === 'mock' && <CoverLetterAssessment mode="mock" onGoLearn={() => setWorkspace('learn')} onGoPractical={() => setWorkspace('practical')} />}
-      {workspace === 'evidence' && <><CoverApplicationContext applications={applications} activeId={activeApplicationId} mode="evidence" onSelect={id => selectApplication(id, 'evidence')} onProgress={() => setWorkspace('practical')} /><EvidenceWorkbench items={evidenceBank} onSave={saveEvidence} onDelete={deleteEvidence} onUse={useEvidence} /></>}
+      {workspace === 'evidence' && <><CoverApplicationContext applications={applications} activeId={activeApplicationId} mode="evidence" onSelect={id => selectApplication(id, 'evidence')} onProgress={() => setWorkspace('write')} /><EvidenceWorkbench items={evidenceBank} onSave={saveEvidence} onDelete={deleteEvidence} onUse={useEvidence} /></>}
       {workspace === 'write' && <>
       <CoverApplicationContext applications={applications} activeId={activeApplicationId} mode="write" onSelect={id => selectApplication(id, 'write')} onProgress={() => setWorkspace('practical')} />
       <div className="cover-progress"><div><strong>{sector.headline}</strong><span>{completed}/{COVER_LETTER_FIELDS.length}</span></div><div><i style={{ width: `${pct}%` }} /></div><p>자동 저장됨 · 한 단계씩 점검한 뒤 완성본으로 연결함</p></div>
-      <nav className="cover-step-tabs" aria-label="자기소개서 작성 단계">{COVER_LETTER_STEPS.map((item, index) => <button key={item.id} className={index === stepIndex ? 'is-current' : index < stepIndex ? 'is-past' : ''} onClick={() => setStepIndex(index)}><span>{index < stepIndex ? <CheckCircle weight="fill" /> : index + 1}</span><b>{item.title.replace(/^\d+\.\s*/, '')}</b></button>)}</nav>
+      <nav className="cover-step-tabs" aria-label="자기소개서 작성 단계">{COVER_LETTER_STEPS.map((item, index) => <button key={item.id} className={index === stepIndex ? 'is-current' : index < stepIndex ? 'is-past' : 'is-future'} disabled={index > stepIndex} onClick={() => { if (index <= stepIndex) setStepIndex(index) }}><span>{index < stepIndex ? <CheckCircle weight="fill" /> : index + 1}</span><b>{item.title.replace(/^\d+\.\s*/, '')}</b></button>)}</nav>
       <section className="cover-step-heading"><span>STEP {stepIndex + 1}</span><h2>{step.title.replace(/^\d+\.\s*/, '')}</h2><p>{step.check}</p></section>
       {step.id === 'target' && <><div className="cover-sector-picker">{SECTORS.map(item => { const Icon = item.icon; return <button key={item.id} className={draft.sector === item.id ? 'is-active' : ''} onClick={() => update('sector', item.id)}><Icon weight={draft.sector === item.id ? 'fill' : 'regular'} /><b>{item.label}</b><small>{COVER_LETTER_SECTOR_CONTENT[item.id].focus[0]}</small></button> })}</div><label className="cover-org-select"><span>연구한 지원처 불러오기</span><select value={draft.organizationId || ''} onChange={event => update('organizationId', event.target.value)}><option value="">직접 입력</option>{organizations.map(item => <option key={item.id} value={item.id}>{item.name} · {item.group}</option>)}</select></label><div className="cover-sector-focus">{sector.focus.map(item => <span key={item}><CheckCircle weight="fill" />{item}</span>)}</div>{organization && <details className="cover-org-sample"><summary><FileText weight="duotone" /><span><b>{organization.name} 완성 예시 보기</b><small>구조만 참고하고 경험·수치 복사는 금지</small></span><CaretRight /></summary><div>{organization.sampleCoverLetter.map(item => <section key={item.title}><h3>{item.title}</h3><p>{item.body}</p></section>)}</div></details>}</>}
       {step.id === 'questions' && <QuestionComposer sector={draft.sector} organization={organization} items={questionItems} draft={draft} evidenceBank={evidenceBank} onChange={items => update('coverItems', items)} />}
-      {step.id === 'audit' ? <section className="cover-ready"><FileText weight="duotone" /><h3>{ready ? '완성본을 만들 준비가 됐어요' : `${missing.length + questionProblems.length}가지를 더 확인해요`}</h3><p>{missing.length ? missing.map(item => item.label).join(' · ') : questionProblems.length ? questionProblems[0] : `${questionItems.length}개 문항을 화면에서 먼저 읽고 PDF 저장 또는 선생님 첨삭 요청으로 이어갈 수 있어요.`}</p><button onClick={openPreview} disabled={!ready}><Eye weight="fill" />완성본 생성·확인</button></section> : step.id !== 'questions' && <div className="cover-fields">{stepFields.map(field => <CoverField key={field.key} field={field} value={draft[field.key] || ''} sector={draft.sector} organization={organization} onChange={value => update(field.key, value)} />)}</div>}
+      {step.id === 'audit' ? <section className="cover-ready"><FileText weight="duotone" /><h3>{ready ? '완성본을 만들 준비가 됐어요' : `${missing.length + questionProblems.length}가지를 더 확인해요`}</h3><p>{missing.length ? missing.map(item => item.label).join(' · ') : questionProblems.length ? questionProblems[0] : `${questionItems.length}개 문항을 화면에서 먼저 읽고 PDF 저장 또는 선생님 첨삭 요청으로 이어갈 수 있어요.`}</p><button onClick={openPreview} disabled={!ready}><Eye weight="fill" />완성본 생성·확인</button></section> : step.id !== 'questions' && <>
+        {step.id === 'experience' && <section className="cover-evidence-entry"><ClipboardText weight="duotone" /><div><b>내 경험 근거부터 꺼내기</b><p>저장한 실습·프로젝트 경험을 선택하면 행동과 결과 칸에 연결됩니다.</p></div><button onClick={() => setWorkspace('evidence')}>{evidenceBank.length ? `근거 ${evidenceBank.length}장 보기` : '근거 만들기'}<CaretRight /></button></section>}
+        <div className="cover-fields">{stepFields.map(field => <CoverField key={field.key} field={field} value={draft[field.key] || ''} sector={draft.sector} organization={organization} onChange={value => update(field.key, value)} />)}</div>
+      </>}
       {notice && <p className={`cover-notice ${notice.ok ? 'is-ok' : 'is-error'}`}>{notice.ok ? <CheckCircle weight="fill" /> : <WarningCircle weight="fill" />}{notice.text}</p>}
       <footer className="cover-step-actions"><button onClick={() => setStepIndex(value => Math.max(0, value - 1))} disabled={stepIndex === 0}><ArrowLeft />이전</button>{stepIndex < COVER_LETTER_STEPS.length - 1 ? <button className="is-primary" onClick={goNext}>다음 단계<CaretRight /></button> : <button className="is-primary" onClick={openPreview} disabled={!ready}><Eye />완성본 보기</button>}</footer>
       <CoverHistory history={applicationHistory} />
@@ -1081,7 +1099,7 @@ function CoverApplicationContext({ applications, activeId, mode, onSelect, onPro
   const available = applications.filter(item => item.status !== 'archived')
   return <section className="cover-active-application">
     <div><span>{mode === 'evidence' ? '근거를 연결할 지원서' : '작성 중인 지원서 선택'}</span><label><select value={active?.id || ''} onChange={event => onSelect(event.target.value)} aria-label="현재 작업할 지원서">{available.map(item => <option key={item.id} value={item.id}>{item.recruitmentTitle} · {item.draft.targetName || '지원처 미정'}</option>)}</select></label><small>{active?.draft.targetName || '지원처 선택 전'} · {active?.draft.role || '직무 선택 전'}{active?.deadline ? ` · ${active.deadline} 마감` : ''}</small></div>
-    <button onClick={onProgress}><FolderOpen />진행 현황</button>
+    <button onClick={onProgress}>{mode === 'evidence' ? <ArrowLeft /> : <FolderOpen />}{mode === 'evidence' ? '작성으로 돌아가기' : '지원서 목록'}</button>
   </section>
 }
 

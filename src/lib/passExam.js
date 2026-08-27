@@ -5,7 +5,7 @@ import { answerIdxOf } from './questionNorm.js'
  *  - 식음료 25V3: 지필 C01·C02·C06·C07·C08(자동채점) + 면접 C03·C04·C05(자가확인). 8중 6.
  *  - 품질  22V2: 7 능력단위(지필 4 + 면접 3). 면접 단위 MCQ는 지식 준비도만 점검한다.
  *
- * 시험지는 빈출 가중 + 변형 출제(buildSubjectMockPaper)로 회차마다 신선하게 구성된다.
+ * 시험지는 근거 중요도 가중 + 변형 출제(buildSubjectMockPaper)로 회차마다 신선하게 구성된다.
  */
 import { buildSubjectMockPaper } from './mockData.js'
 

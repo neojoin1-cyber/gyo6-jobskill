@@ -6,6 +6,7 @@ import { isSharedDevice, setSharedDevice } from '../../lib/deviceSettings.js'
 import { LEARNING_DATA_GROUPS, resetLearningGroup } from '../../lib/learningDataManagement.js'
 import { logoutSafely } from '../../lib/sessionLifecycle.js'
 import RankingScreen from './RankingScreen.jsx'
+import SaveExitDialog from '../../components/SaveExitDialog.jsx'
 
 function formatSync(value) {
   if (!value) return '이 기기에서 아직 동기화하지 않음'
@@ -20,13 +21,20 @@ export default function AccountDataScreen() {
   const [syncResult, setSyncResult] = useState('')
   const [status, setStatus] = useState(() => getDeviceSyncStatus())
   const [confirm, setConfirm] = useState(null)
+  const [confirmLogout, setConfirmLogout] = useState(false)
   const initials = useMemo(() => String(profile?.display_name || '나').slice(0, 1), [profile?.display_name])
 
   async function syncNow() {
     setSyncing(true)
-    const result = await syncDeviceState({ force: true })
+    const result = await syncDeviceState()
     setStatus(getDeviceSyncStatus())
-    setSyncResult(result.ok ? 'PC와 휴대폰에서 이어갈 준비가 됐습니다.' : result.offline ? '인터넷 연결 후 자동으로 동기화합니다.' : '동기화하지 못했습니다. 잠시 후 다시 시도해 주세요.')
+    setSyncResult(result.ok
+      ? 'PC와 휴대폰에서 이어갈 준비가 됐습니다.'
+      : result.offline
+        ? '인터넷 연결 후 자동으로 동기화합니다.'
+        : result.tooLarge
+          ? '저장 자료가 커서 동기화를 멈췄습니다. 오래된 작성본을 정리한 뒤 다시 시도해 주세요.'
+          : '동기화하지 못했습니다. 잠시 후 다시 시도해 주세요.')
     setSyncing(false)
   }
 
@@ -68,10 +76,19 @@ export default function AccountDataScreen() {
           </div>
         </section>
 
-        <button className="account-logout" onClick={() => logoutSafely({ clearDevice: shared })}><SignOut /> 안전하게 로그아웃</button>
+        <button className="account-logout" onClick={() => setConfirmLogout(true)}><SignOut /> 저장하고 로그아웃</button>
       </div>
 
       {confirm && <div className="account-confirm" role="dialog" aria-modal="true"><div><h2>{confirm.label} 기록을 지울까요?</h2><p>다른 과목과 계정 정보는 그대로 유지됩니다. 삭제 내용은 다음 동기화 때 다른 기기에도 반영됩니다.</p><footer><button onClick={() => setConfirm(null)}>취소</button><button className="is-danger" onClick={() => { resetLearningGroup(confirm.id); setConfirm(null); setStatus(getDeviceSyncStatus()) }}>기록 지우기</button></footer></div></div>}
+      <SaveExitDialog
+        open={confirmLogout}
+        onCancel={() => setConfirmLogout(false)}
+        onSaveExit={() => logoutSafely({ clearDevice: shared })}
+        onDiscardExit={shared ? () => logoutSafely({ clearDevice: true, discardLocal: true }) : undefined}
+        title="학습 기록을 저장하고 로그아웃할까요?"
+        description={shared ? '서버 동기화가 끝나면 이 공용 PC에서 현재 계정의 학습 사본을 제거합니다.' : '현재 학습 위치와 작성 내용을 동기화한 뒤 로그아웃합니다.'}
+        actionLabel="저장 후 로그아웃"
+      />
     </div>
   )
 }

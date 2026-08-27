@@ -189,6 +189,9 @@ function inspect(scope, summary, questions) {
       failures.push(`${scope} 핵심 ${index + 1}: 화면 문항 없음`)
       return
     }
+    if ($('[data-case-provenance]').length !== 1) {
+      failures.push(`${scope} 핵심 ${index + 1}: 사례의 공식 기출·기준 연계·유형 연습 구분 표시 없음`)
+    }
     inspectRequiredSource(scope, point, $, index)
     if ($('[data-engagement-phase="first-judgment"]').length !== 1) {
       failures.push(`${scope} 핵심 ${index + 1}: 설명 전 먼저 판단 단계 없음`)
@@ -213,6 +216,9 @@ function inspect(scope, summary, questions) {
       return
     }
     if (sample.isInterview) {
+      if ($('[data-learning-question="interview"]').length !== 1 || !$.root().text().includes(String(sample.stem || '').trim())) {
+        failures.push(`${scope} 핵심 ${index + 1}: 먼저 답할 면접 질문이 핵심 공개 전 화면에 보이지 않음`)
+      }
       if (!$('button').toArray().some(button => $(button).text().includes('20초 동안 먼저 답한 뒤 핵심 보기'))) {
         failures.push(`${scope} 핵심 ${index + 1}: 면접 질문 열기 버튼 없음`)
       }

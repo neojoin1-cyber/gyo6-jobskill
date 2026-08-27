@@ -1,9 +1,9 @@
 /**
- * 모의고사 시험지 생성기 (결정적·빈출가중·영역 stratified·변형 출제).
+ * 모의고사 시험지 생성기 (결정적·근거 중요도가중·영역 stratified·변형 출제).
  * 같은 (scope, paperNo)는 항상 같은 시험지를 만든다 → DB에 문항 ID를 저장할 필요 없음.
  *
  *  - 전체 학습내용을 모두 수용: 영역(area)별 라운드로빈으로 고르게 출제
- *  - 출제 빈도 가중: weight(q)가 큰 문항을 각 영역 안에서 먼저 뽑음(빈출 우대)
+ *  - 근거 중요도 가중: 최신·빈출·기출·중요 근거가 있는 주제를 우선 반영
  *  - 랜덤이되 시험지별 고정: scope+paperNo로 시드 → 회차마다 다른 조합, 매번 동일 재현
  *  - 변형 출제: 검증된 변형뱅크가 있으면 (scope,paperNo,id) 시드로 변형을 결정적 선택
  *    → 같은 개념을 회차마다 다른 표현·선지로 묻어 "새 문제처럼" 반복 학습(정답·개념 동일)
@@ -74,7 +74,7 @@ export function buildMockPaper(pool, scope, paperNo, opts = {}) {
   if (qs.length <= count) {
     ordered = weightedOrder(qs, weight, rnd)
   } else {
-    // 영역별 그룹 → 각 그룹 내부를 빈출가중 결정적 정렬
+    // 영역별 그룹 → 각 그룹 내부를 근거 중요도가중 결정적 정렬
     const groups = {}
     for (const q of qs) { const a = areaKey(q); (groups[a] ||= []).push(q) }
     const areaList = Object.keys(groups).sort()

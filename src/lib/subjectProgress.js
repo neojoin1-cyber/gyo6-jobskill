@@ -171,17 +171,33 @@ export function getProgressColor(pct) {
 
 // ── 서버 동기화 ─────────────────────────────────────────────────────────
 // 학생 카드와 교사·관리자 학습현황이 같은 기준을 보도록 진행율 pct를 서버에 미러링.
-// 값이 바뀐 과목만 전송(세션 내 중복 방지). best-effort — 실패해도 학습 흐름 무방해.
+// 값이 바뀐 과목만 전송(앱을 다시 열어도 중복 방지). best-effort — 실패해도 학습 흐름 무방해.
 const _syncedPct = {}
+const SYNCED_PROGRESS_KEY = 'gyo6_subject_progress_synced_v1'
+
+function loadSyncedProgress() {
+  try { return JSON.parse(localStorage.getItem(SYNCED_PROGRESS_KEY) || '{}') } catch { return {} }
+}
+
+function saveSyncedProgress(progress) {
+  try { localStorage.setItem(SYNCED_PROGRESS_KEY, JSON.stringify(progress)) } catch { /* 다음 방문 때 재시도 */ }
+}
+
 export async function syncSubjectProgress(subjectId) {
   const p = getSubjectProgress(subjectId)
   if (!p) return
-  if (_syncedPct[subjectId] === p.pct) return
-  _syncedPct[subjectId] = p.pct
+  const signature = `${p.pct}:${p.done}:${p.total}:${p.answered ?? ''}`
+  const persisted = loadSyncedProgress()
+  // 아직 아무것도 하지 않은 과목은 서버 행이 없어도 교사 화면에서 0%로 해석한다.
+  if ((p.pct === 0 && !p.answered) || _syncedPct[subjectId] === signature || persisted[subjectId] === signature) return
+  _syncedPct[subjectId] = signature
   try {
-    await supabase.rpc('rpc_sync_subject_progress', {
+    const { error } = await supabase.rpc('rpc_sync_subject_progress', {
       p_subject_id: subjectId, p_pct: p.pct,
       p_sections_done: p.done, p_sections_total: p.total, p_answered: p.answered,
     })
+    if (error) throw error
+    persisted[subjectId] = signature
+    saveSyncedProgress(persisted)
   } catch { delete _syncedPct[subjectId] }
 }

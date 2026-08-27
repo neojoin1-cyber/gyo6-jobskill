@@ -242,6 +242,11 @@ export default function TeacherLessonCoach({ subject, mode, context = {}, projec
               <header><span>{support.position}</span><b>{materials.heading}</b></header>
               {materials.situation && <p className="teacher-coach-source">{materials.situation}</p>}
             </section>
+            <section className="teacher-coach-provenance" data-teacher-case-provenance={materials.provenance.kind}>
+              <b>{materials.provenance.label}</b>
+              <p>{materials.provenance.detail}</p>
+              <small>{materials.provenance.caution}</small>
+            </section>
             <section className="teacher-coach-explain"><b>이 화면에서 더 설명할 내용</b><ul>{materials.explanations.map(item => <li key={item}>{item}</li>)}</ul></section>
             {materials.answerSummary && <section className="teacher-coach-answer"><b>교사용 정답 확인</b><p>{materials.answerSummary}</p></section>}
             {materials.examples.map(example => (

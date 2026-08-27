@@ -1,10 +1,12 @@
 import { useState, useMemo, useEffect } from 'react'
 import QuestionMedia from './QuestionMedia.jsx'
+import QuestionPriorityBadge from './QuestionPriorityBadge.jsx'
 import ListeningPrompt from './ListeningPrompt.jsx'
 import PulldownForm from './PulldownForm.jsx'
 import { buildLearningMistakes, buildLearningPoints, learningVisualFor } from '../../lib/learningExperience.js'
 import { analyzeWritingDraft } from '../../lib/writingDraftCheck.js'
 import { buildAutonomousFormative } from '../../lib/autonomousFormative.js'
+import { learningCaseProvenance } from '../../lib/learningCaseProvenance.js'
 import CompactText from '../../components/CompactText.jsx'
 
 const EMPTY_QUESTIONS = []
@@ -239,6 +241,17 @@ function LearnLines({ text }) {
   )
 }
 
+function CaseProvenance({ courseKind, sample }) {
+  const provenance = learningCaseProvenance(courseKind, sample)
+  return (
+    <aside className="learning-case-provenance" data-case-provenance={provenance.kind}>
+      <b>{provenance.label}</b>
+      <p>{provenance.detail}</p>
+      <small>{provenance.caution}</small>
+    </aside>
+  )
+}
+
 function SampleQuestionCard({ sample, example, courseKind, isOpen, selected, onSelect, onChange, onOpen }) {
   const language = learningLanguage(courseKind, !!sample.sourceQuestion?.audioText)
   if (sample.type === 'writing-practice') {
@@ -252,6 +265,7 @@ function SampleQuestionCard({ sample, example, courseKind, isOpen, selected, onS
     }
     return (
       <div data-learning-question="writing-practice" className="learning-writing-practice" style={{ marginTop: 10, background: '#F8FAFF', border: '1.5px solid #A5B4FC', borderRadius: 10, padding: '12px 14px' }}>
+        <CaseProvenance courseKind={courseKind} sample={sample} />
         <p style={{ fontSize: 12, fontWeight: 800, color: '#4338CA', marginBottom: 8 }}>{sample.format || '실전 고쳐쓰기'}</p>
         {sample.context && <div style={{ background: '#EEF2FF', borderRadius: 8, padding: '9px 11px', marginBottom: 10 }}><b style={{ fontSize: 12, color: '#4338CA' }}>지원 문항</b><p style={{ marginTop: 4, fontSize: 13, lineHeight: 1.7 }}>{sample.context}</p></div>}
         {sample.draft && <div style={{ background: '#FFF1F2', border: '1px solid #FECDD3', borderRadius: 8, padding: '9px 11px', marginBottom: 10 }}><b style={{ fontSize: 12, color: '#BE123C' }}>감점 초안</b><p style={{ marginTop: 4, fontSize: 13, lineHeight: 1.7 }}>{sample.draft}</p></div>}
@@ -307,6 +321,7 @@ function SampleQuestionCard({ sample, example, courseKind, isOpen, selected, onS
   if (sample.type === 'reflection') {
     return (
       <div data-learning-question="reflection" className="learning-reflection-card">
+        <CaseProvenance courseKind={courseKind} sample={sample} />
         <p className="learning-reflection-label">{sample.label || '응답 기준 성찰 · 정답 없음'}</p>
         {sample.context && <p className="learning-reflection-context">{sample.context}</p>}
         <p className="learning-reflection-stem">{sample.stem}</p>
@@ -328,26 +343,30 @@ function SampleQuestionCard({ sample, example, courseKind, isOpen, selected, onS
     )
   }
   if (sample.isInterview) {
-    return isOpen ? (
+    return (
       <div data-learning-question="interview" style={{ marginTop: 10, background: '#FFFDE7', border: '1.5px solid #FFE082', borderRadius: 10, padding: '12px 14px' }}>
+        <CaseProvenance courseKind={courseKind} sample={sample} />
         <p style={{ fontSize: 12, fontWeight: 800, color: '#B45309', marginBottom: 8 }}>{sample.format || '면접 질문형'}</p>
+        {sample.context && <p style={{ marginBottom: 7, color: '#92400E', fontSize: 12, fontWeight: 750 }}>{sample.context}</p>}
         <p style={{ fontSize: 'clamp(13px, 3.85vw, 14.5px)', fontWeight: 600, lineHeight: 1.75, color: 'var(--text)', marginBottom: 10 }}>{sample.stem}</p>
-        <div style={{ background: '#e8f5e9', borderRadius: 8, padding: '10px 12px', border: '1px solid var(--success)' }}>
-          <p style={{ fontSize: 12, fontWeight: 800, color: 'var(--success)', marginBottom: 5 }}>
-            {sample.modelAnswer ? '모범 답변 핵심' : '직접 답해 볼 차례'}
-          </p>
-          {sample.modelAnswer ? (
-            <p style={{ fontSize: 'clamp(12.5px, 3.7vw, 13.5px)', lineHeight: 1.72, whiteSpace: 'pre-wrap', color: '#1b5e20' }}>{sample.modelAnswer}</p>
-          ) : (
-            <p style={{ fontSize: 12.5, lineHeight: 1.7, color: '#1b5e20' }}>읽는 순서로 답의 뼈대 구성 · 자신의 경험과 행동 추가</p>
-          )}
-          {sample.answerPoints?.length > 0 && <ul className="learning-answer-points">{sample.answerPoints.map((point, index) => <li key={index}>{point}</li>)}</ul>}
-        </div>
+        {isOpen ? (
+          <div style={{ background: '#e8f5e9', borderRadius: 8, padding: '10px 12px', border: '1px solid var(--success)' }}>
+            <p style={{ fontSize: 12, fontWeight: 800, color: 'var(--success)', marginBottom: 5 }}>
+              {sample.modelAnswer ? '모범 답변 핵심' : '직접 답할 때 확인할 핵심'}
+            </p>
+            {sample.modelAnswer ? (
+              <p style={{ fontSize: 'clamp(12.5px, 3.7vw, 13.5px)', lineHeight: 1.72, whiteSpace: 'pre-wrap', color: '#1b5e20' }}>{sample.modelAnswer}</p>
+            ) : (
+              <p style={{ fontSize: 12.5, lineHeight: 1.7, color: '#1b5e20' }}>질문의 의도에 맞춰 자신의 경험과 직접 한 행동을 붙여 답합니다.</p>
+            )}
+            {sample.answerPoints?.length > 0 && <ul className="learning-answer-points">{sample.answerPoints.map((point, index) => <li key={index}>{point}</li>)}</ul>}
+          </div>
+        ) : (
+          <button onClick={onOpen} style={{ width: '100%', padding: '10px', borderRadius: 8, border: '1.5px dashed #D97706', background: 'transparent', color: '#B45309', fontWeight: 800, fontSize: 13, cursor: 'pointer' }}>
+            20초 동안 먼저 답한 뒤 핵심 보기
+          </button>
+        )}
       </div>
-    ) : (
-      <button onClick={onOpen} style={{ marginTop: 10, width: '100%', padding: '10px', borderRadius: 10, border: '1.5px dashed #D97706', background: 'transparent', color: '#B45309', fontWeight: 800, fontSize: 13, cursor: 'pointer' }}>
-        20초 동안 먼저 답한 뒤 핵심 보기
-      </button>
     )
   }
 
@@ -356,6 +375,7 @@ function SampleQuestionCard({ sample, example, courseKind, isOpen, selected, onS
     const filled = Object.values(selected || {}).filter(value => value != null).length
     return (
       <div data-learning-question="pulldown" style={{ marginTop: 10, background: '#FFFDE7', border: '1.5px solid #FFE082', borderRadius: 10, padding: '12px 14px' }}>
+        <CaseProvenance courseKind={courseKind} sample={sample} />
         <p style={{ fontSize: 12, fontWeight: 800, color: '#B45309', marginBottom: 8 }}>{language.practiceLabel} · 풀다운형</p>
         {sample.context && <p style={{ fontSize: 12.5, lineHeight: 1.75, whiteSpace: 'pre-wrap', marginBottom: 10 }}>{sample.context}</p>}
         <p style={{ fontSize: 'clamp(13px, 3.85vw, 14.5px)', fontWeight: 700, lineHeight: 1.75, color: 'var(--text)', marginBottom: 10 }}>{sample.stem}</p>
@@ -373,6 +393,7 @@ function SampleQuestionCard({ sample, example, courseKind, isOpen, selected, onS
   const answers = new Set(Array.isArray(sample.answer) ? sample.answer : [sample.answer])
   return (
     <div data-learning-question="choice" style={{ marginTop: 10, background: '#FFFDE7', border: '1.5px solid #FFE082', borderRadius: 10, padding: '12px 14px' }}>
+      <CaseProvenance courseKind={courseKind} sample={sample} />
       <p style={{ fontSize: 12, fontWeight: 800, color: '#B45309', marginBottom: 8 }}>{language.practiceLabel} · {sample.format || '선택형'}</p>
       {sample.context && (
         <div style={{ background: '#f0f4ff', border: '1px solid #c7d7f5', borderRadius: 8, padding: '9px 11px', marginBottom: 10 }}>
@@ -672,6 +693,7 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, for
               {/* 헤더: 핵심 번호 + 모드 배지 */}
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10, flexWrap: 'wrap' }}>
                 <span style={{ fontSize: 12, fontWeight: 800, color: 'var(--text-muted)' }}>핵심 {card.n}</span>
+                <QuestionPriorityBadge q={sourceQuestion || p} subjectId={summary.courseKind} />
                 {p.mode && (
                   <span style={{ fontSize: 12, fontWeight: 800, padding: '2px 8px', borderRadius: 999,
                     background: isMem ? '#FFF3E0' : '#E8EAF6', color: isMem ? '#E65100' : '#3949AB' }}>

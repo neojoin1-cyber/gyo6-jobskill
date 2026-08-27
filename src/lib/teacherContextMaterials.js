@@ -1,3 +1,5 @@
+import { courseKindForSubject, learningCaseProvenance } from './learningCaseProvenance.js'
+
 function plain(value) {
   return String(value ?? '')
     .replace(/<br\s*\/?>/gi, '\n')
@@ -97,6 +99,7 @@ function summarySource(content) {
     example: point.example,
     question: point.sampleQuestion,
     checklist: point.sampleQuestion?.thinkingSteps,
+    courseKind: summary.courseKind,
   }
   if (card.type === 'recap') return {
     heading: '꼭 기억할 것',
@@ -178,6 +181,10 @@ function sourceFor(context) {
 export function buildTeacherContextMaterials(context = {}, guide = {}, { publicView = false } = {}) {
   const source = sourceFor(context)
   const question = source.question || {}
+  const provenance = learningCaseProvenance(
+    source.courseKind || context.courseKind || courseKindForSubject(context.subject || guide.subject),
+    question,
+  )
   const choices = choiceRows(question)
   const correctIndexes = answerIndexes(question, choices)
   const correct = choices.filter(choice => correctIndexes.includes(choice.index))
@@ -236,11 +243,24 @@ export function buildTeacherContextMaterials(context = {}, guide = {}, { publicV
   }
 
   const examples = unique([
+    ...items(source.examples).map(text => ({ title: '이 단원의 적용 장면', text })),
     source.example ? { title: '추가 적용 예시', text: clip(source.example, 260) } : [],
     source.situation ? { title: '현재 상황의 핵심', text: clip(source.situation, 300) } : [],
     question.stem ? { title: '연결 문항', text: clip(question.stem, 220) } : [],
-    !source.example && guide.activity ? { title: '현재 단계 적용 활동', text: guide.activity } : [],
+    !source.example && !source.situation && !question.stem && explanation[0]
+      ? { title: '현재 카드 핵심', text: explanation[0] }
+      : [],
+    !source.example && !source.situation && !question.stem && guide.activity
+      ? { title: '현재 단계 적용 활동', text: guide.activity }
+      : [],
   ], 4)
+  const resolvedExamples = examples.filter(example => plain(example.text).length >= 3)
+  if (!resolvedExamples.length) {
+    resolvedExamples.push({
+      title: '현재 단계 적용 활동',
+      text: plain(guide.activity || `${source.heading || context.title || '현재 내용'}의 핵심 기준을 다른 상황에 적용해 설명함.`),
+    })
+  }
 
   const heading = plain(source.heading || context.title || context.lessonLabel || guide.focus)
   const quotedSituation = quoteText(source.situation)
@@ -269,7 +289,7 @@ export function buildTeacherContextMaterials(context = {}, guide = {}, { publicV
     heading,
     situation: plain(source.situation),
     explanations: resolvedExplanations.length ? resolvedExplanations : [clip(source.situation || heading, 180)].filter(Boolean),
-    examples,
+    examples: resolvedExamples,
     good,
     bad,
     mistakes: resolvedMistakes,
@@ -278,5 +298,6 @@ export function buildTeacherContextMaterials(context = {}, guide = {}, { publicV
     answerSummary: mayShowAnswer && correct.length
       ? correct.map(choice => `${choice.label}. ${choice.text}`).join(' / ')
       : '',
+    provenance,
   }
 }

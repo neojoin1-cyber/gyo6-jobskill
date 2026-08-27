@@ -144,7 +144,7 @@ export default function MockAssessmentScreen({ subjectId, subjectName, onBack, o
   }, [subjectId])
 
   function startExam(exam) {
-    // 사전 시험지(scope/paper_no)면 30문항을 결정적·빈출가중으로 생성해 명시 출제.
+    // 사전 시험지(scope/paper_no)면 30문항을 결정적·근거 중요도가중으로 생성해 명시 출제.
     // 레거시(scope 없음)는 기존처럼 과목 전체에서 question_count만큼 랜덤.
     const paper = exam.scope ? buildSubjectMockPaper(subjectId, exam.scope, exam.paper_no, exam.question_count) : null
     if (exam.scope && (!paper || paper.length === 0)) {

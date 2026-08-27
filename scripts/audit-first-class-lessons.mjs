@@ -5,6 +5,7 @@ import { INTERVIEW_FOUNDATION_COURSES } from '../src/lib/interviewFoundationCour
 import { buildJcOfficialAreas } from '../src/lib/jobCommonAreas.js'
 import { buildNcs2026Areas } from '../src/lib/ncs2026.js'
 import { buildRecruitWrittenAreas } from '../src/lib/recruitWritten.js'
+import { COVER_STUDY_PROGRAM } from '../src/lib/coverStudyProgram.js'
 
 const jcArea = buildJcOfficialAreas()[0]
 const ncsArea = buildNcs2026Areas()[0]
@@ -12,6 +13,7 @@ const recruitArea = buildRecruitWrittenAreas('public')[0]
 const interviewCourse = INTERVIEW_FOUNDATION_COURSES[0]
 const interviewLesson = interviewStudy.lessons.find(lesson => interviewCourse.categories.includes(lesson.category))
 const personalityArea = PERSONALITY_STUDY_PROGRAM.areas[0]
+const coverArea = COVER_STUDY_PROGRAM.areas[0]
 
 const expected = {
   'job-common': { areaId: jcArea.id, lessonId: jcArea.lessons[0].id },
@@ -19,6 +21,7 @@ const expected = {
   'recruit-written': { trackId: 'public', areaId: recruitArea.id, lessonId: recruitArea.lessons[0].id },
   interview: { areaId: interviewCourse.id, lessonId: interviewLesson.id },
   personality: { areaId: personalityArea.id, lessonId: personalityArea.lessons[0].id },
+  'cover-letter': { areaId: coverArea.id, lessonId: coverArea.lessons[0].id },
 }
 
 const failures = []
@@ -69,4 +72,4 @@ if (failures.length) {
   process.exit(1)
 }
 
-console.log('[첫 수업 지도안] 통과 - 5과목 · 각 45분/6단계 · 형성평가 3문항(변형 1문항) · 실제 첫 단원 경로 일치')
+console.log('[첫 수업 지도안] 통과 - 6과목 · 각 45분/6단계 · 형성평가 3문항(변형 1문항) · 실제 첫 단원 경로 일치')

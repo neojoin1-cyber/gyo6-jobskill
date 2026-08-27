@@ -6,6 +6,7 @@ import { addXp } from '../../lib/xp.js'
 import { recordAnswer } from '../../lib/mastery.js'
 import { recordQuestion } from '../../lib/subjectProgress.js'
 import DifficultyBadge from './DifficultyBadge.jsx'
+import QuestionPriorityBadge from './QuestionPriorityBadge.jsx'
 import ListeningPrompt from './ListeningPrompt.jsx'
 import QuestionMedia from './QuestionMedia.jsx'
 import { supabase } from '../../lib/supabase.js'
@@ -230,7 +231,10 @@ export default function DiagnosticScreen({ subjectId, subjectName, onBack, onGoT
         <div style={{ height: 5, background: 'var(--border)' }}><div style={{ height: '100%', width: `${pct}%`, background: 'var(--primary)' }} /></div>
         <div className="screen-body">
           <div style={{ maxWidth: 640, margin: '0 auto' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}><DifficultyBadge q={q} /><span style={helperText}>{selectedScope.name}</span></div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, marginBottom: 8 }}>
+              <span style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}><QuestionPriorityBadge q={q} subjectId={subjectId} /><DifficultyBadge q={q} /></span>
+              <span style={helperText}>{selectedScope.name}</span>
+            </div>
             <ListeningPrompt key={q.id} q={q} revealTranscript={false} />
             <QuestionMedia q={q} />
             {q.context && <div style={ctxBox}>{q.context}</div>}

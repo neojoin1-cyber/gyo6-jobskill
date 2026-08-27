@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react'
-import { userLocalStorage as localStorage } from '../../lib/userLocalStorage.js'
 import {
   ArrowRight,
   ArrowClockwise,
@@ -11,16 +10,16 @@ import {
   ChatCircleDots,
   CheckCircle,
   ClipboardText,
+  DeviceMobile,
   FileText,
   GraduationCap,
-  Lightbulb,
   MagnifyingGlass,
-  Monitor,
   PaperPlaneTilt,
   Play,
   Plus,
   PresentationChart,
   Sparkle,
+  SignOut,
   Student,
   Target,
   TrendUp,
@@ -64,13 +63,13 @@ const campusAsset = (name) => `${import.meta.env.BASE_URL}images/campus/${name}`
 const classPickerKey = profileId => `sst.teacher.active-class.${profileId || 'preview'}`
 
 function loadActiveClass(profileId) {
-  try { return localStorage.getItem(classPickerKey(profileId)) || null }
+  try { return sessionStorage.getItem(classPickerKey(profileId)) || null }
   catch { return null }
 }
 
 export default function TeacherWorkspace({
   profile, classes, missions, pendingCount,
-  onNavigate, onOpenClassroom, onOpenMessages, onOpenCoverReviews, onOpenInterviewCoach, onOpenStudentCampus, onTab, tab,
+  onNavigate, onOpenClassroom, onOpenMessages, onOpenCoverReviews, onOpenInterviewCoach, onOpenStudentCampus, onSync, onLogout, onTab, tab,
   workspaceState = 'ready', onRefresh,
   demo = false,
 }) {
@@ -83,7 +82,7 @@ export default function TeacherWorkspace({
   const teacherName = String(profile?.display_name || '선생님').replace(/\s*(?:선생님|선생)$/, '') || '선생'
   const [classId, setClassId] = useState(() => loadActiveClass(profile?.id))
   const [pane, setPane] = useState('students')
-  const [live, setLive] = useState(demo ? demoLive() : null)
+  const [live, setLive] = useState(demo ? demoLive('c1') : null)
   const [journey, setJourney] = useState(() => demoClassLessonJourney('c1'))
   const [journeyLoading, setJourneyLoading] = useState(false)
   const [query, setQuery] = useState('')
@@ -99,13 +98,14 @@ export default function TeacherWorkspace({
 
   useEffect(() => {
     if (!classId) return
-    try { localStorage.setItem(classPickerKey(profile?.id), classId) } catch { /* 기기 저장 불가 시 현재 화면에서만 유지 */ }
+    try { sessionStorage.setItem(classPickerKey(profile?.id), classId) } catch { /* 기기 저장 불가 시 현재 화면에서만 유지 */ }
   }, [classId, profile?.id])
 
   const cls = useMemo(() => sourceClasses.find(item => item.id === classId) ?? null, [sourceClasses, classId])
 
   async function loadLive() {
-    if (!classId || demo) return
+    if (!classId) return
+    if (demo) { setLive(demoLive(classId)); return }
     setLive('loading')
     const { data } = await supabase.rpc('rpc_class_live', { p_class_id: classId })
     setLive(data?.error ? null : data)
@@ -228,7 +228,11 @@ export default function TeacherWorkspace({
 
         <div className="teacher-account">
           <span>{teacherName.slice(0, 1)}</span>
-          <div><b>{teacherName} 선생님</b><small>담당 학급 범위</small></div>
+          <div className="teacher-account-copy"><b>{teacherName} 선생님</b><small>담당 학급 범위</small></div>
+          {(onSync || onLogout) && <div className="teacher-account-actions">
+            {onSync && <button type="button" onClick={onSync} title="PC·휴대폰 동기화" aria-label="PC·휴대폰 동기화"><DeviceMobile /></button>}
+            {onLogout && <button type="button" className="is-logout" onClick={onLogout} title="로그아웃" aria-label="로그아웃"><SignOut /></button>}
+          </div>}
         </div>
       </aside>
 
@@ -302,30 +306,6 @@ export default function TeacherWorkspace({
               onContinue={() => openClassroom()}
               onOpenSubject={subject => openClassroom(subject.context)}
             />
-
-            <section className="teacher-class-launch" aria-label="오늘 수업 준비">
-              <TeacherCampusMap className="teacher-live-map" onOpenStudentCampus={onOpenStudentCampus} />
-              <div className="teacher-launch-panel">
-                <header><span>TEACHER PASS</span><h2>학생과 같은 흐름에서 바로 가르치기</h2><p>학습관과 단원 순서는 같게 유지하고, 필요한 순간에 지도 도구만 더함.</p></header>
-                <div className="teacher-launch-modes">
-                  <button onClick={() => onOpenStudentCampus?.()}>
-                    <span className="is-blue"><BookOpenText weight="fill" /></span><div><small>같이 배우기</small><b>학생 화면으로 준비</b></div><ArrowRight />
-                  </button>
-                  <button onClick={() => onOpenStudentCampus?.(null, { teachingMode: true })}>
-                    <span className="is-mint"><Lightbulb weight="fill" /></span><div><small>교사 지원과 함께</small><b>학생 앱 수업 준비</b></div><ArrowRight />
-                  </button>
-                  <button className="is-classroom" onClick={() => openClassroom()}>
-                    <span><Monitor weight="fill" /></span><div><small>학생 앱 그대로</small><b>교실 함께 배우기</b></div><ArrowRight />
-                  </button>
-                </div>
-                <nav className="teacher-launch-tools" aria-label="교사 보너스 도구">
-                  <button onClick={() => onOpenMessages?.({ scope: 'class', target: classId })}><ChatCircleDots weight="fill" /><span>소통</span></button>
-                  <button onClick={() => onOpenCoverReviews?.(classId)}><FileText weight="fill" /><span>글 첨삭</span></button>
-                  <button onClick={() => onOpenInterviewCoach?.(classId)}><PresentationChart weight="fill" /><span>면접 코칭</span></button>
-                  <button onClick={() => onNavigate?.('create-mission', { classId: cls.id, className: cls.name })}><Sparkle weight="fill" /><span>미션</span></button>
-                </nav>
-              </div>
-            </section>
 
             <section className="teacher-campus-summary teacher-campus-summary-compact">
               <div className="summary-copy">
@@ -477,15 +457,36 @@ function StudentGrowthTable({ students, query, setQuery, loading, onMessage, onW
   )
 }
 
-function demoLive() {
-  return {
-    summary: { total: 28, active: 19, idle: 9, solved: 146, avg: 7.7 },
-    students: [
-      { student_id: 's1', display_name: '이수현', solved: 12, wrong_today: 1, wrong_open: 2, idle: false },
-      { student_id: 's2', display_name: '박민준', solved: 9, wrong_today: 3, wrong_open: 7, idle: false },
-      { student_id: 's3', display_name: '최유나', solved: 7, wrong_today: 0, wrong_open: 1, idle: false },
-      { student_id: 's4', display_name: '정도윤', solved: 0, wrong_today: 0, wrong_open: 5, idle: true },
-      { student_id: 's5', display_name: '김서연', solved: 5, wrong_today: 2, wrong_open: 4, idle: false },
-    ],
+function demoLive(classId = 'c1') {
+  const presets = {
+    c1: {
+      summary: { total: 28, active: 19, idle: 9, solved: 146, avg: 7.7 },
+      students: [
+        { student_id: 'c1-s1', display_name: '이수현', solved: 12, wrong_today: 1, wrong_open: 2, idle: false },
+        { student_id: 'c1-s2', display_name: '박민준', solved: 9, wrong_today: 3, wrong_open: 7, idle: false },
+        { student_id: 'c1-s3', display_name: '최유나', solved: 7, wrong_today: 0, wrong_open: 1, idle: false },
+        { student_id: 'c1-s4', display_name: '정도윤', solved: 0, wrong_today: 0, wrong_open: 5, idle: true },
+        { student_id: 'c1-s5', display_name: '김서연', solved: 5, wrong_today: 2, wrong_open: 4, idle: false },
+      ],
+    },
+    c2: {
+      summary: { total: 24, active: 11, idle: 13, solved: 78, avg: 7.1 },
+      students: [
+        { student_id: 'c2-s1', display_name: '윤지호', solved: 10, wrong_today: 2, wrong_open: 3, idle: false },
+        { student_id: 'c2-s2', display_name: '한예린', solved: 8, wrong_today: 1, wrong_open: 2, idle: false },
+        { student_id: 'c2-s3', display_name: '오승현', solved: 4, wrong_today: 2, wrong_open: 6, idle: false },
+        { student_id: 'c2-s4', display_name: '임다은', solved: 0, wrong_today: 0, wrong_open: 1, idle: true },
+      ],
+    },
+    c3: {
+      summary: { total: 26, active: 6, idle: 20, solved: 31, avg: 5.2 },
+      students: [
+        { student_id: 'c3-s1', display_name: '강민서', solved: 6, wrong_today: 1, wrong_open: 2, idle: false },
+        { student_id: 'c3-s2', display_name: '신도현', solved: 5, wrong_today: 0, wrong_open: 0, idle: false },
+        { student_id: 'c3-s3', display_name: '배서윤', solved: 0, wrong_today: 0, wrong_open: 3, idle: true },
+        { student_id: 'c3-s4', display_name: '조현우', solved: 0, wrong_today: 0, wrong_open: 1, idle: true },
+      ],
+    },
   }
+  return presets[classId] || presets.c1
 }

@@ -280,13 +280,7 @@ export default function InterviewStudyScreen({ initialArea = null, initialLesson
             <img src={`${import.meta.env.BASE_URL}images/learning/workplace-interview.webp`} alt="직무 면접을 준비하는 특성화고 학생" />
             <div><strong>기초부터 지원처별 실전까지</strong><span>면접·기업연구·답변 첨삭을 한 흐름으로 완성</span></div>
           </div>
-          <p className="section-title">심화 준비</p>
-          <div className="interview-career-entry-list">
-            <button onClick={() => setCareerSection('pathways')}><Target size={22} weight="duotone" /><span><strong>지원처별 면접 심화</strong><small>금융권 · 공공기관 · 대기업</small></span><b>→</b></button>
-            <button onClick={() => setCareerSection('institutions')}><Buildings size={22} weight="duotone" /><span><strong>기업·기관 연구소</strong><small>46곳 사례·모범답안·공식자료 점검</small></span><b>→</b></button>
-            <button onClick={() => setCareerSection('scripts')}><ChatCircleText size={22} weight="duotone" /><span><strong>답변 연결실</strong><small>자기소개서 기반 1분 자기소개 · 지원동기 · 마지막 한마디</small></span><b>→</b></button>
-          </div>
-          <p className="section-title" style={{ marginTop: 20 }}>기초 면접 · 6개 과정 · {lessons.length}단원</p>
+          <p className="section-title">먼저 · 기초 면접 6개 과정 · {lessons.length}단원</p>
           <div className="interview-foundation-course-list">
             {INTERVIEW_FOUNDATION_COURSES.map((course, courseIndex) => {
               const catL = lessons.filter(lesson => course.categories.includes(lesson.category))
@@ -311,6 +305,12 @@ export default function InterviewStudyScreen({ initialArea = null, initialLesson
                 </button>
               )
             })}
+          </div>
+          <p className="section-title" style={{ marginTop: 20 }}>기초 학습 다음 단계</p>
+          <div className="interview-career-entry-list">
+            <button onClick={() => setCareerSection('pathways')}><Target size={22} weight="duotone" /><span><strong>1 · 지원처별 면접 심화</strong><small>금융권 · 공공기관 · 대기업 요구 파악</small></span><b>→</b></button>
+            <button onClick={() => setCareerSection('institutions')}><Buildings size={22} weight="duotone" /><span><strong>2 · 기업·기관 연구소</strong><small>46곳 사례·모범답안·공식자료 점검</small></span><b>→</b></button>
+            <button onClick={() => setCareerSection('scripts')}><ChatCircleText size={22} weight="duotone" /><span><strong>3 · 답변 연결실</strong><small>자기소개서 기반 1분 자기소개 · 지원동기 · 마지막 한마디</small></span><b>→</b></button>
           </div>
         </div>
       </div>
@@ -452,14 +452,14 @@ export default function InterviewStudyScreen({ initialArea = null, initialLesson
               />
             </div>
           )}
-          {lessonSummary && activeReference && (
+          {lessonSummary && theoryStep > 0 && activeReference && (
             <button className="interview-reference-toggle" type="button" aria-expanded={showReference}
               onClick={() => setShowReference(open => !open)}>
               <span>{showReference ? '현재 카드 보충자료 접기' : '현재 카드 보충자료 보기'}</span>
               <small>{activeReference.title}</small>
             </button>
           )}
-          {lessonSummary && showReference && activeReference && (
+          {lessonSummary && theoryStep > 0 && showReference && activeReference && (
             <CurrentReference group={activeReference} step={theoryStep} total={theoryCards.length} />
           )}
           {!lessonSummary && (

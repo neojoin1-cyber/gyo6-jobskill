@@ -8,14 +8,20 @@ import { supabase } from './supabase.js'
 import abilitySummaries from '../../data/ability-summaries.json'
 
 const CACHE_KEY = 'gyo6.studySummaries.v2'
+const REFRESH_KEY = 'gyo6.studySummaries.updatedAt.v1'
+const FIRST_REFRESH_LOOKBACK_MS = 7 * 24 * 60 * 60 * 1000
 
 // 번들로 초기화(오프라인에서도 즉시 동작)
 let store = { ...bundle }
+let cachedOverrides = {}
 
 // localStorage 캐시 병합(앱 시작 직후, 네트워크 전에도 최신 사용)
 try {
   const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null')
-  if (cached && typeof cached === 'object') store = { ...bundle, ...cached }
+  if (cached && typeof cached === 'object') {
+    cachedOverrides = cached
+    store = { ...bundle, ...cachedOverrides }
+  }
 } catch { /* 무시 */ }
 
 // 26v1 영역 이름 → 요점정리가 저장된 옛 영역 키.
@@ -71,12 +77,23 @@ let refreshed = false
 export async function refreshStudySummaries() {
   if (refreshed) return
   try {
-    const { data, error } = await supabase.from('study_summaries').select('key, data')
+    const since = localStorage.getItem(REFRESH_KEY)
+      || new Date(Date.now() - FIRST_REFRESH_LOOKBACK_MS).toISOString()
+    const { data, error } = await supabase
+      .from('study_summaries')
+      .select('key, data, updated_at')
+      .gt('updated_at', since)
+      .order('updated_at', { ascending: true })
     if (error || !data) return
-    const map = {}
-    for (const row of data) map[row.key] = row.data
-    store = { ...bundle, ...map }
-    try { localStorage.setItem(CACHE_KEY, JSON.stringify(map)) } catch { /* 용량 초과 등 무시 */ }
+    for (const row of data) cachedOverrides[row.key] = row.data
+    store = { ...bundle, ...cachedOverrides }
+    try {
+      localStorage.setItem(CACHE_KEY, JSON.stringify(cachedOverrides))
+      localStorage.setItem(
+        REFRESH_KEY,
+        data.at(-1)?.updated_at || new Date().toISOString(),
+      )
+    } catch { /* 용량 초과 등 무시 */ }
     refreshed = true
   } catch { /* 오프라인 등 → 번들/캐시 유지 */ }
 }

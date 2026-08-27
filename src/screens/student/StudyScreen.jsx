@@ -35,6 +35,7 @@ import { getSummary }       from '../../lib/studySummaries.js'
 import { buildQuestionDrivenSummary } from '../../lib/learningExperience.js'
 import StudySummary, { buildStudySummaryCards } from './StudySummary.jsx'
 import DifficultyBadge      from './DifficultyBadge.jsx'
+import QuestionPriorityBadge from './QuestionPriorityBadge.jsx'
 import ListeningPrompt      from './ListeningPrompt.jsx'
 import QuestionMedia        from './QuestionMedia.jsx'
 import JobAdaptationScreen  from './JobAdaptationScreen.jsx'
@@ -881,7 +882,7 @@ export default function StudyScreen({ initialSubject, initialTrack, initialArea,
         onTouchEnd={handleTouchEnd}
       >
         <div style={{ display: 'flex', gap: 5, marginBottom: 8, flexWrap: 'wrap' }}>
-          {q?.isAGrade && <span className="badge" style={{ background: '#fff3e0', color: '#e65100', border: '1px solid #ffcc80', fontSize: 12, fontWeight: 800 }}>🔥 빈출</span>}
+          <QuestionPriorityBadge q={q} subjectId={subjectId} />
           {/* 교육부 인증 과목에서는 인증 영역과 평가틀 단계를 보여 준다.
               원래는 문항의 area 필드를 그대로 띄웠는데, 그 값이 NCS 능력
               이름(자기개발능력·조직이해능력 …)이라 "교육부 인증인데 왜

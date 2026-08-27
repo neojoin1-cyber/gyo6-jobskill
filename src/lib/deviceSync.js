@@ -4,6 +4,7 @@ import {
   applyRemoteUserItem,
   getUserStorageMeta,
   listUserStorageEntries,
+  markUserStorageSynced,
   userLocalStorage,
 } from './userLocalStorage.js'
 
@@ -17,11 +18,23 @@ const LOCAL_ONLY = new Set([
   'sst.cached-profile',
   'sst.identity.last-verified',
 ])
+const LOCAL_ONLY_PATTERNS = [
+  /^sst\.teacher\.active-class\./,
+  /^iv_cover_evidence_cache_v\d+$/,
+  /^iv_cover_seed$/,
+]
+const MAX_ITEM_BYTES = 400_000
+const MAX_PAYLOAD_BYTES = 1_200_000
 
 let syncing = null
 
 function syncable(key) {
-  return Boolean(key) && !LOCAL_ONLY.has(key)
+  return Boolean(key) && !LOCAL_ONLY.has(key) && !LOCAL_ONLY_PATTERNS.some(pattern => pattern.test(key))
+}
+
+function byteLength(value) {
+  const text = String(value ?? '')
+  return typeof TextEncoder === 'undefined' ? text.length * 2 : new TextEncoder().encode(text).length
 }
 
 function deviceId() {
@@ -37,9 +50,17 @@ export function getDeviceSyncStatus() {
   const meta = getUserStorageMeta()
   const lastSync = userLocalStorage.getItem(LAST_SYNC_KEY) || ''
   const tracked = meta.keys || {}
-  const dirty = listUserStorageEntries().filter(([key]) => syncable(key) && !tracked[key]).length
-    + Object.entries(tracked).filter(([key, row]) => syncable(key) && (!lastSync || row.updatedAt > lastSync)).length
-  return { lastSync, dirty }
+  const entries = new Map(listUserStorageEntries())
+  const pending = new Map()
+  for (const [key, value] of entries) {
+    if (syncable(key) && !tracked[key]) pending.set(key, byteLength(value))
+  }
+  for (const [key, row] of Object.entries(tracked)) {
+    if (syncable(key) && (!row.syncedAt || row.updatedAt > row.syncedAt)) {
+      pending.set(key, row.deleted ? 0 : byteLength(entries.get(key)))
+    }
+  }
+  return { lastSync, dirty: pending.size, pendingBytes: [...pending.values()].reduce((sum, size) => sum + size, 0) }
 }
 
 /** 개인 진행·초안을 한 RPC로 올리고, 다른 기기의 더 최신 항목을 내려받는다. */
@@ -58,13 +79,19 @@ export async function syncDeviceState({ force = false } = {}) {
       if (syncable(key) && !candidates.has(key)) candidates.set(key, { updatedAt: new Date().toISOString(), deleted: false })
     }
     const changes = [...candidates.entries()]
-      .filter(([key, row]) => syncable(key) && (force || !lastSync || row.updatedAt > lastSync))
+      .filter(([key, row]) => syncable(key) && (force || !row.syncedAt || row.updatedAt > row.syncedAt))
       .map(([key, row]) => ({
         key,
         value: row.deleted ? null : entries.get(key) ?? null,
         updated_at: row.updatedAt,
         deleted: Boolean(row.deleted),
       }))
+
+    const oversized = changes.find(change => byteLength(change.value) > MAX_ITEM_BYTES)
+    const payloadBytes = byteLength(JSON.stringify(changes))
+    if (oversized || payloadBytes > MAX_PAYLOAD_BYTES) {
+      return { ok: false, tooLarge: true, key: oversized?.key || null, payloadBytes }
+    }
 
     const { data, error } = await supabase.rpc('rpc_sync_user_device_state', {
       p_changes: changes,
@@ -73,8 +100,11 @@ export async function syncDeviceState({ force = false } = {}) {
     })
     if (error) return { ok: false, error }
 
+    for (const change of changes) {
+      markUserStorageSynced(change.key, change.updated_at, change.deleted)
+    }
     for (const row of data?.items || []) {
-      const local = meta.keys?.[row.key]
+      const local = getUserStorageMeta().keys?.[row.key]
       if (!local?.updatedAt || row.updated_at > local.updatedAt) {
         applyRemoteUserItem(row.key, row.value, row.updated_at, row.deleted)
       }

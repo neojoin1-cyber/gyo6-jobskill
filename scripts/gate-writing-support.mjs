@@ -13,7 +13,7 @@ const checks = [
   ['인성검사 공통 자율학습 연결', 'src/screens/student/PersonalityGuidedStudyScreen.jsx', ['GuidedStudyScreen', 'PERSONALITY_STUDY_PROGRAM']],
   ['자기소개서 공통 자율학습 연결', 'src/screens/student/CoverGuidedStudyScreen.jsx', ['GuidedStudyScreen', 'COVER_STUDY_PROGRAM']],
   ['실전자기소개서 독립 모드', 'src/screens/student/CourseListScreen.jsx', ['실전자기소개서', "setMode('cover-practical')", 'initialWorkspace="practical"']],
-  ['실전자기소개서 다중 지원 동선', 'src/screens/student/InterviewCareerLab.jsx', ['작성실', '나의 근거', '진행 현황', '지원서 보관함', '새 지원서', '채용공고·회차 이름', '근거로 새 지원서']],
+  ['실전자기소개서 다중 지원 동선', 'src/screens/student/InterviewCareerLab.jsx', ['지원서 목록', '작성으로 돌아가기', '지원서 보관함', '새 지원서', '채용공고·회차 이름', '근거로 새 지원서']],
   ['자기소개서 진단·실전 작성 모의', 'src/screens/student/CoverLetterAssessment.jsx', ['COVER_DIAGNOSTIC_QUESTIONS', '자기소개서 모의고사', '실제 지원 문항 1개', '글자 수', '제한 시간', '부족한 기준 학습']],
   ['자기소개서 실전 보기 균형', 'src/lib/coverAssessmentBank.js', ['practicalQuestion', 'isPractical: true', 'choices.splice(answer, 0, correct)', '공통 기준표를 제안했습니다']],
   ['자기소개서 실전 고쳐쓰기', 'src/lib/coverStudyProgram.js', ["type: 'writing-practice'", '실전 고쳐쓰기', '감점 초안의 문제', '근거 재확인']],
@@ -61,18 +61,21 @@ if (courseSource.includes('TextbookReader') || courseSource.includes("setMode('t
 if (duplicatedInnerRoutes.some(needle => careerSource.includes(needle))) {
   failures.push('자기소개서 메뉴 위계: 배우기 내부에 진단·평가 전환이 다시 들어감')
 }
-if (!careerSource.includes('{practicalFlow && <nav className="cover-workspace-tabs"') ||
-    !careerSource.includes('진행 현황') ||
-    !careerSource.includes('나의 근거') ||
-    !careerSource.includes('작성실')) {
-  failures.push('실전자기소개서 메뉴 위계: 근거·작성 도구가 실전 흐름에만 묶이지 않음')
+if (careerSource.includes('aria-label="실전자기소개서 메뉴"') || careerSource.includes('className="cover-workspace-tabs"')) {
+  failures.push('실전자기소개서 메뉴 위계: 작성 중에 작성실·근거·현황 분기 탭이 다시 노출됨')
 }
-const practicalTabs = careerSource.slice(careerSource.indexOf('aria-label="실전자기소개서 메뉴"'), careerSource.indexOf('aria-label="실전자기소개서 메뉴"') + 900)
-if (!(practicalTabs.indexOf('작성실') < practicalTabs.indexOf('나의 근거') && practicalTabs.indexOf('나의 근거') < practicalTabs.indexOf('진행 현황'))) {
-  failures.push('실전자기소개서 메뉴 순서: 작성실 → 나의 근거 → 진행 현황 순서가 아님')
+if (!careerSource.includes("useState(initialWorkspace === 'practical' ? 'practical' : initialWorkspace)")) {
+  failures.push('실전자기소개서 첫 화면: 지원서 선택·이어하기 화면이 먼저 열리지 않음')
 }
-if (!careerSource.includes("useState(initialWorkspace === 'practical' ? 'write' : initialWorkspace)")) {
-  failures.push('실전자기소개서 첫 화면: 작성실이 기본 화면으로 열리지 않음')
+if (!careerSource.includes("step.id === 'experience'") || !careerSource.includes("setWorkspace('evidence')") || !careerSource.includes('내 경험 근거부터 꺼내기')) {
+  failures.push('실전자기소개서 순서: 근거은행이 경험 증명 단계 안에 배치되지 않음')
+}
+if (!careerSource.includes("disabled={index > stepIndex}") || !careerSource.includes("if (index <= stepIndex) setStepIndex(index)")) {
+  failures.push('실전자기소개서 순서: 미래 작성 단계로 임의 이동을 막지 못함')
+}
+if (!careerSource.includes("const scriptOrder = ['introduction', 'motivation', 'closing']") ||
+    !careerSource.includes('continueScript') || !careerSource.includes("active === 'closing'")) {
+  failures.push('면접 답변 순서: 1분 자기소개 → 지원동기 → 마지막 한마디 → 연결 점검 흐름이 아님')
 }
 if (!careerSource.includes("const assessmentFlow = workspace === 'diagnostic' || workspace === 'mock'") ||
     !careerSource.includes('{!assessmentFlow && <section className="cover-brand-panel">')) {

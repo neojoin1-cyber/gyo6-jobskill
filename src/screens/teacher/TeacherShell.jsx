@@ -35,6 +35,8 @@ import TeacherWorkspace from './TeacherWorkspace.jsx'
 import { isSharedDevice } from '../../lib/deviceSettings.js'
 import { logoutSafely } from '../../lib/sessionLifecycle.js'
 import { syncDeviceState } from '../../lib/deviceSync.js'
+import { saveBeforeExit } from '../../lib/sessionLifecycle.js'
+import SaveExitDialog from '../../components/SaveExitDialog.jsx'
 
 // 수업 모드와 메시지는 무겁고 대시보드에서만 열렸다. 가로 작업대의 왼쪽
 // 메뉴에서도 열 수 있어야 하므로 셸이 길을 갖는다.
@@ -45,7 +47,7 @@ const TeacherLearningPreview = lazyChunk(() => import('./TeacherLearningPreview.
 const TeacherInterviewPracticeScreen = lazyChunk(() => import('./TeacherInterviewPracticeScreen.jsx'), 'TeacherInterviewPracticeScreen')
 
 export default function TeacherShell() {
-  const { profile, isTrial } = useAuth() ?? {}
+  const { profile, isTrial, exitTrial } = useAuth() ?? {}
   const teacherName = String(profile?.display_name || '선생님').replace(/\s*(?:선생님|선생)$/, '') || '선생'
   const [tab,         setTab]         = useState('dashboard')
   const [screen,      setScreen]      = useState(null)
@@ -127,17 +129,16 @@ export default function TeacherShell() {
     loadWorkspace()
   }, [profile?.id])
 
-  // 채점 대기 건수 조회 (탭 배지용)
+  // 작업대에서 이미 받은 학급·미션을 재사용한다. 탭을 오갈 때마다 같은
+  // teacher_classes/missions 쿼리를 반복하지 않고 대기 건수만 집계한다.
   useEffect(() => {
     let cancelled = false
     async function loadPending() {
       if (!profile?.id) return
-      const { data: tc } = await supabase.from('teacher_classes').select('class_id').eq('teacher_id', profile.id)
-      const classIds = (tc ?? []).map(r => r.class_id)
-      if (classIds.length === 0) return
-      // .in()은 배열만 허용 — 쿼리 빌더를 넘기면 TypeError로 배지 집계 전체가 죽는다(실사고)
-      const { data: ms } = await supabase.from('missions').select('id').in('class_id', classIds)
-      const missionIds = (ms ?? []).map(r => r.id)
+      if (workspaceState !== 'ready') return
+      const classIds = wsClasses.map(item => item.id)
+      if (classIds.length === 0) { setPendingCount(0); return }
+      const missionIds = wsMissions.map(item => item.id)
       const [{ count: subCount }, { count: mockCount }] = await Promise.all([
         missionIds.length
           ? supabase
@@ -157,7 +158,7 @@ export default function TeacherShell() {
     }
     loadPending()
     return () => { cancelled = true }
-  }, [tab, profile?.id])
+  }, [profile?.id, workspaceState, wsClasses, wsMissions])
 
   function navigate(name, params = {}) {
     setScreen({ name, ...params })
@@ -165,7 +166,10 @@ export default function TeacherShell() {
 
   function closeScreen() { setScreen(null) }
 
-  async function logout() { await logoutSafely({ clearDevice: isSharedDevice() }) }
+  async function logout() {
+    setAccountOpen(false)
+    setConfirmExit('logout')
+  }
 
   if (screen) {
     if (screen.name === 'classroom')
@@ -254,19 +258,23 @@ export default function TeacherShell() {
 
   return (
     <div className="screen teacher-shell-screen">
-      {confirmExit && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.55)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, padding: 24 }}>
-          <div className="card" style={{ width: '100%', maxWidth: 300, textAlign: 'center' }}>
-            <p style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>앱을 종료하시겠습니까?</p>
-            <p style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 20 }}>확인을 누르면 앱이 종료됩니다.</p>
-            <div style={{ display: 'flex', gap: 10 }}>
-              <button className="btn btn-ghost" style={{ flex: 1 }} onClick={() => setConfirmExit(false)}>취소</button>
-              <button className="btn btn-primary" style={{ flex: 1 }}
-                onClick={() => { setConfirmExit(false); if (Capacitor.isNativePlatform()) App.exitApp() }}>종료</button>
-            </div>
-          </div>
-        </div>
-      )}
+      <SaveExitDialog
+        open={Boolean(confirmExit)}
+        onCancel={() => setConfirmExit(false)}
+        onSaveExit={async () => {
+          if (confirmExit === 'logout') return isTrial ? exitTrial?.() : logoutSafely({ clearDevice: isSharedDevice() })
+          const result = isTrial ? { syncResult: { ok: true } } : await saveBeforeExit()
+          setConfirmExit(false)
+          if (Capacitor.isNativePlatform()) App.exitApp()
+          return result
+        }}
+        onDiscardExit={confirmExit === 'logout' && isSharedDevice()
+          ? () => logoutSafely({ clearDevice: true, discardLocal: true })
+          : undefined}
+        title={confirmExit === 'logout' ? (isTrial ? '교사 체험을 종료할까요?' : '수업·지도 기록을 저장하고 로그아웃할까요?') : '현재 내용을 저장하고 종료할까요?'}
+        description={confirmExit === 'logout' && isTrial ? '체험 기록은 서버에 저장되지 않습니다.' : confirmExit === 'logout' && isSharedDevice() ? '동기화가 끝나면 이 공용 PC에서 현재 계정의 기기 사본을 제거합니다.' : '현재 수업 위치와 지도 기록을 저장한 뒤 안전하게 종료합니다.'}
+        actionLabel={confirmExit === 'logout' ? (isTrial ? '체험 종료' : '저장 후 로그아웃') : '저장 후 종료'}
+      />
       <header className="teacher-shellbar">
         <button className="teacher-shell-brand" onClick={() => { setTab('dashboard'); setScreen(null) }}>
           <span><Buildings weight="fill" /></span>
@@ -291,7 +299,7 @@ export default function TeacherShell() {
                 <button onClick={() => { chooseView(layout.choice === 'wide' ? 'auto' : 'wide'); setAccountOpen(false) }}>
                   {layout.choice === 'wide' ? <DeviceMobile /> : <Monitor />} {layout.choice === 'wide' ? '자동 맞춤 화면으로' : '넓게 보기 · 교사 작업대'}
                 </button>
-                <button onClick={async () => { await syncDeviceState({ force: true }); setAccountOpen(false) }}><DeviceMobile /> PC·휴대폰 동기화</button>
+                <button onClick={async () => { await syncDeviceState(); setAccountOpen(false) }}><DeviceMobile /> PC·휴대폰 동기화</button>
                 <button className="is-logout" onClick={logout}><SignOut /> 로그아웃</button>
               </div>
             )}
@@ -313,6 +321,8 @@ export default function TeacherShell() {
           onOpenCoverReviews={classId => navigate('cover-reviews', { classId })}
           onOpenInterviewCoach={classId => navigate('interview-coaching', { classId })}
           onOpenStudentCampus={(subject, options = {}) => navigate('student-campus', { subject, ...options })}
+          onSync={() => syncDeviceState()}
+          onLogout={logout}
         />
       ) : (
       <div style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
@@ -326,9 +336,6 @@ export default function TeacherShell() {
             <button className={`btn ${tab === 'ranking' ? 'btn-primary' : 'btn-ghost'}`} onClick={() => setTab('ranking')}><ChartBar /> 성장 순위</button>
             <span style={{ flex: 1 }} />
             <button className="btn btn-ghost" onClick={() => navigate('classroom')}>수업 시작</button>
-            <button className="btn btn-ghost" onClick={() => navigate('messages')}>메시지</button>
-            <button className="btn btn-ghost" onClick={() => navigate('cover-reviews')}>자소서 첨삭</button>
-            <button className="btn btn-ghost" onClick={() => navigate('create-mission')}>미션 만들기</button>
           </nav>
         )}
         {tab === 'grading' && (

@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useAuth } from '../../App.jsx'
 import { supabase } from '../../lib/supabase.js'
 import { isSharedDevice } from '../../lib/deviceSettings.js'
-import { logoutSafely } from '../../lib/sessionLifecycle.js'
+import { logoutSafely, saveBeforeExit } from '../../lib/sessionLifecycle.js'
 import { App } from '@capacitor/app'
 import { Capacitor } from '@capacitor/core'
 import { pushBack, popBack } from '../../lib/backButton.js'
@@ -16,6 +16,7 @@ import SchoolTextbookScreen from './SchoolTextbookScreen.jsx'
 import ClassWeaknessScreen from '../teacher/ClassWeaknessScreen.jsx'
 import ClassProgressScreen from '../teacher/ClassProgressScreen.jsx'
 import BulkRegisterModal from '../admin/BulkRegisterModal.jsx'
+import SaveExitDialog from '../../components/SaveExitDialog.jsx'
 
 export default function SchoolAdminShell() {
   const { profile } = useAuth()
@@ -24,7 +25,7 @@ export default function SchoolAdminShell() {
   const [confirmExit, setConfirmExit] = useState(false)
   const [screen, setScreen]       = useState(null)   // {name, classId, className} 오버레이 화면
 
-  async function logout() { await logoutSafely({ clearDevice: isSharedDevice() }) }
+  function logout() { setConfirmExit('logout') }
   function navigate(name, params = {}) { setScreen({ name, ...params }) }
   function closeScreen() { setScreen(null) }
 
@@ -56,19 +57,20 @@ export default function SchoolAdminShell() {
 
   return (
     <div className="screen">
-      {confirmExit && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.55)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, padding: 24 }}>
-          <div className="card" style={{ width: '100%', maxWidth: 300, textAlign: 'center' }}>
-            <p style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>앱을 종료하시겠습니까?</p>
-            <p style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 20 }}>확인을 누르면 앱이 종료됩니다.</p>
-            <div style={{ display: 'flex', gap: 10 }}>
-              <button className="btn btn-ghost" style={{ flex: 1 }} onClick={() => setConfirmExit(false)}>취소</button>
-              <button className="btn btn-primary" style={{ flex: 1 }}
-                onClick={() => { setConfirmExit(false); if (Capacitor.isNativePlatform()) App.exitApp() }}>종료</button>
-            </div>
-          </div>
-        </div>
-      )}
+      <SaveExitDialog
+        open={Boolean(confirmExit)}
+        onCancel={() => setConfirmExit(false)}
+        onSaveExit={async () => {
+          if (confirmExit === 'logout') return logoutSafely({ clearDevice: isSharedDevice() })
+          const result = await saveBeforeExit()
+          setConfirmExit(false)
+          if (Capacitor.isNativePlatform()) App.exitApp()
+          return result
+        }}
+        title={confirmExit === 'logout' ? '관리 기록을 저장하고 로그아웃할까요?' : '현재 내용을 저장하고 종료할까요?'}
+        description={confirmExit === 'logout' && isSharedDevice() ? '동기화가 끝나면 이 공용 PC에서 현재 계정의 기기 사본을 제거합니다.' : '현재 관리 위치와 변경 내용을 저장한 뒤 안전하게 종료합니다.'}
+        actionLabel={confirmExit === 'logout' ? '저장 후 로그아웃' : '저장 후 종료'}
+      />
       <div className="appbar">
         <span className="appbar-title">🏫 {profile.display_name}</span>
         <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>

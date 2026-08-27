@@ -226,6 +226,10 @@ function sectionPracticeQuestions(lesson) {
       }
       continue
     }
+    if (section.type === 'blockquote' && /질문|실전\s*예상|Q\d+/i.test(heading)) {
+      add(section.text)
+      continue
+    }
     if (section.type === 'ol' && /질문/.test(heading)) {
       for (const item of section.items || []) add(item)
       continue
@@ -259,15 +263,17 @@ function sectionPracticeQuestions(lesson) {
 
 export function buildInterviewLearningQuestions(lesson, quizQuestions = []) {
   if (!lesson) return quizQuestions
-  const practices = (lesson.practiceQuestions || []).map((question, index) => ({
-    ...question,
-    id: question.id || `${lesson.id}-practice-${index + 1}`,
-    stem: question.question,
-    context: question.structHint,
-    explanation: (question.answerPoints || []).join(' '),
-    isInterview: true,
-    format: '면접 질문형',
-  }))
+  const practices = (lesson.practiceQuestions || [])
+    .map((question, index) => ({
+      ...question,
+      id: question.id || `${lesson.id}-practice-${index + 1}`,
+      stem: clean(question.question),
+      context: question.structHint,
+      explanation: (question.answerPoints || []).join(' '),
+      isInterview: true,
+      format: '면접 질문형',
+    }))
+    .filter(question => question.stem.length >= 10 && !/^(?:셀프\s*체크\s*기준|상황|과제|행동|결과|구조\s*힌트)\s*[:：]?$/.test(question.stem))
   const questions = [
     ...practices,
     ...sectionPracticeQuestions(lesson),

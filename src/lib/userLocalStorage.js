@@ -47,7 +47,13 @@ function touch(key, deleted = false) {
   if (!activeUserId || key === META_KEY) return
   const meta = readMeta()
   meta.keys = meta.keys || {}
-  meta.keys[String(key)] = { updatedAt: new Date().toISOString(), deleted: Boolean(deleted) }
+  const logicalKey = String(key)
+  const previousAt = meta.keys[logicalKey]?.updatedAt
+  const now = new Date().toISOString()
+  const updatedAt = previousAt && previousAt >= now
+    ? new Date(Date.parse(previousAt) + 1).toISOString()
+    : now
+  meta.keys[logicalKey] = { updatedAt, deleted: Boolean(deleted) }
   writeMeta(meta)
   if (typeof CustomEvent !== 'undefined') {
     globalThis.dispatchEvent?.(new CustomEvent('sst:user-storage-change', { detail: { key: String(key), deleted } }))
@@ -111,9 +117,25 @@ export function applyRemoteUserItem(key, value, updatedAt, deleted = false) {
     else rawStorage().setItem(target, String(value ?? ''))
     const meta = readMeta()
     meta.keys = meta.keys || {}
-    meta.keys[String(key)] = { updatedAt, deleted: Boolean(deleted) }
+    meta.keys[String(key)] = { updatedAt, deleted: Boolean(deleted), syncedAt: updatedAt }
     writeMeta(meta)
   } catch { /* 저장 불가 환경 */ }
+}
+
+/** 전송을 시작한 뒤 같은 키가 다시 수정되지 않았을 때만 해당 버전을 전송 완료로 표시한다. */
+export function markUserStorageSynced(key, uploadedAt, deleted = false) {
+  const meta = readMeta()
+  meta.keys = meta.keys || {}
+  const logicalKey = String(key)
+  const current = meta.keys[logicalKey]
+  if (current?.updatedAt && current.updatedAt !== uploadedAt) return false
+  meta.keys[logicalKey] = {
+    updatedAt: current?.updatedAt || uploadedAt,
+    deleted: current?.deleted ?? Boolean(deleted),
+    syncedAt: current?.updatedAt || uploadedAt,
+  }
+  writeMeta(meta)
+  return true
 }
 
 export function listUserStorageEntries(userId = activeLocalUserId()) {

@@ -22,7 +22,7 @@ import ConnectionStatus from './components/ConnectionStatus.jsx'
 import { activateUserStorage, deactivateUserStorage, userLocalStorage } from './lib/userLocalStorage.js'
 import { markIdentityVerified } from './lib/identityVerification.js'
 import { logoutSafely } from './lib/sessionLifecycle.js'
-import { syncDeviceState } from './lib/deviceSync.js'
+import { getDeviceSyncStatus, syncDeviceState } from './lib/deviceSync.js'
 const AdminShell = lazyChunk(() => import('./screens/admin/AdminShell.jsx'), 'AdminShell')
 const SchoolAdminShell = lazyChunk(() => import('./screens/schooladmin/SchoolAdminShell.jsx'), 'SchoolAdminShell')
 const TeacherShell = lazyChunk(() => import('./screens/teacher/TeacherShell.jsx'), 'TeacherShell')
@@ -369,10 +369,10 @@ function AppInner() {
     })()
   }, [])
 
-  // 번들에 최신 학습 요약이 들어 있으므로 첫 화면을 막으면서 서버 전체 자료를
-  // 받을 필요가 없다. 로그인 뒤 유휴 시간에 요청을 분산해 동시 접속 급증도 줄인다.
+  // 번들에 최신 학습 요약이 들어 있으므로 첫 화면을 막으면서 서버 자료를
+  // 받을 필요가 없다. 학생만 유휴 시간에 변경분을 받아 동시 접속 급증도 줄인다.
   useEffect(() => {
-    if (!session) return undefined
+    if (!session || profile?.role !== 'student') return undefined
     let cancelled = false
     const timer = window.setTimeout(() => {
       import('./lib/studySummaries.js')
@@ -385,7 +385,42 @@ function AppInner() {
       cancelled = true
       window.clearTimeout(timer)
     }
-  }, [session?.user?.id])
+  }, [session?.user?.id, profile?.role])
+
+  // 입력은 즉시 계정별 기기 공간에 저장한다. 웹 브라우저가 숨겨질 때는
+  // 서버 동기화를 한 번 시도하고, 아직 변경이 남은 경우에만 닫기 경고를 건다.
+  // 브라우저 정책상 탭 닫기 경고 문구와 버튼은 웹앱이 바꿀 수 없다.
+  useEffect(() => {
+    if (!session || trialRole || Capacitor.isNativePlatform()) return undefined
+    const syncWhenHidden = () => {
+      if (document.visibilityState === 'hidden' && getDeviceSyncStatus().dirty > 0) syncDeviceState()
+    }
+    const warnBeforeClose = event => {
+      event.preventDefault()
+      event.returnValue = ''
+    }
+    let warningAttached = false
+    const updateWarning = () => {
+      const shouldWarn = getDeviceSyncStatus().dirty > 0
+      if (shouldWarn && !warningAttached) {
+        window.addEventListener('beforeunload', warnBeforeClose)
+        warningAttached = true
+      } else if (!shouldWarn && warningAttached) {
+        window.removeEventListener('beforeunload', warnBeforeClose)
+        warningAttached = false
+      }
+    }
+    document.addEventListener('visibilitychange', syncWhenHidden)
+    window.addEventListener('sst:user-storage-change', updateWarning)
+    window.addEventListener('sst:device-sync', updateWarning)
+    updateWarning()
+    return () => {
+      document.removeEventListener('visibilitychange', syncWhenHidden)
+      window.removeEventListener('sst:user-storage-change', updateWarning)
+      window.removeEventListener('sst:device-sync', updateWarning)
+      if (warningAttached) window.removeEventListener('beforeunload', warnBeforeClose)
+    }
+  }, [session?.user?.id, trialRole])
 
   const showSoftBanner = updateState === 'soft' && !bannerDismissed
 
@@ -501,7 +536,7 @@ function AppInner() {
         : <StudentShell />
 
   return (
-    <AuthCtx.Provider value={{ session, profile, isTrial, trialExpiresAt }}>
+    <AuthCtx.Provider value={{ session, profile, isTrial, trialExpiresAt, exitTrial }}>
       {showSoftBanner && (
         <UpdateBanner version={updateInfo.version} onUpdate={triggerUpdate}
           onDismiss={() => setBannerDismissed(true)} />

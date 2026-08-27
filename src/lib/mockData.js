@@ -18,6 +18,7 @@ import { COMMON_ABILITY_COURSES } from './officialStandards.js'
 import { assessmentQuestions, assessmentQuestionsById } from './assessmentPartition.js'
 import { INTERVIEW_CAREER_ASSESSMENT_QUESTIONS, INTERVIEW_CAREER_SCOPES } from './interviewCareerContent.js'
 import { INTERVIEW_FOUNDATION_COURSES, interviewFoundationArea } from './interviewFoundationCourses.js'
+import { questionPriorityWeight } from './questionPriority.js'
 
 const base = Array.isArray(jobQuestions) ? jobQuestions : (jobQuestions.questions || [])
 // 직무적응은 정답 없는 전용 리커트 진단으로 제공하므로 지식형 시험지 풀에서 제외한다.
@@ -28,16 +29,6 @@ const jobPool = jcAssessmentQuestions(
 const foodVariantMap = foodVariantsFile?.variants || {}
 const ncsVariantMap  = ncsVariantsFile?.variants || {}
 const jobVariantMap  = jobVariantsFile?.variants || {}
-
-// 중요도 가중(명시 빈출 데이터가 없는 과목용 휴리스틱):
-// 인증 명시정답·심화/A등급·표준 문항을 약간 우대해 '중요 학습'을 반복 출제에 재반영.
-function importanceWeight(q) {
-  let w = 1
-  if (q.answerSource === 'explicit')        w += 0.5
-  if (q.isAGrade || q.level === '심화')      w += 0.4
-  else if (q.level === '표준')              w += 0.2
-  return w
-}
 
 const FOOD_AREAS = [
   { key: 'C01', name: '식음료 영업 준비' }, { key: 'C02', name: '식음료 영업장 예약 관리' },
@@ -65,21 +56,21 @@ function cfg(subjectId) {
              scopes: FOOD_AREAS, variantMap: foodVariantMap }
   if (subjectId === 'ncs-basic') {
     const areas = [...new Set(ncsQuestions.filter(q => !q.excludeFromQuiz && q.area).map(q => q.area))].sort(ncsKeyCompare)
-    return { pool: assessmentQuestions(ncsQuestions), areaKey: q => q.area, weight: importanceWeight,
+    return { pool: assessmentQuestions(ncsQuestions), areaKey: q => q.area, weight: q => questionPriorityWeight(q, 'ncs-basic'),
              scopes: areas.map(a => ({ key: a, name: a })), variantMap: ncsVariantMap }
   }
   if (subjectId === 'recruit-written')
     return {
       pool: assessmentQuestions(recruitWrittenQuestions),
       areaKey: q => q.recruitmentTrackLabel,
-      weight: importanceWeight,
+      weight: q => questionPriorityWeight(q, 'recruit-written'),
       scopes: RECRUIT_WRITTEN_TRACKS.map(track => ({ key: track.label, name: track.label })),
       variantMap: null,
     }
   if (subjectId === 'job-common')
     return { pool: jobPool,
              areaKey: q => jcOfficialArea({ id: q.id, area: q.area || lessonToArea[q.lessonId] }),
-             weight: importanceWeight,
+             weight: q => questionPriorityWeight(q, 'job-common'),
              scopes: JC_AREAS_ORDER.filter(a => a !== '직무적응').map(a => ({ key: a, name: a })),
              variantMap: jobVariantMap }
   if (subjectId === 'quality')

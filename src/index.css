@@ -1871,3 +1871,110 @@ html.classroom-focus-mode .trial-session-bar { display: none; }
   .guided-study-intro ol { gap: 4px; }
   .guided-study-intro li b { font-size: 10.5px; }
 }
+.save-exit-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 12000;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(15, 23, 42, 0.62);
+}
+
+.save-exit-card {
+  width: min(100%, 410px);
+  padding: 26px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card);
+  box-shadow: 0 22px 60px rgba(15, 23, 42, 0.25);
+  text-align: center;
+}
+
+.save-exit-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 14px;
+  border-radius: 8px;
+  color: #0f766e;
+  background: #ccfbf1;
+}
+
+.save-exit-icon svg { width: 28px; height: 28px; }
+.save-exit-card h2 { margin: 0 0 8px; font-size: 20px; line-height: 1.35; }
+.save-exit-card > p { margin: 0; color: var(--text-muted); font-size: 14px; line-height: 1.6; }
+
+.save-exit-status {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-top: 20px;
+  padding: 13px 14px;
+  border: 1px solid #99f6e4;
+  border-radius: 8px;
+  color: #0f766e;
+  background: #f0fdfa;
+  text-align: left;
+}
+
+.save-exit-status > svg { flex: 0 0 auto; width: 22px; height: 22px; }
+.save-exit-status span { display: grid; gap: 2px; }
+.save-exit-status b { font-size: 14px; }
+.save-exit-status small { color: #475569; font-size: 12px; line-height: 1.45; }
+.save-exit-error { display: flex; gap: 7px; align-items: flex-start; margin-top: 12px !important; color: #b91c1c !important; text-align: left; }
+
+.save-exit-card footer {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.save-exit-card footer button {
+  min-height: 46px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--text);
+  font: inherit;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.save-exit-card footer button.is-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border-color: #0f766e;
+  background: #0f766e;
+  color: #fff;
+}
+
+.save-exit-card footer.has-discard .is-discard {
+  grid-column: 1 / -1;
+  border-color: #fecaca;
+  color: #b91c1c;
+}
+
+.save-exit-card footer button:disabled { cursor: wait; opacity: 0.68; }
+.save-exit-card footer .spinner { width: 17px; height: 17px; border-width: 2px; }
+
+@media (max-width: 420px) {
+  .save-exit-card { padding: 22px 18px; }
+  .save-exit-card footer { grid-template-columns: 1fr; }
+}
+
+.learning-case-provenance {
+  margin: 0 0 10px;
+  padding: 9px 10px;
+  border: 1px solid #c7d2fe;
+  border-left: 3px solid #4f46e5;
+  border-radius: 7px;
+  background: #eef2ff;
+}
+.learning-case-provenance b { display: block; color: #3730a3; font-size: 12px; }
+.learning-case-provenance p { margin: 4px 0 0; color: #334155; font-size: 12px; line-height: 1.55; }
+.learning-case-provenance small { display: block; margin-top: 4px; color: #64748b; font-size: 11px; line-height: 1.5; }

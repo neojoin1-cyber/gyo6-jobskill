@@ -16,6 +16,9 @@ import { fetchMyClassSession, startPresence, stopPresence, setFocusListener } fr
 import { campusCourseTarget } from '../../lib/studentCampusRoutes.js'
 import { rememberStudentLearningContext } from '../../lib/studentLearningJourney.js'
 import { lazyChunk } from '../../lib/lazyChunk.js'
+import { logoutSafely, saveBeforeExit } from '../../lib/sessionLifecycle.js'
+import { isSharedDevice } from '../../lib/deviceSettings.js'
+import SaveExitDialog from '../../components/SaveExitDialog.jsx'
 
 const MissionScreen = lazyChunk(() => import('./MissionScreen.jsx'), 'MissionScreen')
 const AccountDataScreen = lazyChunk(() => import('./AccountDataScreen.jsx'), 'AccountDataScreen')
@@ -44,13 +47,13 @@ function readDeepLink() {
 }
 
 export default function StudentShell() {
-  const { profile } = useAuth() ?? {}
+  const { profile, isTrial, exitTrial } = useAuth() ?? {}
 
   /**
    * 수업 중인지 확인하고, 맞으면 참여 신호를 보낸다.
    *
    * 앱을 열 때 한 번 묻고, 이후에는 자기 학급 세션의 변경을 실시간으로 받는다.
-   * 네트워크가 잠시 끊긴 경우를 위해 화면 복귀와 1분 폴백에서도 다시 묻는다.
+   * 네트워크가 잠시 끊긴 경우를 위해 화면 복귀와 분산 폴백에서도 다시 묻는다.
    *
    * 띠를 띄우는 이유 — 이건 미성년자를 보는 기능이다. 모르게 보지 않는다.
    */
@@ -90,11 +93,19 @@ export default function StudentShell() {
     })()
     const onVisible = () => { if (document.visibilityState === 'visible') check() }
     document.addEventListener('visibilitychange', onVisible)
-    const t = setInterval(check, 60 * 1000)
+    let fallbackTimer = null
+    const scheduleFallback = () => {
+      const delay = 4 * 60 * 1000 + Math.floor(Math.random() * 2 * 60 * 1000)
+      fallbackTimer = window.setTimeout(async () => {
+        await check()
+        if (alive) scheduleFallback()
+      }, delay)
+    }
+    scheduleFallback()
     return () => {
       alive = false
       setFocusListener(null)
-      clearInterval(t)
+      window.clearTimeout(fallbackTimer)
       document.removeEventListener('visibilitychange', onVisible)
       if (channel) supabase.removeChannel(channel)
       stopPresence()
@@ -107,6 +118,7 @@ export default function StudentShell() {
   // 수업 「따라가기」로 옮겨 갈 때도 같은 길을 쓴다. URL 로 들어온 것과
   // 선생님 위치로 들어온 것을 구분할 이유가 없다.
   const [followLink, setFollowLink] = useState(null)
+  const [studyResetKey, setStudyResetKey] = useState(0)
   const [following, setFollowing] = useState(false)
   const deepLink = followLink ?? urlLink
   const [tab,         setTab]         = useState(deepLink ? 'study' : 'home')
@@ -152,22 +164,27 @@ export default function StudentShell() {
 
   return (
     <div className="screen">
-      {/* 앱 종료 확인 다이얼로그 */}
-      {confirmExit && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.55)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999, padding: 24 }}>
-          <div className="card" style={{ width: '100%', maxWidth: 300, textAlign: 'center' }}>
-            <p style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>앱을 종료하시겠습니까?</p>
-            <p style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 20 }}>확인을 누르면 앱이 종료됩니다.</p>
-            <div style={{ display: 'flex', gap: 10 }}>
-              <button className="btn btn-ghost" style={{ flex: 1 }} onClick={() => setConfirmExit(false)}>취소</button>
-              <button className="btn btn-primary" style={{ flex: 1 }}
-                onClick={() => { setConfirmExit(false); if (Capacitor.isNativePlatform()) App.exitApp() }}>
-                종료
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <SaveExitDialog
+        open={confirmExit}
+        onCancel={() => setConfirmExit(false)}
+        onSaveExit={async () => {
+          const native = Capacitor.isNativePlatform()
+          const result = isTrial
+            ? (native ? { syncResult: { ok: true } } : await exitTrial?.() || { syncResult: { ok: true } })
+            : native
+              ? await saveBeforeExit()
+              : await logoutSafely({ clearDevice: isSharedDevice() })
+          if (!result?.blocked) setConfirmExit(false)
+          if (native) App.exitApp()
+          return result
+        }}
+        onDiscardExit={!Capacitor.isNativePlatform() && !isTrial && isSharedDevice()
+          ? () => logoutSafely({ clearDevice: true, discardLocal: true })
+          : undefined}
+        title={isTrial ? '학생 체험을 종료할까요?' : Capacitor.isNativePlatform() ? '현재 내용을 저장하고 종료할까요?' : '학습 기록을 저장하고 로그아웃할까요?'}
+        description={isTrial ? '체험 기록은 서버에 저장되지 않습니다.' : Capacitor.isNativePlatform() ? '작성 중인 내용과 학습 위치를 저장한 뒤 안전하게 종료합니다.' : '현재 학습 위치와 작성 내용을 동기화한 뒤 이 공용 PC의 계정 사본을 제거합니다.'}
+        actionLabel={isTrial ? '체험 종료' : Capacitor.isNativePlatform() ? '저장 후 종료' : '저장 후 로그아웃'}
+      />
 
       {classSession && (
         <div className="class-session-bar">
@@ -219,7 +236,7 @@ export default function StudentShell() {
 
         <Suspense fallback={<ScreenLoading />}>
           {tab === 'study' && <CourseListScreen
-            key={deepLink ? [deepLink.subject, deepLink.mode ?? 'choose', deepLink.area, deepLink.lesson, deepLink.questionId, deepLink.index].join(':') : 'browse'}
+            key={`${deepLink ? [deepLink.subject, deepLink.mode ?? 'choose', deepLink.area, deepLink.lesson, deepLink.questionId, deepLink.index].join(':') : 'browse'}:${studyResetKey}`}
             deepLink={deepLink}
             onContextChange={rememberStudentLearningContext}
             onBack={() => { setFollowLink(null); setTab('home') }} />}
@@ -236,7 +253,10 @@ export default function StudentShell() {
           <button key={t.id}
             className={`tab-item ${tab === t.id ? 'active' : ''}`}
             onClick={() => {
-              if (t.id === 'study') setFollowLink(null)
+              if (t.id === 'study') {
+                setFollowLink(null)
+                setStudyResetKey(value => value + 1)
+              }
               setTab(t.id)
             }}>
             <span className="tab-icon"><t.icon weight={tab === t.id ? 'fill' : 'regular'} /></span>

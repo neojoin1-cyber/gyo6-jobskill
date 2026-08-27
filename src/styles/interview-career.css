@@ -182,6 +182,13 @@
 .cover-step-tabs button.is-current span { border-color: #0284c7; background: #0284c7; color: #fff; }
 .cover-step-tabs button.is-past { color: #047857; }
 .cover-step-tabs button.is-past span { border-color: transparent; color: #047857; }
+.cover-step-tabs button.is-future { cursor: default; opacity: .52; }
+.cover-step-tabs button:disabled { pointer-events: none; }
+.cover-evidence-entry { display: grid; grid-template-columns: auto minmax(0,1fr) auto; align-items: center; gap: 11px; margin-bottom: 12px; padding: 13px; border: 1px solid #99f6e4; border-left: 4px solid #0f766e; border-radius: 7px; background: #f0fdfa; }
+.cover-evidence-entry > svg { width: 28px; height: 28px; color: #0f766e; }
+.cover-evidence-entry b { display: block; color: #115e59; font-size: 13px; }
+.cover-evidence-entry p { margin: 3px 0 0; color: #475569; font-size: 11px; line-height: 1.45; }
+.cover-evidence-entry button { min-height: 38px; display: flex; align-items: center; gap: 4px; padding: 0 10px; border: 1px solid #0f766e; border-radius: 6px; background: #fff; color: #0f766e; font-size: 11px; font-weight: 900; cursor: pointer; }
 .cover-step-heading { padding: 18px 0 13px; }
 .cover-step-heading > span { color: #0f766e; font-size: 10px; font-weight: 900; }
 .cover-step-heading h2 { margin: 3px 0 5px; font-size: 20px; }
@@ -221,7 +228,7 @@
 .cover-field-card > details p { margin: 0; padding: 0 12px 11px; color: #334155; font-size: 11px; line-height: 1.55; }
 .cover-field-card textarea { width: calc(100% - 24px); min-height: 94px; margin: 11px 12px 12px; padding: 11px 12px; resize: vertical; border: 1px solid #cbd5e1; border-radius: 7px; background: #fff; color: #111827; font: inherit; font-size: 13px; line-height: 1.65; }
 .cover-field-card textarea:focus { outline: 3px solid rgba(14,165,233,.16); border-color: #0284c7; }
-.cover-step-actions { position: sticky; bottom: 0; z-index: 4; display: grid; grid-template-columns: 1fr 1.65fr; gap: 8px; margin-top: 16px; padding: 9px 0 calc(9px + env(safe-area-inset-bottom)); border-top: 1px solid var(--border); background: color-mix(in srgb, var(--bg) 94%, transparent); backdrop-filter: blur(8px); }
+.cover-step-actions { display: grid; grid-template-columns: 1fr 1.65fr; gap: 8px; margin-top: 16px; padding: 9px 0 calc(9px + env(safe-area-inset-bottom)); border-top: 1px solid var(--border); background: var(--bg); }
 .cover-step-actions button { min-height: 48px; display: flex; align-items: center; justify-content: center; gap: 5px; border: 1px solid var(--border); border-radius: 8px; background: var(--card); color: var(--text); font-size: 12px; font-weight: 900; cursor: pointer; }
 .cover-step-actions button.is-primary { border-color: #0f766e; background: #0f766e; color: #fff; }
 .cover-step-actions button:disabled, .cover-ready button:disabled { opacity: .42; cursor: default; }
@@ -310,8 +317,8 @@
 @media (max-width: 420px) {
   .cover-practical-actions { grid-template-columns: 1fr; }
 }
-@media (min-width: 520px) {
-  .cover-step-tabs { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+@media (min-width: 1000px) {
+  .teacher-learning-preview.is-teaching .cover-step-tabs { grid-template-columns: repeat(7, minmax(0, 1fr)); }
 }
 
 /* 분야별 면접 실제 학습 */
@@ -641,8 +648,11 @@
 .script-linked-source article b { color: #17385f; font-size: 12px; }
 .script-linked-source article p { margin: 5px 0 0; color: #3d5066; font-size: 12px; line-height: 1.55; }
 .script-type-tabs { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); padding: 4px; border: 1px solid #dce2e8; border-radius: 7px; background: #eef1f5; }
-.script-type-tabs button { min-height: 42px; border: 0; border-radius: 5px; background: transparent; color: #677386; font-size: 13px; font-weight: 900; }
+.script-type-tabs button { min-height: 46px; display: flex; align-items: center; justify-content: center; gap: 5px; border: 0; border-radius: 5px; background: transparent; color: #677386; font-size: 13px; font-weight: 900; }
+.script-type-tabs button span { display: grid; place-items: center; width: 19px; height: 19px; border: 1px solid #cbd5e1; border-radius: 50%; font-size: 10px; }
 .script-type-tabs button.is-on { background: #fff; color: #4f46e5; box-shadow: 0 1px 4px rgba(15,23,42,.1); }
+.script-type-tabs button.is-done { color: #047857; }
+.script-type-tabs button:disabled { cursor: default; opacity: .48; }
 .script-writing-card { padding: 14px; border: 1px solid #dfe4eb; background: #fff; }
 .script-writing-card > header { display: flex; justify-content: space-between; gap: 10px; }
 .script-writing-card > header span { color: #4f46e5; font-size: 10px; font-weight: 900; }
@@ -666,6 +676,7 @@
 .script-model summary svg:last-child { margin-left: auto; }
 .script-model p { margin-top: 8px; padding: 11px; border-left: 4px solid #f59e0b; background: #fffbeb; font-size: 12px; line-height: 1.7; }
 .script-model > small { display: block; margin-top: 5px; color: #7b8492; font-size: 10px; }
+.script-next-step { width: 100%; min-height: 46px; display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 12px; border: 0; border-radius: 7px; background: #4f46e5; color: #fff; font-size: 13px; font-weight: 900; cursor: pointer; }
 .script-consistency-check { padding: 12px; border: 1px solid #dde3ea; background: #f9fafb; }
 .script-consistency-check h3 { margin-bottom: 8px; font-size: 12px; }
 .script-consistency-check > div { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
@@ -673,10 +684,13 @@
 .script-consistency-check span.is-ok { color: #0f8d6b; }
 .script-consistency-check svg { width: 15px; }
 .script-submit { width: 100%; min-height: 50px; display: flex; align-items: center; justify-content: center; gap: 7px; border: 0; border-radius: 7px; background: #4f46e5; color: #fff; font-size: 13px; font-weight: 900; }
+.script-submit:disabled { cursor: default; background: #cbd5e1; color: #475569; }
 
 @media (max-width: 390px) {
   .script-type-tabs button { padding: 4px 2px; font-size: 10px; }
   .cover-workspace-tabs button { gap: 4px; font-size: 11.5px; }
+  .cover-evidence-entry { grid-template-columns: auto minmax(0,1fr); }
+  .cover-evidence-entry button { grid-column: 1 / -1; justify-content: center; }
 }
 @media (max-width: 520px) {
   .script-portfolio-card > header { align-items: stretch; flex-direction: column; }
