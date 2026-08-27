@@ -30,3 +30,13 @@ export async function logoutSafely({ clearDevice = false, discardLocal = false }
   deactivateUserStorage()
   return { ...result, ...saved }
 }
+
+export async function deleteOwnAccount() {
+  const { data, error } = await supabase.rpc('rpc_delete_my_account')
+  if (error) return { ok: false, error }
+
+  clearUserStorage()
+  await supabase.auth.signOut({ scope: 'local' }).catch(() => undefined)
+  deactivateUserStorage()
+  return { ok: Boolean(data?.ok ?? true), error: null }
+}

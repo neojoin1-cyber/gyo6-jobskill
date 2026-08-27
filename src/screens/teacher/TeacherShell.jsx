@@ -18,6 +18,7 @@ import {
   Monitor,
   SignOut,
   Student,
+  Trash,
 } from '@phosphor-icons/react'
 import { startTeacherLayout, setView, viewChoice, effectiveView, onViewChange } from '../../lib/teacherLayout.js'
 import TeacherRankingScreen from './TeacherRankingScreen.jsx'
@@ -33,7 +34,7 @@ import TeacherTextbookScreen from './TeacherTextbookScreen.jsx'
 import PendingStudentsScreen from './PendingStudentsScreen.jsx'
 import TeacherWorkspace from './TeacherWorkspace.jsx'
 import { isSharedDevice } from '../../lib/deviceSettings.js'
-import { logoutSafely } from '../../lib/sessionLifecycle.js'
+import { deleteOwnAccount, logoutSafely } from '../../lib/sessionLifecycle.js'
 import { syncDeviceState } from '../../lib/deviceSync.js'
 import { saveBeforeExit } from '../../lib/sessionLifecycle.js'
 import SaveExitDialog from '../../components/SaveExitDialog.jsx'
@@ -54,6 +55,10 @@ export default function TeacherShell() {
   const [pendingCount, setPendingCount] = useState(0)
   const [confirmExit, setConfirmExit] = useState(false)
   const [accountOpen, setAccountOpen] = useState(false)
+  const [deleteOpen, setDeleteOpen] = useState(false)
+  const [deletePhrase, setDeletePhrase] = useState('')
+  const [deleting, setDeleting] = useState(false)
+  const [deleteError, setDeleteError] = useState('')
 
   const backRef = useRef(null)
   backRef.current = () => {
@@ -171,6 +176,17 @@ export default function TeacherShell() {
     setConfirmExit('logout')
   }
 
+  async function removeAccount() {
+    if (deletePhrase.trim() !== '계정 삭제') return
+    setDeleting(true)
+    setDeleteError('')
+    const result = await deleteOwnAccount()
+    if (!result.ok) {
+      setDeleteError(result.error?.message || '계정을 삭제하지 못했습니다. 잠시 후 다시 시도해 주세요.')
+      setDeleting(false)
+    }
+  }
+
   if (screen) {
     if (screen.name === 'classroom')
       return (
@@ -275,6 +291,7 @@ export default function TeacherShell() {
         description={confirmExit === 'logout' && isTrial ? '체험 기록은 서버에 저장되지 않습니다.' : confirmExit === 'logout' && isSharedDevice() ? '동기화가 끝나면 이 공용 PC에서 현재 계정의 기기 사본을 제거합니다.' : '현재 수업 위치와 지도 기록을 저장한 뒤 안전하게 종료합니다.'}
         actionLabel={confirmExit === 'logout' ? (isTrial ? '체험 종료' : '저장 후 로그아웃') : '저장 후 종료'}
       />
+      {deleteOpen && <div className="account-confirm" role="dialog" aria-modal="true" aria-labelledby="teacher-account-delete-title"><div><h2 id="teacher-account-delete-title">교사 계정과 모든 데이터를 삭제할까요?</h2><p>수업·지도 기록과 계정 정보가 영구 삭제되며 되돌릴 수 없습니다. 계속하려면 아래에 <b>계정 삭제</b>를 입력하세요.</p><label className="account-delete-label">확인 문구<input autoFocus value={deletePhrase} onChange={event => setDeletePhrase(event.target.value)} placeholder="계정 삭제" disabled={deleting} /></label>{deleteError && <p className="account-delete-error" role="alert">{deleteError}</p>}<footer><button onClick={() => setDeleteOpen(false)} disabled={deleting}>취소</button><button className="is-danger" onClick={removeAccount} disabled={deleting || deletePhrase.trim() !== '계정 삭제'}>{deleting ? '삭제 중' : '영구 삭제'}</button></footer></div></div>}
       <header className="teacher-shellbar">
         <button className="teacher-shell-brand" onClick={() => { setTab('dashboard'); setScreen(null) }}>
           <span><Buildings weight="fill" /></span>
@@ -300,6 +317,8 @@ export default function TeacherShell() {
                   {layout.choice === 'wide' ? <DeviceMobile /> : <Monitor />} {layout.choice === 'wide' ? '자동 맞춤 화면으로' : '넓게 보기 · 교사 작업대'}
                 </button>
                 <button onClick={async () => { await syncDeviceState(); setAccountOpen(false) }}><DeviceMobile /> PC·휴대폰 동기화</button>
+                <a className="teacher-policy-link" href="https://gyo6.kr/privacy.html" target="_blank" rel="noreferrer">개인정보처리방침</a>
+                {!isTrial && <button className="is-delete" onClick={() => { setAccountOpen(false); setDeletePhrase(''); setDeleteError(''); setDeleteOpen(true) }}><Trash /> 계정 및 데이터 삭제</button>}
                 <button className="is-logout" onClick={logout}><SignOut /> 로그아웃</button>
               </div>
             )}

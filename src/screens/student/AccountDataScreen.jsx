@@ -4,7 +4,7 @@ import { useAuth } from '../../App.jsx'
 import { getDeviceSyncStatus, syncDeviceState } from '../../lib/deviceSync.js'
 import { isSharedDevice, setSharedDevice } from '../../lib/deviceSettings.js'
 import { LEARNING_DATA_GROUPS, resetLearningGroup } from '../../lib/learningDataManagement.js'
-import { logoutSafely } from '../../lib/sessionLifecycle.js'
+import { deleteOwnAccount, logoutSafely } from '../../lib/sessionLifecycle.js'
 import RankingScreen from './RankingScreen.jsx'
 import SaveExitDialog from '../../components/SaveExitDialog.jsx'
 
@@ -22,6 +22,10 @@ export default function AccountDataScreen() {
   const [status, setStatus] = useState(() => getDeviceSyncStatus())
   const [confirm, setConfirm] = useState(null)
   const [confirmLogout, setConfirmLogout] = useState(false)
+  const [deleteOpen, setDeleteOpen] = useState(false)
+  const [deletePhrase, setDeletePhrase] = useState('')
+  const [deleting, setDeleting] = useState(false)
+  const [deleteError, setDeleteError] = useState('')
   const initials = useMemo(() => String(profile?.display_name || '나').slice(0, 1), [profile?.display_name])
 
   async function syncNow() {
@@ -36,6 +40,17 @@ export default function AccountDataScreen() {
           ? '저장 자료가 커서 동기화를 멈췄습니다. 오래된 작성본을 정리한 뒤 다시 시도해 주세요.'
           : '동기화하지 못했습니다. 잠시 후 다시 시도해 주세요.')
     setSyncing(false)
+  }
+
+  async function removeAccount() {
+    if (deletePhrase.trim() !== '계정 삭제') return
+    setDeleting(true)
+    setDeleteError('')
+    const result = await deleteOwnAccount()
+    if (!result.ok) {
+      setDeleteError(result.error?.message || '계정을 삭제하지 못했습니다. 잠시 후 다시 시도해 주세요.')
+      setDeleting(false)
+    }
   }
 
   if (view === 'ranking') return (
@@ -77,9 +92,12 @@ export default function AccountDataScreen() {
         </section>
 
         <button className="account-logout" onClick={() => setConfirmLogout(true)}><SignOut /> 저장하고 로그아웃</button>
+        <button className="account-delete" onClick={() => { setDeletePhrase(''); setDeleteError(''); setDeleteOpen(true) }}><Trash /> 계정 및 데이터 삭제</button>
+        <div className="account-legal-links"><a href="https://gyo6.kr/privacy.html" target="_blank" rel="noreferrer">개인정보처리방침</a><a href="https://gyo6.kr/account-deletion.html" target="_blank" rel="noreferrer">계정 삭제 안내</a></div>
       </div>
 
       {confirm && <div className="account-confirm" role="dialog" aria-modal="true"><div><h2>{confirm.label} 기록을 지울까요?</h2><p>다른 과목과 계정 정보는 그대로 유지됩니다. 삭제 내용은 다음 동기화 때 다른 기기에도 반영됩니다.</p><footer><button onClick={() => setConfirm(null)}>취소</button><button className="is-danger" onClick={() => { resetLearningGroup(confirm.id); setConfirm(null); setStatus(getDeviceSyncStatus()) }}>기록 지우기</button></footer></div></div>}
+      {deleteOpen && <div className="account-confirm" role="dialog" aria-modal="true" aria-labelledby="student-account-delete-title"><div><h2 id="student-account-delete-title">계정과 모든 데이터를 삭제할까요?</h2><p>학습 기록, 작성본, 오답, 첨삭 기록과 계정 정보가 영구 삭제되며 되돌릴 수 없습니다. 계속하려면 아래에 <b>계정 삭제</b>를 입력하세요.</p><label className="account-delete-label">확인 문구<input autoFocus value={deletePhrase} onChange={event => setDeletePhrase(event.target.value)} placeholder="계정 삭제" disabled={deleting} /></label>{deleteError && <p className="account-delete-error" role="alert">{deleteError}</p>}<footer><button onClick={() => setDeleteOpen(false)} disabled={deleting}>취소</button><button className="is-danger" onClick={removeAccount} disabled={deleting || deletePhrase.trim() !== '계정 삭제'}>{deleting ? '삭제 중' : '영구 삭제'}</button></footer></div></div>}
       <SaveExitDialog
         open={confirmLogout}
         onCancel={() => setConfirmLogout(false)}
