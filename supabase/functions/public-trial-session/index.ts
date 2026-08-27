@@ -53,27 +53,31 @@ Deno.serve(async request => {
 
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!
     const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
-    const forwarded = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
-    const ip = request.headers.get('cf-connecting-ip') || forwarded || 'unknown'
-    const [deviceHash, ipHash] = await Promise.all([
-      sha256(`${serviceKey}:device:${deviceId}`),
-      sha256(`${serviceKey}:network:${ip}`),
-    ])
+    const timeLimitEnabled = Deno.env.get('PUBLIC_TRIAL_TIME_LIMIT_ENABLED') === 'true'
 
     const admin = createClient(supabaseUrl, serviceKey, {
       auth: { persistSession: false, autoRefreshToken: false },
     })
-    const { data: claim, error: claimError } = await admin.rpc('claim_public_trial_session', {
-      p_device_hash: deviceHash,
-      p_ip_hash: ipHash,
-      p_role: role,
-    })
-    if (claimError) throw claimError
-    if (!claim?.allowed) {
-      const message = claim?.reason === 'network_limit'
-        ? '이 접속망의 공개 체험 이용 한도에 도달했습니다. 학교 도입 상담을 이용해 주세요.'
-        : '이 역할의 체험은 한 시간 뒤 다시 이용할 수 있습니다.'
-      return json({ message, nextAllowedAt: claim?.nextAllowedAt || null }, 429, headers)
+
+    if (timeLimitEnabled) {
+      const forwarded = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+      const ip = request.headers.get('cf-connecting-ip') || forwarded || 'unknown'
+      const [deviceHash, ipHash] = await Promise.all([
+        sha256(`${serviceKey}:device:${deviceId}`),
+        sha256(`${serviceKey}:network:${ip}`),
+      ])
+      const { data: claim, error: claimError } = await admin.rpc('claim_public_trial_session', {
+        p_device_hash: deviceHash,
+        p_ip_hash: ipHash,
+        p_role: role,
+      })
+      if (claimError) throw claimError
+      if (!claim?.allowed) {
+        const message = claim?.reason === 'network_limit'
+          ? '이 접속망의 공개 체험 이용 한도에 도달했습니다. 학교 도입 상담을 이용해 주세요.'
+          : '이 역할의 체험은 한 시간 뒤 다시 이용할 수 있습니다.'
+        return json({ message, nextAllowedAt: claim?.nextAllowedAt || null }, 429, headers)
+      }
     }
 
     const { data: link, error: linkError } = await admin.auth.admin.generateLink({
@@ -83,7 +87,7 @@ Deno.serve(async request => {
     const tokenHash = link?.properties?.hashed_token
     if (linkError || !tokenHash) throw linkError || new Error('One-time token was not generated')
 
-    return json({ tokenHash, expiresInSeconds: 900 }, 200, headers)
+    return json({ tokenHash, expiresInSeconds: 900, timeLimitEnabled }, 200, headers)
   } catch (error) {
     console.error('public-trial-session failed', error)
     return json({ message: '체험 연결을 준비하지 못했습니다. 잠시 후 다시 시도해 주세요.' }, 500, headers)

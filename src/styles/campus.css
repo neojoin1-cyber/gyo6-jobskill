@@ -73,17 +73,17 @@
 .campus-spot-icon.is-interview { background: #fff; color: var(--campus-blue); }
 .campus-spot-copy { min-width: 0; display: grid; gap: 2px; text-align: left; line-height: 1.12; }
 .campus-spot-copy small { color: #58667a; font-size: clamp(8px, 1.9vw, 10px); font-weight: 900; letter-spacing: 0; }
-.campus-spot-copy b { overflow-wrap: anywhere; font-size: clamp(11px, 2.65vw, 13px); line-height: 1.16; letter-spacing: 0; }
+.campus-spot-copy b { overflow-wrap: normal; word-break: keep-all; font-size: clamp(10px, 2.4cqw, 13px); line-height: 1.16; letter-spacing: 0; }
 .spot-problem { left: 3%; top: 8%; }
 .spot-team { right: 3%; top: 9%; }
-.spot-career { left: 2%; bottom: 7%; width: min(43%,152px); max-width: 43%; }
+.spot-career { left: 2%; bottom: 7%; width: min(47%,220px); max-width: 47%; }
 .spot-data { right: 2%; bottom: 8%; max-width: 38%; }
 .spot-cover { right: 3%; top: 54%; left: auto; bottom: auto; transform: none; border: 1px solid #efbb59; color: #7b3507 !important; }
 .campus-active-spot { left: 50%; top: 39%; transform: translate(-50%,-50%); min-height: 48px; max-width: min(43%, 160px); padding: 6px 9px; border-radius: 7px; background: var(--campus-blue); color: #fff !important; font-weight: 900; box-shadow: 0 0 0 3px rgba(255,255,255,.88), 0 7px 18px rgba(23,105,246,.34); }
 .campus-active-spot .campus-spot-icon { width: 28px; height: 28px; flex-basis: 28px; }
 .campus-active-spot .campus-spot-icon svg { width: 18px; height: 18px; }
 .campus-active-spot .campus-spot-copy small { color: rgba(255,255,255,.78); }
-.campus-active-spot .campus-spot-copy b { font-size: clamp(12px,2.85vw,14px); }
+.campus-active-spot .campus-spot-copy b { font-size: clamp(10.5px,2.55cqw,14px); }
 
 @media (max-width: 430px) {
   .campus-topbar { padding-inline: 12px; gap: 6px; }
@@ -255,12 +255,18 @@
 }
 
 @container (max-width: 650px) {
-  .spot-career .campus-spot-copy b { font-size: 13px; white-space: normal; overflow-wrap: break-word; word-break: keep-all; }
+  .campus-spot, .campus-active-spot { gap: 4px; padding-inline: 7px; }
+  .campus-spot-copy small { font-size: clamp(8px,1.8cqw,9px); }
+  .campus-spot-copy b { font-size: clamp(9.5px,2.35cqw,12px); white-space: nowrap; }
+  .spot-career .campus-spot-copy b { font-size: clamp(9px,2.08cqw,11.5px); }
+  .campus-active-spot .campus-spot-copy b { font-size: clamp(10px,2.45cqw,12.5px); }
 }
 
 @container (max-width: 480px) {
   .spot-career { width: min(47%, 168px); max-width: 47%; }
-  .spot-career .campus-spot-copy b { font-size: 12px; }
+  .campus-spot-copy b,
+  .spot-career .campus-spot-copy b { white-space: normal; overflow-wrap: anywhere; }
+  .spot-career .campus-spot-copy b { font-size: clamp(9px,2.25cqw,10.5px); }
 }
 
 .bottom-tab .tab-icon svg { width: 23px; height: 23px; }

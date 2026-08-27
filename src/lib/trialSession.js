@@ -4,6 +4,9 @@ const NOTICE_KEY = 'sst.public-trial.notice'
 
 export const TRIAL_DURATION_MS = 15 * 60 * 1000
 export const TRIAL_COOLDOWN_MS = 45 * 60 * 1000
+// 제작·검수 기간에는 기본적으로 시간 제한을 두지 않는다. 정식 출시에서만
+// VITE_TRIAL_TIME_LIMIT_ENABLED=true를 주입해 15분 제한과 재진입 대기를 켠다.
+export const TRIAL_TIME_LIMIT_ENABLED = import.meta.env?.VITE_TRIAL_TIME_LIMIT_ENABLED === 'true'
 
 export const TRIAL_ACCOUNTS = Object.freeze({
   student: {
@@ -99,9 +102,11 @@ export function trialStartAvailability(role, now = Date.now()) {
   if (!TRIAL_ACCOUNTS[role]) return { allowed: false, reason: '지원하지 않는 체험 역할입니다.' }
 
   const current = getTrialSession()
-  if (current?.role === role && Number(current.expiresAt) > now) {
+  if (current?.role === role && (!TRIAL_TIME_LIMIT_ENABLED || Number(current.expiresAt) > now)) {
     return { allowed: true, resume: true, session: current }
   }
+
+  if (!TRIAL_TIME_LIMIT_ENABLED) return { allowed: true, resume: false }
 
   const usage = typeof localStorage === 'undefined' ? {} : readJson(localStorage, USAGE_KEY, {})
   const nextAllowedAt = Number(usage?.[role]?.nextAllowedAt || 0)
@@ -123,11 +128,11 @@ export function beginTrialSession(role, now = Date.now()) {
   const session = {
     role,
     startedAt: now,
-    expiresAt: now + TRIAL_DURATION_MS,
+    expiresAt: TRIAL_TIME_LIMIT_ENABLED ? now + TRIAL_DURATION_MS : 0,
   }
   if (typeof sessionStorage !== 'undefined') writeJson(sessionStorage, SESSION_KEY, session)
 
-  if (typeof localStorage !== 'undefined') {
+  if (TRIAL_TIME_LIMIT_ENABLED && typeof localStorage !== 'undefined') {
     const usage = readJson(localStorage, USAGE_KEY, {})
     usage[role] = {
       startedAt: now,

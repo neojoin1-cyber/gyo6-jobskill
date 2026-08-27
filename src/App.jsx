@@ -7,6 +7,7 @@ import { initPushNotifications } from './lib/pushNotifications.js'
 import { scheduleReviewReminder } from './lib/reminders.js'
 import {
   TRIAL_ACCOUNTS,
+  TRIAL_TIME_LIMIT_ENABLED,
   beginTrialSession,
   clearTrialSession,
   formatTrialRemaining,
@@ -88,16 +89,18 @@ export default function App() {
   )
 }
 
-function TrialSessionBar({ role, remaining, onExit }) {
+function TrialSessionBar({ role, remaining, limited, onExit }) {
   const account = TRIAL_ACCOUNTS[role]
-  const ending = remaining <= 2 * 60 * 1000
+  const ending = limited && remaining <= 2 * 60 * 1000
   return (
     <div className={`trial-session-bar${ending ? ' is-ending' : ''}`} role="status" aria-live={ending ? 'polite' : 'off'}>
       <div className="trial-session-copy">
         <b>{account?.label || '공개'} 체험</b>
-        <span>화면 작동만 저장됨 · 서버 기록 없음</span>
+        <span>{limited ? '화면 작동만 저장됨 · 서버 기록 없음' : '제작·검수 중 · 시간 제한 없음 · 서버 기록 없음'}</span>
       </div>
-      <time aria-label={`체험 남은 시간 ${formatTrialRemaining(remaining)}`}>{formatTrialRemaining(remaining)}</time>
+      {limited
+        ? <time aria-label={`체험 남은 시간 ${formatTrialRemaining(remaining)}`}>{formatTrialRemaining(remaining)}</time>
+        : <span className="trial-session-unlimited">무제한</span>}
       <button type="button" onClick={onExit} aria-label="체험 종료" title="체험 종료">×</button>
     </div>
   )
@@ -267,15 +270,17 @@ function AppInner() {
     }
 
     const started = beginTrialSession(trialRole)
-    if (!started.allowed || !started.session?.expiresAt) {
+    if (!started.allowed || !started.session) {
       setTrialNotice(started.reason || '체험 이용 시간이 끝났습니다.')
       supabase.auth.signOut({ scope: 'local' })
       return undefined
     }
 
-    const expiresAt = Number(started.session.expiresAt)
+    const expiresAt = Number(started.session.expiresAt || 0)
     setTrialExpiresAt(expiresAt)
     setTrialNow(Date.now())
+    if (!TRIAL_TIME_LIMIT_ENABLED) return undefined
+
     let expired = false
     const tick = () => {
       const now = Date.now()
@@ -460,7 +465,7 @@ function AppInner() {
     )
   }
 
-  const isTrial = Boolean(trialRole && trialExpiresAt)
+  const isTrial = Boolean(trialRole)
   const shell = profile.role === 'admin'
     ? <AdminShell profile={profile} />
     : profile.role === 'school_admin'
@@ -480,6 +485,7 @@ function AppInner() {
           <TrialSessionBar
             role={trialRole}
             remaining={Math.max(0, trialExpiresAt - trialNow)}
+            limited={TRIAL_TIME_LIMIT_ENABLED}
             onExit={exitTrial}
           />
         )}

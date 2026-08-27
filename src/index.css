@@ -1589,6 +1589,7 @@ html.teacher-mode[data-teacher-view='wide'] .bottom-tab > * { flex: 0 0 auto; mi
 .trial-session-copy b { font-size: 12px; }
 .trial-session-copy span { color: #52657a; font-size: 11px; }
 .trial-session-bar time { font-size: 13px; font-weight: 900; font-variant-numeric: tabular-nums; }
+.trial-session-unlimited { color: #087a68; font-size: 12px; font-weight: 900; white-space: nowrap; }
 .trial-session-bar button {
   width: 28px;
   height: 28px;

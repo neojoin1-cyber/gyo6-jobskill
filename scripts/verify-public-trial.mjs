@@ -36,7 +36,16 @@ const { error: writeError } = await client.from('profiles').update({ display_nam
 if (writeError?.code !== '42501') throw new Error(`Trial write was not blocked: ${writeError?.code || 'no error'}`)
 
 const repeat = await fetch(endpoint, { method: 'POST', headers, body: JSON.stringify({ role: 'student', deviceId }) })
-if (repeat.status !== 429) throw new Error(`Trial cooldown was not enforced: ${repeat.status}`)
+const timeLimitEnabled = process.env.PUBLIC_TRIAL_TIME_LIMIT_ENABLED === 'true'
+if (timeLimitEnabled && repeat.status !== 429) {
+  throw new Error(`Trial cooldown was not enforced: ${repeat.status}`)
+}
+if (!timeLimitEnabled) {
+  const repeatedTicket = await repeat.json()
+  if (!repeat.ok || !repeatedTicket.tokenHash || repeatedTicket.timeLimitEnabled !== false) {
+    throw new Error(`Unlimited trial re-entry failed: ${repeat.status}`)
+  }
+}
 
 await client.auth.signOut({ scope: 'local' })
-console.log('PASS: public trial one-time token, identity metadata, read access, server write block, and cooldown')
+console.log(`PASS: public trial one-time token, identity metadata, read access, server write block, and ${timeLimitEnabled ? 'cooldown' : 'unlimited re-entry'}`)

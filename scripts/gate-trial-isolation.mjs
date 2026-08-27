@@ -74,10 +74,17 @@ if (!studentShellSource.includes("lazyChunk(() => import('./CourseListScreen.jsx
   fail('첫 화면에서 대형 학습·오답 청크를 미리 불러옴')
 }
 if (!trialSource.includes('TRIAL_DURATION_MS = 15 * 60 * 1000')) {
-  fail('공개 체험 시간이 15분으로 고정되지 않음')
+  fail('출시 시 적용할 15분 체험 기준이 없음')
 }
 if (!trialSource.includes('TRIAL_COOLDOWN_MS')) {
   fail('역할별 체험 재진입 대기 시간이 없음')
+}
+if (!trialSource.includes('TRIAL_TIME_LIMIT_ENABLED') ||
+    !trialSource.includes("VITE_TRIAL_TIME_LIMIT_ENABLED === 'true'")) {
+  fail('제작 중 무제한과 출시 후 시간 제한을 분리하는 환경 설정이 없음')
+}
+if (!loginSource.includes('제작·검수 기간 무제한') || !appSource.includes('trial-session-unlimited')) {
+  fail('현재 무제한 체험 상태가 로그인과 앱 상단에 명확히 표시되지 않음')
 }
 if (!appSource.includes('TrialSessionBar') || !appSource.includes("signOut({ scope: 'local' })")) {
   fail('체험 남은 시간 표시 또는 탭 단위 자동 종료가 없음')
@@ -114,6 +121,14 @@ if (!tokenBroker.includes('claim_public_trial_session') ||
 if (!edgeFunction.includes("admin.auth.admin.generateLink") || !edgeFunction.includes('hashed_token')) {
   fail('서버 체험 함수가 일회성 토큰만 발급하지 않음')
 }
+if (!edgeFunction.includes("PUBLIC_TRIAL_TIME_LIMIT_ENABLED") ||
+    !edgeFunction.includes('if (timeLimitEnabled)')) {
+  fail('서버 재진입 제한이 제작 중 무제한과 출시 후 제한으로 분리되지 않음')
+}
+if (!campusCss.includes('font-size: clamp(10px, 2.4cqw, 13px)') ||
+    !campusCss.includes('@container (max-width: 650px)')) {
+  fail('작은 PC 폭에서 캠퍼스 버튼 글자가 컨테이너에 반응하지 않음')
+}
 
 class MemoryStorage {
   #values = new Map()
@@ -138,5 +153,5 @@ if (shouldSwitchTrialRole(trialTeacher, 'teacher')) fail('동일 체험 역할�
 if (shouldSwitchTrialRole(regularTeacher, 'teacher')) fail('정식 교사 로그인을 체험 역할 전환으로 오인함')
 
 if (!process.exitCode) {
-  console.log('[웹 체험 격리] 통과 - 원클릭 15분 체험·탭별 인증·저장 차단·교사 반응형 확인')
+  console.log('[웹 체험 격리] 통과 - 제작 중 무제한·출시 시 15분 전환·탭별 인증·저장 차단·교사 반응형 확인')
 }
