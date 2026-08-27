@@ -4,6 +4,7 @@ import {
   clearTrialSession,
   shouldSwitchTrialRole,
 } from '../src/lib/trialSession.js'
+import { activateUserStorage, userLocalStorage } from '../src/lib/userLocalStorage.js'
 
 const root = new URL('../', import.meta.url)
 const read = path => readFileSync(new URL(path, root), 'utf8')
@@ -110,8 +111,8 @@ if (!supabaseSource.includes('trialSafeFetch') || !supabaseSource.includes('X-Su
 if (!serverGuard.includes('public_trial_read_only') || !serverGuard.includes('reject_public_trial_write')) {
   fail('공개 체험 계정의 서버 쓰기 차단이 없음')
 }
-if (!trialSource.includes('localStorage.clear()') || !trialSource.includes('wasTrial')) {
-  fail('체험 종료 시 브라우저 작성·학습 자료 전체 정리가 없음')
+if (!trialSource.includes('clearUserStorage()') || !trialSource.includes('wasTrial')) {
+  fail('체험 종료 시 해당 체험 사용자의 작성·학습 자료 정리가 없음')
 }
 if (!tokenBroker.includes('claim_public_trial_session') ||
     !tokenBroker.includes('encrypted_password = extensions.crypt') ||
@@ -133,6 +134,7 @@ if (!campusCss.includes('font-size: clamp(10px, 2.4cqw, 13px)') ||
 class MemoryStorage {
   #values = new Map()
   get length() { return this.#values.size }
+  key(index) { return [...this.#values.keys()][index] ?? null }
   getItem(key) { return this.#values.get(key) ?? null }
   setItem(key, value) { this.#values.set(key, String(value)) }
   removeItem(key) { this.#values.delete(key) }
@@ -140,11 +142,13 @@ class MemoryStorage {
 }
 globalThis.sessionStorage = new MemoryStorage()
 globalThis.localStorage = new MemoryStorage()
+activateUserStorage('trial-user-0001')
 beginTrialSession('student', 1_000)
-localStorage.setItem('iv_cover_draft', '{"answer":"trial-only"}')
+userLocalStorage.setItem('iv_cover_draft', '{"answer":"trial-only"}')
 localStorage.setItem('gyo6.studySummaries.v2', '{"progress":1}')
 clearTrialSession()
-if (localStorage.length !== 0) fail('체험 종료 뒤 작성·학습 로컬 자료가 남음')
+if (userLocalStorage.getItem('iv_cover_draft') !== null) fail('체험 종료 뒤 작성·학습 로컬 자료가 남음')
+if (localStorage.getItem('gyo6.studySummaries.v2') == null) fail('체험 종료가 공용 콘텐츠 캐시까지 지움')
 
 const trialTeacher = { user_metadata: { is_public_trial: true, trial_role: 'teacher' } }
 const regularTeacher = { user_metadata: { role: 'teacher' } }

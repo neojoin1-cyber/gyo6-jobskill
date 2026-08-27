@@ -27,6 +27,7 @@
  */
 import { supabase } from './supabase.js'
 import { currentUserId } from './authUser.js'
+import { userLocalStorage as localStorage } from './userLocalStorage.js'
 
 const CACHE_KEY  = 'kbs_bootstrap_v1'
 const OUTBOX_KEY = 'kbs_outbox_v1'
@@ -185,6 +186,13 @@ export async function sync() {
     }
   })()
   return sending
+}
+
+export function getPendingLearningCount() {
+  const box = read(OUTBOX_KEY, emptyOutbox())
+  return Object.keys(box.reviews).length + Object.keys(box.wrong).length
+    + box.resolved.length + box.correct
+    + box.activity.study + box.activity.quiz + box.activity.mission
 }
 
 /** 실패한 묶음을 그 뒤 쌓인 것과 합쳐 되돌린다. */

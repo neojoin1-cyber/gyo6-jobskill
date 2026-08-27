@@ -7,6 +7,7 @@
  */
 import { Capacitor } from '@capacitor/core'
 import { getDueCount } from './srs.js'
+import { userLocalStorage as localStorage } from './userLocalStorage.js'
 
 const REMINDER_ID = 1001
 const FLAG_KEY = 'kbs.reviewReminder.enabled'

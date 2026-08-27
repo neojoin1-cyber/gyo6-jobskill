@@ -18,7 +18,7 @@ import { rememberStudentLearningContext } from '../../lib/studentLearningJourney
 import { lazyChunk } from '../../lib/lazyChunk.js'
 
 const MissionScreen = lazyChunk(() => import('./MissionScreen.jsx'), 'MissionScreen')
-const RankingScreen = lazyChunk(() => import('./RankingScreen.jsx'), 'RankingScreen')
+const AccountDataScreen = lazyChunk(() => import('./AccountDataScreen.jsx'), 'AccountDataScreen')
 const NotificationsScreen = lazyChunk(() => import('./NotificationsScreen.jsx'), 'NotificationsScreen')
 const CourseListScreen = lazyChunk(() => import('./CourseListScreen.jsx'), 'CourseListScreen')
 const WrongAnswerScreen = lazyChunk(() => import('./WrongAnswerScreen.jsx'), 'WrongAnswerScreen')
@@ -117,7 +117,6 @@ export default function StudentShell() {
 
   function openMission(mission) { setOverlay({ screen: 'mission', mission }) }
   function closeOverlay()       { setOverlay(null) }
-  async function logout()       { await supabase.auth.signOut({ scope: 'local' }) }
 
   // Android 뒤로가기: 오버레이 닫기 → 홈 탭 → 종료 확인
   const backRef = useRef(null)
@@ -226,7 +225,7 @@ export default function StudentShell() {
             onBack={() => { setFollowLink(null); setTab('home') }} />}
 
           {tab === 'wrong'         && <WrongAnswerScreen profile={profile} />}
-          {tab === 'ranking'       && <RankingScreen />}
+          {tab === 'ranking'       && <AccountDataScreen />}
           {tab === 'notifications' && <NotificationsScreen />}
         </Suspense>
       </div>

@@ -1,3 +1,5 @@
+import { userLocalStorage as localStorage } from './userLocalStorage.js'
+
 // 도장깨기 진행 상황 관리 (localStorage 기반)
 const KEY = 'qm_quest_v1'
 

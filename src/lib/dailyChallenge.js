@@ -1,3 +1,5 @@
+import { userLocalStorage as localStorage } from './userLocalStorage.js'
+
 // 오늘의 도전 — 학생이 지금 필요한 문항을 고른다.
 //
 // ── 왜 다시 만드나 ─────────────────────────────────────────────────────────

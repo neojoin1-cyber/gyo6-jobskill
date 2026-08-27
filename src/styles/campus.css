@@ -390,6 +390,72 @@
 .teacher-account b { font-size: 10px; }
 .teacher-account small { color: var(--campus-muted); font-size: 8px; }
 
+/* Shared-device account and low-frequency sync */
+.connection-status { position: fixed; z-index: 1400; top: calc(var(--safe-top) + 8px); left: 50%; transform: translateX(-50%); max-width: calc(100vw - 24px); min-height: 38px; display: flex; align-items: center; gap: 8px; padding: 6px 7px 6px 11px; border: 1px solid #9cc8bd; border-radius: 7px; background: #eefaf6; color: #126b5d; box-shadow: 0 7px 22px rgba(16, 70, 61, .14); font-size: 11px; font-weight: 800; }
+.connection-status.is-offline { border-color: #e4c27c; background: #fff8e8; color: #805a10; }
+.connection-status > svg { width: 18px; flex: 0 0 auto; }
+.connection-status > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.connection-status button { min-height: 28px; display: flex; align-items: center; gap: 5px; padding: 0 8px; border: 0; border-radius: 5px; background: #137b69; color: #fff; font: inherit; white-space: nowrap; cursor: pointer; }
+.connection-status button svg { width: 14px; }
+.connection-status button:disabled { opacity: .55; cursor: default; }
+.identity-lock { position: fixed; inset: 0; z-index: 12000; display: grid; place-items: center; padding: 24px; background: rgba(14, 25, 39, .72); }
+.identity-lock-panel { width: min(100%, 410px); padding: 26px 24px; border-radius: 8px; background: #fff; color: #152238; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,.25); }
+.identity-lock-panel > svg { width: 42px; height: 42px; color: #1769f6; }
+.identity-lock-panel h2 { margin: 12px 0 7px; font-size: 20px; }
+.identity-lock-panel p { color: #64748b; font-size: 13px; line-height: 1.7; }
+.identity-lock-panel button { width: 100%; min-height: 46px; display: flex; align-items: center; justify-content: center; gap: 7px; margin-top: 18px; border: 0; border-radius: 7px; background: #1769f6; color: #fff; font-size: 14px; font-weight: 900; cursor: pointer; }
+.identity-lock-panel button:disabled { background: #aeb8c7; }
+.identity-lock-panel button svg { width: 18px; }
+.identity-lock-panel small { display: block; margin-top: 12px; color: #8792a2; font-size: 10px; }
+
+.account-data-screen, .account-ranking-wrap { min-height: 0; background: #f4f7fa; }
+.account-ranking-wrap { height: 100%; display: flex; flex-direction: column; }
+.account-section-tabs { min-height: 46px; display: flex; flex: 0 0 auto; border-bottom: 1px solid #dce3eb; background: #fff; }
+.account-section-tabs button { flex: 1; border: 0; border-bottom: 3px solid transparent; background: transparent; color: #687586; font-size: 12px; font-weight: 800; cursor: pointer; }
+.account-section-tabs button.is-on { border-bottom-color: #1769f6; color: #1769f6; }
+.account-data-body { padding: 18px 16px 28px; }
+.account-identity { display: flex; align-items: center; gap: 12px; padding-bottom: 17px; border-bottom: 1px solid #dce3eb; }
+.account-identity > span { width: 48px; height: 48px; display: grid; place-items: center; flex: 0 0 auto; border-radius: 8px; background: #1769f6; color: #fff; font-size: 18px; font-weight: 900; }
+.account-identity h1 { margin: 0; font-size: 18px; }
+.account-identity p { margin-top: 3px; color: #6f7c8d; font-size: 11px; }
+.account-sync-panel { margin-top: 16px; padding: 15px; border: 1px solid #bdd3fa; border-left: 4px solid #1769f6; border-radius: 7px; background: #fff; }
+.account-sync-panel > div { display: grid; gap: 4px; }
+.account-sync-panel b { font-size: 14px; }
+.account-sync-panel span { color: #667487; font-size: 10px; }
+.account-sync-panel > button { width: 100%; min-height: 42px; display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 12px; border: 0; border-radius: 6px; background: #1769f6; color: #fff; font-size: 12px; font-weight: 900; cursor: pointer; }
+.account-sync-panel > button:disabled { opacity: .55; }
+.account-sync-panel > button svg, .account-sync-panel > p svg { width: 17px; }
+.account-sync-panel > p { display: flex; align-items: center; gap: 6px; margin-top: 9px; color: #137b69; font-size: 10px; font-weight: 700; }
+.account-setting-row { min-height: 76px; display: grid; grid-template-columns: 30px minmax(0,1fr) auto; align-items: center; gap: 10px; margin-top: 12px; padding: 12px 14px; border: 1px solid #dce3eb; border-radius: 7px; background: #fff; }
+.account-setting-row > svg { width: 23px; color: #1769f6; }
+.account-setting-row > div { min-width: 0; display: grid; gap: 4px; }
+.account-setting-row b { font-size: 12px; }
+.account-setting-row span { color: #748193; font-size: 9px; line-height: 1.45; }
+.switch-control { width: 42px; height: 24px; padding: 3px; border: 0; border-radius: 12px; background: #c7ced8; cursor: pointer; }
+.switch-control span { width: 18px; height: 18px; display: block; border-radius: 50%; background: #fff; transition: transform .15s ease; }
+.switch-control.is-on { background: #137b69; }
+.switch-control.is-on span { transform: translateX(18px); }
+.account-reset-section { margin-top: 22px; }
+.account-reset-section > header h2 { margin: 0; font-size: 14px; }
+.account-reset-section > header p { margin: 4px 0 11px; color: #748193; font-size: 10px; }
+.account-reset-list { border: 1px solid #dce3eb; border-radius: 7px; overflow: hidden; background: #fff; }
+.account-reset-list > div { min-height: 55px; display: flex; align-items: center; gap: 12px; padding: 8px 9px 8px 13px; border-bottom: 1px solid #edf0f4; }
+.account-reset-list > div:last-child { border-bottom: 0; }
+.account-reset-list > div > span { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.account-reset-list b { font-size: 11px; }
+.account-reset-list small { color: #8792a2; font-size: 9px; }
+.account-reset-list button { width: 38px; height: 38px; display: grid; place-items: center; border: 0; border-radius: 6px; background: #fff2f2; color: #bd4141; cursor: pointer; }
+.account-reset-list button svg { width: 17px; }
+.account-logout { width: 100%; min-height: 44px; display: flex; align-items: center; justify-content: center; gap: 7px; margin-top: 18px; border: 1px solid #d9a9a9; border-radius: 7px; background: #fff; color: #ad3535; font-size: 12px; font-weight: 900; cursor: pointer; }
+.account-logout svg { width: 18px; }
+.account-confirm { position: fixed; inset: 0; z-index: 11000; display: grid; place-items: center; padding: 22px; background: rgba(14, 25, 39, .66); }
+.account-confirm > div { width: min(100%, 360px); padding: 22px; border-radius: 8px; background: #fff; }
+.account-confirm h2 { margin: 0; font-size: 17px; }
+.account-confirm p { margin: 8px 0 18px; color: #687586; font-size: 11px; line-height: 1.65; }
+.account-confirm footer { display: flex; gap: 8px; }
+.account-confirm footer button { flex: 1; min-height: 42px; border: 1px solid #d7dee8; border-radius: 6px; background: #fff; color: #475569; font-size: 11px; font-weight: 900; cursor: pointer; }
+.account-confirm footer button.is-danger { border-color: #c94a4a; background: #c94a4a; color: #fff; }
+
 .teacher-campus-main { min-width: 0; min-height: 0; overflow: auto; padding: 22px 26px 32px; }
 .teacher-mobile-actions { display: none; }
 .teacher-campus-head { display: flex; align-items: center; gap: 14px; min-height: 76px; }

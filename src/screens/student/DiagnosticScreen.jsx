@@ -10,6 +10,7 @@ import ListeningPrompt from './ListeningPrompt.jsx'
 import QuestionMedia from './QuestionMedia.jsx'
 import { supabase } from '../../lib/supabase.js'
 import { currentUserId } from '../../lib/authUser.js'
+import { userLocalStorage as localStorage } from '../../lib/userLocalStorage.js'
 import { CheckCircle } from '@phosphor-icons/react'
 
 async function submitDiagnostic(subjectId, scopeName, correctN, total, byArea, qids) {

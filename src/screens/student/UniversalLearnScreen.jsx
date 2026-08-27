@@ -3,6 +3,7 @@
  * charSelect → map → session(TikiTakaEngine) 흐름 오케스트레이션
  */
 import { useState, useRef, useEffect } from 'react'
+import { userLocalStorage as localStorage } from '../../lib/userLocalStorage.js'
 import { pushBack, popBack } from '../../lib/backButton.js'
 import { getSubjectConfig } from '../../lib/subjectConfigs.js'
 import { loadProgress, recordUnitResult, getUnitState } from '../../lib/unitProgress.js'

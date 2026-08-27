@@ -18,6 +18,11 @@ import {
 } from './lib/trialSession.js'
 import { lazyChunk } from './lib/lazyChunk.js'
 import LoginScreen from './screens/LoginScreen.jsx'
+import ConnectionStatus from './components/ConnectionStatus.jsx'
+import { activateUserStorage, deactivateUserStorage, userLocalStorage } from './lib/userLocalStorage.js'
+import { markIdentityVerified } from './lib/identityVerification.js'
+import { logoutSafely } from './lib/sessionLifecycle.js'
+import { syncDeviceState } from './lib/deviceSync.js'
 const AdminShell = lazyChunk(() => import('./screens/admin/AdminShell.jsx'), 'AdminShell')
 const SchoolAdminShell = lazyChunk(() => import('./screens/schooladmin/SchoolAdminShell.jsx'), 'SchoolAdminShell')
 const TeacherShell = lazyChunk(() => import('./screens/teacher/TeacherShell.jsx'), 'TeacherShell')
@@ -183,16 +188,19 @@ function AppInner() {
 
   // ── 인증 상태 ─────────────────────────────────────────────────────────────
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) =>
+    supabase.auth.getSession().then(({ data }) => {
+      activateUserStorage(data.session?.user?.id)
       setSession(prev => prev === undefined ? (data.session ?? null) : prev)
-    )
+    })
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_evt, s) => {
       const id = s?.user?.id ?? null
+      if (id) activateUserStorage(id)
       // 새/다른 사용자일 때만 로딩 표시(같은 사용자 토큰 리프레시는 로딩 불필요 → 무한로딩 방지)
       if (s && id !== loadedUidRef.current) setProfileLoading(true)
       setSession(s)
       if (!s) {
         clearTrialSession()
+        deactivateUserStorage()
         setTrialExpiresAt(0)
         setProfile(null)
         setProfileLoading(false)
@@ -208,14 +216,32 @@ function AppInner() {
     loadedUidRef.current = session.user.id   // 이 사용자에 대한 로딩 시작을 기록
     setProfileLoading(true)
     supabase.from('profiles').select('*').eq('id', session.user.id).maybeSingle()
-      .then(({ data, error }) => {
+      .then(async ({ data, error }) => {
         if (cancelled) return
         if (!error) {
+          if (data) {
+            userLocalStorage.setItem('sst.cached-profile', JSON.stringify(data))
+            markIdentityVerified()
+            if (!trialRoleFromUser(session.user)) {
+              await Promise.race([
+                syncDeviceState(),
+                new Promise(resolve => window.setTimeout(resolve, 5000)),
+              ])
+              if (cancelled) return
+            }
+          }
           setProfile(data)
           setProfileError(false)
           if (data?.role === 'student') { initPushNotifications(data.id); scheduleReviewReminder() }
         } else {
-          setProfileError(true)   // 네트워크 오류를 '프로필 없음(재가입 안내)'으로 위장하지 않는다
+          let cached = null
+          try { cached = JSON.parse(userLocalStorage.getItem('sst.cached-profile') || 'null') } catch { /* 캐시 손상 */ }
+          if (cached?.id === session.user.id) {
+            setProfile(cached)
+            setProfileError(false)
+          } else {
+            setProfileError(true)   // 캐시도 없을 때만 재연결 화면을 보인다
+          }
         }
         setProfileLoading(false)
       })
@@ -299,7 +325,7 @@ function AppInner() {
   async function exitTrial() {
     setTrialNotice('체험을 종료했습니다. 정식 계정으로 로그인하면 모든 기록이 저장됩니다.')
     clearTrialSession()
-    await supabase.auth.signOut({ scope: 'local' })
+    await logoutSafely({ clearDevice: true })
   }
 
   // ── 업데이트 버튼 → 인앱 IMMEDIATE 업데이트(진행 UI+재시작), 불가 시 스토어 폴백 ──
@@ -433,7 +459,7 @@ function AppInner() {
             교사: 학교 관리자에게 문의하세요
           </p>
           <button className="btn btn-primary" style={{ marginTop: 20 }}
-            onClick={() => supabase.auth.signOut({ scope: 'local' })}>
+            onClick={() => logoutSafely()}>
             로그아웃 후 다시 가입
           </button>
         </div>
@@ -457,7 +483,7 @@ function AppInner() {
             {msgs[profile.role] ?? '관리자의 승인을 기다리고 있습니다.'}
           </p>
           <button className="btn btn-ghost" style={{ marginTop: 20, fontSize: 13 }}
-            onClick={() => supabase.auth.signOut({ scope: 'local' })}>
+            onClick={() => logoutSafely()}>
             로그아웃
           </button>
         </div>
@@ -490,6 +516,7 @@ function AppInner() {
           />
         )}
         <div className={isTrial ? 'trial-app-content' : ''} style={{ height: '100%' }}>
+          <ConnectionStatus hidden={isTrial} />
           {shell}
         </div>
       </div>

@@ -1,3 +1,5 @@
+import { userLocalStorage as localStorage } from './userLocalStorage.js'
+
 // 요구 수준마다 **학습하는 방법이 달라야 한다.**
 //
 // ── 무엇이 문제였나 ──────────────────────────────────────────────────────

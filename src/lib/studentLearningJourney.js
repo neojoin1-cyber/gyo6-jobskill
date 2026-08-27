@@ -1,5 +1,6 @@
 import { STUDENT_CAMPUS_HALLS } from './studentCampusRoutes.js'
 import { getFirstClassLesson } from './firstClassLessons.js'
+import { userLocalStorage as localStorage } from './userLocalStorage.js'
 
 const KEY = 'sst.student.learning.routes.v1'
 

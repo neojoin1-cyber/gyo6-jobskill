@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo, lazy, Suspense } from 'react'
+import { userLocalStorage as localStorage } from '../../lib/userLocalStorage.js'
 import { Capacitor } from '@capacitor/core'
 import { pushBack, popBack } from '../../lib/backButton.js'
 import { loadTextbook } from '../../lib/textbooks.js'

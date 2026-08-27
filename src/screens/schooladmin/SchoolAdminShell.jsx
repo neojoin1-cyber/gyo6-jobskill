@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import { useAuth } from '../../App.jsx'
 import { supabase } from '../../lib/supabase.js'
+import { isSharedDevice } from '../../lib/deviceSettings.js'
+import { logoutSafely } from '../../lib/sessionLifecycle.js'
 import { App } from '@capacitor/app'
 import { Capacitor } from '@capacitor/core'
 import { pushBack, popBack } from '../../lib/backButton.js'
@@ -22,7 +24,7 @@ export default function SchoolAdminShell() {
   const [confirmExit, setConfirmExit] = useState(false)
   const [screen, setScreen]       = useState(null)   // {name, classId, className} 오버레이 화면
 
-  async function logout() { await supabase.auth.signOut({ scope: 'local' }) }
+  async function logout() { await logoutSafely({ clearDevice: isSharedDevice() }) }
   function navigate(name, params = {}) { setScreen({ name, ...params }) }
   function closeScreen() { setScreen(null) }
 

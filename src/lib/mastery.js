@@ -1,3 +1,5 @@
+import { userLocalStorage as localStorage } from './userLocalStorage.js'
+
 const STORAGE_KEY = 'kbs_mastery_v1'
 
 function load() {

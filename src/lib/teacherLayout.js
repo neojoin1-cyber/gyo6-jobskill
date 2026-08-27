@@ -1,3 +1,5 @@
+import { userLocalStorage as localStorage } from './userLocalStorage.js'
+
 /**
  * 교사 화면 배치 — 세로냐 가로냐를 교사가 고른다.
  *

@@ -23,6 +23,7 @@ import { jcOfficialArea, JC_AREAS_ORDER, englishStudyQuestions, jobCommonMediaQu
 import { loadProgress as loadUnitProgress } from './unitProgress.js'
 import { getSubjectConfig } from './subjectConfigs.js'
 import { supabase } from './supabase.js'
+import { userLocalStorage as localStorage } from './userLocalStorage.js'
 
 const STORE_KEY = 'nova_qprog_v1'
 const TARGET_PER_AREA = 8    // 한 영역을 "숙달"로 보는 정답 문항 목표(영역 문항수보다 크면 문항수로 캡)

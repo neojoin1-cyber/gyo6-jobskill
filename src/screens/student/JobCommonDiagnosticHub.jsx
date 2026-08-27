@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { userLocalStorage as localStorage } from '../../lib/userLocalStorage.js'
 import DiagnosticScreen from './DiagnosticScreen.jsx'
 import JobAdaptationScreen from './JobAdaptationScreen.jsx'
 import MissionScreen from './MissionScreen.jsx'

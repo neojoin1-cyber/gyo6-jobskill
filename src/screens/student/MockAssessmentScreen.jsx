@@ -5,6 +5,7 @@
  * (자율학습과 분리된 별도 mock_assessments 테이블에 저장 — 랭킹에 영향 없음)
  */
 import { useState, useMemo, useEffect, useRef } from 'react'
+import { userLocalStorage as localStorage } from '../../lib/userLocalStorage.js'
 import { pushBack, popBack, triggerBack } from '../../lib/backButton.js'
 import { supabase }         from '../../lib/supabase.js'
 import MissionScreen        from './MissionScreen.jsx'

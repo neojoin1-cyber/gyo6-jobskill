@@ -5,6 +5,7 @@ import StudySummary, { buildStudySummaryCards } from './StudySummary.jsx'
 import { StudyModeStrip } from './StudyModeToggle.jsx'
 import CompactText from '../../components/CompactText.jsx'
 import { getFirstClassFormative } from '../../lib/firstClassLessons.js'
+import { userLocalStorage as localStorage } from '../../lib/userLocalStorage.js'
 
 export default function GuidedStudyScreen({ program, initialArea = null, initialLesson = null, initialStep = 0, initialInteraction = null, onBack, onChallenge, onLearningContext }) {
   const [areaId, setAreaId] = useState(initialArea)

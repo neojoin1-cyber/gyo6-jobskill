@@ -1,3 +1,5 @@
+import { userLocalStorage as localStorage } from './userLocalStorage.js'
+
 // 아침 출석 — 그냥 누르는 버튼이 아니라 짧은 의례로 만든다.
 //
 // ── 왜 ────────────────────────────────────────────────────────────────────

@@ -1,3 +1,5 @@
+import { userLocalStorage as localStorage } from './userLocalStorage.js'
+
 // 교육부·대한상공회의소 직업공통능력은 학년에 따라 진단 규모가 다르다.
 //   1·2학년 자가진단  215문항
 //   3학년   인증진단  342문항 · 240분

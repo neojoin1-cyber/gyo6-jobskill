@@ -1,3 +1,5 @@
+import { clearUserStorage } from './userLocalStorage.js'
+
 const SESSION_KEY = 'sst.public-trial.session'
 const USAGE_KEY = 'sst.public-trial.usage'
 const NOTICE_KEY = 'sst.public-trial.notice'
@@ -145,9 +147,7 @@ export function beginTrialSession(role, now = Date.now()) {
 
 export function clearTrialSession() {
   const wasTrial = Boolean(getTrialSession()?.role)
-  if (wasTrial && typeof localStorage !== 'undefined') {
-    try { localStorage.clear() } catch { /* private browsing */ }
-  }
+  if (wasTrial) clearUserStorage()
   try { sessionStorage.removeItem(SESSION_KEY) } catch { /* noop */ }
 }
 

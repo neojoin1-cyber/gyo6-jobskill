@@ -1,3 +1,5 @@
+import { userLocalStorage as localStorage } from './userLocalStorage.js'
+
 // 주간 스피드 퀴즈 — 앱을 여는 이유 하나를 더 만든다.
 //
 // ── 왜 게임인가 ───────────────────────────────────────────────────────────

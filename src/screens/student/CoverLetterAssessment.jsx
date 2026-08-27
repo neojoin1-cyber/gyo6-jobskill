@@ -10,6 +10,7 @@ import {
 } from '@phosphor-icons/react'
 import { COVER_LETTER_QUESTION_LIBRARY } from '../../lib/coverQuestionLibrary.js'
 import { questionGuide } from '../../lib/coverLetterGuidance.js'
+import { userLocalStorage as localStorage } from '../../lib/userLocalStorage.js'
 import { COVER_ASSESSMENT_AREAS as AREAS, COVER_DIAGNOSTIC_QUESTIONS } from '../../lib/coverAssessmentBank.js'
 
 function areasOf(questions) {

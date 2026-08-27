@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { supabase } from '../../lib/supabase.js'
+import { isSharedDevice } from '../../lib/deviceSettings.js'
+import { logoutSafely } from '../../lib/sessionLifecycle.js'
 import { App } from '@capacitor/app'
 import { Capacitor } from '@capacitor/core'
 import { pushBack, popBack } from '../../lib/backButton.js'
@@ -14,7 +16,7 @@ export default function AdminShell({ profile }) {
   const [tab,         setTab]         = useState('schools')
   const [confirmExit, setConfirmExit] = useState(false)
 
-  async function logout() { await supabase.auth.signOut({ scope: 'local' }) }
+  async function logout() { await logoutSafely({ clearDevice: isSharedDevice() }) }
 
   // 뒤로가기: 최신 tab을 ref로 읽어 처리(핸들러 1회 등록 → id 기반 해제, 스택 오염 방지)
   const backRef = useRef(null)

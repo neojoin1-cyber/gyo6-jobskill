@@ -3,6 +3,7 @@
  * 학습 모드(답 통합 표시) / 퀴즈 모드(직접 풀기) 토글
  */
 import { useState, useMemo, useRef, useEffect } from 'react'
+import { userLocalStorage as localStorage } from '../../lib/userLocalStorage.js'
 import { recordActivity } from '../../lib/activity.js'
 import { pushBack, popBack, triggerBack } from '../../lib/backButton.js'
 import interviewStudy from '../../../data/interview-study.json'

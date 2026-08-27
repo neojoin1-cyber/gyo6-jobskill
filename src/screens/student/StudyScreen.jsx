@@ -4,6 +4,7 @@
  * 게임 모드: 전체 답 선택 → 마지막에 일괄 채점 (GameCard)
  */
 import { useState, useMemo, useEffect, useRef } from 'react'
+import { userLocalStorage as localStorage } from '../../lib/userLocalStorage.js'
 import { withExtractedChoices } from '../../lib/questionNorm.js'
 import { recordReview } from '../../lib/srs.js'
 import { noteStudied } from '../../lib/dailyChallenge.js'

@@ -1,3 +1,5 @@
+import { userLocalStorage as localStorage } from './userLocalStorage.js'
+
 const KEY = (subjectId) => `nova_unit_${subjectId}_v1`
 
 export function loadProgress(subjectId) {
