@@ -25,7 +25,7 @@ if (!existsSync(source)) throw new Error('서명된 내부 테스트 AAB를 찾�
 const outDir = resolve(ROOT, 'release/internal')
 mkdirSync(outDir, { recursive: true })
 const stamp = new Date().toISOString().replace(/[:.]/g, '-').replace('T', '_').replace('Z', '')
-const target = resolve(outDir, `KBS-NOVA-internal-${stamp}.aab`)
+const target = resolve(outDir, `JOBGO-internal-${stamp}.aab`)
 copyFileSync(source, target)
 const digest = createHash('sha256').update(readFileSync(target)).digest('hex')
 writeFileSync(`${target}.sha256`, `${digest}  ${target.split(/[\\/]/).pop()}\n`)
