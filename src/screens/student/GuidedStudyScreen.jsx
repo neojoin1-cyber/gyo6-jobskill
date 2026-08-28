@@ -4,6 +4,7 @@ import { pushBack, popBack, triggerBack } from '../../lib/backButton.js'
 import StudySummary, { buildStudySummaryCards } from './StudySummary.jsx'
 import { StudyModeStrip } from './StudyModeToggle.jsx'
 import CompactText from '../../components/CompactText.jsx'
+import PersonalizedCareerExamplePanel from '../../components/PersonalizedCareerExamplePanel.jsx'
 import { getFirstClassFormative } from '../../lib/firstClassLessons.js'
 import { userLocalStorage as localStorage } from '../../lib/userLocalStorage.js'
 
@@ -92,6 +93,12 @@ export default function GuidedStudyScreen({ program, initialArea = null, initial
   const currentLessonIndex = orderedLessons.findIndex(item => item.lesson.id === lessonId)
   const nextLesson = currentLessonIndex >= 0 ? orderedLessons[currentLessonIndex + 1] || null : null
   const allDone = orderedLessons.length > 0 && orderedLessons.every(item => done.has(item.lesson.id))
+  const activeCard = cards[step]
+  const activeCoverQuestionId = program.subjectId === 'cover-letter'
+    && activeCard?.type === 'point'
+    && typeof activeCard.point?.sampleQuestion === 'object'
+    ? activeCard.point.sampleQuestion.questionId
+    : null
 
   const handleSummaryStepChange = useCallback(value => {
     setStep(value)
@@ -155,6 +162,11 @@ export default function GuidedStudyScreen({ program, initialArea = null, initial
         formativeAssessment={formativeAssessment}
         initialStep={step}
         initialInteraction={initialInteraction}
+        cardExtension={activeCoverQuestionId ? (
+          <div className="guided-cover-example">
+            <PersonalizedCareerExamplePanel questionId={activeCoverQuestionId} />
+          </div>
+        ) : null}
         onInteractionChange={setInteraction}
         onStepChange={handleSummaryStepChange}
         onStartQuiz={continueAfterLesson}

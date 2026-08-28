@@ -2,7 +2,6 @@ import { forwardRef, useEffect, useMemo, useRef, useState } from 'react'
 import { userLocalStorage as localStorage } from '../../lib/userLocalStorage.js'
 import {
   ArrowLeft,
-  ArrowDown,
   ArrowSquareOut,
   ArrowUp,
   Archive,
@@ -35,6 +34,7 @@ import { pushBack, popBack, triggerBack } from '../../lib/backButton.js'
 import { supabase } from '../../lib/supabase.js'
 import { useAuth } from '../../App.jsx'
 import CompactText from '../../components/CompactText.jsx'
+import PersonalizedCareerExamplePanel from '../../components/PersonalizedCareerExamplePanel.jsx'
 import CoverLetterAssessment from './CoverLetterAssessment.jsx'
 import {
   COVER_LETTER_FIELDS,
@@ -52,6 +52,7 @@ import {
   COVER_FIELD_ASSISTS,
   questionGuide,
 } from '../../lib/coverLetterGuidance.js'
+import { hifiveDepartment } from '../../lib/hifiveDepartmentCatalog.js'
 import '../../styles/interview-career.css'
 
 const SECTORS = [
@@ -506,6 +507,10 @@ function InterviewScriptBuilder() {
   const scriptOrder = ['introduction', 'motivation', 'closing']
   const scriptReady = { introduction: introductionReady, motivation: motivationReady, closing: closingReady }
   const activeIndex = scriptOrder.indexOf(active)
+  const scriptEvidence = Array.isArray(coverDraft.evidenceBank) ? coverDraft.evidenceBank[0] : null
+  const scriptDepartment = hifiveDepartment(coverDraft.major)
+  const scriptMajorGroup = scriptEvidence?.majorGroup || scriptDepartment?.majorGroup || 'general'
+  const scriptSourceType = scriptEvidence?.sourceType || '전공 실습'
 
   useEffect(() => {
     supabase.rpc('rpc_my_cover_letters').then(({ data }) => setHistory(Array.isArray(data) ? data : []))
@@ -656,12 +661,6 @@ function InterviewScriptBuilder() {
         { label: '감사로 마무리', text: `오늘 ${draft.role || '지원 직무'}에 대한 제 준비를 말씀드릴 기회를 주셔서 감사합니다.` },
       ]
 
-  const model = active === 'introduction'
-    ? `안녕하십니까. ${draft.role || '지원 직무'}에서 정확한 확인과 꾸준한 개선을 실천할 지원자입니다. 전공 실습에서 ${coverDraft.action || '작업 기준에 따라 문제 원인을 나누어 확인했고'}, ${coverDraft.result || '결과를 기록해 다음 작업의 오류를 줄였습니다'}. 이 경험으로 작은 이상도 근거를 찾아 끝까지 확인하는 태도를 갖췄습니다. ${draft.targetName || '지원처'}에서도 업무 기준을 빠르게 익히고 안전·품질·고객 신뢰에 기여하겠습니다.`
-    : active === 'motivation'
-      ? `${coverDraft.motivation || `${draft.role || '지원 직무'}에 필요한 정확성과 책임을 전공 실습에서 배웠습니다.`} ${coverDraft.targetEvidence || `${draft.targetName || '지원처'}의 공식 자료에서 핵심 역할과 고객을 확인했습니다.`} 제 경험을 ${draft.role || '지원 직무'}의 실제 업무에 연결해, 입사 초기에는 기준과 절차를 정확히 익히고 확인 가능한 결과로 기여하겠습니다.`
-      : `오늘 답변을 통해 ${coverDraft.result || '기준을 확인하고 끝까지 개선하는 제 강점'}을 말씀드렸습니다. 이 강점을 ${draft.targetName || '지원처'}의 ${draft.role || '지원 직무'}에서 실제 행동으로 보여 드리겠습니다. 입사 후에는 ${coverDraft.contribution || '업무 기준을 빠르게 익히고 정확한 기록과 확인으로 기여하겠습니다.'} 귀한 기회를 주셔서 감사합니다.`
-
   async function submit() {
     if (!ready || submitting) {
       setNotice({ ok: false, text: sourceChanged ? '자기소개서 최신 내용을 먼저 다시 연결해 주세요.' : foreignOrganization ? `${foreignOrganization.name} 표기를 현재 지원처에 맞게 고쳐 주세요.` : '세 답변을 권장 분량까지 완성해 주세요.' })
@@ -757,7 +756,7 @@ function InterviewScriptBuilder() {
       <header><div><span>{active === 'introduction' ? '전공·강점 → 대표 근거 → 기여' : active === 'motivation' ? '개인 계기 → 지원처 근거 → 직무 기여' : '핵심 강점 회수 → 첫 행동 → 감사'}</span><h3>{config.label} 완성</h3></div><b className={value.length < config.minLength ? 'is-short' : 'is-ready'}>{value.length}/{config.limit}자<small>약 {speakingSeconds(value)}초</small></b></header>
       <div className="script-assist-list">{assists.map(item => <button key={item.label} onClick={() => append(item.text)}><Plus /><span><b>{item.label}</b><small>{item.text}</small></span></button>)}</div>
       <label><span>내 답변 <small>권장 {config.minLength}~{config.limit}자</small></span><textarea value={value} maxLength={config.limit} rows={active === 'closing' ? 6 : 8} onChange={event => persist({ ...draft, [active]: event.target.value })} placeholder={active === 'introduction' ? '전공과 직무를 연결한 한 문장부터 시작함' : active === 'motivation' ? '지원처를 선택한 나의 계기부터 시작함' : '면접에서 확인된 강점 하나를 짧게 회수함'} /></label>
-      <details className="script-model"><summary><Eye />지원처·내 근거를 반영한 구조 예시<CaretRight /></summary><p>{model}</p><small>문장 복사보다 구조 확인 · 사실과 표현은 내 것으로 바꿈</small></details>
+      <details className="script-model"><summary><Eye />내 학과·활동·자격과 비교할 구조 예시<CaretRight /></summary><PersonalizedCareerExamplePanel interviewType={active} role={draft.role} targetName={draft.targetName} defaultMajorGroup={scriptMajorGroup} defaultSourceType={scriptSourceType} evidenceAction={coverDraft.action} evidenceResult={coverDraft.result} canReveal={value.trim().length >= 60} onUseStarter={text => append(text)} /></details>
       {active !== 'closing' && <button className="script-next-step" onClick={continueScript}>다음 단계 · {INTERVIEW_SCRIPT_LIMITS[scriptOrder[activeIndex + 1]].label}<CaretRight /></button>}
     </section>
 
@@ -1333,6 +1332,7 @@ function CoverLearningLibrary({ onLearningContext }) {
       <section><b>이 개념을 이해해요</b><p>{item.purpose}</p></section>
       <section className="is-structure"><b>답변은 이렇게 구성해요</b><ol>{content.structure.map(value => <li key={value}>{value}</li>)}</ol></section>
       <div className="cover-learning-examples"><section className="is-good"><b>좋은 예시</b><p>{content.good}</p></section><section className="is-trap"><b>감점 예시</b><p>{content.trap}</p></section></div>
+      <PersonalizedCareerExamplePanel questionId={item.id} />
       <section className="is-evidence"><b>내 경험에서 찾을 것</b><div>{content.evidenceHints.map(value => <em key={value}>{value}</em>)}</div></section>
     </article>
     <footer><button onClick={() => setIndex(value => Math.max(0, value - 1))} disabled={index === 0}><ArrowLeft />이전</button><button className="is-primary" onClick={() => last ? setGroupLabel(null) : setIndex(value => value + 1)}>{last ? '단원 완료' : '다음'}<CaretRight /></button></footer>
@@ -1472,11 +1472,12 @@ function QuestionComposer({ sector, organization, items, draft, evidenceBank, on
         const count = String(item.answer || '').length
         const { minLength, limit } = coverQuestionLimits(item)
         const guide = questionGuide(item.id, item)
+        const selectedEvidence = evidenceBank.find(value => value.id === item.evidenceId) || evidenceBank[0]
         const warnings = coverAnswerWarnings(item.answer, draft, minLength, limit)
         const lengthStatus = count > limit ? `${count - limit}자 초과` : count < minLength ? `${minLength - count}자 더 필요` : '권장 분량 충족'
         return <article key={item.instanceId || `${item.id}-${index}`}><header><span>{index + 1}</span><div><b>{item.label}</b><p>{item.question}</p></div><div className="cover-question-order"><button onClick={() => move(index, -1)} disabled={index === 0} aria-label="위로 이동"><ArrowUp /></button><button onClick={() => move(index, 1)} disabled={index === items.length - 1} aria-label="아래로 이동"><ArrowDown /></button><button onClick={() => onChange(items.filter((_, itemIndex) => itemIndex !== index))} aria-label="문항 삭제"><Trash /></button></div></header><div className="cover-question-purpose"><b>평가 의도</b><p>{item.purpose}</p><span>{item.required.map(value => <em key={value}>{value}</em>)}</span></div>
           <div className="cover-length-panel"><header><div><b>공고 글자 수</b><span>실제 채용공고 기준이 최우선</span></div><strong className={count < minLength || count > limit ? 'is-short' : 'is-ready'}>{lengthStatus}</strong></header><div className="cover-length-inputs"><label><span>권장 최소</span><input type="number" min="50" max={limit} step="50" value={minLength} onChange={event => updateLimits(index, { minLength: event.target.value })} /></label><label><span>최대 글자 수</span><input type="number" min="100" max="2000" step="50" value={limit} onChange={event => updateLimits(index, { limit: event.target.value })} /></label></div><div className="cover-length-presets" aria-label="자주 쓰는 글자 수 범위">{COVER_LENGTH_PRESETS.map(preset => <button key={preset.limit} className={limit === preset.limit ? 'is-on' : ''} onClick={() => updateLimits(index, preset)}>{preset.label}</button>)}</div></div>
-          <details className="cover-answer-coach" open={!item.answer}><summary><PencilSimple />막막하면 답변 순서부터 고르기<CaretRight /></summary><div><section><b>답변 순서</b><ol>{guide.structure.map(value => <li key={value}>{value}</li>)}</ol></section><section><b>첫 문장 고르기</b><div>{guide.starters.map(value => <button key={value} onClick={() => addStarter(index, value)}>{value}</button>)}</div></section><section className="cover-answer-examples"><p><b>좋은 방향</b>{guide.good}</p><p><b>피할 표현</b>{guide.trap}</p></section><section><b>근거은행에서 가져오기</b>{evidenceBank.length ? <div>{evidenceBank.map(value => <button key={value.id} onClick={() => useBankEvidence(index, value)}>{value.title}</button>)}</div> : <p>근거 찾기에서 경험을 먼저 저장하면 여기서 선택할 수 있음.</p>}</section></div></details>
+          <details className="cover-answer-coach" open={!item.answer}><summary><PencilSimple />막막하면 답변 순서부터 고르기<CaretRight /></summary><div><section><b>답변 순서</b><ol>{guide.structure.map(value => <li key={value}>{value}</li>)}</ol></section><section><b>첫 문장 고르기</b><div>{guide.starters.map(value => <button key={value} onClick={() => addStarter(index, value)}>{value}</button>)}</div></section><section className="cover-answer-examples"><p><b>좋은 방향</b>{guide.good}</p><p><b>피할 표현</b>{guide.trap}</p></section><PersonalizedCareerExamplePanel questionId={item.id} role={draft.role} targetName={draft.targetName} defaultMajorGroup={selectedEvidence?.majorGroup || hifiveDepartment(draft.major)?.majorGroup || 'general'} defaultSourceType={selectedEvidence?.sourceType || '전공 실습'} onUseStarter={text => addStarter(index, text)} /><section><b>근거은행에서 가져오기</b>{evidenceBank.length ? <div>{evidenceBank.map(value => <button key={value.id} onClick={() => useBankEvidence(index, value)}>{value.title}</button>)}</div> : <p>근거 찾기에서 경험을 먼저 저장하면 여기서 선택할 수 있음.</p>}</section></div></details>
           <textarea value={item.answer || ''} maxLength={limit} onChange={event => updateItem(index, { answer: event.target.value })} placeholder="답변 순서를 고르고 근거은행의 실제 경험으로 한 칸씩 채움" rows={coverTextareaRows(limit)} />
           {warnings.length > 0 && <div className="cover-answer-warnings">{warnings.map(value => <span key={value}><WarningCircle weight="fill" />{value}</span>)}</div>}
           <footer><button onClick={() => updateItem(index, { answer: seedQuestionAnswer(item.id, draft) })}>기본 작성 근거 불러오기</button><span className={count >= minLength && count <= limit ? 'is-ready' : 'is-short'}>{count}자 · 권장 {minLength}~{limit}자</span></footer></article>

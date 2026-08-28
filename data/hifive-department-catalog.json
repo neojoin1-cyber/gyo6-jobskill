@@ -1,0 +1,7645 @@
+{
+  "source": {
+    "name": "특성화고·마이스터고 포털 하이파이브",
+    "url": "https://www.hifive.go.kr/stats/schInfoList.do?menuId=010101&rootMenuId=01&titledepth=3",
+    "note": "학교가 입력한 공개 학교현황의 현재 재학생 학과를 집계함. 앱 예시는 원문을 복제하지 않고 학과 분류 근거로만 사용함.",
+    "fetchedAt": "2026-08-28T09:09:22.114Z"
+  },
+  "summary": {
+    "schools": 573,
+    "schoolsWithDepartments": 573,
+    "departmentNames": 1271,
+    "repeatedDepartmentNames": 300,
+    "singleSchoolDepartmentNames": 971
+  },
+  "priorityDepartments": [
+    {
+      "name": "보건간호과",
+      "majorGroup": "bio",
+      "schoolCount": 53,
+      "studentCount": 5262
+    },
+    {
+      "name": "전기과",
+      "majorGroup": "electrical",
+      "schoolCount": 40,
+      "studentCount": 2839
+    },
+    {
+      "name": "기계과",
+      "majorGroup": "mechanical",
+      "schoolCount": 31,
+      "studentCount": 2006
+    },
+    {
+      "name": "전기전자과",
+      "majorGroup": "electrical",
+      "schoolCount": 25,
+      "studentCount": 2573
+    },
+    {
+      "name": "자동차과",
+      "majorGroup": "mechanical",
+      "schoolCount": 23,
+      "studentCount": 1646
+    },
+    {
+      "name": "정밀기계과",
+      "majorGroup": "mechanical",
+      "schoolCount": 21,
+      "studentCount": 1850
+    },
+    {
+      "name": "전자과",
+      "majorGroup": "electrical",
+      "schoolCount": 19,
+      "studentCount": 1250
+    },
+    {
+      "name": "스마트기계과",
+      "majorGroup": "mechanical",
+      "schoolCount": 17,
+      "studentCount": 1166
+    },
+    {
+      "name": "스마트팩토리과",
+      "majorGroup": "mechanical",
+      "schoolCount": 15,
+      "studentCount": 1002
+    },
+    {
+      "name": "사무행정과",
+      "majorGroup": "business",
+      "schoolCount": 15,
+      "studentCount": 908
+    },
+    {
+      "name": "조리과",
+      "majorGroup": "food",
+      "schoolCount": 14,
+      "studentCount": 1785
+    },
+    {
+      "name": "스마트경영과",
+      "majorGroup": "business",
+      "schoolCount": 14,
+      "studentCount": 1012
+    },
+    {
+      "name": "식품가공과",
+      "majorGroup": "food",
+      "schoolCount": 14,
+      "studentCount": 951
+    },
+    {
+      "name": "부사관과",
+      "majorGroup": "service",
+      "schoolCount": 14,
+      "studentCount": 762
+    },
+    {
+      "name": "공통과정",
+      "majorGroup": "general",
+      "schoolCount": 13,
+      "studentCount": 1914
+    },
+    {
+      "name": "금융정보과",
+      "majorGroup": "business",
+      "schoolCount": 13,
+      "studentCount": 953
+    },
+    {
+      "name": "콘텐츠디자인과",
+      "majorGroup": "design",
+      "schoolCount": 13,
+      "studentCount": 927
+    },
+    {
+      "name": "전기제어과",
+      "majorGroup": "electrical",
+      "schoolCount": 13,
+      "studentCount": 591
+    },
+    {
+      "name": "외식조리과",
+      "majorGroup": "food",
+      "schoolCount": 12,
+      "studentCount": 1199
+    },
+    {
+      "name": "자동화기계과",
+      "majorGroup": "mechanical",
+      "schoolCount": 12,
+      "studentCount": 1051
+    },
+    {
+      "name": "경영사무과",
+      "majorGroup": "business",
+      "schoolCount": 12,
+      "studentCount": 963
+    },
+    {
+      "name": "스마트전기과",
+      "majorGroup": "electrical",
+      "schoolCount": 12,
+      "studentCount": 748
+    },
+    {
+      "name": "금융회계과",
+      "majorGroup": "business",
+      "schoolCount": 12,
+      "studentCount": 695
+    },
+    {
+      "name": "스마트전자과",
+      "majorGroup": "electrical",
+      "schoolCount": 12,
+      "studentCount": 546
+    },
+    {
+      "name": "시각디자인과",
+      "majorGroup": "design",
+      "schoolCount": 11,
+      "studentCount": 1060
+    },
+    {
+      "name": "건축디자인과",
+      "majorGroup": "design",
+      "schoolCount": 11,
+      "studentCount": 865
+    },
+    {
+      "name": "제과제빵과",
+      "majorGroup": "food",
+      "schoolCount": 11,
+      "studentCount": 741
+    },
+    {
+      "name": "반려동물과",
+      "majorGroup": "bio",
+      "schoolCount": 11,
+      "studentCount": 510
+    },
+    {
+      "name": "항공기계과",
+      "majorGroup": "mechanical",
+      "schoolCount": 10,
+      "studentCount": 951
+    },
+    {
+      "name": "관광경영과",
+      "majorGroup": "service",
+      "schoolCount": 10,
+      "studentCount": 886
+    },
+    {
+      "name": "뷰티아트과",
+      "majorGroup": "design",
+      "schoolCount": 10,
+      "studentCount": 871
+    },
+    {
+      "name": "건축과",
+      "majorGroup": "architecture",
+      "schoolCount": 10,
+      "studentCount": 570
+    },
+    {
+      "name": "뷰티디자인과",
+      "majorGroup": "design",
+      "schoolCount": 9,
+      "studentCount": 884
+    },
+    {
+      "name": "경영정보과",
+      "majorGroup": "business",
+      "schoolCount": 9,
+      "studentCount": 547
+    },
+    {
+      "name": "바이오식품과",
+      "majorGroup": "food",
+      "schoolCount": 9,
+      "studentCount": 535
+    },
+    {
+      "name": "관광조리과",
+      "majorGroup": "food",
+      "schoolCount": 8,
+      "studentCount": 1242
+    },
+    {
+      "name": "전기에너지과",
+      "majorGroup": "electrical",
+      "schoolCount": 8,
+      "studentCount": 717
+    },
+    {
+      "name": "디자인과",
+      "majorGroup": "design",
+      "schoolCount": 8,
+      "studentCount": 686
+    },
+    {
+      "name": "자동화시스템과",
+      "majorGroup": "electrical",
+      "schoolCount": 8,
+      "studentCount": 661
+    },
+    {
+      "name": "회계금융과",
+      "majorGroup": "business",
+      "schoolCount": 8,
+      "studentCount": 559
+    },
+    {
+      "name": "토목과",
+      "majorGroup": "architecture",
+      "schoolCount": 8,
+      "studentCount": 460
+    },
+    {
+      "name": "컴퓨터응용기계과",
+      "majorGroup": "mechanical",
+      "schoolCount": 8,
+      "studentCount": 433
+    },
+    {
+      "name": "카페베이커리과",
+      "majorGroup": "food",
+      "schoolCount": 8,
+      "studentCount": 372
+    },
+    {
+      "name": "메카트로닉스과",
+      "majorGroup": "general",
+      "schoolCount": 7,
+      "studentCount": 1114
+    },
+    {
+      "name": "미용과",
+      "majorGroup": "design",
+      "schoolCount": 7,
+      "studentCount": 766
+    },
+    {
+      "name": "경영회계과",
+      "majorGroup": "business",
+      "schoolCount": 7,
+      "studentCount": 707
+    },
+    {
+      "name": "전자기계과",
+      "majorGroup": "mechanical",
+      "schoolCount": 7,
+      "studentCount": 641
+    },
+    {
+      "name": "미래자동차과",
+      "majorGroup": "mechanical",
+      "schoolCount": 7,
+      "studentCount": 563
+    },
+    {
+      "name": "영상콘텐츠과",
+      "majorGroup": "design",
+      "schoolCount": 7,
+      "studentCount": 538
+    },
+    {
+      "name": "화학공업과",
+      "majorGroup": "general",
+      "schoolCount": 7,
+      "studentCount": 464
+    },
+    {
+      "name": "조리과학과",
+      "majorGroup": "food",
+      "schoolCount": 7,
+      "studentCount": 456
+    },
+    {
+      "name": "소프트웨어개발과",
+      "majorGroup": "software",
+      "schoolCount": 7,
+      "studentCount": 397
+    },
+    {
+      "name": "IT전자과",
+      "majorGroup": "electrical",
+      "schoolCount": 7,
+      "studentCount": 376
+    },
+    {
+      "name": "인공지능소프트웨어과",
+      "majorGroup": "software",
+      "schoolCount": 7,
+      "studentCount": 338
+    },
+    {
+      "name": "미용예술과",
+      "majorGroup": "design",
+      "schoolCount": 6,
+      "studentCount": 823
+    },
+    {
+      "name": "항공전기전자과",
+      "majorGroup": "mechanical",
+      "schoolCount": 6,
+      "studentCount": 566
+    },
+    {
+      "name": "전기전자제어과",
+      "majorGroup": "electrical",
+      "schoolCount": 6,
+      "studentCount": 551
+    },
+    {
+      "name": "조리제빵과",
+      "majorGroup": "food",
+      "schoolCount": 6,
+      "studentCount": 532
+    },
+    {
+      "name": "세무회계과",
+      "majorGroup": "business",
+      "schoolCount": 6,
+      "studentCount": 482
+    },
+    {
+      "name": "디자인콘텐츠과",
+      "majorGroup": "design",
+      "schoolCount": 6,
+      "studentCount": 466
+    },
+    {
+      "name": "소프트웨어과",
+      "majorGroup": "software",
+      "schoolCount": 6,
+      "studentCount": 426
+    },
+    {
+      "name": "방송영상과",
+      "majorGroup": "design",
+      "schoolCount": 6,
+      "studentCount": 371
+    },
+    {
+      "name": "스마트소프트웨어과",
+      "majorGroup": "software",
+      "schoolCount": 6,
+      "studentCount": 364
+    },
+    {
+      "name": "정보통신과",
+      "majorGroup": "electrical",
+      "schoolCount": 6,
+      "studentCount": 274
+    },
+    {
+      "name": "산업설비과",
+      "majorGroup": "mechanical",
+      "schoolCount": 6,
+      "studentCount": 264
+    },
+    {
+      "name": "스마트전기전자과",
+      "majorGroup": "electrical",
+      "schoolCount": 5,
+      "studentCount": 560
+    },
+    {
+      "name": "패션디자인과",
+      "majorGroup": "design",
+      "schoolCount": 5,
+      "studentCount": 448
+    },
+    {
+      "name": "베이커리카페과",
+      "majorGroup": "food",
+      "schoolCount": 5,
+      "studentCount": 447
+    },
+    {
+      "name": "항공정비과",
+      "majorGroup": "mechanical",
+      "schoolCount": 5,
+      "studentCount": 439
+    },
+    {
+      "name": "스마트건설과",
+      "majorGroup": "architecture",
+      "schoolCount": 5,
+      "studentCount": 408
+    },
+    {
+      "name": "스마트융합기계과",
+      "majorGroup": "mechanical",
+      "schoolCount": 5,
+      "studentCount": 408
+    },
+    {
+      "name": "회계정보과",
+      "majorGroup": "business",
+      "schoolCount": 5,
+      "studentCount": 398
+    },
+    {
+      "name": "뷰티미용과",
+      "majorGroup": "design",
+      "schoolCount": 5,
+      "studentCount": 385
+    },
+    {
+      "name": "관광서비스과",
+      "majorGroup": "service",
+      "schoolCount": 5,
+      "studentCount": 377
+    },
+    {
+      "name": "호텔조리과",
+      "majorGroup": "food",
+      "schoolCount": 5,
+      "studentCount": 372
+    },
+    {
+      "name": "IT소프트웨어과",
+      "majorGroup": "software",
+      "schoolCount": 5,
+      "studentCount": 337
+    },
+    {
+      "name": "항공전자과",
+      "majorGroup": "mechanical",
+      "schoolCount": 5,
+      "studentCount": 323
+    },
+    {
+      "name": "소방안전과",
+      "majorGroup": "service",
+      "schoolCount": 5,
+      "studentCount": 320
+    },
+    {
+      "name": "창업경영과",
+      "majorGroup": "business",
+      "schoolCount": 5,
+      "studentCount": 315
+    },
+    {
+      "name": "전자통신과",
+      "majorGroup": "electrical",
+      "schoolCount": 5,
+      "studentCount": 305
+    },
+    {
+      "name": "도시공간건설과",
+      "majorGroup": "architecture",
+      "schoolCount": 5,
+      "studentCount": 274
+    },
+    {
+      "name": "화공과",
+      "majorGroup": "general",
+      "schoolCount": 5,
+      "studentCount": 261
+    },
+    {
+      "name": "인테리어디자인과",
+      "majorGroup": "design",
+      "schoolCount": 5,
+      "studentCount": 254
+    },
+    {
+      "name": "공공사무행정과",
+      "majorGroup": "business",
+      "schoolCount": 5,
+      "studentCount": 248
+    },
+    {
+      "name": "바이오화학과",
+      "majorGroup": "bio",
+      "schoolCount": 5,
+      "studentCount": 230
+    },
+    {
+      "name": "글로벌경영과",
+      "majorGroup": "business",
+      "schoolCount": 5,
+      "studentCount": 213
+    },
+    {
+      "name": "스마트팜과",
+      "majorGroup": "general",
+      "schoolCount": 5,
+      "studentCount": 207
+    },
+    {
+      "name": "게임콘텐츠과",
+      "majorGroup": "software",
+      "schoolCount": 5,
+      "studentCount": 205
+    },
+    {
+      "name": "정보처리과",
+      "majorGroup": "software",
+      "schoolCount": 5,
+      "studentCount": 98
+    },
+    {
+      "name": "토탈뷰티과",
+      "majorGroup": "design",
+      "schoolCount": 4,
+      "studentCount": 611
+    },
+    {
+      "name": "공통과",
+      "majorGroup": "general",
+      "schoolCount": 4,
+      "studentCount": 428
+    },
+    {
+      "name": "사무회계과",
+      "majorGroup": "business",
+      "schoolCount": 4,
+      "studentCount": 428
+    },
+    {
+      "name": "미디어콘텐츠과",
+      "majorGroup": "software",
+      "schoolCount": 4,
+      "studentCount": 424
+    },
+    {
+      "name": "산업디자인과",
+      "majorGroup": "design",
+      "schoolCount": 4,
+      "studentCount": 402
+    },
+    {
+      "name": "IT콘텐츠과",
+      "majorGroup": "software",
+      "schoolCount": 4,
+      "studentCount": 350
+    },
+    {
+      "name": "관광외국어과",
+      "majorGroup": "service",
+      "schoolCount": 4,
+      "studentCount": 330
+    },
+    {
+      "name": "바이오제약과",
+      "majorGroup": "bio",
+      "schoolCount": 4,
+      "studentCount": 330
+    },
+    {
+      "name": "관광레저과",
+      "majorGroup": "service",
+      "schoolCount": 4,
+      "studentCount": 315
+    },
+    {
+      "name": "간호과",
+      "majorGroup": "bio",
+      "schoolCount": 4,
+      "studentCount": 312
+    },
+    {
+      "name": "그래픽디자인과",
+      "majorGroup": "design",
+      "schoolCount": 4,
+      "studentCount": 283
+    },
+    {
+      "name": "뷰티케어과",
+      "majorGroup": "design",
+      "schoolCount": 4,
+      "studentCount": 283
+    },
+    {
+      "name": "자영수산과",
+      "majorGroup": "food",
+      "schoolCount": 4,
+      "studentCount": 281
+    },
+    {
+      "name": "스포츠경영과",
+      "majorGroup": "business",
+      "schoolCount": 4,
+      "studentCount": 276
+    },
+    {
+      "name": "친환경자동차과",
+      "majorGroup": "bio",
+      "schoolCount": 4,
+      "studentCount": 276
+    },
+    {
+      "name": "동물자원과",
+      "majorGroup": "bio",
+      "schoolCount": 4,
+      "studentCount": 253
+    },
+    {
+      "name": "카페경영과",
+      "majorGroup": "food",
+      "schoolCount": 4,
+      "studentCount": 253
+    },
+    {
+      "name": "금융경영과",
+      "majorGroup": "business",
+      "schoolCount": 4,
+      "studentCount": 244
+    },
+    {
+      "name": "신재생에너지과",
+      "majorGroup": "electrical",
+      "schoolCount": 4,
+      "studentCount": 232
+    },
+    {
+      "name": "건축인테리어과",
+      "majorGroup": "architecture",
+      "schoolCount": 4,
+      "studentCount": 225
+    },
+    {
+      "name": "외식경영과",
+      "majorGroup": "food",
+      "schoolCount": 4,
+      "studentCount": 219
+    },
+    {
+      "name": "디지털전자과",
+      "majorGroup": "electrical",
+      "schoolCount": 4,
+      "studentCount": 215
+    },
+    {
+      "name": "건축토목과",
+      "majorGroup": "architecture",
+      "schoolCount": 4,
+      "studentCount": 205
+    },
+    {
+      "name": "산업기계과",
+      "majorGroup": "mechanical",
+      "schoolCount": 4,
+      "studentCount": 204
+    },
+    {
+      "name": "조경과",
+      "majorGroup": "architecture",
+      "schoolCount": 4,
+      "studentCount": 200
+    },
+    {
+      "name": "농업토목과",
+      "majorGroup": "architecture",
+      "schoolCount": 4,
+      "studentCount": 195
+    },
+    {
+      "name": "스마트IT과",
+      "majorGroup": "software",
+      "schoolCount": 4,
+      "studentCount": 167
+    },
+    {
+      "name": "애니메이션과",
+      "majorGroup": "design",
+      "schoolCount": 4,
+      "studentCount": 166
+    },
+    {
+      "name": "자동차기계과",
+      "majorGroup": "mechanical",
+      "schoolCount": 4,
+      "studentCount": 166
+    },
+    {
+      "name": "융합소프트웨어과",
+      "majorGroup": "software",
+      "schoolCount": 4,
+      "studentCount": 158
+    },
+    {
+      "name": "e-비즈니스과",
+      "majorGroup": "business",
+      "schoolCount": 4,
+      "studentCount": 156
+    },
+    {
+      "name": "드론전자과",
+      "majorGroup": "electrical",
+      "schoolCount": 4,
+      "studentCount": 140
+    },
+    {
+      "name": "전기시스템제어과",
+      "majorGroup": "electrical",
+      "schoolCount": 4,
+      "studentCount": 137
+    },
+    {
+      "name": "서비스마케팅과",
+      "majorGroup": "service",
+      "schoolCount": 4,
+      "studentCount": 96
+    },
+    {
+      "name": "공통계열",
+      "majorGroup": "general",
+      "schoolCount": 3,
+      "studentCount": 503
+    },
+    {
+      "name": "공통",
+      "majorGroup": "general",
+      "schoolCount": 3,
+      "studentCount": 446
+    },
+    {
+      "name": "문화콘텐츠과",
+      "majorGroup": "software",
+      "schoolCount": 3,
+      "studentCount": 400
+    },
+    {
+      "name": "관광비즈니스과",
+      "majorGroup": "service",
+      "schoolCount": 3,
+      "studentCount": 389
+    },
+    {
+      "name": "기계시스템과",
+      "majorGroup": "mechanical",
+      "schoolCount": 3,
+      "studentCount": 384
+    },
+    {
+      "name": "로봇자동화과",
+      "majorGroup": "electrical",
+      "schoolCount": 3,
+      "studentCount": 384
+    },
+    {
+      "name": "자동화설비과",
+      "majorGroup": "mechanical",
+      "schoolCount": 3,
+      "studentCount": 378
+    },
+    {
+      "name": "영유아보육과",
+      "majorGroup": "general",
+      "schoolCount": 3,
+      "studentCount": 358
+    },
+    {
+      "name": "회계사무과",
+      "majorGroup": "business",
+      "schoolCount": 3,
+      "studentCount": 316
+    },
+    {
+      "name": "게임개발과",
+      "majorGroup": "software",
+      "schoolCount": 3,
+      "studentCount": 309
+    },
+    {
+      "name": "반려동물케어과",
+      "majorGroup": "bio",
+      "schoolCount": 3,
+      "studentCount": 297
+    },
+    {
+      "name": "토탈미용과",
+      "majorGroup": "design",
+      "schoolCount": 3,
+      "studentCount": 294
+    },
+    {
+      "name": "식품과학과",
+      "majorGroup": "food",
+      "schoolCount": 3,
+      "studentCount": 289
+    },
+    {
+      "name": "스마트콘텐츠과",
+      "majorGroup": "software",
+      "schoolCount": 3,
+      "studentCount": 284
+    },
+    {
+      "name": "소방전기과",
+      "majorGroup": "service",
+      "schoolCount": 3,
+      "studentCount": 263
+    },
+    {
+      "name": "콘텐츠크리에이터",
+      "majorGroup": "software",
+      "schoolCount": 3,
+      "studentCount": 263
+    },
+    {
+      "name": "반도체전자과",
+      "majorGroup": "electrical",
+      "schoolCount": 3,
+      "studentCount": 242
+    },
+    {
+      "name": "반도체장비과",
+      "majorGroup": "electrical",
+      "schoolCount": 3,
+      "studentCount": 234
+    },
+    {
+      "name": "AI반도체과",
+      "majorGroup": "electrical",
+      "schoolCount": 3,
+      "studentCount": 229
+    },
+    {
+      "name": "비즈니스콘텐츠과",
+      "majorGroup": "business",
+      "schoolCount": 3,
+      "studentCount": 228
+    },
+    {
+      "name": "부사관경영과",
+      "majorGroup": "service",
+      "schoolCount": 3,
+      "studentCount": 223
+    },
+    {
+      "name": "SNS마케팅과",
+      "majorGroup": "business",
+      "schoolCount": 3,
+      "studentCount": 217
+    },
+    {
+      "name": "스마트제어과",
+      "majorGroup": "electrical",
+      "schoolCount": 3,
+      "studentCount": 207
+    },
+    {
+      "name": "IT경영과",
+      "majorGroup": "business",
+      "schoolCount": 3,
+      "studentCount": 207
+    },
+    {
+      "name": "사물인터넷과",
+      "majorGroup": "general",
+      "schoolCount": 3,
+      "studentCount": 206
+    },
+    {
+      "name": "스마트자동화과",
+      "majorGroup": "electrical",
+      "schoolCount": 3,
+      "studentCount": 205
+    },
+    {
+      "name": "생활체육과",
+      "majorGroup": "general",
+      "schoolCount": 3,
+      "studentCount": 204
+    },
+    {
+      "name": "AI소프트웨어과",
+      "majorGroup": "software",
+      "schoolCount": 3,
+      "studentCount": 203
+    },
+    {
+      "name": "폴리메카닉스과",
+      "majorGroup": "general",
+      "schoolCount": 3,
+      "studentCount": 198
+    },
+    {
+      "name": "금융세무과",
+      "majorGroup": "business",
+      "schoolCount": 3,
+      "studentCount": 192
+    },
+    {
+      "name": "도시공간디자인과",
+      "majorGroup": "design",
+      "schoolCount": 3,
+      "studentCount": 189
+    },
+    {
+      "name": "유통경영과",
+      "majorGroup": "business",
+      "schoolCount": 3,
+      "studentCount": 184
+    },
+    {
+      "name": "건설정보과",
+      "majorGroup": "architecture",
+      "schoolCount": 3,
+      "studentCount": 181
+    },
+    {
+      "name": "드론공간정보과",
+      "majorGroup": "architecture",
+      "schoolCount": 3,
+      "studentCount": 177
+    },
+    {
+      "name": "컴퓨터소프트웨어과",
+      "majorGroup": "software",
+      "schoolCount": 3,
+      "studentCount": 177
+    },
+    {
+      "name": "스마트모빌리티과",
+      "majorGroup": "mechanical",
+      "schoolCount": 3,
+      "studentCount": 169
+    },
+    {
+      "name": "창업마케팅과",
+      "majorGroup": "business",
+      "schoolCount": 3,
+      "studentCount": 161
+    },
+    {
+      "name": "AI로봇과",
+      "majorGroup": "electrical",
+      "schoolCount": 3,
+      "studentCount": 159
+    },
+    {
+      "name": "세무행정과",
+      "majorGroup": "business",
+      "schoolCount": 3,
+      "studentCount": 154
+    },
+    {
+      "name": "IT융합과",
+      "majorGroup": "software",
+      "schoolCount": 3,
+      "studentCount": 149
+    },
+    {
+      "name": "철도전기신호과",
+      "majorGroup": "electrical",
+      "schoolCount": 3,
+      "studentCount": 144
+    },
+    {
+      "name": "서비스경영과",
+      "majorGroup": "service",
+      "schoolCount": 3,
+      "studentCount": 137
+    },
+    {
+      "name": "시각디자인",
+      "majorGroup": "design",
+      "schoolCount": 3,
+      "studentCount": 133
+    },
+    {
+      "name": "영상디자인과",
+      "majorGroup": "design",
+      "schoolCount": 3,
+      "studentCount": 131
+    },
+    {
+      "name": "글로벌비즈니스과",
+      "majorGroup": "business",
+      "schoolCount": 3,
+      "studentCount": 129
+    },
+    {
+      "name": "원예과",
+      "majorGroup": "bio",
+      "schoolCount": 3,
+      "studentCount": 128
+    },
+    {
+      "name": "반도체과",
+      "majorGroup": "electrical",
+      "schoolCount": 3,
+      "studentCount": 111
+    },
+    {
+      "name": "영상제작과",
+      "majorGroup": "design",
+      "schoolCount": 3,
+      "studentCount": 111
+    },
+    {
+      "name": "컴퓨터전자과",
+      "majorGroup": "electrical",
+      "schoolCount": 3,
+      "studentCount": 110
+    },
+    {
+      "name": "금융과",
+      "majorGroup": "business",
+      "schoolCount": 3,
+      "studentCount": 109
+    },
+    {
+      "name": "조경원예과",
+      "majorGroup": "bio",
+      "schoolCount": 3,
+      "studentCount": 109
+    },
+    {
+      "name": "스마트금융과",
+      "majorGroup": "business",
+      "schoolCount": 3,
+      "studentCount": 108
+    },
+    {
+      "name": "바이오코스메틱과",
+      "majorGroup": "bio",
+      "schoolCount": 3,
+      "studentCount": 104
+    },
+    {
+      "name": "공공행정과",
+      "majorGroup": "general",
+      "schoolCount": 3,
+      "studentCount": 102
+    },
+    {
+      "name": "웹툰콘텐츠과",
+      "majorGroup": "design",
+      "schoolCount": 3,
+      "studentCount": 94
+    },
+    {
+      "name": "스마트설비과",
+      "majorGroup": "mechanical",
+      "schoolCount": 3,
+      "studentCount": 78
+    },
+    {
+      "name": "컨벤션경영과",
+      "majorGroup": "service",
+      "schoolCount": 3,
+      "studentCount": 77
+    },
+    {
+      "name": "국제통상과",
+      "majorGroup": "general",
+      "schoolCount": 3,
+      "studentCount": 73
+    },
+    {
+      "name": "항해과",
+      "majorGroup": "general",
+      "schoolCount": 2,
+      "studentCount": 337
+    },
+    {
+      "name": "식품생명과학과",
+      "majorGroup": "food",
+      "schoolCount": 2,
+      "studentCount": 334
+    },
+    {
+      "name": "스마트팩토리",
+      "majorGroup": "mechanical",
+      "schoolCount": 2,
+      "studentCount": 318
+    },
+    {
+      "name": "기관과",
+      "majorGroup": "general",
+      "schoolCount": 2,
+      "studentCount": 317
+    },
+    {
+      "name": "관광호텔과",
+      "majorGroup": "service",
+      "schoolCount": 2,
+      "studentCount": 304
+    },
+    {
+      "name": "기계자동차과",
+      "majorGroup": "mechanical",
+      "schoolCount": 2,
+      "studentCount": 292
+    },
+    {
+      "name": "소방안전관리과",
+      "majorGroup": "service",
+      "schoolCount": 2,
+      "studentCount": 292
+    },
+    {
+      "name": "디지털전기과",
+      "majorGroup": "electrical",
+      "schoolCount": 2,
+      "studentCount": 286
+    },
+    {
+      "name": "공공사무행정",
+      "majorGroup": "business",
+      "schoolCount": 2,
+      "studentCount": 273
+    },
+    {
+      "name": "3D건축인테리어과",
+      "majorGroup": "architecture",
+      "schoolCount": 2,
+      "studentCount": 253
+    },
+    {
+      "name": "방송미디어과",
+      "majorGroup": "design",
+      "schoolCount": 2,
+      "studentCount": 242
+    },
+    {
+      "name": "스마트건설정보과",
+      "majorGroup": "architecture",
+      "schoolCount": 2,
+      "studentCount": 240
+    },
+    {
+      "name": "식품외식산업과",
+      "majorGroup": "food",
+      "schoolCount": 2,
+      "studentCount": 235
+    },
+    {
+      "name": "공정운전과",
+      "majorGroup": "general",
+      "schoolCount": 2,
+      "studentCount": 230
+    },
+    {
+      "name": "전기시스템과",
+      "majorGroup": "electrical",
+      "schoolCount": 2,
+      "studentCount": 227
+    },
+    {
+      "name": "컴퓨터과",
+      "majorGroup": "software",
+      "schoolCount": 2,
+      "studentCount": 225
+    },
+    {
+      "name": "디지털미디어과",
+      "majorGroup": "general",
+      "schoolCount": 2,
+      "studentCount": 224
+    },
+    {
+      "name": "호텔제과제빵과",
+      "majorGroup": "food",
+      "schoolCount": 2,
+      "studentCount": 204
+    },
+    {
+      "name": "AI전기과",
+      "majorGroup": "electrical",
+      "schoolCount": 2,
+      "studentCount": 193
+    },
+    {
+      "name": "미디어디자인과",
+      "majorGroup": "design",
+      "schoolCount": 2,
+      "studentCount": 190
+    },
+    {
+      "name": "패션코디네이터과",
+      "majorGroup": "design",
+      "schoolCount": 2,
+      "studentCount": 190
+    },
+    {
+      "name": "3D융합콘텐츠과",
+      "majorGroup": "software",
+      "schoolCount": 2,
+      "studentCount": 188
+    },
+    {
+      "name": "관광서비스",
+      "majorGroup": "service",
+      "schoolCount": 2,
+      "studentCount": 185
+    },
+    {
+      "name": "콘텐츠마케팅과",
+      "majorGroup": "business",
+      "schoolCount": 2,
+      "studentCount": 182
+    },
+    {
+      "name": "제품디자인과",
+      "majorGroup": "design",
+      "schoolCount": 2,
+      "studentCount": 181
+    },
+    {
+      "name": "철도차량과",
+      "majorGroup": "general",
+      "schoolCount": 2,
+      "studentCount": 179
+    },
+    {
+      "name": "스마트디자인",
+      "majorGroup": "design",
+      "schoolCount": 2,
+      "studentCount": 178
+    },
+    {
+      "name": "건강과학과",
+      "majorGroup": "general",
+      "schoolCount": 2,
+      "studentCount": 175
+    },
+    {
+      "name": "컴퓨터디자인과",
+      "majorGroup": "design",
+      "schoolCount": 2,
+      "studentCount": 175
+    },
+    {
+      "name": "AI콘텐츠",
+      "majorGroup": "software",
+      "schoolCount": 2,
+      "studentCount": 171
+    },
+    {
+      "name": "물류경영과",
+      "majorGroup": "business",
+      "schoolCount": 2,
+      "studentCount": 168
+    },
+    {
+      "name": "마케팅경영과",
+      "majorGroup": "business",
+      "schoolCount": 2,
+      "studentCount": 167
+    },
+    {
+      "name": "의료전자과",
+      "majorGroup": "bio",
+      "schoolCount": 2,
+      "studentCount": 166
+    },
+    {
+      "name": "크리에이티브디자인과",
+      "majorGroup": "design",
+      "schoolCount": 2,
+      "studentCount": 166
+    },
+    {
+      "name": "토목시스템과",
+      "majorGroup": "architecture",
+      "schoolCount": 2,
+      "studentCount": 166
+    },
+    {
+      "name": "영상크리에이터과",
+      "majorGroup": "design",
+      "schoolCount": 2,
+      "studentCount": 165
+    },
+    {
+      "name": "웹툰애니메이션과",
+      "majorGroup": "design",
+      "schoolCount": 2,
+      "studentCount": 164
+    },
+    {
+      "name": "패션산업디자인과",
+      "majorGroup": "design",
+      "schoolCount": 2,
+      "studentCount": 161
+    },
+    {
+      "name": "AI디자인과",
+      "majorGroup": "design",
+      "schoolCount": 2,
+      "studentCount": 160
+    },
+    {
+      "name": "로봇설계과",
+      "majorGroup": "electrical",
+      "schoolCount": 2,
+      "studentCount": 159
+    },
+    {
+      "name": "반도체융합과",
+      "majorGroup": "electrical",
+      "schoolCount": 2,
+      "studentCount": 159
+    },
+    {
+      "name": "국제물류과",
+      "majorGroup": "general",
+      "schoolCount": 2,
+      "studentCount": 156
+    },
+    {
+      "name": "경영과",
+      "majorGroup": "business",
+      "schoolCount": 2,
+      "studentCount": 155
+    },
+    {
+      "name": "외식베이커리과",
+      "majorGroup": "food",
+      "schoolCount": 2,
+      "studentCount": 153
+    },
+    {
+      "name": "원예조경과",
+      "majorGroup": "bio",
+      "schoolCount": 2,
+      "studentCount": 149
+    },
+    {
+      "name": "스마트건축과",
+      "majorGroup": "architecture",
+      "schoolCount": 2,
+      "studentCount": 147
+    },
+    {
+      "name": "반도체제조과",
+      "majorGroup": "electrical",
+      "schoolCount": 2,
+      "studentCount": 143
+    },
+    {
+      "name": "컴퓨터게임개발과",
+      "majorGroup": "software",
+      "schoolCount": 2,
+      "studentCount": 143
+    },
+    {
+      "name": "패션스타일과",
+      "majorGroup": "design",
+      "schoolCount": 2,
+      "studentCount": 143
+    },
+    {
+      "name": "도시조경디자인과",
+      "majorGroup": "design",
+      "schoolCount": 2,
+      "studentCount": 141
+    },
+    {
+      "name": "광고미디어디자인과",
+      "majorGroup": "design",
+      "schoolCount": 2,
+      "studentCount": 140
+    },
+    {
+      "name": "스마트용접과",
+      "majorGroup": "mechanical",
+      "schoolCount": 2,
+      "studentCount": 140
+    },
+    {
+      "name": "전자제어과",
+      "majorGroup": "electrical",
+      "schoolCount": 2,
+      "studentCount": 138
+    },
+    {
+      "name": "말산업과",
+      "majorGroup": "general",
+      "schoolCount": 2,
+      "studentCount": 136
+    },
+    {
+      "name": "경영금융과",
+      "majorGroup": "business",
+      "schoolCount": 2,
+      "studentCount": 135
+    },
+    {
+      "name": "카페디저트과",
+      "majorGroup": "food",
+      "schoolCount": 2,
+      "studentCount": 135
+    },
+    {
+      "name": "베이커리과",
+      "majorGroup": "general",
+      "schoolCount": 2,
+      "studentCount": 134
+    },
+    {
+      "name": "디지털콘텐츠과",
+      "majorGroup": "software",
+      "schoolCount": 2,
+      "studentCount": 130
+    },
+    {
+      "name": "국제관광과",
+      "majorGroup": "service",
+      "schoolCount": 2,
+      "studentCount": 125
+    },
+    {
+      "name": "금융사무과",
+      "majorGroup": "business",
+      "schoolCount": 2,
+      "studentCount": 121
+    },
+    {
+      "name": "호텔경영과",
+      "majorGroup": "service",
+      "schoolCount": 2,
+      "studentCount": 121
+    },
+    {
+      "name": "생활원예과",
+      "majorGroup": "bio",
+      "schoolCount": 2,
+      "studentCount": 120
+    },
+    {
+      "name": "식품제조공정과",
+      "majorGroup": "food",
+      "schoolCount": 2,
+      "studentCount": 119
+    },
+    {
+      "name": "지형공간디자인과",
+      "majorGroup": "design",
+      "schoolCount": 2,
+      "studentCount": 119
+    },
+    {
+      "name": "소프트웨어콘텐츠과",
+      "majorGroup": "software",
+      "schoolCount": 2,
+      "studentCount": 116
+    },
+    {
+      "name": "그린자동차과",
+      "majorGroup": "mechanical",
+      "schoolCount": 2,
+      "studentCount": 115
+    },
+    {
+      "name": "경찰사무행정과",
+      "majorGroup": "service",
+      "schoolCount": 2,
+      "studentCount": 113
+    },
+    {
+      "name": "융합기계과",
+      "majorGroup": "mechanical",
+      "schoolCount": 2,
+      "studentCount": 113
+    },
+    {
+      "name": "해양경찰과(파일럿)",
+      "majorGroup": "service",
+      "schoolCount": 2,
+      "studentCount": 108
+    },
+    {
+      "name": "그린스마트팜과",
+      "majorGroup": "general",
+      "schoolCount": 2,
+      "studentCount": 107
+    },
+    {
+      "name": "만화창작과",
+      "majorGroup": "general",
+      "schoolCount": 2,
+      "studentCount": 106
+    },
+    {
+      "name": "생활과학과(미용)",
+      "majorGroup": "general",
+      "schoolCount": 2,
+      "studentCount": 106
+    },
+    {
+      "name": "AI콘텐츠과",
+      "majorGroup": "software",
+      "schoolCount": 2,
+      "studentCount": 103
+    },
+    {
+      "name": "뷰티패션과",
+      "majorGroup": "design",
+      "schoolCount": 2,
+      "studentCount": 102
+    },
+    {
+      "name": "IT융합정보과",
+      "majorGroup": "software",
+      "schoolCount": 2,
+      "studentCount": 100
+    },
+    {
+      "name": "산업설비기계과",
+      "majorGroup": "mechanical",
+      "schoolCount": 2,
+      "studentCount": 99
+    },
+    {
+      "name": "SW개발과",
+      "majorGroup": "general",
+      "schoolCount": 2,
+      "studentCount": 96
+    },
+    {
+      "name": "영상연출과",
+      "majorGroup": "design",
+      "schoolCount": 2,
+      "studentCount": 94
+    },
+    {
+      "name": "회계정보",
+      "majorGroup": "business",
+      "schoolCount": 2,
+      "studentCount": 93
+    },
+    {
+      "name": "공정설비과",
+      "majorGroup": "mechanical",
+      "schoolCount": 2,
+      "studentCount": 92
+    },
+    {
+      "name": "드론과",
+      "majorGroup": "general",
+      "schoolCount": 2,
+      "studentCount": 92
+    },
+    {
+      "name": "로봇소프트웨어과",
+      "majorGroup": "electrical",
+      "schoolCount": 2,
+      "studentCount": 91
+    },
+    {
+      "name": "외식산업과",
+      "majorGroup": "food",
+      "schoolCount": 2,
+      "studentCount": 90
+    },
+    {
+      "name": "보건간호",
+      "majorGroup": "bio",
+      "schoolCount": 2,
+      "studentCount": 87
+    },
+    {
+      "name": "건설과",
+      "majorGroup": "architecture",
+      "schoolCount": 2,
+      "studentCount": 83
+    },
+    {
+      "name": "광고디자인과",
+      "majorGroup": "design",
+      "schoolCount": 2,
+      "studentCount": 83
+    },
+    {
+      "name": "웰빙조리과",
+      "majorGroup": "food",
+      "schoolCount": 2,
+      "studentCount": 83
+    },
+    {
+      "name": "산림환경자원과",
+      "majorGroup": "bio",
+      "schoolCount": 2,
+      "studentCount": 82
+    },
+    {
+      "name": "AI융합과",
+      "majorGroup": "software",
+      "schoolCount": 2,
+      "studentCount": 82
+    },
+    {
+      "name": "3D모델링과",
+      "majorGroup": "general",
+      "schoolCount": 2,
+      "studentCount": 79
+    },
+    {
+      "name": "게임디자인과",
+      "majorGroup": "design",
+      "schoolCount": 2,
+      "studentCount": 79
+    },
+    {
+      "name": "스마트금형과",
+      "majorGroup": "mechanical",
+      "schoolCount": 2,
+      "studentCount": 79
+    },
+    {
+      "name": "기계설계과",
+      "majorGroup": "mechanical",
+      "schoolCount": 2,
+      "studentCount": 77
+    },
+    {
+      "name": "호텔관광과",
+      "majorGroup": "service",
+      "schoolCount": 2,
+      "studentCount": 77
+    },
+    {
+      "name": "건설디자인과",
+      "majorGroup": "design",
+      "schoolCount": 2,
+      "studentCount": 76
+    },
+    {
+      "name": "VR콘텐츠과",
+      "majorGroup": "software",
+      "schoolCount": 2,
+      "studentCount": 76
+    },
+    {
+      "name": "인공지능과",
+      "majorGroup": "software",
+      "schoolCount": 2,
+      "studentCount": 75
+    },
+    {
+      "name": "드론전기과",
+      "majorGroup": "electrical",
+      "schoolCount": 2,
+      "studentCount": 74
+    },
+    {
+      "name": "빅데이터과",
+      "majorGroup": "software",
+      "schoolCount": 2,
+      "studentCount": 73
+    },
+    {
+      "name": "호텔외식조리과",
+      "majorGroup": "food",
+      "schoolCount": 2,
+      "studentCount": 70
+    },
+    {
+      "name": "스마트농업경영과",
+      "majorGroup": "business",
+      "schoolCount": 2,
+      "studentCount": 68
+    },
+    {
+      "name": "상업정보과",
+      "majorGroup": "business",
+      "schoolCount": 2,
+      "studentCount": 65
+    },
+    {
+      "name": "임베디드SW과",
+      "majorGroup": "general",
+      "schoolCount": 2,
+      "studentCount": 65
+    },
+    {
+      "name": "금융서비스과",
+      "majorGroup": "service",
+      "schoolCount": 2,
+      "studentCount": 61
+    },
+    {
+      "name": "반도체시스템과",
+      "majorGroup": "electrical",
+      "schoolCount": 2,
+      "studentCount": 58
+    },
+    {
+      "name": "조경디자인과",
+      "majorGroup": "design",
+      "schoolCount": 2,
+      "studentCount": 58
+    },
+    {
+      "name": "호텔항공과",
+      "majorGroup": "service",
+      "schoolCount": 2,
+      "studentCount": 57
+    },
+    {
+      "name": "IT비즈니스과",
+      "majorGroup": "business",
+      "schoolCount": 2,
+      "studentCount": 55
+    },
+    {
+      "name": "크리에이터과",
+      "majorGroup": "general",
+      "schoolCount": 2,
+      "studentCount": 54
+    },
+    {
+      "name": "스마트웹콘텐츠과",
+      "majorGroup": "software",
+      "schoolCount": 2,
+      "studentCount": 53
+    },
+    {
+      "name": "보건경영과",
+      "majorGroup": "bio",
+      "schoolCount": 2,
+      "studentCount": 49
+    },
+    {
+      "name": "스마트마케팅과",
+      "majorGroup": "business",
+      "schoolCount": 2,
+      "studentCount": 49
+    },
+    {
+      "name": "공간디자인과",
+      "majorGroup": "design",
+      "schoolCount": 2,
+      "studentCount": 45
+    },
+    {
+      "name": "화장품과학과",
+      "majorGroup": "general",
+      "schoolCount": 2,
+      "studentCount": 39
+    },
+    {
+      "name": "골프산업과",
+      "majorGroup": "general",
+      "schoolCount": 2,
+      "studentCount": 38
+    },
+    {
+      "name": "유통판매과",
+      "majorGroup": "business",
+      "schoolCount": 2,
+      "studentCount": 36
+    },
+    {
+      "name": "정보보안과",
+      "majorGroup": "software",
+      "schoolCount": 2,
+      "studentCount": 29
+    },
+    {
+      "name": "스마트팜산업과",
+      "majorGroup": "general",
+      "schoolCount": 2,
+      "studentCount": 25
+    },
+    {
+      "name": "마케팅과",
+      "majorGroup": "business",
+      "schoolCount": 2,
+      "studentCount": 19
+    }
+  ],
+  "expansionDepartments": [
+    {
+      "name": "플랫폼비즈니스경영과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 258
+    },
+    {
+      "name": "기계전기전자 통합계열",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 253
+    },
+    {
+      "name": "조선기계과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 250
+    },
+    {
+      "name": "기계메카트로닉스계열",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 237
+    },
+    {
+      "name": "AI경영과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 237
+    },
+    {
+      "name": "영상음악콘텐츠과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 231
+    },
+    {
+      "name": "나노융합과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 229
+    },
+    {
+      "name": "사무경영정보과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 229
+    },
+    {
+      "name": "배터리융합과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 221
+    },
+    {
+      "name": "주얼리디자인",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 217
+    },
+    {
+      "name": "자동화설비",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 211
+    },
+    {
+      "name": "ERP스마트경영과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 209
+    },
+    {
+      "name": "식품산업과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 198
+    },
+    {
+      "name": "피부미용과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 195
+    },
+    {
+      "name": "영상미디어",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 193
+    },
+    {
+      "name": "국제관광경영과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 185
+    },
+    {
+      "name": "도예과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 185
+    },
+    {
+      "name": "정밀기계시스템과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 184
+    },
+    {
+      "name": "생명과학과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 183
+    },
+    {
+      "name": "AI전기제어과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 179
+    },
+    {
+      "name": "식품반려동물자원과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 178
+    },
+    {
+      "name": "웹프로그래밍학과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 178
+    },
+    {
+      "name": "해킹방어과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 176
+    },
+    {
+      "name": "금융비즈니스과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 173
+    },
+    {
+      "name": "정보보호과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 172
+    },
+    {
+      "name": "국제무역과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 167
+    },
+    {
+      "name": "IOT전기과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 166
+    },
+    {
+      "name": "미래자동차",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 163
+    },
+    {
+      "name": "전자부사관과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 160
+    },
+    {
+      "name": "복지비즈니스과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 159
+    },
+    {
+      "name": "철강로봇융합과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 158
+    },
+    {
+      "name": "관광경영",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 157
+    },
+    {
+      "name": "유통물류과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 157
+    },
+    {
+      "name": "1학년통합과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 156
+    },
+    {
+      "name": "보건의료과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 155
+    },
+    {
+      "name": "관광그린자원과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 154
+    },
+    {
+      "name": "IT산업디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 154
+    },
+    {
+      "name": "디지털산업디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 153
+    },
+    {
+      "name": "의료관광과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 153
+    },
+    {
+      "name": "에너지시스템과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 151
+    },
+    {
+      "name": "AI시각디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 151
+    },
+    {
+      "name": "기계전자융합계열과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 146
+    },
+    {
+      "name": "레저동물산업과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 145
+    },
+    {
+      "name": "초정밀기계과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 145
+    },
+    {
+      "name": "스마트자동화시스템과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 143
+    },
+    {
+      "name": "콘텐츠크리에이터과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 141
+    },
+    {
+      "name": "미디어사운드과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 139
+    },
+    {
+      "name": "크리에이티브미디어디자인",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 138
+    },
+    {
+      "name": "공공행정사무",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 137
+    },
+    {
+      "name": "비즈니스영어",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 136
+    },
+    {
+      "name": "차세대반도체과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 136
+    },
+    {
+      "name": "인공지능반도체과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 134
+    },
+    {
+      "name": "농산업기계과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 133
+    },
+    {
+      "name": "반려동물관리과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 133
+    },
+    {
+      "name": "전자전기과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 133
+    },
+    {
+      "name": "연예매니지먼트과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 132
+    },
+    {
+      "name": "영상커뮤니케이션과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 131
+    },
+    {
+      "name": "소방기계과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 130
+    },
+    {
+      "name": "외식식품가공과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 130
+    },
+    {
+      "name": "웹툰앤콘텐츠디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 130
+    },
+    {
+      "name": "건축목공시스템과",
+      "majorGroup": "architecture",
+      "schoolCount": 1,
+      "studentCount": 129
+    },
+    {
+      "name": "에너지환경과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 128
+    },
+    {
+      "name": "공군부사관과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 127
+    },
+    {
+      "name": "관광레저경영과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 127
+    },
+    {
+      "name": "방송촬영조명과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 127
+    },
+    {
+      "name": "정보네트워크과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 127
+    },
+    {
+      "name": "커뮤니케이션 디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 127
+    },
+    {
+      "name": "항공정비시스템과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 127
+    },
+    {
+      "name": "항공MRO과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 127
+    },
+    {
+      "name": "소방설비과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 126
+    },
+    {
+      "name": "조리디자인과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 126
+    },
+    {
+      "name": "경영관리과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 125
+    },
+    {
+      "name": "디자인",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 125
+    },
+    {
+      "name": "치의보건간호과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 125
+    },
+    {
+      "name": "AI비지니스",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 125
+    },
+    {
+      "name": "관광비지니스과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 124
+    },
+    {
+      "name": "보건행정코디네이터과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 123
+    },
+    {
+      "name": "보건행정학과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 123
+    },
+    {
+      "name": "앱서비스과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 123
+    },
+    {
+      "name": "IT메이커스경영과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 123
+    },
+    {
+      "name": "금융비즈니스",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 122
+    },
+    {
+      "name": "베이커리경영과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 122
+    },
+    {
+      "name": "시각미디어디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 122
+    },
+    {
+      "name": "엔터테인먼트비즈니스과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 122
+    },
+    {
+      "name": "비주얼디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 121
+    },
+    {
+      "name": "기계계열",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 120
+    },
+    {
+      "name": "미디어콘텐츠",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 120
+    },
+    {
+      "name": "스마트자동차과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 120
+    },
+    {
+      "name": "이차전지전기설비과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 120
+    },
+    {
+      "name": "도시건설정보과",
+      "majorGroup": "architecture",
+      "schoolCount": 1,
+      "studentCount": 119
+    },
+    {
+      "name": "웹콘텐츠디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 119
+    },
+    {
+      "name": "조리디저트과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 119
+    },
+    {
+      "name": "도예디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 118
+    },
+    {
+      "name": "디지털만화영상",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 118
+    },
+    {
+      "name": "IoT디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 118
+    },
+    {
+      "name": "공연콘텐츠과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 117
+    },
+    {
+      "name": "마케팅콘텐츠과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 117
+    },
+    {
+      "name": "사진영상과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 117
+    },
+    {
+      "name": "시각영상디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 117
+    },
+    {
+      "name": "웹미디어콘텐츠과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 117
+    },
+    {
+      "name": "한식조리과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 117
+    },
+    {
+      "name": "IoT전기과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 117
+    },
+    {
+      "name": "공간연출디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 116
+    },
+    {
+      "name": "국제회계정보과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 116
+    },
+    {
+      "name": "글로벌조리과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 116
+    },
+    {
+      "name": "메이커창작과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 116
+    },
+    {
+      "name": "호텔관광비즈니스과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 116
+    },
+    {
+      "name": "3D융합디자인",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 115
+    },
+    {
+      "name": "국제조리과학과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 115
+    },
+    {
+      "name": "제과제빵화공과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 115
+    },
+    {
+      "name": "컨벤션외식조리과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 115
+    },
+    {
+      "name": "특수산업설비과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 115
+    },
+    {
+      "name": "회계경영",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 115
+    },
+    {
+      "name": "AI소프트웨어",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 115
+    },
+    {
+      "name": "뷰티과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 114
+    },
+    {
+      "name": "생물자원과학과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 114
+    },
+    {
+      "name": "스마트보안솔루션과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 114
+    },
+    {
+      "name": "스마트호텔관광",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 114
+    },
+    {
+      "name": "전기에너지설비과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 114
+    },
+    {
+      "name": "방송시스템과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 113
+    },
+    {
+      "name": "스마트금융경영",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 113
+    },
+    {
+      "name": "에너지정보통신과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 113
+    },
+    {
+      "name": "스마트의료간호과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 112
+    },
+    {
+      "name": "외식조리경영과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 112
+    },
+    {
+      "name": "음악영상콘텐츠과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 112
+    },
+    {
+      "name": "인공지능콘텐츠과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 112
+    },
+    {
+      "name": "항공산업정비과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 112
+    },
+    {
+      "name": "관세무역과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 111
+    },
+    {
+      "name": "로봇전기과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 111
+    },
+    {
+      "name": "중기자동차시스템과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 111
+    },
+    {
+      "name": "회계경영과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 111
+    },
+    {
+      "name": "글로벌유통과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 110
+    },
+    {
+      "name": "에너지기계과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 110
+    },
+    {
+      "name": "에너지전자제어과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 110
+    },
+    {
+      "name": "자동차산업계열",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 110
+    },
+    {
+      "name": "스마트서비스경영과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 109
+    },
+    {
+      "name": "어선운항관리과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 109
+    },
+    {
+      "name": "자영과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 109
+    },
+    {
+      "name": "IT 크리에이터과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 109
+    },
+    {
+      "name": "바이오푸드",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 108
+    },
+    {
+      "name": "창업콘텐츠과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 108
+    },
+    {
+      "name": "국제경영",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 107
+    },
+    {
+      "name": "사운드뮤직디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 107
+    },
+    {
+      "name": "화장품화학과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 107
+    },
+    {
+      "name": "K-POP공연예술과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 107
+    },
+    {
+      "name": "건강조리과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 106
+    },
+    {
+      "name": "스마트펫경영과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 106
+    },
+    {
+      "name": "패션제품디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 106
+    },
+    {
+      "name": "다이텍소재디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 105
+    },
+    {
+      "name": "뮤지컬연기과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 105
+    },
+    {
+      "name": "철도운영정보과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 105
+    },
+    {
+      "name": "드론비즈과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 104
+    },
+    {
+      "name": "만화영상과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 104
+    },
+    {
+      "name": "메타비즈니스과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 104
+    },
+    {
+      "name": "치즈N조리",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 104
+    },
+    {
+      "name": "국제문화콘텐츠과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 103
+    },
+    {
+      "name": "군사경영과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 103
+    },
+    {
+      "name": "반도체소프트웨어과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 103
+    },
+    {
+      "name": "전자융합과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 103
+    },
+    {
+      "name": "친환경원예경영과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 103
+    },
+    {
+      "name": "디지털바이오화학과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 102
+    },
+    {
+      "name": "모바일전자과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 102
+    },
+    {
+      "name": "AI융합전자과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 102
+    },
+    {
+      "name": "스마트융합설비과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 101
+    },
+    {
+      "name": "인공지능프로그래밍과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 101
+    },
+    {
+      "name": "조리미용과 미용전공",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 101
+    },
+    {
+      "name": "간호복지과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 100
+    },
+    {
+      "name": "디지털건축과",
+      "majorGroup": "architecture",
+      "schoolCount": 1,
+      "studentCount": 100
+    },
+    {
+      "name": "전자시스템과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 100
+    },
+    {
+      "name": "건설공간정보과",
+      "majorGroup": "architecture",
+      "schoolCount": 1,
+      "studentCount": 99
+    },
+    {
+      "name": "경찰행정과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 99
+    },
+    {
+      "name": "비즈니스과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 99
+    },
+    {
+      "name": "스마트 물류 플랫폼과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 99
+    },
+    {
+      "name": "에코자동차과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 99
+    },
+    {
+      "name": "일본무역과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 99
+    },
+    {
+      "name": "국제뷰티아트과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 98
+    },
+    {
+      "name": "미래융합경영과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 98
+    },
+    {
+      "name": "보건간호학과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 98
+    },
+    {
+      "name": "인공지능컴퓨팅과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 98
+    },
+    {
+      "name": "컴퓨터정보전자과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 98
+    },
+    {
+      "name": "문화콘텐츠디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 97
+    },
+    {
+      "name": "스마트디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 97
+    },
+    {
+      "name": "스마트로봇과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 97
+    },
+    {
+      "name": "08 토목건축과",
+      "majorGroup": "architecture",
+      "schoolCount": 1,
+      "studentCount": 96
+    },
+    {
+      "name": "국제관광비즈니스과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 95
+    },
+    {
+      "name": "디저트제과제빵과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 95
+    },
+    {
+      "name": "반도체계열",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 95
+    },
+    {
+      "name": "조리미용과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 95
+    },
+    {
+      "name": "클라우드보안과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 95
+    },
+    {
+      "name": "미래자동차전기전자과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 94
+    },
+    {
+      "name": "미주무역과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 94
+    },
+    {
+      "name": "반도체전기과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 94
+    },
+    {
+      "name": "설비시스템과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 94
+    },
+    {
+      "name": "조선전기과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 94
+    },
+    {
+      "name": "항공서비스과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 94
+    },
+    {
+      "name": "로봇산업설비과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 93
+    },
+    {
+      "name": "모바일IT과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 93
+    },
+    {
+      "name": "미래자동차부품가공과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 93
+    },
+    {
+      "name": "상공경영과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 93
+    },
+    {
+      "name": "외식조리학과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 93
+    },
+    {
+      "name": "해군기계과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 93
+    },
+    {
+      "name": "해군전기전자과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 93
+    },
+    {
+      "name": "IT금융세무과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 93
+    },
+    {
+      "name": "게임소프트웨어과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 92
+    },
+    {
+      "name": "인공지능전자과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 92
+    },
+    {
+      "name": "스마트융합제어과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 91
+    },
+    {
+      "name": "의료전기전자과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 91
+    },
+    {
+      "name": "디지털미디어디자인",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 90
+    },
+    {
+      "name": "반도체케미컬과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 90
+    },
+    {
+      "name": "브랜드디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 90
+    },
+    {
+      "name": "일반",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 90
+    },
+    {
+      "name": "스마트공간과",
+      "majorGroup": "architecture",
+      "schoolCount": 1,
+      "studentCount": 89
+    },
+    {
+      "name": "스마트운항과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 89
+    },
+    {
+      "name": "시스템설비과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 89
+    },
+    {
+      "name": "이비즈니스과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 89
+    },
+    {
+      "name": "해양산업과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 89
+    },
+    {
+      "name": "e스포츠과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 89
+    },
+    {
+      "name": "e스포츠학과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 89
+    },
+    {
+      "name": "스마트영상크리에이터과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 88
+    },
+    {
+      "name": "이차전지과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 88
+    },
+    {
+      "name": "전기정보과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 88
+    },
+    {
+      "name": "태양전지과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 88
+    },
+    {
+      "name": "IT 계열",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 88
+    },
+    {
+      "name": "IT전자통신",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 88
+    },
+    {
+      "name": "스마트제어디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 87
+    },
+    {
+      "name": "의상패션디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 87
+    },
+    {
+      "name": "전자회로과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 87
+    },
+    {
+      "name": "스마트양식과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 86
+    },
+    {
+      "name": "스마트토목과",
+      "majorGroup": "architecture",
+      "schoolCount": 1,
+      "studentCount": 86
+    },
+    {
+      "name": "온라인창업마케팅과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 86
+    },
+    {
+      "name": "인테리어과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 86
+    },
+    {
+      "name": "AI컴퓨터과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 86
+    },
+    {
+      "name": "메타커머스과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 85
+    },
+    {
+      "name": "베이커리카페",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 85
+    },
+    {
+      "name": "빅데이터정보과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 85
+    },
+    {
+      "name": "인공지능전기과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 85
+    },
+    {
+      "name": "화공에너지과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 85
+    },
+    {
+      "name": "비즈니스정보",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 84
+    },
+    {
+      "name": "의료정보시스템과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 84
+    },
+    {
+      "name": "바이오의약과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 83
+    },
+    {
+      "name": "의료기계과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 83
+    },
+    {
+      "name": "스마트IT경영과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 82
+    },
+    {
+      "name": "IT사무행정과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 82
+    },
+    {
+      "name": "스마트화학",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 81
+    },
+    {
+      "name": "이차전지기계설비과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 81
+    },
+    {
+      "name": "전자산업 국제무역과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 81
+    },
+    {
+      "name": "AI게임콘텐츠학과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 81
+    },
+    {
+      "name": "B-MICE 관광과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 81
+    },
+    {
+      "name": "K-뷰티경영과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 81
+    },
+    {
+      "name": "기계자동차 국제무역과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 80
+    },
+    {
+      "name": "미래식품산업과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 80
+    },
+    {
+      "name": "반도제전자과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 80
+    },
+    {
+      "name": "반려동물학과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 80
+    },
+    {
+      "name": "스마트드론전자과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 80
+    },
+    {
+      "name": "융합설비과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 80
+    },
+    {
+      "name": "인공지능소프트웨어",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 80
+    },
+    {
+      "name": "AI세무회계",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 80
+    },
+    {
+      "name": "IT융합컴퓨터과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 80
+    },
+    {
+      "name": "모빌리티메이커과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 79
+    },
+    {
+      "name": "무역금융과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 79
+    },
+    {
+      "name": "반도체전기전자과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 79
+    },
+    {
+      "name": "소프트웨어통신과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 79
+    },
+    {
+      "name": "조리미용과 조리전공",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 79
+    },
+    {
+      "name": "친환경농업경영과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 79
+    },
+    {
+      "name": "통신전자과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 79
+    },
+    {
+      "name": "항공모빌리티과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 79
+    },
+    {
+      "name": "게임융합계열",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 78
+    },
+    {
+      "name": "아쿠아반려동물과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 78
+    },
+    {
+      "name": "이차전지시스템제어과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 78
+    },
+    {
+      "name": "정원산업과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 78
+    },
+    {
+      "name": "드론기계과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 77
+    },
+    {
+      "name": "스토어기획과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 77
+    },
+    {
+      "name": "영상콘텐츠",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 77
+    },
+    {
+      "name": "IOT전기전자과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 77
+    },
+    {
+      "name": "관광영어통역과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 76
+    },
+    {
+      "name": "국제조리과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 76
+    },
+    {
+      "name": "그래픽소프트웨어과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 76
+    },
+    {
+      "name": "미디어소프트웨어과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 76
+    },
+    {
+      "name": "바이오메디컬과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 76
+    },
+    {
+      "name": "상업정보계열",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 76
+    },
+    {
+      "name": "스마트공간디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 76
+    },
+    {
+      "name": "유아교육과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 76
+    },
+    {
+      "name": "자동차테크과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 76
+    },
+    {
+      "name": "컨벤션관광과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 76
+    },
+    {
+      "name": "크리에이터창업과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 76
+    },
+    {
+      "name": "호텔항공관광과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 76
+    },
+    {
+      "name": "AI로봇운용",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 76
+    },
+    {
+      "name": "반도체재료과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 75
+    },
+    {
+      "name": "콘텐츠창작과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 75
+    },
+    {
+      "name": "푸드디저트과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 75
+    },
+    {
+      "name": "AI자동제어시스템과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 75
+    },
+    {
+      "name": "관광외식서비스과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 74
+    },
+    {
+      "name": "관광콘텐츠디자인과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 74
+    },
+    {
+      "name": "미래자동차디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 74
+    },
+    {
+      "name": "바이오시스템과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 74
+    },
+    {
+      "name": "바이오식품과학과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 74
+    },
+    {
+      "name": "바이오제약생명과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 74
+    },
+    {
+      "name": "수소융합과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 74
+    },
+    {
+      "name": "에너지융합과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 74
+    },
+    {
+      "name": "카페창업과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 74
+    },
+    {
+      "name": "푸드스타일링과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 74
+    },
+    {
+      "name": "항공호텔과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 74
+    },
+    {
+      "name": "기계시스템제어과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 73
+    },
+    {
+      "name": "디자인모터스과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 73
+    },
+    {
+      "name": "스마트원예화훼장식과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 73
+    },
+    {
+      "name": "유통마케팅",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 73
+    },
+    {
+      "name": "AI헬스케어과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 73
+    },
+    {
+      "name": "e스포츠게임과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 73
+    },
+    {
+      "name": "웹툰디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 72
+    },
+    {
+      "name": "자동차바디튜닝과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 72
+    },
+    {
+      "name": "AI융합콘텐츠과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 72
+    },
+    {
+      "name": "농업유통정보과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 71
+    },
+    {
+      "name": "자동차, 건설정보과",
+      "majorGroup": "architecture",
+      "schoolCount": 1,
+      "studentCount": 71
+    },
+    {
+      "name": "AI융합팩토리과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 71
+    },
+    {
+      "name": "관광중국어통역과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 70
+    },
+    {
+      "name": "디저트카페경영과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 70
+    },
+    {
+      "name": "생태경관디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 70
+    },
+    {
+      "name": "시스템안전관리과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 70
+    },
+    {
+      "name": "유통플랫폼과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 70
+    },
+    {
+      "name": "자산관리과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 69
+    },
+    {
+      "name": "창업마케팅",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 69
+    },
+    {
+      "name": "컴퓨터미디어과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 69
+    },
+    {
+      "name": "보건의료서비스과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 68
+    },
+    {
+      "name": "부사관사무과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 68
+    },
+    {
+      "name": "스마트생물자원과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 68
+    },
+    {
+      "name": "스마트크리에이터과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 68
+    },
+    {
+      "name": "컴퓨터게임제작과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 68
+    },
+    {
+      "name": "행정사무과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 68
+    },
+    {
+      "name": "관광일본어통역과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 67
+    },
+    {
+      "name": "국제통상",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 67
+    },
+    {
+      "name": "애완동물과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 67
+    },
+    {
+      "name": "재무플랫폼과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 67
+    },
+    {
+      "name": "e스포츠계열",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 67
+    },
+    {
+      "name": "디저트경영과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 66
+    },
+    {
+      "name": "엔터테인먼트과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 66
+    },
+    {
+      "name": "정밀설계기계과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 66
+    },
+    {
+      "name": "첨단로봇제어과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 66
+    },
+    {
+      "name": "캐릭터창작과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 66
+    },
+    {
+      "name": "펫카페경영과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 66
+    },
+    {
+      "name": "금형설계과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 65
+    },
+    {
+      "name": "도시농업과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 65
+    },
+    {
+      "name": "드론영상과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 65
+    },
+    {
+      "name": "바이오스마트테크과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 65
+    },
+    {
+      "name": "반려동물복지과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 65
+    },
+    {
+      "name": "방송공연과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 65
+    },
+    {
+      "name": "방송영상연출과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 65
+    },
+    {
+      "name": "웰니스관광과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 65
+    },
+    {
+      "name": "자동차디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 65
+    },
+    {
+      "name": "환경과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 65
+    },
+    {
+      "name": "뉴미디어소프트웨어과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 64
+    },
+    {
+      "name": "레저스포츠과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 64
+    },
+    {
+      "name": "레저식품경영과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 64
+    },
+    {
+      "name": "마이스터공통",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 64
+    },
+    {
+      "name": "마케팅크리에이터과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 64
+    },
+    {
+      "name": "반도체공정과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 64
+    },
+    {
+      "name": "반려동물뷰티케어과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 64
+    },
+    {
+      "name": "스마트융합섬유과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 64
+    },
+    {
+      "name": "스마트제어전기과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 64
+    },
+    {
+      "name": "웹툰크리에이터과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 64
+    },
+    {
+      "name": "철도차량기계과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 64
+    },
+    {
+      "name": "첨단로봇설계과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 64
+    },
+    {
+      "name": "패션·스타일과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 64
+    },
+    {
+      "name": "푸드스타일디자인과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 64
+    },
+    {
+      "name": "05 스마트자동화과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 63
+    },
+    {
+      "name": "금융투자과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 63
+    },
+    {
+      "name": "바이오산업과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 63
+    },
+    {
+      "name": "반도체계약학과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 63
+    },
+    {
+      "name": "반도체설계과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 63
+    },
+    {
+      "name": "반려동물매니지먼트과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 63
+    },
+    {
+      "name": "외식서비스",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 63
+    },
+    {
+      "name": "웹디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 63
+    },
+    {
+      "name": "웹툰메이커스과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 63
+    },
+    {
+      "name": "첨단로봇시스템과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 63
+    },
+    {
+      "name": "IT네트워크",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 63
+    },
+    {
+      "name": "SW콘텐츠개발과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 63
+    },
+    {
+      "name": "메디컬뷰티과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 62
+    },
+    {
+      "name": "반도체화공과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 62
+    },
+    {
+      "name": "01 스마트기계",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 61
+    },
+    {
+      "name": "02 스마트용접설비과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 61
+    },
+    {
+      "name": "06 전자과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 61
+    },
+    {
+      "name": "금융자산운용과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 61
+    },
+    {
+      "name": "바이오스마트경영과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 61
+    },
+    {
+      "name": "사무경영과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 61
+    },
+    {
+      "name": "수산자원양식과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 61
+    },
+    {
+      "name": "스포츠산업경영과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 61
+    },
+    {
+      "name": "철강기계과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 61
+    },
+    {
+      "name": "항공호텔서비스과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 61
+    },
+    {
+      "name": "관광외식경영",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 60
+    },
+    {
+      "name": "그린바이오과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 60
+    },
+    {
+      "name": "글로벌용접과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 60
+    },
+    {
+      "name": "바이오화장품과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 60
+    },
+    {
+      "name": "스마트패션컨텐츠과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 60
+    },
+    {
+      "name": "스마트패션콘텐츠과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 60
+    },
+    {
+      "name": "영상그래픽과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 60
+    },
+    {
+      "name": "웹디자인",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 60
+    },
+    {
+      "name": "전력반도체과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 60
+    },
+    {
+      "name": "정보보안소프트웨어과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 60
+    },
+    {
+      "name": "한방생명과학과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 60
+    },
+    {
+      "name": "항공산업시스템과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 60
+    },
+    {
+      "name": "B-MICE 외식조리과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 60
+    },
+    {
+      "name": "03 미래자동차",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 59
+    },
+    {
+      "name": "글로벌관광과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 59
+    },
+    {
+      "name": "디지털비즈니스과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 59
+    },
+    {
+      "name": "디지털콘테츠과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 59
+    },
+    {
+      "name": "만화애니메이션",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 59
+    },
+    {
+      "name": "산림조경과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 59
+    },
+    {
+      "name": "스포츠레저과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 59
+    },
+    {
+      "name": "웹솔루션과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 59
+    },
+    {
+      "name": "조리과학",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 59
+    },
+    {
+      "name": "조리제과제빵과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 59
+    },
+    {
+      "name": "펫매니지먼트과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 59
+    },
+    {
+      "name": "IOT전자과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 59
+    },
+    {
+      "name": "게임그래픽디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 58
+    },
+    {
+      "name": "공간정보디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 58
+    },
+    {
+      "name": "공연예술과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 58
+    },
+    {
+      "name": "반도체팩토리과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 58
+    },
+    {
+      "name": "반려동물미용과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 58
+    },
+    {
+      "name": "뷰티미용",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 58
+    },
+    {
+      "name": "뷰티코디네이션과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 58
+    },
+    {
+      "name": "수산식품가공과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 58
+    },
+    {
+      "name": "연예엔터테인먼트과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 58
+    },
+    {
+      "name": "웹툰제작과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 58
+    },
+    {
+      "name": "의료IT과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 58
+    },
+    {
+      "name": "자동차·건설기계과",
+      "majorGroup": "architecture",
+      "schoolCount": 1,
+      "studentCount": 58
+    },
+    {
+      "name": "출판미디어과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 58
+    },
+    {
+      "name": "컴퓨터정보기술과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 58
+    },
+    {
+      "name": "콘텐츠크리에터과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 58
+    },
+    {
+      "name": "방송연예공연과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 57
+    },
+    {
+      "name": "브랜딩 디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 57
+    },
+    {
+      "name": "사물인터넷",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 57
+    },
+    {
+      "name": "섬유소재과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 57
+    },
+    {
+      "name": "에너지전기",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 57
+    },
+    {
+      "name": "지식경영과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 57
+    },
+    {
+      "name": "패션스타일리스트과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 57
+    },
+    {
+      "name": "SW미디어과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 57
+    },
+    {
+      "name": "11 그래픽아트과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 56
+    },
+    {
+      "name": "12 신소재세라믹",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 56
+    },
+    {
+      "name": "공정계전과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 56
+    },
+    {
+      "name": "드론테크과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 56
+    },
+    {
+      "name": "모션그래픽디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 56
+    },
+    {
+      "name": "물류장비기술과(공통)",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 56
+    },
+    {
+      "name": "미래농업경영",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 56
+    },
+    {
+      "name": "비즈니스일본어과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 56
+    },
+    {
+      "name": "스마트로봇전기과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 56
+    },
+    {
+      "name": "첨단로봇정보통신과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 56
+    },
+    {
+      "name": "축산자원개발과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 56
+    },
+    {
+      "name": "항공경영서비스과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 56
+    },
+    {
+      "name": "해군부사관과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 56
+    },
+    {
+      "name": "관광컨벤션과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 55
+    },
+    {
+      "name": "방산장비설계과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 55
+    },
+    {
+      "name": "스마트식물산업",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 55
+    },
+    {
+      "name": "원예디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 55
+    },
+    {
+      "name": "인공지능자동화과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 55
+    },
+    {
+      "name": "자영생명산업과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 55
+    },
+    {
+      "name": "전산응용기계과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 55
+    },
+    {
+      "name": "푸드조리과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 55
+    },
+    {
+      "name": "하우징디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 55
+    },
+    {
+      "name": "K-FOOD",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 55
+    },
+    {
+      "name": "10 섬유디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 54
+    },
+    {
+      "name": "건강코디네이터과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 54
+    },
+    {
+      "name": "미디어메이크업아티스트과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 54
+    },
+    {
+      "name": "미트푸드산업과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 54
+    },
+    {
+      "name": "반려동물산업경영과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 54
+    },
+    {
+      "name": "생산자동화설비과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 54
+    },
+    {
+      "name": "연기예술과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 54
+    },
+    {
+      "name": "유통마케팅과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 54
+    },
+    {
+      "name": "중기자동차과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 54
+    },
+    {
+      "name": "캐릭터디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 54
+    },
+    {
+      "name": "컨벤션비즈니스과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 54
+    },
+    {
+      "name": "하이텍디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 54
+    },
+    {
+      "name": "골프산업경영과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 53
+    },
+    {
+      "name": "국제경영과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 53
+    },
+    {
+      "name": "모빌리티과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 53
+    },
+    {
+      "name": "바이오식의약과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 53
+    },
+    {
+      "name": "비즈니스중국어과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 53
+    },
+    {
+      "name": "산업기계설비",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 53
+    },
+    {
+      "name": "스마트원예과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 53
+    },
+    {
+      "name": "영상애니메이션과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 53
+    },
+    {
+      "name": "인공지능자동차",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 53
+    },
+    {
+      "name": "파티시에과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 53
+    },
+    {
+      "name": "M.데이터SW과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 53
+    },
+    {
+      "name": "M.로보틱스과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 53
+    },
+    {
+      "name": "M.전동제어과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 53
+    },
+    {
+      "name": "경영·사무과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 52
+    },
+    {
+      "name": "금융경제과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 52
+    },
+    {
+      "name": "스마트동물사육과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 52
+    },
+    {
+      "name": "스마트팜",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 52
+    },
+    {
+      "name": "시각&모션디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 52
+    },
+    {
+      "name": "식품가공과 2",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 52
+    },
+    {
+      "name": "식품제조과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 52
+    },
+    {
+      "name": "작물산업과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 52
+    },
+    {
+      "name": "치유농업",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 52
+    },
+    {
+      "name": "친환경축산경영과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 52
+    },
+    {
+      "name": "디지털전자제어과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 51
+    },
+    {
+      "name": "로보트로닉스과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 51
+    },
+    {
+      "name": "실용음악과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 51
+    },
+    {
+      "name": "자영말산업과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 51
+    },
+    {
+      "name": "국방행정기술과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 50
+    },
+    {
+      "name": "반려동물산업과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 50
+    },
+    {
+      "name": "쇼핑몰제작과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 50
+    },
+    {
+      "name": "스마트정보통신과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 50
+    },
+    {
+      "name": "식물자원과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 50
+    },
+    {
+      "name": "중국무역과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 50
+    },
+    {
+      "name": "M.소재에너지과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 50
+    },
+    {
+      "name": "금형과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 49
+    },
+    {
+      "name": "바이오산업기계과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 49
+    },
+    {
+      "name": "부사관행정과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 49
+    },
+    {
+      "name": "소셜미디어개발과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 49
+    },
+    {
+      "name": "웹크리에이터과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 49
+    },
+    {
+      "name": "의료비즈니스과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 49
+    },
+    {
+      "name": "컴퓨터미디어보안과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 49
+    },
+    {
+      "name": "항공영상미디어과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 49
+    },
+    {
+      "name": "BI데이터과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 49
+    },
+    {
+      "name": "냉동공조과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 48
+    },
+    {
+      "name": "드론산업과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 48
+    },
+    {
+      "name": "메타버스게임과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 48
+    },
+    {
+      "name": "미용디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 48
+    },
+    {
+      "name": "바이오화공과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 48
+    },
+    {
+      "name": "패션액세서리디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 48
+    },
+    {
+      "name": "펫서비스과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 48
+    },
+    {
+      "name": "3D디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 47
+    },
+    {
+      "name": "디저트카페창업과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 47
+    },
+    {
+      "name": "모빌리티모터스과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 47
+    },
+    {
+      "name": "미디어콘텐츠디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 47
+    },
+    {
+      "name": "서비스마케팅",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 47
+    },
+    {
+      "name": "소셜미디어콘텐츠과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 47
+    },
+    {
+      "name": "웹툰일러스트디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 47
+    },
+    {
+      "name": "재무경영과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 47
+    },
+    {
+      "name": "철도건축시설과",
+      "majorGroup": "architecture",
+      "schoolCount": 1,
+      "studentCount": 47
+    },
+    {
+      "name": "IT융합통신과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 47
+    },
+    {
+      "name": "3D모델링그래픽과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 46
+    },
+    {
+      "name": "국방시스템과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 46
+    },
+    {
+      "name": "모빌리티스마트팩토리과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 46
+    },
+    {
+      "name": "모빌리티에너지과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 46
+    },
+    {
+      "name": "스마트산림조경과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 46
+    },
+    {
+      "name": "의료데이터과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 46
+    },
+    {
+      "name": "재료기술과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 46
+    },
+    {
+      "name": "푸드테크과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 46
+    },
+    {
+      "name": "IT건축디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 46
+    },
+    {
+      "name": "VR콘텐츠디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 46
+    },
+    {
+      "name": "관광콘텐츠과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 45
+    },
+    {
+      "name": "국제통상외국어과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 45
+    },
+    {
+      "name": "도심항공모빌리티과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 45
+    },
+    {
+      "name": "드론지형정보과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 45
+    },
+    {
+      "name": "디지털컨텐츠과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 45
+    },
+    {
+      "name": "모바일콘텐츠과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 45
+    },
+    {
+      "name": "모빌리티스마트시티과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 45
+    },
+    {
+      "name": "의료미용과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 45
+    },
+    {
+      "name": "전기융합제어과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 45
+    },
+    {
+      "name": "전기제어시스템과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 45
+    },
+    {
+      "name": "호텔외식관광과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 45
+    },
+    {
+      "name": "e스포츠산업과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 45
+    },
+    {
+      "name": "IOT기계과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 45
+    },
+    {
+      "name": "스마트에너지설비과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 44
+    },
+    {
+      "name": "의료콘텐츠과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 44
+    },
+    {
+      "name": "디자인계열",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 43
+    },
+    {
+      "name": "미디어크리에이터과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 43
+    },
+    {
+      "name": "식물과학과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 43
+    },
+    {
+      "name": "의료헬스케어과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 43
+    },
+    {
+      "name": "인테리어리모델링과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 43
+    },
+    {
+      "name": "패션코디네이션과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 43
+    },
+    {
+      "name": "관광운항과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 42
+    },
+    {
+      "name": "농산업식품과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 42
+    },
+    {
+      "name": "디지털마케팅과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 42
+    },
+    {
+      "name": "디지털섬유과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 42
+    },
+    {
+      "name": "미래자동차금형과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 42
+    },
+    {
+      "name": "비즈니스플랫폼과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 42
+    },
+    {
+      "name": "스마트관광과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 42
+    },
+    {
+      "name": "스마트그리드과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 42
+    },
+    {
+      "name": "스포츠건강관리과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 42
+    },
+    {
+      "name": "웹툰조형과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 42
+    },
+    {
+      "name": "컴퓨터응용디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 42
+    },
+    {
+      "name": "AI기계",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 42
+    },
+    {
+      "name": "AI측정과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 42
+    },
+    {
+      "name": "IT응용과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 42
+    },
+    {
+      "name": "SNS콘텐츠과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 42
+    },
+    {
+      "name": "07 신재생에너지과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 41
+    },
+    {
+      "name": "관광외식조리과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 41
+    },
+    {
+      "name": "그린에너지시스템과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 41
+    },
+    {
+      "name": "도시원예과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 41
+    },
+    {
+      "name": "디저트서비스과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 41
+    },
+    {
+      "name": "로봇정보통신과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 41
+    },
+    {
+      "name": "미디어컨텐츠",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 41
+    },
+    {
+      "name": "웹툰시각디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 41
+    },
+    {
+      "name": "웹툰애니메이션",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 41
+    },
+    {
+      "name": "자동차튜닝과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 41
+    },
+    {
+      "name": "조경산업디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 41
+    },
+    {
+      "name": "조경토목과",
+      "majorGroup": "architecture",
+      "schoolCount": 1,
+      "studentCount": 41
+    },
+    {
+      "name": "항공기체과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 41
+    },
+    {
+      "name": "AI모빌리티",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 41
+    },
+    {
+      "name": "AI설비",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 41
+    },
+    {
+      "name": "Alot전기과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 41
+    },
+    {
+      "name": "IT금융과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 41
+    },
+    {
+      "name": "05 친환경에너지전기과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 40
+    },
+    {
+      "name": "과수경영과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 40
+    },
+    {
+      "name": "도시조경과",
+      "majorGroup": "architecture",
+      "schoolCount": 1,
+      "studentCount": 40
+    },
+    {
+      "name": "메타버스디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 40
+    },
+    {
+      "name": "미래곤충산업",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 40
+    },
+    {
+      "name": "베이커리",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 40
+    },
+    {
+      "name": "스마트화학공업과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 40
+    },
+    {
+      "name": "스포츠마케팅과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 40
+    },
+    {
+      "name": "의료정보과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 40
+    },
+    {
+      "name": "인터넷쇼핑몰과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 40
+    },
+    {
+      "name": "카페베이커리관광과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 40
+    },
+    {
+      "name": "푸드스타일과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 40
+    },
+    {
+      "name": "프로그래밍개발과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 40
+    },
+    {
+      "name": "호텔서비스과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 40
+    },
+    {
+      "name": "화훼경영과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 40
+    },
+    {
+      "name": "AI모빌리티과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 40
+    },
+    {
+      "name": "디지털인공지능경영과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 39
+    },
+    {
+      "name": "디지털인공지능과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 39
+    },
+    {
+      "name": "물류관리과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 39
+    },
+    {
+      "name": "소재설계가공과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 39
+    },
+    {
+      "name": "스마트메카닉스",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 39
+    },
+    {
+      "name": "애니메이션디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 39
+    },
+    {
+      "name": "영상경영과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 39
+    },
+    {
+      "name": "제철기계과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 39
+    },
+    {
+      "name": "친환경건축과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 39
+    },
+    {
+      "name": "크리에이트창업과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 39
+    },
+    {
+      "name": "패션디자인",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 39
+    },
+    {
+      "name": "패션스타일리스트",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 39
+    },
+    {
+      "name": "AI금융회계과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 39
+    },
+    {
+      "name": "AI네트워크과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 39
+    },
+    {
+      "name": "AI문화콘텐츠",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 39
+    },
+    {
+      "name": "3D콘텐츠제작과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 38
+    },
+    {
+      "name": "경영회계",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 38
+    },
+    {
+      "name": "국제관세과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 38
+    },
+    {
+      "name": "금융회계",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 38
+    },
+    {
+      "name": "디저트카페과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 38
+    },
+    {
+      "name": "보건의료행정과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 38
+    },
+    {
+      "name": "뷰티디자인",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 38
+    },
+    {
+      "name": "사물인터넷소프트웨어과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 38
+    },
+    {
+      "name": "스마트비즈니스과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 38
+    },
+    {
+      "name": "스마트통신과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 38
+    },
+    {
+      "name": "철도운전기계과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 38
+    },
+    {
+      "name": "항공비즈니스과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 38
+    },
+    {
+      "name": "항공통제과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 38
+    },
+    {
+      "name": "해양생산과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 38
+    },
+    {
+      "name": "호텔디저트경영과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 38
+    },
+    {
+      "name": "화훼장식과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 38
+    },
+    {
+      "name": "04 자동차과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 37
+    },
+    {
+      "name": "네트워크통신과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 37
+    },
+    {
+      "name": "디지털영상과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 37
+    },
+    {
+      "name": "라이프케어과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 37
+    },
+    {
+      "name": "산림자원과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 37
+    },
+    {
+      "name": "시각애니메이션과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 37
+    },
+    {
+      "name": "실용음악",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 37
+    },
+    {
+      "name": "영상미디어과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 37
+    },
+    {
+      "name": "철도전기과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 37
+    },
+    {
+      "name": "컴퓨터특허과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 37
+    },
+    {
+      "name": "플랫폼경영과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 37
+    },
+    {
+      "name": "회계금융비즈니스과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 37
+    },
+    {
+      "name": "건축리모델링과",
+      "majorGroup": "architecture",
+      "schoolCount": 1,
+      "studentCount": 36
+    },
+    {
+      "name": "경영행정과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 36
+    },
+    {
+      "name": "그린바이오산업",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 36
+    },
+    {
+      "name": "매니지먼트경영과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 36
+    },
+    {
+      "name": "바이오의료전기과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 36
+    },
+    {
+      "name": "바이오전기과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 36
+    },
+    {
+      "name": "바이오전자과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 36
+    },
+    {
+      "name": "발전설비과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 36
+    },
+    {
+      "name": "스마트농생명",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 36
+    },
+    {
+      "name": "아트조리과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 36
+    },
+    {
+      "name": "에너지관리시스템과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 36
+    },
+    {
+      "name": "웹툰과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 36
+    },
+    {
+      "name": "지능형사이버보안과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 36
+    },
+    {
+      "name": "철도운영사무과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 36
+    },
+    {
+      "name": "항공전기과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 36
+    },
+    {
+      "name": "항공전자제어과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 36
+    },
+    {
+      "name": "AI스타트업",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 36
+    },
+    {
+      "name": "AI콘텐츠디자인",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 36
+    },
+    {
+      "name": "09 바이오화공과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 35
+    },
+    {
+      "name": "건설시스템과",
+      "majorGroup": "architecture",
+      "schoolCount": 1,
+      "studentCount": 35
+    },
+    {
+      "name": "공연무대디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 35
+    },
+    {
+      "name": "동력기계과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 35
+    },
+    {
+      "name": "디저트 제과 경영",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 35
+    },
+    {
+      "name": "레저동물과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 35
+    },
+    {
+      "name": "미디어인플루언서과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 35
+    },
+    {
+      "name": "방산설비과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 35
+    },
+    {
+      "name": "보건뷰티과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 35
+    },
+    {
+      "name": "빅데이터마케팅",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 35
+    },
+    {
+      "name": "스마트시티과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 35
+    },
+    {
+      "name": "스마트엔진과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 35
+    },
+    {
+      "name": "스마트재산경영과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 35
+    },
+    {
+      "name": "영상프로듀스과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 35
+    },
+    {
+      "name": "웹툰일러스트",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 35
+    },
+    {
+      "name": "인테리어건축과",
+      "majorGroup": "architecture",
+      "schoolCount": 1,
+      "studentCount": 35
+    },
+    {
+      "name": "전기배터리과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 35
+    },
+    {
+      "name": "채소경영과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 35
+    },
+    {
+      "name": "치의간호과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 35
+    },
+    {
+      "name": "특용원예과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 35
+    },
+    {
+      "name": "푸드조리디자인과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 35
+    },
+    {
+      "name": "항공산업과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 35
+    },
+    {
+      "name": "해양생명과학과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 35
+    },
+    {
+      "name": "3D건축디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 34
+    },
+    {
+      "name": "3D프린팅과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 34
+    },
+    {
+      "name": "게임미디어과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 34
+    },
+    {
+      "name": "식음료도제과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 34
+    },
+    {
+      "name": "실내건축과",
+      "majorGroup": "architecture",
+      "schoolCount": 1,
+      "studentCount": 34
+    },
+    {
+      "name": "실내공간디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 34
+    },
+    {
+      "name": "영상콘텐츠디자인",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 34
+    },
+    {
+      "name": "조선산업과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 34
+    },
+    {
+      "name": "광고마케팅과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 33
+    },
+    {
+      "name": "디지털설비과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 33
+    },
+    {
+      "name": "미디어예술과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 33
+    },
+    {
+      "name": "생산자동화과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 33
+    },
+    {
+      "name": "스마트테크과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 33
+    },
+    {
+      "name": "조형디자인",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 33
+    },
+    {
+      "name": "AI정보콘텐츠과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 33
+    },
+    {
+      "name": "SMT코딩과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 33
+    },
+    {
+      "name": "3D공간제품디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 32
+    },
+    {
+      "name": "건축·토목과",
+      "majorGroup": "architecture",
+      "schoolCount": 1,
+      "studentCount": 32
+    },
+    {
+      "name": "금융정보",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 32
+    },
+    {
+      "name": "기계산업설계과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 32
+    },
+    {
+      "name": "뉴미디어디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 32
+    },
+    {
+      "name": "디지털영상콘텐츠과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 32
+    },
+    {
+      "name": "로봇기계시스템과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 32
+    },
+    {
+      "name": "로봇제어과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 32
+    },
+    {
+      "name": "바이오뷰티테크과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 32
+    },
+    {
+      "name": "바이오푸드과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 32
+    },
+    {
+      "name": "세라믹시각디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 32
+    },
+    {
+      "name": "스마트웰빙과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 32
+    },
+    {
+      "name": "스마트팜관리과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 32
+    },
+    {
+      "name": "스마트팜디자인",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 32
+    },
+    {
+      "name": "스마트패션디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 32
+    },
+    {
+      "name": "스마트항해과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 32
+    },
+    {
+      "name": "스포츠과학시설과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 32
+    },
+    {
+      "name": "유아보육과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 32
+    },
+    {
+      "name": "융합디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 32
+    },
+    {
+      "name": "종자산업과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 32
+    },
+    {
+      "name": "펫뷰티케어과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 32
+    },
+    {
+      "name": "e모빌리티과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 32
+    },
+    {
+      "name": "IT융합기계과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 32
+    },
+    {
+      "name": "금형설계제작과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 31
+    },
+    {
+      "name": "마케팅서비스과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 31
+    },
+    {
+      "name": "물류시스템운영과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 31
+    },
+    {
+      "name": "생명산업자영과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 31
+    },
+    {
+      "name": "스마트자산관리과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 31
+    },
+    {
+      "name": "신에너지전기과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 31
+    },
+    {
+      "name": "인공지능SW과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 31
+    },
+    {
+      "name": "전자컴퓨터과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 31
+    },
+    {
+      "name": "컴퓨터응용금형과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 31
+    },
+    {
+      "name": "컴퓨터응용밀링",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 31
+    },
+    {
+      "name": "특수산업설비기계과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 31
+    },
+    {
+      "name": "패션마케팅과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 31
+    },
+    {
+      "name": "패션소재디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 31
+    },
+    {
+      "name": "항공물류서비스과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 31
+    },
+    {
+      "name": "해외건설전기통신",
+      "majorGroup": "architecture",
+      "schoolCount": 1,
+      "studentCount": 31
+    },
+    {
+      "name": "AI영상콘텐츠과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 31
+    },
+    {
+      "name": "광고마케팅",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 30
+    },
+    {
+      "name": "국방경영과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 30
+    },
+    {
+      "name": "로봇소재융합과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 30
+    },
+    {
+      "name": "스마트회계과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 30
+    },
+    {
+      "name": "정밀기계가공과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 30
+    },
+    {
+      "name": "토털뷰티과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 30
+    },
+    {
+      "name": "e커머스과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 30
+    },
+    {
+      "name": "농산업유통과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 29
+    },
+    {
+      "name": "디바이스소프트웨어과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 29
+    },
+    {
+      "name": "산업안전제철과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 29
+    },
+    {
+      "name": "세무정보과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 29
+    },
+    {
+      "name": "인플루언서경영과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 29
+    },
+    {
+      "name": "철도전자통신과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 29
+    },
+    {
+      "name": "컴퓨터응용선반",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 29
+    },
+    {
+      "name": "도시공간조경과",
+      "majorGroup": "architecture",
+      "schoolCount": 1,
+      "studentCount": 28
+    },
+    {
+      "name": "스마트스토어과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 28
+    },
+    {
+      "name": "스타트업컨벤션과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 28
+    },
+    {
+      "name": "유통정보과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 28
+    },
+    {
+      "name": "해외플랜트산업설비",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 28
+    },
+    {
+      "name": "동물자원",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 27
+    },
+    {
+      "name": "방송공연콘텐츠과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 27
+    },
+    {
+      "name": "소방안전기계",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 27
+    },
+    {
+      "name": "식품가공",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 27
+    },
+    {
+      "name": "카페플랫폼경영과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 27
+    },
+    {
+      "name": "컨벤션영어과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 27
+    },
+    {
+      "name": "해외시설물건설",
+      "majorGroup": "architecture",
+      "schoolCount": 1,
+      "studentCount": 27
+    },
+    {
+      "name": "드론부사관과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 26
+    },
+    {
+      "name": "바이오테크과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 26
+    },
+    {
+      "name": "반도체메카트로닉스과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 26
+    },
+    {
+      "name": "베이커리디저트과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 26
+    },
+    {
+      "name": "서비스디자인과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 26
+    },
+    {
+      "name": "세무에셋과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 26
+    },
+    {
+      "name": "스마트자동화",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 26
+    },
+    {
+      "name": "스마트팩토리기계과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 26
+    },
+    {
+      "name": "스타트업과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 26
+    },
+    {
+      "name": "식품품질관리과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 26
+    },
+    {
+      "name": "전산회계정보과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 26
+    },
+    {
+      "name": "항공경영과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 26
+    },
+    {
+      "name": "AI컴퓨터과학과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 26
+    },
+    {
+      "name": "IT경영학과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 26
+    },
+    {
+      "name": "경영금융서비스과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 25
+    },
+    {
+      "name": "도시공간정보",
+      "majorGroup": "architecture",
+      "schoolCount": 1,
+      "studentCount": 25
+    },
+    {
+      "name": "바이오환경에너지",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 25
+    },
+    {
+      "name": "비주얼MD과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 25
+    },
+    {
+      "name": "산림조경",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 25
+    },
+    {
+      "name": "스마트사무과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 25
+    },
+    {
+      "name": "우드디자인",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 25
+    },
+    {
+      "name": "지능형소프트웨어",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 25
+    },
+    {
+      "name": "창작만화과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 25
+    },
+    {
+      "name": "핀테크경영과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 25
+    },
+    {
+      "name": "한옥건축과",
+      "majorGroup": "architecture",
+      "schoolCount": 1,
+      "studentCount": 25
+    },
+    {
+      "name": "AI전자",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 25
+    },
+    {
+      "name": "로봇드론과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 24
+    },
+    {
+      "name": "반도체CS엔지니어과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 24
+    },
+    {
+      "name": "생물산업기계과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 24
+    },
+    {
+      "name": "식품의약과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 24
+    },
+    {
+      "name": "에너지설비과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 24
+    },
+    {
+      "name": "인플루언서마케팅과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 24
+    },
+    {
+      "name": "콘테츠디자인",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 24
+    },
+    {
+      "name": "XR융합응용학과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 24
+    },
+    {
+      "name": "건축그래픽디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 23
+    },
+    {
+      "name": "디지털정보전자과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 23
+    },
+    {
+      "name": "바이오식품산업과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 23
+    },
+    {
+      "name": "스마트공간건축과",
+      "majorGroup": "architecture",
+      "schoolCount": 1,
+      "studentCount": 23
+    },
+    {
+      "name": "스마트소프트웨어",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 23
+    },
+    {
+      "name": "아트 앤 디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 23
+    },
+    {
+      "name": "외식조리",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 23
+    },
+    {
+      "name": "요업디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 23
+    },
+    {
+      "name": "전자정보과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 23
+    },
+    {
+      "name": "팜모빌리티과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 23
+    },
+    {
+      "name": "호텔식음료경영과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 23
+    },
+    {
+      "name": "SW디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 23
+    },
+    {
+      "name": "3D융합크리에이터과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 22
+    },
+    {
+      "name": "베이커리카페경영과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 22
+    },
+    {
+      "name": "사운드디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 22
+    },
+    {
+      "name": "스마트동물산업과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 22
+    },
+    {
+      "name": "이차전지응용과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 22
+    },
+    {
+      "name": "임산가공과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 22
+    },
+    {
+      "name": "회계금융",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 22
+    },
+    {
+      "name": "AI게임콘텐츠과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 22
+    },
+    {
+      "name": "3D융합설계과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 21
+    },
+    {
+      "name": "네트워크보안솔루션과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 21
+    },
+    {
+      "name": "마켓매니저과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 21
+    },
+    {
+      "name": "스마트경영",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 21
+    },
+    {
+      "name": "시설원예과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 21
+    },
+    {
+      "name": "식품가공발효과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 21
+    },
+    {
+      "name": "식품조리과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 21
+    },
+    {
+      "name": "연기과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 21
+    },
+    {
+      "name": "컴퓨터정보과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 21
+    },
+    {
+      "name": "항공드론과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 21
+    },
+    {
+      "name": "행정정보과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 21
+    },
+    {
+      "name": "공간드론토목과",
+      "majorGroup": "architecture",
+      "schoolCount": 1,
+      "studentCount": 20
+    },
+    {
+      "name": "공정수송기술과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 20
+    },
+    {
+      "name": "글로벌외식조리과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 20
+    },
+    {
+      "name": "농업과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 20
+    },
+    {
+      "name": "미트외식산업과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 20
+    },
+    {
+      "name": "소방모빌리티과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 20
+    },
+    {
+      "name": "소방시설관리",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 20
+    },
+    {
+      "name": "스마트마케팅",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 20
+    },
+    {
+      "name": "스마트메카닉스과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 20
+    },
+    {
+      "name": "스마트산업기계과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 20
+    },
+    {
+      "name": "신소재디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 20
+    },
+    {
+      "name": "영화영상과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 20
+    },
+    {
+      "name": "오토컬러도장과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 20
+    },
+    {
+      "name": "재무회계과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 20
+    },
+    {
+      "name": "제과제빵",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 20
+    },
+    {
+      "name": "지식재산경영과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 20
+    },
+    {
+      "name": "콘텐츠창업과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 20
+    },
+    {
+      "name": "펫카페경영",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 20
+    },
+    {
+      "name": "하이테크가공과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 20
+    },
+    {
+      "name": "한방간호과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 20
+    },
+    {
+      "name": "해양레저관광과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 20
+    },
+    {
+      "name": "글로벌미디어콘텐츠과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 19
+    },
+    {
+      "name": "뉴미디어웹솔루션과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 19
+    },
+    {
+      "name": "디지털전기전자과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 19
+    },
+    {
+      "name": "만화예술과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 19
+    },
+    {
+      "name": "방송미디어",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 19
+    },
+    {
+      "name": "보건과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 19
+    },
+    {
+      "name": "스마트도시건설과",
+      "majorGroup": "architecture",
+      "schoolCount": 1,
+      "studentCount": 19
+    },
+    {
+      "name": "실용무용과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 19
+    },
+    {
+      "name": "전기",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 19
+    },
+    {
+      "name": "제빵도제과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 19
+    },
+    {
+      "name": "화학시스템공업과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 19
+    },
+    {
+      "name": "공조설비과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 18
+    },
+    {
+      "name": "동력제어시스템과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 18
+    },
+    {
+      "name": "바이오플랜트과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 18
+    },
+    {
+      "name": "방산건설과",
+      "majorGroup": "architecture",
+      "schoolCount": 1,
+      "studentCount": 18
+    },
+    {
+      "name": "사진영상콘텐츠과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 18
+    },
+    {
+      "name": "스마트팜도시농업과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 18
+    },
+    {
+      "name": "스마트해양건설",
+      "majorGroup": "architecture",
+      "schoolCount": 1,
+      "studentCount": 18
+    },
+    {
+      "name": "영상애니메이션디자인",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 18
+    },
+    {
+      "name": "카페디저트",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 18
+    },
+    {
+      "name": "카페N디저트과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 18
+    },
+    {
+      "name": "텍스타일디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 18
+    },
+    {
+      "name": "해양산업운항과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 18
+    },
+    {
+      "name": "화장품디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 18
+    },
+    {
+      "name": "AI비즈니스과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 18
+    },
+    {
+      "name": "드론항공과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 17
+    },
+    {
+      "name": "바이오케미컬과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 17
+    },
+    {
+      "name": "스마트융합스포츠과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 17
+    },
+    {
+      "name": "실내장식디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 17
+    },
+    {
+      "name": "영상그래픽디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 17
+    },
+    {
+      "name": "운전",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 17
+    },
+    {
+      "name": "융합미디어",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 17
+    },
+    {
+      "name": "자영해양생산과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 17
+    },
+    {
+      "name": "플라워가드닝과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 17
+    },
+    {
+      "name": "해양기술과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 17
+    },
+    {
+      "name": "AI융합비즈니스과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 17
+    },
+    {
+      "name": "EV기계과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 17
+    },
+    {
+      "name": "건설기계과",
+      "majorGroup": "architecture",
+      "schoolCount": 1,
+      "studentCount": 16
+    },
+    {
+      "name": "국제전시경영과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 16
+    },
+    {
+      "name": "글로벌금융과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 16
+    },
+    {
+      "name": "기계",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 16
+    },
+    {
+      "name": "도시건축디자인",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 16
+    },
+    {
+      "name": "로봇융합시스템",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 16
+    },
+    {
+      "name": "소자본창업과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 16
+    },
+    {
+      "name": "스마트행정과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 16
+    },
+    {
+      "name": "스마트IoT과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 16
+    },
+    {
+      "name": "스마트IT",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 16
+    },
+    {
+      "name": "에코공정플랜트과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 16
+    },
+    {
+      "name": "오토테크정비과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 16
+    },
+    {
+      "name": "유튜브창업과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 16
+    },
+    {
+      "name": "창업비즈니스과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 16
+    },
+    {
+      "name": "헤어미용과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 16
+    },
+    {
+      "name": "기업경영관리과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 15
+    },
+    {
+      "name": "뷰티케어",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 15
+    },
+    {
+      "name": "뷰티화장품과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 15
+    },
+    {
+      "name": "철강자동화과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 15
+    },
+    {
+      "name": "커피베이커리과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 15
+    },
+    {
+      "name": "펫케어과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 15
+    },
+    {
+      "name": "하이텍융합기계과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 15
+    },
+    {
+      "name": "항공지형정보과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 15
+    },
+    {
+      "name": "공공행정",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 14
+    },
+    {
+      "name": "레저경영과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 14
+    },
+    {
+      "name": "멀티자동차과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 14
+    },
+    {
+      "name": "스마트공공행정과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 14
+    },
+    {
+      "name": "조리테크과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 14
+    },
+    {
+      "name": "패션주얼리디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 14
+    },
+    {
+      "name": "해양레저과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 14
+    },
+    {
+      "name": "화장품의약과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 14
+    },
+    {
+      "name": "EV시스템과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 14
+    },
+    {
+      "name": "그래픽미디어과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 13
+    },
+    {
+      "name": "배터리설비과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 13
+    },
+    {
+      "name": "웰빙베이커리과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 13
+    },
+    {
+      "name": "자동차산업과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 13
+    },
+    {
+      "name": "전자시스템제어과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 13
+    },
+    {
+      "name": "3D인테리어디자인과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 12
+    },
+    {
+      "name": "건설기술행정과",
+      "majorGroup": "architecture",
+      "schoolCount": 1,
+      "studentCount": 12
+    },
+    {
+      "name": "골프과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 12
+    },
+    {
+      "name": "그린바이오팜",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 12
+    },
+    {
+      "name": "방송연예콘텐츠과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 12
+    },
+    {
+      "name": "스마트로봇기계과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 12
+    },
+    {
+      "name": "스토어마케팅과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 12
+    },
+    {
+      "name": "축산경영과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 12
+    },
+    {
+      "name": "피지컬컴퓨팅",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 12
+    },
+    {
+      "name": "보건코디네이터과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 11
+    },
+    {
+      "name": "생명정보과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 11
+    },
+    {
+      "name": "스마트커머스과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 11
+    },
+    {
+      "name": "스마트케미칼과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 11
+    },
+    {
+      "name": "스마트코딩경영과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 11
+    },
+    {
+      "name": "철도건설과",
+      "majorGroup": "architecture",
+      "schoolCount": 1,
+      "studentCount": 11
+    },
+    {
+      "name": "사무자동화과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 9
+    },
+    {
+      "name": "산업경영과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 9
+    },
+    {
+      "name": "정밀기계조립과",
+      "majorGroup": "mechanical",
+      "schoolCount": 1,
+      "studentCount": 9
+    },
+    {
+      "name": "골프경영과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 8
+    },
+    {
+      "name": "드론전기에너지과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 8
+    },
+    {
+      "name": "메이커제품설계과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 8
+    },
+    {
+      "name": "목공예과",
+      "majorGroup": "design",
+      "schoolCount": 1,
+      "studentCount": 8
+    },
+    {
+      "name": "e-shop경영과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 8
+    },
+    {
+      "name": "쇼핑라이브",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 7
+    },
+    {
+      "name": "SNS마케터",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 7
+    },
+    {
+      "name": "글로벌반",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 6
+    },
+    {
+      "name": "말산업육성과",
+      "majorGroup": "general",
+      "schoolCount": 1,
+      "studentCount": 6
+    },
+    {
+      "name": "스마트동물산업",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 6
+    },
+    {
+      "name": "웰빙식품과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 6
+    },
+    {
+      "name": "인공지능산업과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 6
+    },
+    {
+      "name": "컴퓨터전기전자과",
+      "majorGroup": "electrical",
+      "schoolCount": 1,
+      "studentCount": 6
+    },
+    {
+      "name": "레저산업경영과",
+      "majorGroup": "service",
+      "schoolCount": 1,
+      "studentCount": 5
+    },
+    {
+      "name": "카페플라워과",
+      "majorGroup": "food",
+      "schoolCount": 1,
+      "studentCount": 4
+    },
+    {
+      "name": "사회복지사무관리과",
+      "majorGroup": "business",
+      "schoolCount": 1,
+      "studentCount": 3
+    },
+    {
+      "name": "생태조경과",
+      "majorGroup": "architecture",
+      "schoolCount": 1,
+      "studentCount": 3
+    },
+    {
+      "name": "비지니스정보과",
+      "majorGroup": "software",
+      "schoolCount": 1,
+      "studentCount": 2
+    },
+    {
+      "name": "스마트 동물생명과",
+      "majorGroup": "bio",
+      "schoolCount": 1,
+      "studentCount": 2
+    }
+  ]
+}

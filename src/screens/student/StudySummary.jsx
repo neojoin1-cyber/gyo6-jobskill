@@ -526,7 +526,7 @@ function FormativeAssessmentCard({ assessment, answers, checked, onSelect, onChe
   )
 }
 
-export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, formativeAssessment = null, onStartQuiz, introStartLabel = '학습 시작 →', startQuizLabel = null, initialStep = 0, initialInteraction = null, onStepChange, onInteractionChange }) {
+export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, formativeAssessment = null, onStartQuiz, introStartLabel = '학습 시작 →', startQuizLabel = null, initialStep = 0, initialInteraction = null, cardExtension = null, onStepChange, onInteractionChange }) {
   const { title, intro, keyPoints = [], mustRemember = [], terms = [], tips = [] } = summary || {}
   const learningPoints = useMemo(() => buildLearningPoints(summary, questions), [summary, questions])
   const learningMistakes = useMemo(() => buildLearningMistakes(summary, questions), [summary, questions])
@@ -1131,6 +1131,8 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, for
             <button className="btn btn-ghost btn-full" onClick={restart}>처음부터 다시 보기</button>
           </div>
         )}
+
+        {card.type === 'point' && cardExtension}
       </div>
 
       {/* ── 이전/다음 ── */}

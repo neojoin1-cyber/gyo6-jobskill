@@ -1,0 +1,41 @@
+.personalized-example-panel { display: grid; gap: 10px; padding: 12px; border: 1px solid #b9d5ce; border-left: 4px solid #0f766e; background: #f5fcfa; }
+.personalized-example-panel > header { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.personalized-example-panel > header > div { min-width: 0; display: grid; gap: 2px; }
+.personalized-example-panel > header span { color: #0f766e; font-size: 9px; font-weight: 900; }
+.personalized-example-panel > header b { color: #173f39; font-size: 13px; }
+.personalized-example-panel > header small { color: #64748b; font-size: 8.5px; line-height: 1.4; }
+.personalized-example-panel > header > button { min-height: 34px; display: inline-flex; align-items: center; gap: 4px; flex: 0 0 auto; padding: 0 9px; border: 1px solid #0f766e; border-radius: 6px; background: #fff; color: #0f766e; font-size: 8.5px; font-weight: 900; }
+.personalized-example-panel > header > button svg { width: 13px; }
+.personalized-example-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+.personalized-example-controls label { min-width: 0; display: grid; gap: 4px; }
+.personalized-example-controls label.is-wide { grid-column: 1 / -1; }
+.personalized-example-controls label > span { color: #334155; font-size: 8.5px; font-weight: 900; }
+.personalized-example-controls label > span small { color: #64748b; font-weight: 600; }
+.personalized-example-controls input, .personalized-example-controls select { width: 100%; min-height: 38px; padding: 0 9px; border: 1px solid #cbd5e1; border-radius: 6px; background: #fff; color: #172033; font: inherit; font-size: 10px; }
+.personalized-example-styles { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 4px; padding: 3px; background: #e9f2f0; }
+.personalized-example-styles button { min-height: 32px; border: 0; border-radius: 4px; background: transparent; color: #526175; font-size: 8.5px; font-weight: 900; }
+.personalized-example-styles button.is-on { background: #fff; color: #0f766e; box-shadow: 0 1px 3px rgba(15,23,42,.12); }
+.personalized-expansion-toggle { min-height: 32px; display: flex; align-items: center; justify-content: center; gap: 5px; border: 1px solid #cbd5e1; border-radius: 5px; background: #fff; color: #526175; font-size: 8.5px; font-weight: 800; }
+.personalized-expansion-toggle.is-on { border-color: #0f766e; color: #0f766e; }
+.personalized-expansion-toggle svg { width: 14px; }
+.personalized-example-result { display: grid; gap: 7px; padding: 11px; border-top: 1px solid #b9d5ce; background: #fff; }
+.personalized-example-result > div { display: flex; flex-wrap: wrap; gap: 4px; }
+.personalized-example-result > div span { padding: 3px 6px; border-radius: 4px; background: #e6f4f1; color: #0f766e; font-size: 7.5px; font-weight: 900; }
+.personalized-example-result h4 { margin: 0; color: #173f39; font-size: 11px; }
+.personalized-example-result p, .script-model .personalized-example-result p { margin: 0; padding: 0; border: 0; background: transparent; color: #25364a; font-size: 10px; line-height: 1.65; }
+.personalized-example-result > small { display: flex; align-items: flex-start; gap: 4px; color: #7c4a03; font-size: 8px; line-height: 1.45; }
+.personalized-example-result > small svg { width: 13px; flex: 0 0 auto; }
+.personalized-example-result > button { min-height: 34px; display: flex; align-items: center; justify-content: center; gap: 4px; border: 1px solid #0f766e; border-radius: 5px; background: #0f766e; color: #fff; font-size: 8.5px; font-weight: 900; }
+.personalized-example-result > button svg { width: 13px; }
+.personalized-example-locked { min-height: 72px; display: flex; align-items: center; justify-content: center; gap: 7px; border: 1px dashed #94a3b8; background: #fff; color: #526175; text-align: center; }
+.personalized-example-locked svg { width: 17px; }
+.personalized-example-locked b { font-size: 9px; }
+.script-model > .personalized-example-panel { margin-top: 8px; }
+.cover-learning-card > .personalized-example-panel { border-left-color: #0f766e; background: #f5fcfa; }
+.guided-cover-example { margin: 12px 0 2px; }
+
+@media (max-width: 430px) {
+  .personalized-example-controls { grid-template-columns: 1fr; }
+  .personalized-example-controls label.is-wide { grid-column: 1; }
+  .personalized-example-styles button { font-size: 8px; }
+}

@@ -804,7 +804,6 @@
 .cover-answer-warnings { display: grid; gap: 4px; margin: 0 12px 5px; }
 .cover-answer-warnings span { display: flex; align-items: flex-start; gap: 4px; color: #9a3412; font-size: 8.5px; line-height: 1.4; }
 .cover-answer-warnings svg { flex: 0 0 auto; margin-top: 1px; }
-
 @media (max-width: 430px) {
   .cover-learning-examples { grid-template-columns: 1fr; }
   .cover-learning-overview > div { gap: 4px; font-size: 10px; }
