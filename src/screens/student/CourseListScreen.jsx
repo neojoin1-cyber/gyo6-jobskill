@@ -160,7 +160,7 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
   const [course, setCourse] = useState(deepLink?.subject ?? null)
   const linkedMode = deepLink?.mode === null
     ? null
-    : ['study', 'diagnostic', 'mock', 'practical', 'cover-practical'].includes(deepLink?.mode)
+    : ['study', 'diagnostic', 'mock', 'practical', 'interview-scripts', 'cover-practical'].includes(deepLink?.mode)
       ? deepLink.mode
       : 'study'
   // 홈의 학습관은 과목 소개·방식 선택부터 열고, 교사 수업 링크는 같은 학습 모드로 직행한다.
@@ -246,7 +246,11 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
   }
 
   if (selected && course === 'interview' && mode === 'practical') {
-    return <Lazy onRetry={backToChooser}><InterviewPracticalScreen onLearningContext={onContextChange} onBack={backToChooser} /></Lazy>
+    return <Lazy onRetry={backToChooser}><InterviewPracticalScreen onLearningContext={onContextChange} onOpenScripts={() => setMode('interview-scripts')} onBack={backToChooser} /></Lazy>
+  }
+
+  if (selected && course === 'interview' && mode === 'interview-scripts') {
+    return <Lazy onRetry={() => setMode('practical')}><InterviewCareerLab section="scripts" onLearningContext={onContextChange} onBack={() => setMode('practical')} /></Lazy>
   }
 
   if (selected && course === 'cover-letter' && mode === 'cover-practical') {

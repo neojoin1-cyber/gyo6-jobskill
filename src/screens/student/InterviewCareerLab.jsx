@@ -400,7 +400,7 @@ function coverLinkSignature(draft) {
   const answers = Array.isArray(draft?.coverItems)
     ? draft.coverItems.map(item => [item.id, item.label, item.answer].map(value => String(value || '').trim()).join(':'))
     : []
-  return [...fields, ...answers].join('|')
+  return [...fields, ...answers].filter(Boolean).join('|')
 }
 
 function speakingSeconds(text) {
@@ -475,7 +475,11 @@ function InterviewScriptBuilder() {
   const [activeScriptId, setActiveScriptId] = useState(initialPortfolio.activeId)
   const [coverApplications] = useState(initialPortfolio.coverApplications)
   const [showCreate, setShowCreate] = useState(false)
-  const [newCoverId, setNewCoverId] = useState(initialPortfolio.coverApplications.find(item => item.id === initialPortfolio.coverApplications[0]?.id)?.id || '')
+  const [newCoverId, setNewCoverId] = useState('')
+  const [newSector, setNewSector] = useState('finance')
+  const [newOrganizationId, setNewOrganizationId] = useState('')
+  const [newTargetName, setNewTargetName] = useState('')
+  const [newRole, setNewRole] = useState('')
   const [newTitle, setNewTitle] = useState('')
   const [active, setActive] = useState('introduction')
   const [notice, setNotice] = useState(null)
@@ -483,8 +487,10 @@ function InterviewScriptBuilder() {
   const [submitting, setSubmitting] = useState(false)
   const activeSet = scriptSets.find(item => item.id === activeScriptId) || scriptSets[0]
   const draft = activeSet?.draft || {}
-  const linkedCoverApplication = coverApplications.find(item => item.id === activeSet?.sourceCoverApplicationId) || coverApplications[0]
+  const linkedCoverApplication = coverApplications.find(item => item.id === activeSet?.sourceCoverApplicationId) || null
   const coverDraft = linkedCoverApplication?.draft || {}
+  const createOrganizations = INTERVIEW_ORGANIZATIONS.filter(item => item.sector === newSector)
+  const createOrganization = INTERVIEW_ORGANIZATIONS.find(item => item.id === newOrganizationId)
   const organization = INTERVIEW_ORGANIZATIONS.find(item => item.id === draft.organizationId)
   const linkedCoverItems = Array.isArray(coverDraft.coverItems)
     ? coverDraft.coverItems.filter(item => String(item.answer || '').trim())
@@ -512,31 +518,49 @@ function InterviewScriptBuilder() {
   }, [activeScriptId, activeSet, scriptSets])
 
   function persist(next) {
-    setScriptSets(current => current.map(item => item.id === activeScriptId ? {
-      ...item,
-      title: next.recruitmentTitle || item.title,
-      sourceCoverApplicationId: next.sourceCoverApplicationId || item.sourceCoverApplicationId,
-      status: next.interviewScriptStatus || item.status,
-      updatedAt: new Date().toISOString(),
-      draft: next,
-    } : item))
+    setScriptSets(current => {
+      const projects = current.map(item => item.id === activeScriptId ? {
+        ...item,
+        title: next.recruitmentTitle || item.title,
+        sourceCoverApplicationId: next.sourceCoverApplicationId || '',
+        status: next.interviewScriptStatus || item.status,
+        updatedAt: new Date().toISOString(),
+        draft: next,
+      } : item)
+      localStorage.setItem(INTERVIEW_SCRIPT_PORTFOLIO_KEY, JSON.stringify({ projects, activeId: activeScriptId }))
+      return projects
+    })
     localStorage.setItem('iv_interview_script_draft', JSON.stringify(next))
     setNotice(null)
   }
 
   function createScriptSet() {
-    const coverApplication = coverApplications.find(item => item.id === newCoverId) || coverApplications[0]
-    if (!coverApplication) {
-      setNotice({ ok: false, text: '먼저 실전자기소개서에서 지원서를 만들어 주세요.' })
+    const coverApplication = coverApplications.find(item => item.id === newCoverId) || null
+    const targetName = (createOrganization?.name || newTargetName).trim()
+    const role = newRole.trim()
+    if (!targetName || !role) {
+      setNotice({ ok: false, text: '지원할 기업·기관과 직무를 먼저 정해 주세요.' })
       return
     }
-    const created = makeInterviewScriptSet(coverApplication, {}, {
-      title: newTitle.trim() || `${coverApplication.recruitmentTitle || coverApplication.draft?.targetName || '지원처'} 면접 답변`,
+    const created = makeInterviewScriptSet(coverApplication, {
+      sector: newSector,
+      organizationId: createOrganization?.id || '',
+      targetName,
+      role,
+      sourceCoverApplicationId: coverApplication?.id || '',
+      coverSignature: coverApplication ? coverLinkSignature(coverApplication.draft) : '',
+    }, {
+      title: newTitle.trim() || `${targetName} ${role} 면접 답변`,
+      sourceCoverApplicationId: coverApplication?.id || '',
     })
     setScriptSets(current => [created, ...current])
     setActiveScriptId(created.id)
     setActive('introduction')
     setShowCreate(false)
+    setNewCoverId('')
+    setNewOrganizationId('')
+    setNewTargetName('')
+    setNewRole('')
     setNewTitle('')
     setNotice({ ok: true, text: '새 면접 답변 세트를 만들었어요. 1분 자기소개부터 순서대로 작성합니다.' })
   }
@@ -555,6 +579,11 @@ function InterviewScriptBuilder() {
   }
 
   function changeLinkedCover(sourceCoverApplicationId) {
+    if (!sourceCoverApplicationId) {
+      persist({ ...draft, sourceCoverApplicationId: '', coverSignature: '' })
+      setNotice({ ok: true, text: '자기소개서 연결을 해제했어요. 면접 답변은 그대로 유지됩니다.' })
+      return
+    }
     const coverApplication = coverApplications.find(item => item.id === sourceCoverApplicationId)
     if (!coverApplication) return
     const source = coverApplication.draft || {}
@@ -572,6 +601,10 @@ function InterviewScriptBuilder() {
   }
 
   function syncCover() {
+    if (!linkedCoverApplication) {
+      setNotice({ ok: false, text: '연결할 자기소개서를 먼저 선택해 주세요.' })
+      return
+    }
     if (!coverDraft.targetName || !coverDraft.role) {
       setNotice({ ok: false, text: '나를쓰다에서 지원처와 직무를 먼저 연결해 주세요.' })
       return
@@ -693,16 +726,25 @@ function InterviewScriptBuilder() {
         <button onClick={removeScriptSet} disabled={scriptSets.length <= 1} aria-label="현재 면접 답변 세트 삭제"><Trash /></button>
       </div>
       <label className="script-set-title"><span>답변 세트 이름</span><input value={activeSet?.title || ''} maxLength={60} onChange={event => renameScriptSet(event.target.value)} placeholder="예: 2026 NH농협은행 1차 면접" /></label>
-      {showCreate && <div className="script-create-panel"><label><span>연결할 자기소개서</span><select value={newCoverId} onChange={event => setNewCoverId(event.target.value)}>{coverApplications.map(item => <option key={item.id} value={item.id}>{item.recruitmentTitle} · {item.draft?.role || '직무 미정'}</option>)}</select></label><label><span>새 세트 이름</span><input value={newTitle} maxLength={60} onChange={event => setNewTitle(event.target.value)} placeholder="비워 두면 채용회차 이름으로 생성" /></label><button onClick={createScriptSet}><Plus />작성 시작</button></div>}
+      {showCreate && <div className="script-create-panel">
+        <div className="script-create-route"><b>지원처와 직무부터 정함</b><span>자기소개서가 없어도 시작할 수 있고, 나중에 연결할 수 있어요.</span></div>
+        <label><span>분야</span><select value={newSector} onChange={event => { setNewSector(event.target.value); setNewOrganizationId(''); setNewTargetName(''); setNewRole('') }}>{SECTORS.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
+        <label><span>기업·기관</span><select value={newOrganizationId} onChange={event => { const id = event.target.value; const org = INTERVIEW_ORGANIZATIONS.find(item => item.id === id); setNewOrganizationId(id); setNewTargetName(org?.name || ''); setNewRole(org?.roles?.[0] || '') }}><option value="">목록에서 선택하거나 직접 입력</option>{createOrganizations.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}</select></label>
+        {!newOrganizationId && <label><span>지원처 직접 입력</span><input value={newTargetName} maxLength={60} onChange={event => setNewTargetName(event.target.value)} placeholder={SECTOR_FORM_EXAMPLES[newSector].targetName} /></label>}
+        <label><span>지원 직무</span>{createOrganization?.roles?.length ? <select value={newRole} onChange={event => setNewRole(event.target.value)}>{createOrganization.roles.map(role => <option key={role} value={role}>{role}</option>)}</select> : <input value={newRole} maxLength={60} onChange={event => setNewRole(event.target.value)} placeholder={SECTOR_FORM_EXAMPLES[newSector].role} />}</label>
+        <label><span>답변 세트 이름</span><input value={newTitle} maxLength={60} onChange={event => setNewTitle(event.target.value)} placeholder="예: 2026 하반기 1차 면접" /></label>
+        <label><span>기존 자기소개서 연결 <small>선택</small></span><select value={newCoverId} onChange={event => { const id = event.target.value; const cover = coverApplications.find(item => item.id === id); setNewCoverId(id); if (cover?.draft) { setNewSector(cover.draft.sector || 'finance'); setNewOrganizationId(cover.draft.organizationId || ''); setNewTargetName(cover.draft.targetName || ''); setNewRole(cover.draft.role || '') } }}><option value="">연결하지 않고 시작</option>{coverApplications.map(item => <option key={item.id} value={item.id}>{item.recruitmentTitle} · {item.draft?.targetName || '지원처 미정'} · {item.draft?.role || '직무 미정'}</option>)}</select></label>
+        <button onClick={createScriptSet}><Plus />1분 자기소개부터 작성</button>
+      </div>}
     </section>
 
     <section className="script-link-card">
-      <header><FileText weight="duotone" /><div><span>자기소개서 연결</span><h2>{draft.targetName || '지원처를 먼저 연결하세요'}</h2><p>{draft.role || '나를쓰다에서 지원 직무를 선택함'}</p></div></header>
-      <label className="script-cover-selector"><span>이 답변의 기준 자기소개서</span><select value={linkedCoverApplication?.id || ''} onChange={event => changeLinkedCover(event.target.value)}>{coverApplications.map(item => <option key={item.id} value={item.id}>{item.recruitmentTitle} · {item.draft?.targetName || '지원처 미정'} · {item.draft?.role || '직무 미정'}</option>)}</select></label>
+      <header><FileText weight="duotone" /><div><span>지원처·근거 연결</span><h2>{draft.targetName || '지원처를 먼저 정하세요'}</h2><p>{draft.role || '지원 직무를 선택함'}</p></div></header>
+      <label className="script-cover-selector"><span>이 답변의 기준 자기소개서 <small>선택</small></span><select value={linkedCoverApplication?.id || ''} onChange={event => changeLinkedCover(event.target.value)}><option value="">연결하지 않음</option>{coverApplications.map(item => <option key={item.id} value={item.id}>{item.recruitmentTitle} · {item.draft?.targetName || '지원처 미정'} · {item.draft?.role || '직무 미정'}</option>)}</select></label>
       <div className="script-link-flow"><span>자기소개서</span><CaretRight /><b>같은 근거</b><CaretRight /><span>면접 답변</span></div>
       {sourceChanged && <p className="script-link-warning"><WarningCircle weight="fill" />자기소개서 내용이 바뀜 · 면접 답변과 다시 맞춰야 함</p>}
       {foreignOrganization && <p className="script-link-warning"><WarningCircle weight="fill" />다른 지원처명 발견: {foreignOrganization.name} · 제출 전 수정 필요</p>}
-      <button onClick={syncCover}><CheckCircle weight="fill" />{sourceChanged ? '최신 내용 다시 연결' : '자기소개서 내용 확인·연결'}</button>
+      <button onClick={syncCover} disabled={!linkedCoverApplication}><CheckCircle weight="fill" />{linkedCoverApplication ? sourceChanged ? '최신 내용 다시 연결' : '자기소개서 내용 확인·연결' : '자기소개서는 나중에 연결 가능'}</button>
       {linkedCoverItems.length > 0 && <details className="script-linked-source"><summary><Eye />연결된 자기소개서 원문 {linkedCoverItems.length}개 확인<CaretRight /></summary><div>{linkedCoverItems.map(item => <article key={item.id}><b>{item.label}</b><p>{item.answer}</p></article>)}</div></details>}
     </section>
 

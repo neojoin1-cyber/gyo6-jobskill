@@ -210,7 +210,7 @@ export default function TeacherWorkspace({
           <button className="start-class" onClick={() => openClassroom()} disabled={!cls}><Broadcast weight="fill" /> 수업 시작</button>
           <button onClick={() => onOpenStudentCampus?.()}><BookOpenText /> 학생 화면 보기</button>
           <button onClick={() => onOpenMessages?.({ scope: 'class', target: classId })}><ChatCircleDots /> 메시지</button>
-          <button onClick={() => onOpenCoverReviews?.(classId)}><FileText /> 자소서 첨삭</button>
+          <button onClick={() => onOpenCoverReviews?.(classId)}><FileText /> 작성본 첨삭</button>
           <button onClick={() => onOpenInterviewCoach?.(classId)}><PresentationChart /> 면접 코칭</button>
           <button disabled={!cls} title={!cls ? '담당 학급 연결 후 사용할 수 있습니다' : undefined}
             onClick={() => onNavigate?.('create-mission', { classId: cls.id, className: cls.name })}><Sparkle /> 미션 만들기</button>
@@ -274,7 +274,7 @@ export default function TeacherWorkspace({
                 <button className="is-class" onClick={onOpenClassroom}><span><Broadcast weight="fill" /></span><b>교실 함께 배우기</b><small>학생 앱 콘텐츠 그대로</small><ArrowRight /></button>
                 <button onClick={() => onNavigate?.('textbook-browse')}><span><BookOpenText weight="fill" /></span><b>교재 미리보기</b><small>학생 학습 그대로</small><ArrowRight /></button>
                 <button onClick={() => onOpenMessages?.()}><span><ChatCircleDots weight="fill" /></span><b>소통·상담</b><small>공지·개별 메시지</small><ArrowRight /></button>
-                <button onClick={() => onOpenCoverReviews?.()}><span><FileText weight="fill" /></span><b>자소서 첨삭</b><small>형광펜·메모·총평</small><ArrowRight /></button>
+                <button onClick={() => onOpenCoverReviews?.()}><span><FileText weight="fill" /></span><b>작성본 첨삭</b><small>자소서·면접답변</small><ArrowRight /></button>
                 <button onClick={() => onOpenInterviewCoach?.()}><span><PresentationChart weight="fill" /></span><b>실전면접 코칭</b><small>9단계 관찰·피드백</small><ArrowRight /></button>
               </div>
             </section>

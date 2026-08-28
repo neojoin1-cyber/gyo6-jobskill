@@ -25,7 +25,9 @@ if (!existsSync(source)) throw new Error('서명된 내부 테스트 AAB를 찾�
 const outDir = resolve(ROOT, 'release/internal')
 mkdirSync(outDir, { recursive: true })
 const stamp = new Date().toISOString().replace(/[:.]/g, '-').replace('T', '_').replace('Z', '')
-const target = resolve(outDir, `JOBGO-internal-${stamp}.aab`)
+const gradleSource = readFileSync(resolve(ROOT, 'android/app/build.gradle'), 'utf8')
+const versionName = gradleSource.match(/versionName\s+["']([^"']+)["']/)?.[1] || 'unknown'
+const target = resolve(outDir, `JOBGO-v${versionName}-internal-${stamp}.aab`)
 copyFileSync(source, target)
 const digest = createHash('sha256').update(readFileSync(target)).digest('hex')
 writeFileSync(`${target}.sha256`, `${digest}  ${target.split(/[\\/]/).pop()}\n`)

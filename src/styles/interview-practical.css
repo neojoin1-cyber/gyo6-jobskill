@@ -12,11 +12,19 @@
 .practical-score { width: 72px; height: 72px; display: grid; flex: 0 0 auto; place-items: center; align-content: center; border: 1px solid #9ed8c9; border-radius: 50%; background: #fff; }
 .practical-score b { color: #0f766e; font-size: 19px; }
 .practical-score span { color: #64748b; font-size: 8px; }
-.practical-start-run { min-height: 66px; display: grid; grid-template-columns: 38px minmax(0,1fr) 18px; align-items: center; gap: 10px; padding: 11px 13px; border: 0; border-radius: 7px; background: #4f46e5; color: #fff; text-align: left; }
-.practical-start-run > svg:first-child { width: 32px; height: 32px; }
-.practical-start-run span { display: grid; gap: 2px; }
-.practical-start-run b { font-size: 13px; }
-.practical-start-run small { color: #dcdcff; font-size: 9px; }
+.practical-sequence { display: grid; gap: 8px; }
+.practical-answer-prep, .practical-start-run { width: 100%; min-height: 72px; display: grid; grid-template-columns: 32px minmax(0,1fr) 18px; align-items: center; gap: 10px; padding: 11px 13px; border-radius: 7px; text-align: left; }
+.practical-answer-prep { border: 2px solid #0f766e; background: #fff; color: #173a35; }
+.practical-start-run { border: 0; background: #4f46e5; color: #fff; }
+.practical-sequence-number { width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; background: #0f766e; color: #fff; font-size: 12px; font-weight: 900; }
+.practical-start-run .practical-sequence-number { background: #fff; color: #4338ca; }
+.practical-answer-prep > div, .practical-start-run > span:nth-child(2) { min-width: 0; display: grid; gap: 2px; }
+.practical-answer-prep b, .practical-start-run b { font-size: 13px; }
+.practical-answer-prep small { color: #0f766e; font-size: 9px; font-weight: 900; }
+.practical-start-run small { color: #dcdcff; font-size: 9px; font-weight: 800; }
+.practical-answer-prep p, .practical-start-run p { overflow: hidden; margin: 0; font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
+.practical-answer-prep p { color: #64748b; }
+.practical-start-run p { color: #dcdcff; }
 .practical-route { padding: 14px; border: 1px solid #dfe4eb; background: #fff; }
 .practical-route > header span { color: #64748b; font-size: 9px; font-weight: 800; }
 .practical-route > header h3 { margin: 3px 0 10px; font-size: 16px; }

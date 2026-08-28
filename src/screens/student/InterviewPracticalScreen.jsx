@@ -7,7 +7,6 @@ import {
   ClipboardText,
   Clock,
   Eye,
-  PlayCircle,
   Repeat,
   Target,
   WarningCircle,
@@ -16,12 +15,28 @@ import { INTERVIEW_OBSERVATION_AREAS, INTERVIEW_PRACTICAL_STAGES, practicalProgr
 import { popBack, pushBack, triggerBack } from '../../lib/backButton.js'
 import '../../styles/interview-practical.css'
 
+const SCRIPT_PORTFOLIO_KEY = 'iv_interview_script_portfolio_v2'
+const SCRIPT_MIN_LENGTHS = { introduction: 250, motivation: 220, closing: 100 }
+
 function readProgress() {
   try { return JSON.parse(localStorage.getItem(practicalProgressKey()) || '{}') }
   catch { return {} }
 }
 
-export default function InterviewPracticalScreen({ onBack, onLearningContext }) {
+function readAnswerPreparation() {
+  try {
+    const portfolio = JSON.parse(localStorage.getItem(SCRIPT_PORTFOLIO_KEY) || '{}')
+    const projects = Array.isArray(portfolio.projects) ? portfolio.projects : []
+    const active = projects.find(item => item.id === portfolio.activeId) || projects[0]
+    const draft = active?.draft || {}
+    const completed = Object.entries(SCRIPT_MIN_LENGTHS).filter(([key, min]) => String(draft[key] || '').trim().length >= min).length
+    return { completed, total: 3, title: active?.title || '', targetName: draft.targetName || '' }
+  } catch {
+    return { completed: 0, total: 3, title: '', targetName: '' }
+  }
+}
+
+export default function InterviewPracticalScreen({ onBack, onOpenScripts, onLearningContext }) {
   const [view, setView] = useState('route')
   const [stageId, setStageId] = useState(INTERVIEW_PRACTICAL_STAGES[0].id)
   const [progress, setProgress] = useState(readProgress)
@@ -32,6 +47,7 @@ export default function InterviewPracticalScreen({ onBack, onLearningContext }) 
   const doneCount = Object.values(progress).filter(Boolean).length
   const scenario = stage.scenarios[scenarioIndex % stage.scenarios.length]
   const percent = Math.round(doneCount / INTERVIEW_PRACTICAL_STAGES.length * 100)
+  const answerPreparation = useMemo(readAnswerPreparation, [])
 
   const backRef = useRef(null)
   backRef.current = () => {
@@ -150,10 +166,17 @@ export default function InterviewPracticalScreen({ onBack, onLearningContext }) 
   return (
     <PracticalFrame title="실전면접" eyebrow="학습 다음 · 행동으로 완성" onBack={() => backRef.current()}>
       <section className="practical-hero">
-        <div><span>INTERVIEW FULL RUN</span><h2>대기부터 퇴장까지<br />한 번에 연습</h2><p>외운 예절보다 안내 확인·직무 답변·상황 회복을 익힘.</p></div>
+        <div><span>INTERVIEW PRACTICE ROUTE</span><h2>답변을 준비하고<br />실제처럼 리허설</h2><p>지원처별 세 답변을 완성한 뒤 전달 행동까지 이어서 연습함.</p></div>
         <div className="practical-score"><b>{percent}%</b><span>{doneCount}/{INTERVIEW_PRACTICAL_STAGES.length} 단계</span></div>
       </section>
-      <button className="practical-start-run" onClick={startRun}><PlayCircle weight="fill" /><span><b>전 과정 리허설 시작</b><small>9단계 · 멈추지 않고 실제처럼</small></span><CaretRight /></button>
+      <section className="practical-sequence" aria-label="실전면접 준비 순서">
+        <button className="practical-answer-prep" onClick={onOpenScripts}>
+          <span className="practical-sequence-number">1</span>
+          <div><small>먼저 준비</small><b>지원처별 세 답변 작성·수정</b><p>{answerPreparation.targetName ? `${answerPreparation.targetName} · ${answerPreparation.completed}/3 완성` : '1분 자기소개 · 지원동기 · 마지막 한마디'}</p></div>
+          <CaretRight />
+        </button>
+        <button className="practical-start-run" onClick={startRun}><span className="practical-sequence-number">2</span><span><small>답변 준비 다음</small><b>전 과정 리허설 시작</b><p>9단계 · 멈추지 않고 실제처럼</p></span><CaretRight /></button>
+      </section>
       <section className="practical-route">
         <header><span>상황별 먼저 연습</span><h3>면접 동선 9단계</h3></header>
         <div>{INTERVIEW_PRACTICAL_STAGES.map((item, index) => <button key={item.id} className={progress[item.id] ? 'is-done' : ''} onClick={() => openStage(item.id)}><span>{progress[item.id] ? <CheckCircle weight="fill" /> : index + 1}</span><div><b>{item.title}</b><small>{item.goal}</small></div><CaretRight /></button>)}</div>

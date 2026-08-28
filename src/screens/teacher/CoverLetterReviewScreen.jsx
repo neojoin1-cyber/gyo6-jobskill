@@ -227,7 +227,7 @@ export default function CoverLetterReviewScreen({ onBack, initialClassId, demo =
     <main className="cover-review-screen">
       <header className="cover-review-head">
         <button onClick={onBack} aria-label="교사 캠퍼스로 돌아가기"><ArrowLeft /></button>
-          <div><span>TEACHER WRITING COACH</span><h1>자기소개서관 첨삭실</h1><p>자기소개서와 연결된 면접 답변까지 같은 근거로 지도함.</p></div>
+          <div><span>TEACHER WRITING COACH</span><h1>자기소개서·면접답변 첨삭실</h1><p>지원처별 작성본을 같은 근거와 수정 이력으로 지도함.</p></div>
         <div className="cover-review-summary"><b>{rows.filter(item => ['submitted', 'in_review'].includes(item.status)).length}</b><span>첨삭 대기</span></div>
       </header>
 
