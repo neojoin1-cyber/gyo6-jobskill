@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from 'react'
 import QuestionMedia from './QuestionMedia.jsx'
 import QuestionPriorityBadge from './QuestionPriorityBadge.jsx'
-import ListeningPrompt from './ListeningPrompt.jsx'
+import ListeningPrompt, { ListeningBlankGuide } from './ListeningPrompt.jsx'
 import PulldownForm from './PulldownForm.jsx'
 import { buildEngagementCopy, buildLearningMistakes, buildLearningPoints, learningVisualFor } from '../../lib/learningExperience.js'
 import { analyzeWritingDraft } from '../../lib/writingDraftCheck.js'
@@ -363,6 +363,7 @@ function SampleQuestionCard({ sample, example, courseKind, isOpen, selected, onS
           <p style={{ fontSize: 'clamp(12px, 3.5vw, 13px)', lineHeight: 1.85, whiteSpace: 'pre-wrap', color: '#1a237e' }}>{sample.context}</p>
         </div>
       )}
+      {sample.sourceQuestion?.audioText && <ListeningBlankGuide q={sample.sourceQuestion} />}
       <p style={{ fontSize: 'clamp(13px, 3.85vw, 14.5px)', fontWeight: 700, lineHeight: 1.75, color: 'var(--text)', marginBottom: 10 }}>{sample.stem}</p>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
         {(sample.choices || []).map(choice => {
@@ -660,7 +661,11 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, for
           const hasPrompt = Boolean(p.sampleQuestion || p.example)
           const showEvidence = isOpen || !hasPrompt
           const selectedReconsider = reconsidered[step]
-          const followUp = selectedReconsider ? reconsiderFollowUp(selectedReconsider, p.topic) : null
+          const reconsiderOptions = beat.deepen?.options?.length
+            ? beat.deepen.options
+            : ['판단 유지', '판단 수정', '정보 더 필요'].map(label => ({ label }))
+          const selectedOption = reconsiderOptions.find(option => option.label === selectedReconsider)
+          const followUp = selectedReconsider ? (selectedOption?.followUp || reconsiderFollowUp(selectedReconsider, p.topic)) : null
           return (
             <div className="card study-summary-point" style={{ borderLeft: `4px solid ${isMem ? '#E65100' : 'var(--primary)'}`, padding: '14px 14px 12px' }}>
               {/* 헤더: 핵심 번호 + 모드 배지 */}
@@ -791,21 +796,27 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, for
                           <LearnLines text={p.learn} />
                         </section>
                       )}
-                      <section className="learning-reconsider">
-                        <b>조건이 바뀌면?</b>
+                      <section className="learning-reconsider" data-deepening-kind={beat.deepen?.kind || 'general'}>
+                        <b>{beat.deepen?.label || '핵심 조건이 달라지면?'}</b>
                         <p>{beat.twist}</p>
+                        {beat.deepen?.material && (
+                          <aside className="learning-reconsider-material">
+                            <span>{beat.deepen.materialLabel || '다시 확인할 자료'}</span>
+                            <strong>{beat.deepen.material}</strong>
+                          </aside>
+                        )}
                         <div>
-                          {['판단 유지', '판단 수정', '정보 더 필요'].map(value => (
+                          {reconsiderOptions.map(option => (
                             <button
                               type="button"
-                              key={value}
-                              className={reconsidered[step] === value ? 'is-selected' : ''}
-                              onClick={() => setReconsidered(current => ({ ...current, [step]: value }))}
-                            >{value}</button>
+                              key={option.label}
+                              className={reconsidered[step] === option.label ? 'is-selected' : ''}
+                              onClick={() => setReconsidered(current => ({ ...current, [step]: option.label }))}
+                            >{option.label}</button>
                           ))}
                         </div>
                         {selectedReconsider && (
-                          <small>{{
+                          <small>{selectedOption?.feedback || {
                             '판단 유지': '좋아요. 새 조건에도 판단을 유지할 결정적 근거 한 가지를 화면에서 짚어 보세요.',
                             '판단 수정': '좋아요. 판단을 바꾸게 만든 단어나 조건을 정확히 짚어 보세요.',
                             '정보 더 필요': '좋아요. 결정하려면 어떤 정보가 더 필요한지 질문 한 문장으로 만들어 보세요.',

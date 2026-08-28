@@ -45,13 +45,168 @@ function engagementSubject(point = {}) {
   return clip(value.replace(/[?？.!。]+$/g, ''), 34)
 }
 
+function engagementProfile({ courseKind, point, contextKind, isListening, hasVisual, isWriting, isInterview, isReflection }) {
+  const sample = typeof point.sampleQuestion === 'object' ? point.sampleQuestion : {}
+  const source = sample.sourceQuestion || {}
+  const text = plain(`${point.topic ?? ''} ${point.learn ?? ''} ${point.situation ?? ''} ${sample.stem ?? ''} ${source.area ?? ''} ${source.lessonTitle ?? ''}`).toLowerCase()
+  if (isListening) return 'listening'
+  if (isWriting) return 'writing'
+  if (isInterview) return 'interview'
+  if (isReflection) return 'reflection'
+  if (contextKind === 'misread') return 'misread'
+  if (contextKind === 'mistake') return 'mistake'
+  if (/(수리|계산|비율|단위|수량|시간|통계|예산|금액|확률|속도)/.test(text)) return 'math'
+  if (/(문서|독해|이메일|안내|공지|보고|회의록|요지|접속어|어휘|영어|지시어)/.test(text)) return 'document'
+  if (hasVisual || /(표|그래프|도표|차트|자료 해석)/.test(text)) return 'visual'
+  if (/(안전|품질|협업|갈등|고객|윤리|절차|우선순위|문제해결|자원|업무)/.test(text)) return 'workplace'
+  if (courseKind === 'ncs' || courseKind === 'recruitment') return 'workplace'
+  return 'general'
+}
+
+const DEEPENING = {
+  listening: {
+    label: '다른 말을 들었다면?', materialLabel: '다시 확인할 듣기 자료',
+    material: '화자 순서 · 빈칸 앞뒤 발화 · 상대가 기대하는 응답 기능',
+    options: [
+      ['응답 유지', '같은 응답이 가능한 빈칸 앞뒤 표현을 짚어 보세요.', '응답 기능이 유지되는 근거 찾기', '빈칸 앞뒤에서 요청·질문·감정 표현을 각각 확인합니다.', '“___라는 말을 들었으므로 ___라고 응답하겠다.”'],
+      ['응답 바꾸기', '응답을 바꾸게 만든 새 발화를 정확히 말해 보세요.', '달라진 발화에 맞춰 응답 고치기', '처음 들은 표현과 달라진 표현의 의도를 비교합니다.', '“처음에는 ___로 들었지만, ___이므로 응답을 ___로 바꾸겠다.”'],
+      ['다시 들을 부분', '전체가 아니라 결정에 필요한 발화 위치를 골라 보세요.', '다시 들을 한 구간 정하기', '화자와 빈칸의 앞·뒤 중 어느 지점이 필요한지 고릅니다.', '“___의 ___번째 말을 다시 들으면 ___을 판단할 수 있다.”'],
+    ],
+  },
+  writing: {
+    label: '지원 조건이 달라지면?', materialLabel: '다시 대조할 작성 자료',
+    material: '지원 문항의 필수 요구 · 지원 직무 키워드 · 내 경험의 행동과 결과',
+    options: [
+      ['근거 유지', '새 지원 조건에도 그대로 쓸 수 있는 경험 근거를 확인하세요.', '같은 경험을 유지할 이유 찾기', '문항 요구와 경험의 행동·결과가 계속 연결되는지 대조합니다.', '“___ 경험은 ___ 직무에서도 ___을 보여 주므로 유지한다.”'],
+      ['근거 교체', '새 직무와 더 직접 연결되는 경험을 하나 고르세요.', '지원 조건에 맞는 경험으로 교체하기', '기존 경험에서 빠진 직무 행동을 찾고 다른 실제 경험과 비교합니다.', '“기존 ___보다 ___ 경험이 ___ 직무의 요구를 더 직접 보여 준다.”'],
+      ['지원처 확인', '결정 전에 확인할 지원처 정보 한 가지를 질문으로 만드세요.', '지원처 정보의 빈칸 확인하기', '채용공고·직무기술서·기관 사업 중 필요한 자료를 고릅니다.', '“지원처의 ___을 확인한 뒤 ___ 경험을 사용할지 결정하겠다.”'],
+    ],
+  },
+  interview: {
+    label: '꼬리 질문이 나오면?', materialLabel: '다시 확인할 답변 근거',
+    material: '질문의 의도 · 본인이 직접 한 행동 · 수치나 관찰로 확인되는 결과',
+    options: [
+      ['답변 유지', '꼬리 질문에도 유지할 핵심 행동 근거를 짚어 보세요.', '핵심 답변을 흔들림 없이 유지하기', '내 역할과 결과가 질문 의도에 직접 답하는지 확인합니다.', '“제가 직접 한 일은 ___이고, 그 결과 ___을 확인했습니다.”'],
+      ['답변 보완', '면접관이 다시 물을 만한 빠진 행동이나 결과를 보태세요.', '빈 근거를 한 문장으로 보완하기', '추상 표현을 걷어내고 행동·수치·결과 중 빠진 항목을 채웁니다.', '“앞 답변에 ___이 빠졌습니다. 저는 실제로 ___했고 결과는 ___입니다.”'],
+      ['경험 재확인', '내 기억만으로 단정하기 어려운 사실을 구분하세요.', '말해도 되는 사실의 범위 정하기', '본인이 확인한 사실과 팀 전체 성과를 나누어 봅니다.', '“제가 확인한 범위는 ___이며, ___은 추가 확인이 필요합니다.”'],
+    ],
+  },
+  reflection: {
+    label: '사람·장소가 달라지면?', materialLabel: '다시 살펴볼 행동 기준',
+    material: '평소 행동 · 안전·정직·책임 원칙 · 상황에 따른 예외 조건',
+    options: [
+      ['기준 유지', '누구와 함께 있어도 유지할 행동 원칙을 말해 보세요.', '일관된 행동 기준 확인하기', '실제 평소 행동과 선택한 응답이 같은 방향인지 확인합니다.', '“나는 보통 ___할 때도 ___ 원칙을 지킨다.”'],
+      ['행동 조정', '원칙은 지키면서 상황에 맞게 바꿀 행동을 고르세요.', '원칙과 방법을 구분해 조정하기', '바꾸지 않을 원칙과 바꿀 행동 방법을 한 가지씩 정합니다.', '“___ 원칙은 유지하되, 이 상황에서는 ___ 방식으로 행동하겠다.”'],
+      ['상황 더 확인', '응답 전에 알아야 할 사람·규정·위험 정보를 고르세요.', '판단 전 확인 질문 만들기', '상대의 역할과 적용 규정, 안전 위험 중 빠진 정보를 찾습니다.', '“___을 확인해야 평소 기준을 이 상황에 적용할 수 있다.”'],
+    ],
+  },
+  math: {
+    label: '수치·단위가 달라지면?', materialLabel: '다시 계산할 자료',
+    material: '구하려는 값 · 주어진 수치와 단위 · 적용할 식 · 결과의 크기',
+    options: [
+      ['계산 유지', '값이 달라도 같은 식을 쓸 수 있는 이유를 확인하세요.', '같은 계산식의 적용 조건 찾기', '문제가 묻는 값과 단위가 그대로인지 먼저 대조합니다.', '“구하려는 값이 ___이고 단위가 ___이므로 식 ___을 유지한다.”'],
+      ['다시 계산', '바뀐 수치나 단위를 식의 정확한 자리에 넣으세요.', '변경 조건으로 다시 계산하기', '달라진 값 하나만 표시하고 나머지 조건은 그대로 둡니다.', '“___이 ___로 바뀌었으므로 ___을 다시 계산하면 ___이다.”'],
+      ['조건 더 확인', '계산 전에 빠진 수치·단위·기준 시점을 찾으세요.', '계산 불가능한 빈칸 찾기', '값을 구하는 데 꼭 필요한 입력값을 하나씩 점검합니다.', '“___ 값과 ___ 단위를 확인해야 식을 완성할 수 있다.”'],
+    ],
+  },
+  document: {
+    label: '기한·담당자가 달라지면?', materialLabel: '다시 읽을 문서 근거',
+    material: '원문 표현 · 담당자 · 기한 · 요청 행동 · 예외 조건',
+    options: [
+      ['판단 유지', '바뀐 조건에도 유지되는 원문 근거를 표시하세요.', '문서에서 변하지 않은 요구 찾기', '담당자·기한·행동 중 그대로인 항목을 구분합니다.', '“문서의 ___가 그대로이므로 ___ 행동을 유지한다.”'],
+      ['행동 수정', '새 기한이나 담당자에 맞춰 첫 행동을 고치세요.', '달라진 문서 조건으로 행동 바꾸기', '바뀐 표현과 그에 따라 달라지는 행동을 연결합니다.', '“___가 ___로 바뀌었으므로 먼저 ___해야 한다.”'],
+      ['문서 더 확인', '원문에서 확인해야 할 문장이나 표 항목을 고르세요.', '문서 속 빈 정보 찾기', '제목·본문·표·주의사항 중 근거가 있을 위치를 정합니다.', '“문서의 ___ 항목을 확인하면 ___ 여부를 판단할 수 있다.”'],
+    ],
+  },
+  visual: {
+    label: '표의 기준이 달라지면?', materialLabel: '다시 볼 시각 자료',
+    material: '표·그래프의 제목 · 기준 열과 축 · 단위 · 비교할 핵심 수치',
+    options: [
+      ['해석 유지', '축과 단위가 같아 해석을 유지할 수 있는지 확인하세요.', '같은 비교 기준 유지하기', '제목·축·단위가 처음 자료와 같은지 대조합니다.', '“___ 기준과 ___ 단위가 같으므로 ___ 해석을 유지한다.”'],
+      ['해석 수정', '달라진 축·단위·수치가 결론을 어떻게 바꾸는지 말하세요.', '바뀐 자료로 결론 고치기', '변경된 시각 요소 하나와 새 결론을 연결합니다.', '“___이 ___로 바뀌어 비교 결과는 ___가 된다.”'],
+      ['자료 더 확인', '표나 그래프에서 빠진 기준값을 찾아보세요.', '해석 전에 필요한 자료 찾기', '범례·단위·기간·모집단 중 빠진 항목을 확인합니다.', '“___ 정보가 있어야 ___을 정확히 비교할 수 있다.”'],
+    ],
+  },
+  workplace: {
+    label: '업무 제약이 달라지면?', materialLabel: '다시 대조할 업무 자료',
+    material: '담당 역할 · 우선순위 · 안전·규정 · 시간·인력 제약 · 기대 결과',
+    options: [
+      ['판단 유지', '새 제약에도 지켜야 할 업무 원칙을 짚어 보세요.', '변하지 않는 업무 기준 찾기', '안전·규정·고객 영향 중 반드시 지킬 기준을 확인합니다.', '“___ 원칙은 바뀌지 않으므로 먼저 ___하겠다.”'],
+      ['순서 수정', '새 제약 때문에 달라질 첫 행동과 다음 행동을 정하세요.', '업무 순서를 다시 배치하기', '긴급도와 중요도, 선행 조건을 다시 비교합니다.', '“___ 제약이 생겨 ___을 먼저 하고 그다음 ___하겠다.”'],
+      ['정보 더 확인', '담당자·규정·자원 중 빠진 정보를 질문으로 만드세요.', '결정 전 업무 정보 확인하기', '권한과 가용 자원, 마감 중 무엇이 불명확한지 찾습니다.', '“___을 확인해야 ___ 행동을 결정할 수 있다.”'],
+    ],
+  },
+  misread: {
+    label: '원문을 바로 읽으면?', materialLabel: '다시 비교할 표현',
+    material: '원문 문장 · 잘못 읽은 뜻 · 행동 방향을 바꾸는 핵심 단어',
+    options: [
+      ['해석 유지', '원문과 오해한 뜻이 실제로 같은지 근거를 대세요.', '해석을 유지할 수 있는 표현 찾기', '두 문장의 행동 방향과 조건을 나란히 비교합니다.', '“원문의 ___는 ___ 뜻이므로 기존 해석을 유지한다.”'],
+      ['해석 수정', '오해를 바로잡는 원문 단어를 정확히 짚으세요.', '원문에 맞춰 행동 방향 고치기', '부정·조건·대상 표현 중 놓친 부분을 찾습니다.', '“___를 ___로 잘못 읽었으므로 행동을 ___로 수정한다.”'],
+      ['원문 더 확인', '앞뒤 문장 중 뜻을 확정할 근거 위치를 정하세요.', '문맥 확인 범위 정하기', '해당 문장만 볼지 앞뒤 문장까지 볼지 결정합니다.', '“___ 문장까지 확인하면 ___의 뜻을 확정할 수 있다.”'],
+    ],
+  },
+  mistake: {
+    label: '실수 원인이 달라지면?', materialLabel: '다시 볼 오류 근거',
+    material: '실제 행동 · 놓친 절차 · 실수가 생긴 원인 · 다시 확인할 결과',
+    options: [
+      ['수정 유지', '원인이 달라도 같은 수정이 필요한 이유를 확인하세요.', '같은 수정이 필요한 기준 찾기', '실수 결과와 필수 절차가 그대로인지 대조합니다.', '“원인은 달라도 ___ 절차가 필요하므로 ___로 고친다.”'],
+      ['수정 변경', '개인 실수와 절차 문제에 맞는 해결을 구분하세요.', '원인에 맞춰 수정 방법 바꾸기', '교육·확인·시스템 개선 중 원인에 맞는 조치를 고릅니다.', '“원인이 ___이므로 개인 행동 대신 ___을 수정해야 한다.”'],
+      ['원인 더 확인', '재발을 막기 위해 확인할 기록이나 절차를 고르세요.', '실수 원인을 검증할 자료 찾기', '작업 기록·지시·점검표 중 필요한 자료를 정합니다.', '“___ 기록을 확인하면 실수 원인이 ___인지 알 수 있다.”'],
+    ],
+  },
+  general: {
+    label: '핵심 조건이 달라지면?', materialLabel: '다시 확인할 판단 자료',
+    material: '질문의 요구 · 상황 속 결정 조건 · 선택에 따른 결과',
+    options: [
+      ['판단 유지', '새 조건에도 유지되는 근거를 한 가지 짚어 보세요.', '판단을 유지할 근거 찾기', '질문의 요구와 변하지 않은 조건을 다시 연결합니다.', '“___라는 근거가 유지되므로 ___라고 판단한다.”'],
+      ['판단 수정', '처음 판단을 바꾸게 만든 조건을 정확히 말하세요.', '달라진 조건으로 판단 고치기', '처음 조건과 새 조건을 나란히 비교합니다.', '“처음에는 ___였지만 ___로 바뀌어 판단을 ___로 수정한다.”'],
+      ['정보 더 필요', '결정에 꼭 필요한 빈 정보를 질문으로 만드세요.', '판단 전에 필요한 정보 찾기', '현재 자료에 없는 조건과 확인 방법을 정합니다.', '“___을 확인할 수 있나요? 그 정보가 ___라면 ___라고 판단하겠다.”'],
+    ],
+  },
+}
+
+function buildDeepening(profile, subject) {
+  const config = DEEPENING[profile] || DEEPENING.general
+  return {
+    kind: profile,
+    label: config.label,
+    materialLabel: config.materialLabel,
+    material: config.material,
+    options: config.options.map(([label, feedback, title, action, frame]) => ({
+      label,
+      feedback,
+      followUp: {
+        title,
+        actions: [`${subject} 학습 장면에서 결정 근거를 한 곳 표시합니다.`, action],
+        frame,
+      },
+    })),
+  }
+}
+
+function profileTwist(profile, quoted) {
+  const prompts = {
+    listening: `빈칸 앞뒤에서 들린 요청이나 질문이 달라진다면 질문 ${quoted}의 응답도 바뀌어야 할까요?`,
+    writing: `지원 직무나 문항의 필수 요구가 달라진다면 주제 ${quoted}에 사용할 경험 근거도 바뀌어야 할까요?`,
+    interview: `면접관이 질문 ${quoted}에 대해 본인 행동이나 결과를 다시 묻는다면 무엇을 보완해야 할까요?`,
+    reflection: `함께 있는 사람이나 장소가 달라져도 주제 ${quoted}의 행동 원칙을 같은 방식으로 적용할까요?`,
+    math: `문제의 핵심 수치나 단위 하나가 바뀐다면 질문 ${quoted}의 계산식과 결과 중 무엇이 달라질까요?`,
+    document: `문서의 담당자·기한·요청 행동 중 하나가 바뀐다면 질문 ${quoted}의 첫 행동도 달라질까요?`,
+    visual: `표·그래프의 축·단위·기준값 중 하나가 바뀐다면 질문 ${quoted}의 해석도 달라질까요?`,
+    workplace: `업무의 우선순위·안전 규정·가용 자원 중 하나가 바뀐다면 질문 ${quoted}의 행동 순서도 달라질까요?`,
+    misread: `오해한 표현을 원문 뜻대로 바로잡으면 질문 ${quoted}의 행동 방향도 바뀌어야 할까요?`,
+    mistake: `실수 원인이 개인 행동이 아니라 절차나 시스템이라면 질문 ${quoted}의 수정 방법도 달라질까요?`,
+    general: `상황의 결정 조건 하나가 바뀐다면 질문 ${quoted}의 판단도 달라져야 할까요?`,
+  }
+  return prompts[profile] || prompts.general
+}
+
 /**
  * 학습 장면별 판단 문구를 만든다. 콘텐츠에 직접 작성한 문구가 있으면 항상 우선한다.
  * 과목 공통 문구만 반복하지 않고 현재 주제·자료 유형·응답 방식을 문장에 반영한다.
  */
 export function buildEngagementCopy({ courseKind, point = {}, contextKind = '', isListening = false } = {}) {
   const custom = point.engagementCopy || point.engagement || {}
-  if (custom.first && custom.reveal && custom.twist) return custom
 
   const sample = typeof point.sampleQuestion === 'object' ? point.sampleQuestion : {}
   const source = sample.sourceQuestion || {}
@@ -61,6 +216,7 @@ export function buildEngagementCopy({ courseKind, point = {}, contextKind = '', 
   const isWriting = sample.type === 'writing-practice' || courseKind === 'cover-letter'
   const isInterview = Boolean(sample.isInterview) || courseKind === 'interview'
   const isReflection = sample.type === 'reflection' || courseKind === 'personality'
+  const profile = engagementProfile({ courseKind, point, contextKind, isListening, hasVisual, isWriting, isInterview, isReflection })
 
   let generated
   if (isListening) generated = {
@@ -112,7 +268,8 @@ export function buildEngagementCopy({ courseKind, point = {}, contextKind = '', 
   return {
     first: custom.first || generated.first,
     reveal: custom.reveal || generated.reveal,
-    twist: custom.twist || generated.twist,
+    twist: custom.twist || profileTwist(profile, quoted) || generated.twist,
+    deepen: custom.deepen || point.deepening || buildDeepening(profile, subject),
   }
 }
 

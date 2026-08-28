@@ -27,6 +27,8 @@ const failures = []
 const metrics = {
   units: 0, points: 0, covered: 0, visuals: 0, mistakes: 0, special: 0,
   engagementPrompts: new Set(),
+  deepeningKinds: new Set(),
+  deepeningMaterials: new Set(),
   courses: { 직업공통: 0, NCS: 0, 채용심화: 0, 면접: 0 },
 }
 
@@ -54,11 +56,18 @@ function auditSummary(scope, summary, questions, { requireMistakes = true } = {}
       isListening: Boolean(sample?.sourceQuestion?.audioText),
     })
     metrics.engagementPrompts.add(engagement.first)
+    if (engagement.deepen?.kind) metrics.deepeningKinds.add(engagement.deepen.kind)
+    if (engagement.deepen?.material) metrics.deepeningMaterials.add(engagement.deepen.material)
     if (!engagement.first || !engagement.reveal || !engagement.twist) {
       failures.push(`${scope} 핵심 ${index + 1}: 장면별 판단·근거·조건변화 문구 누락`)
     }
     if (engagement.first === '설명을 읽기 전에 현장에서 내가 할 행동을 먼저 판단하세요.') {
       failures.push(`${scope} 핵심 ${index + 1}: 공통 판단 문구가 장면별 문구로 교체되지 않음`)
+    }
+    if (!engagement.deepen?.label || !engagement.deepen?.material || engagement.deepen?.options?.length !== 3) {
+      failures.push(`${scope} 핵심 ${index + 1}: 영역별 심화 질문·확인 자료·3개 선택 구조 누락`)
+    } else if (engagement.deepen.options.some(option => !option.label || !option.feedback || !option.followUp?.actions?.length || !option.followUp?.frame)) {
+      failures.push(`${scope} 핵심 ${index + 1}: 심화 선택 뒤 자료·행동·말하기 틀 누락`)
     }
     if (sample?.stem) metrics.covered += 1
     else failures.push(`${scope} 핵심 ${index + 1}: 실제 문항 연결 없음`)
@@ -184,5 +193,10 @@ if (metrics.engagementPrompts.size < Math.ceil(metrics.points * 0.55)) {
   process.exit(1)
 }
 
-console.log(`[학습경험] 통과 — ${metrics.units}학습단원 + 특수진단 ${metrics.special}개 · 핵심 ${metrics.points}개 · 장면별 판단 문구 ${metrics.engagementPrompts.size}개 · 실제 문항 ${metrics.covered}개 · 실제 오답 ${metrics.mistakes}개 · 상황 삽화 ${metrics.visuals}개`)
+if (metrics.deepeningKinds.size < 7 || metrics.deepeningMaterials.size < 7) {
+  console.error(`[학습경험] 실패 - 과목·자료별 심화 구조 다양성 부족 (유형 ${metrics.deepeningKinds.size} / 자료 ${metrics.deepeningMaterials.size})`)
+  process.exit(1)
+}
+
+console.log(`[학습경험] 통과 — ${metrics.units}학습단원 + 특수진단 ${metrics.special}개 · 핵심 ${metrics.points}개 · 장면별 판단 문구 ${metrics.engagementPrompts.size}개 · 심화 유형 ${metrics.deepeningKinds.size}개 · 확인 자료 ${metrics.deepeningMaterials.size}종 · 실제 문항 ${metrics.covered}개 · 실제 오답 ${metrics.mistakes}개 · 상황 삽화 ${metrics.visuals}개`)
 console.log(`  직업공통 ${metrics.courses.직업공통}학습+진단 ${metrics.special} · NCS ${metrics.courses.NCS} · 채용필기 심화 ${metrics.courses.채용심화} · 고졸면접 ${metrics.courses.면접}`)

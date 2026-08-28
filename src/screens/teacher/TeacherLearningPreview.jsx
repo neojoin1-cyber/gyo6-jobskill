@@ -317,11 +317,28 @@ export default function TeacherLearningPreview({
           <ArrowLeft weight="bold" />
         </button>
         <span className="teacher-preview-mark"><Buildings weight="fill" /></span>
-        <div>
+        <div className="teacher-preview-heading">
           <small>{teachingMode ? 'CLASSROOM · STUDENT APP' : 'STUDENT VIEW · TEACHER PASS'}</small>
-          <b>{teachingMode ? '학생 앱 그대로 교실 수업' : '학생과 같은 화면으로 배우기'}</b>
+          <b>{teachingMode
+            ? (learningContext.lessonLabel || learningContext.areaLabel || '학생 앱 그대로 교실 수업')
+            : '학생과 같은 화면으로 배우기'}</b>
         </div>
         <div className="teacher-preview-actions">
+          {teachingMode && (
+            <div className={`teacher-preview-session ${session ? 'is-live' : ''}`} aria-label="학생 기기 수업 연결">
+              {classes.length > 0 ? (
+                <select aria-label="연결할 학급" value={classId} onChange={event => setClassId(event.target.value)} disabled={Boolean(session)}>
+                  {classes.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}
+                </select>
+              ) : <span className="teacher-session-no-class">학급 없음</span>}
+              <button type="button" className={session ? 'is-stop' : ''}
+                title={session ? '학생 기기 연결 종료' : '학생 기기 연결 시작'}
+                onClick={session ? endSession : startSession} disabled={!session && (!classId || sessionBusy)}>
+                {session ? <StopCircle weight="fill" /> : <Broadcast weight="fill" />}
+                <span>{session ? '연결 종료' : '연결 시작'}</span>
+              </button>
+            </div>
+          )}
           <button type="button" className={`teacher-preview-exit ${coachOpen ? 'is-on' : ''}`} disabled={!contextReady}
             title={contextReady ? '현재 단계의 교사용 추가 자료' : '학습관에서 단원을 열면 활성화됩니다'}
             onClick={() => setCoachOpen(value => !value)} aria-expanded={coachOpen} aria-haspopup="dialog">
@@ -340,35 +357,15 @@ export default function TeacherLearningPreview({
             </button>
           )}
         </div>
+        {sessionMessage && <p className="teacher-preview-session-message" role="status">{sessionMessage}</p>}
       </header>
-
-      {teachingMode && (
-        <section className="teacher-class-session-strip" aria-label="학생 기기 수업 연결">
-          <div>
-            <Broadcast weight={session ? 'fill' : 'regular'} />
-            <span><b>{session ? '학생 기기와 연결됨' : '학생 기기 연결'}</b><small>학생이 ‘따라가기’를 누르면 같은 학습 화면이 열립니다.</small></span>
-          </div>
-          {classes.length > 0 ? (
-            <select aria-label="연결할 학급" value={classId} onChange={event => setClassId(event.target.value)} disabled={Boolean(session)}>
-              {classes.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}
-            </select>
-          ) : <span className="teacher-session-no-class">등록된 학급 없음</span>}
-          {session ? (
-            <button type="button" className="is-stop" onClick={endSession} disabled={sessionBusy}><StopCircle weight="fill" /> 연결 종료</button>
-          ) : (
-            <button type="button" onClick={startSession} disabled={!classId || sessionBusy}><Broadcast weight="fill" /> 연결 시작</button>
-          )}
-          {sessionMessage && <p role="status">{sessionMessage}</p>}
-        </section>
-      )}
 
       {teachingMode && focusMode && (
         <header className="classroom-focus-bar">
           <div className="classroom-focus-title">
             <PresentationChart weight="fill" />
-            <span><small>CLASSROOM FOCUS</small><b>수업 집중 화면</b></span>
+            <span><small>수업 집중</small><b>{learningContext.lessonLabel || learningContext.areaLabel || '학생 학습 화면'}</b></span>
           </div>
-          <p>{learningContext.lessonLabel || learningContext.areaLabel || '학생 학습 화면'}</p>
           <div className="classroom-focus-actions">
             <button type="button" className={coachOpen ? 'is-on' : ''} disabled={!contextReady}
               onClick={() => setCoachOpen(value => !value)} aria-expanded={coachOpen} aria-haspopup="dialog">

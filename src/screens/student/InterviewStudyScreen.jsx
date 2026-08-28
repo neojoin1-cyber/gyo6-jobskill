@@ -406,27 +406,29 @@ export default function InterviewStudyScreen({ initialArea = null, initialLesson
   return (
     <div className="screen interview-study-unit">
       <div className="appbar interview-study-unit-head">
-        <button className="appbar-back" onClick={triggerBack} aria-label="이전 화면">←</button>
-        <span className="appbar-title">{lesson.title}</span>
-        <span className="interview-study-level" style={{
-          background: LEVEL_BADGE_BG[lesson.level] ?? '#f0f4f8',
-          color: LEVEL_COLOR[lesson.level] ?? '#666',
-        }}>{lesson.level}</span>
-      </div>
+        <div className="interview-study-unit-titlebar">
+          <button className="appbar-back" onClick={triggerBack} aria-label="이전 화면">←</button>
+          <span className="appbar-title">{lesson.title}</span>
+          <span className="interview-study-level" style={{
+            background: LEVEL_BADGE_BG[lesson.level] ?? '#f0f4f8',
+            color: LEVEL_COLOR[lesson.level] ?? '#666',
+          }}>{lesson.level}</span>
+        </div>
 
-      {/* 수업 단계는 이동 버튼이 아니라 현재 위치를 알려 주는 진행표임. */}
-      {TABS.length > 1 && (
-        <ol className="interview-study-unit-tabs" aria-label="면접 단원 학습 순서"
-          style={{ gridTemplateColumns: `repeat(${TABS.length}, minmax(0, 1fr))` }}>
-          {TABS.map((t, index) => (
-            <li key={t.id} aria-current={view === t.id ? 'step' : undefined}
-              className={`${view === t.id ? 'is-active' : ''} ${phaseDone[t.id] ? 'is-done' : ''} ${index > activePhaseIndex && !phaseDone[t.id] ? 'is-upcoming' : ''}`}>
-              <span><b>{index + 1}</b>{t.label}</span>
-              <small>{phaseDone[t.id] ? '완료' : view === t.id ? '지금 진행' : `${index - activePhaseIndex}단계 뒤 자동 시작`}</small>
-            </li>
-          ))}
-        </ol>
-      )}
+        {/* 이동 메뉴가 아니라 한 방향 학습의 현재 위치를 보여 주는 진행표임. */}
+        {TABS.length > 1 && (
+          <ol className="interview-study-unit-tabs" aria-label="면접 단원 학습 순서"
+            style={{ gridTemplateColumns: `repeat(${TABS.length}, minmax(0, 1fr))` }}>
+            {TABS.map((t, index) => (
+              <li key={t.id} aria-current={view === t.id ? 'step' : undefined}
+                className={`${view === t.id ? 'is-active' : ''} ${phaseDone[t.id] ? 'is-done' : ''} ${index > activePhaseIndex && !phaseDone[t.id] ? 'is-upcoming' : ''}`}>
+                <span><b>{index + 1}</b>{t.label}</span>
+                <small>{phaseDone[t.id] ? '완료' : view === t.id ? '지금 진행' : `${index - activePhaseIndex}단계 뒤`}</small>
+              </li>
+            ))}
+          </ol>
+        )}
+      </div>
 
       <div className={`interview-study-phase-note is-${view}`}>
         <strong>{PHASE_COPY[view].badge}</strong>

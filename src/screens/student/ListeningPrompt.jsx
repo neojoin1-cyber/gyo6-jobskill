@@ -7,6 +7,35 @@ function canSpeak() {
     typeof window.SpeechSynthesisUtterance === 'function'
 }
 
+function maskedListeningLines(q) {
+  const transcript = String(q?.transcript || q?.audioText || '').trim()
+  if (!transcript || !/_{2,}/.test(transcript)) return []
+  const lines = transcript.split(/\n+/).map(line => line.trim()).filter(Boolean)
+  const blankIndexes = lines.map((line, index) => /_{2,}/.test(line) ? index : -1).filter(index => index >= 0)
+  if (!blankIndexes.length) return []
+  const firstBlank = blankIndexes[0]
+  const lastBlank = blankIndexes[blankIndexes.length - 1]
+  return lines.map((line, index) => {
+    const role = line.match(/^([^:：]{1,28})[:：]/)?.[1]?.trim()
+    if (/_{2,}/.test(line)) return `${role ? `${role}: ` : ''}______`
+    const position = index < firstBlank ? '빈칸 앞 발화' : index > lastBlank ? '빈칸 뒤 발화' : '사이 발화'
+    return `${role ? `${role}: ` : ''}(${position}는 음원에서 확인)`
+  })
+}
+
+/** 듣기 정답을 노출하지 않고 화자 순서와 빈칸 위치만 보여 준다. */
+export function ListeningBlankGuide({ q }) {
+  const lines = useMemo(() => maskedListeningLines(q), [q])
+  if (!lines.length) return null
+  return (
+    <section className="listening-blank-guide" data-listening-blank-guide>
+      <b>빈칸 위치</b>
+      <p>대본은 듣기 뒤에 확인하고, 지금은 누가 말할 차례인지 먼저 짚어 보세요.</p>
+      <ol>{lines.map((line, index) => <li key={`${index}:${line}`} className={line.includes('______') ? 'is-blank' : ''}>{line}</li>)}</ol>
+    </section>
+  )
+}
+
 /**
  * 듣기 지문 재생.
  *

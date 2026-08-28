@@ -73,8 +73,7 @@ if (!css.includes('html.shared-classroom-mode #root')) errors.push('Shared class
 if (!teacherLearningPreview.includes('toggleClassroomFocus') || !teacherLearningPreview.includes('classroom-focus-bar')) {
   errors.push('Shared classroom focus mode or its exit control is missing')
 }
-if (!campusCss.includes('.teacher-learning-preview.is-focus .teacher-preview-context') ||
-    !campusCss.includes('.teacher-learning-preview.is-focus .teacher-class-session-strip')) {
+if (!campusCss.includes('.teacher-learning-preview.is-focus .teacher-preview-context { display: none; }')) {
   errors.push('Classroom focus mode still leaves teacher-only chrome on screen')
 }
 if (!css.includes('html.classroom-focus-mode .trial-session-bar { display: none; }')) {

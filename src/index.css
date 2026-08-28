@@ -1686,6 +1686,12 @@ html.classroom-focus-mode .trial-session-bar { display: none; }
 .learning-first-judgment { margin: 0 0 10px; padding: 10px 12px; border-left: 4px solid #1769f6; background: #eef6ff; }
 .learning-first-judgment b { display: block; margin-bottom: 3px; color: #175cd3; font-size: 11px; }
 .learning-first-judgment p { margin: 0; color: #263a52; font-size: 12.5px; font-weight: 700; line-height: 1.6; }
+.listening-blank-guide { margin: 0 0 10px; padding: 10px 12px; border: 1px solid #a8c7f0; border-left: 4px solid #1769f6; background: #f4f8ff; }
+.listening-blank-guide > b { color: #174ea6; font-size: 11px; }
+.listening-blank-guide > p { margin: 3px 0 7px; color: #52647a; font-size: 10.5px; line-height: 1.45; }
+.listening-blank-guide ol { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.listening-blank-guide li { padding: 5px 7px; background: #fff; color: #334e70; font-size: 11.5px; font-weight: 750; line-height: 1.45; }
+.listening-blank-guide li.is-blank { border: 1px solid #7aa7e7; background: #eaf2ff; color: #174ea6; font-size: 12.5px; font-weight: 900; }
 .learning-reveal-panel { display: grid; gap: 10px; margin-top: 12px; padding-top: 12px; border-top: 2px solid #b9d3ff; }
 .learning-reveal-panel > div:first-child { padding: 9px 11px; border-left: 4px solid #0f8a78; background: #eaf8f4; }
 .learning-reveal-panel > div:first-child b { color: #087f69; font-size: 11px; }
@@ -1694,6 +1700,9 @@ html.classroom-focus-mode .trial-session-bar { display: none; }
 .learning-reconsider { padding: 11px 12px; border: 1px solid #f3cf88; background: #fff9eb; }
 .learning-reconsider > b { color: #a45108; font-size: 12px; }
 .learning-reconsider > p { margin: 4px 0 8px; color: #633b12; font-size: 12.5px; font-weight: 750; line-height: 1.6; }
+.learning-reconsider-material { margin: 0 0 9px; padding: 8px 10px; border-left: 4px solid #0f8a78; background: #effbf7; }
+.learning-reconsider-material span { display: block; color: #0f766e; font-size: 9.5px; font-weight: 900; }
+.learning-reconsider-material strong { display: block; margin-top: 3px; color: #28554e; font-size: 11.5px; line-height: 1.5; }
 .learning-reconsider > div { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 6px; }
 .learning-reconsider button { min-height: 38px; padding: 7px 5px; border: 1px solid #e8c071; border-radius: 7px; background: #fff; color: #70430f; font-size: 11px; font-weight: 800; cursor: pointer; }
 .learning-reconsider button.is-selected { border-color: #c56a11; background: #ffedd5; color: #9a3412; }

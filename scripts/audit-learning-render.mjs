@@ -74,6 +74,9 @@ function inspectRequiredSource(scope, point, $, index) {
       failures.push(`${scope} 핵심 ${index + 1}: 자율학습 반복 듣기 재생기 미렌더링 (${source.id || 'id 없음'})`)
     }
     const transcript = String(source.transcript || source.audioText).trim()
+    if (/_{2,}/.test(transcript) && $('[data-listening-blank-guide]').length !== 1) {
+      failures.push(`${scope} 핵심 ${index + 1}: 듣기 대본을 숨긴 상태의 화자·빈칸 위치 안내 누락 (${source.id || 'id 없음'})`)
+    }
     if (transcript.length >= 10 && $.root().text().includes(transcript)) {
       failures.push(`${scope} 핵심 ${index + 1}: 재생·정답 확인 전에 듣기 대본 노출 (${source.id || 'id 없음'})`)
     }
