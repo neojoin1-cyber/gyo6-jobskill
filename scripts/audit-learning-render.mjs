@@ -21,12 +21,14 @@ import interviewQuizData from '../data/interview-quiz.json'
 import { buildInterviewLearningQuestions } from '../src/lib/interviewLearning.js'
 import { COVER_STUDY_PROGRAM } from '../src/lib/coverStudyProgram.js'
 import { PERSONALITY_STUDY_PROGRAM } from '../src/lib/guidedLearningPrograms.js'
+import { isEnglishLearningQuestion } from '../src/lib/englishLearningSupport.js'
 
 const failures = []
 let units = 0
 let cards = 0
 let audioCards = 0
 let sourceMediaCards = 0
+let englishTranslationCards = 0
 let activeExitCards = 0
 let formativeCards = 0
 let rawSourceQuestions = 0
@@ -87,6 +89,16 @@ function inspectRequiredSource(scope, point, $, index) {
     const type = source.visual.type
     if (!$(`[data-question-media="${type}"]`).length) {
       failures.push(`${scope} 핵심 ${index + 1}: 표·그래프 원자료 미렌더링 (${source.id || 'id 없음'} / ${type})`)
+    }
+  }
+
+  if (isEnglishLearningQuestion(sample)) {
+    englishTranslationCards += 1
+    if ($('[data-english-translation-toggle]').length !== 1) {
+      failures.push(`${scope} 핵심 ${index + 1}: 영어 문항 해석 보기 버튼 누락 (${source.id || 'id 없음'})`)
+    }
+    if ($('[data-english-translation] section').length) {
+      failures.push(`${scope} 핵심 ${index + 1}: 영어 해석이 버튼 조작 전 노출됨 (${source.id || 'id 없음'})`)
     }
   }
 
@@ -277,4 +289,4 @@ if (failures.length) {
   failures.slice(0, 50).forEach(failure => console.error(`  - ${failure}`))
   process.exit(1)
 }
-console.log(`[학습화면 렌더링] 통과 — ${units}단원 · 원문항 ${rawSourceQuestions}개 · ${cards}개 핵심 카드 · 능동 마무리 ${activeExitCards}개 · 3문항 형성평가 ${formativeCards}개 · 듣기 ${audioCards}개 · 표·그래프 ${sourceMediaCards}개 · 먼저 판단·정답 숨김 DOM 확인`)
+console.log(`[학습화면 렌더링] 통과 — ${units}단원 · 원문항 ${rawSourceQuestions}개 · ${cards}개 핵심 카드 · 능동 마무리 ${activeExitCards}개 · 3문항 형성평가 ${formativeCards}개 · 영어 해석 ${englishTranslationCards}개 · 듣기 ${audioCards}개 · 표·그래프 ${sourceMediaCards}개 · 먼저 판단·정답 숨김 DOM 확인`)

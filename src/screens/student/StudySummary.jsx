@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from 'react'
+import { CaretDown, CaretUp, Translate } from '@phosphor-icons/react'
 import QuestionMedia from './QuestionMedia.jsx'
 import QuestionPriorityBadge from './QuestionPriorityBadge.jsx'
 import ListeningPrompt, { ListeningBlankGuide } from './ListeningPrompt.jsx'
@@ -7,6 +8,7 @@ import { buildEngagementCopy, buildLearningMistakes, buildLearningPoints, learni
 import { analyzeWritingDraft } from '../../lib/writingDraftCheck.js'
 import { buildAutonomousFormative } from '../../lib/autonomousFormative.js'
 import { learningCaseProvenance } from '../../lib/learningCaseProvenance.js'
+import { englishLearningSupport } from '../../lib/englishLearningSupport.js'
 import CompactText from '../../components/CompactText.jsx'
 
 const EMPTY_QUESTIONS = []
@@ -214,6 +216,37 @@ function CaseProvenance({ courseKind, sample }) {
   )
 }
 
+function EnglishTranslationToggle({ sample }) {
+  const support = englishLearningSupport(sample)
+  const [open, setOpen] = useState(false)
+  useEffect(() => setOpen(false), [support?.id])
+  if (!support) return null
+  return (
+    <div className="learning-translation" data-english-translation={support.id}>
+      <button
+        type="button"
+        data-english-translation-toggle
+        aria-expanded={open}
+        onClick={() => setOpen(value => !value)}
+      >
+        <Translate aria-hidden="true" />
+        <span>{open ? '해석 닫기' : '해석 보기'}</span>
+        {open ? <CaretUp aria-hidden="true" /> : <CaretDown aria-hidden="true" />}
+      </button>
+      {open && (
+        <section aria-live="polite">
+          <b>우리말 해석</b>
+          {support.passage && <p>{support.passage}</p>}
+          {support.choices?.length > 0 && (
+            <ol>{support.choices.map((choice, index) => <li key={`${index}:${choice}`}><span>{String.fromCharCode(65 + index)}</span>{choice}</li>)}</ol>
+          )}
+          <small>해석은 이해를 돕는 학습 자료이며 정답 표시는 아닙니다.</small>
+        </section>
+      )}
+    </div>
+  )
+}
+
 function SampleQuestionCard({ sample, example, courseKind, isOpen, selected, onSelect, onChange, onOpen }) {
   const language = learningLanguage(courseKind, !!sample.sourceQuestion?.audioText)
   if (sample.type === 'writing-practice') {
@@ -364,6 +397,7 @@ function SampleQuestionCard({ sample, example, courseKind, isOpen, selected, onS
         </div>
       )}
       {sample.sourceQuestion?.audioText && <ListeningBlankGuide q={sample.sourceQuestion} />}
+      <EnglishTranslationToggle sample={sample} />
       <p style={{ fontSize: 'clamp(13px, 3.85vw, 14.5px)', fontWeight: 700, lineHeight: 1.75, color: 'var(--text)', marginBottom: 10 }}>{sample.stem}</p>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
         {(sample.choices || []).map(choice => {
@@ -396,7 +430,7 @@ function SampleQuestionCard({ sample, example, courseKind, isOpen, selected, onS
       {isOpen && (
         <div data-learning-answer-state="revealed">
           {example && <div style={{ marginTop: 10, borderTop: '1px solid #FFE082', paddingTop: 8 }}><p style={{ fontSize: 12, color: '#B45309', fontWeight: 700, marginBottom: 4 }}>출제 포인트</p><CompactText text={example} maxItemChars={70} style={{ fontSize: 12, color: 'var(--text-muted)' }} /></div>}
-          {sample.thinkingSteps?.length > 0 && <div className="learning-reasoning"><p className="learning-block-label">문제를 읽는 순서</p><ol>{sample.thinkingSteps.map((step, index) => <li key={index}>{step}</li>)}</ol></div>}
+          {sample.thinkingSteps?.length > 0 && <div className="learning-reasoning"><p className="learning-block-label">{sample.thinkingLabel || '문제를 읽는 순서'}</p><ol>{sample.thinkingSteps.map((step, index) => <li key={index}>{step}</li>)}</ol></div>}
           {sample.explanation && <div className="learning-evidence"><p className="learning-block-label">정답 근거</p><ExpandableText text={sample.explanation} style={{ fontSize: 12.5, lineHeight: 1.72 }} /></div>}
         </div>
       )}
@@ -783,9 +817,10 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, for
                   </button>
                 )
                   ) : null}
+                </div>
 
-                  {showEvidence && (
-                    <div className="learning-reveal-panel" data-engagement-phase="evidence-reveal" aria-live="polite">
+                {showEvidence && (
+                    <div className="learning-reveal-panel study-summary-point-reveal" data-engagement-phase="evidence-reveal" aria-live="polite">
                       <div>
                         <b>근거 공개</b>
                         <p>{beat.reveal}</p>
@@ -833,7 +868,6 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, for
                       </section>
                     </div>
                   )}
-                </div>
               </div>
             </div>
           )

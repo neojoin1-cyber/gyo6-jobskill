@@ -1,3 +1,5 @@
+import { isEnglishLearningQuestion } from './englishLearningSupport.js'
+
 const learningAsset = (name) => `${import.meta.env?.BASE_URL || '/'}images/learning/${name}`
 
 const VISUALS = [
@@ -55,6 +57,7 @@ function engagementProfile({ courseKind, point, contextKind, isListening, hasVis
   if (isReflection) return 'reflection'
   if (contextKind === 'misread') return 'misread'
   if (contextKind === 'mistake') return 'mistake'
+  if (isEnglishLearningQuestion(source.id ? source : sample)) return 'english'
   if (/(수리|계산|비율|단위|수량|시간|통계|예산|금액|확률|속도)/.test(text)) return 'math'
   if (/(문서|독해|이메일|안내|공지|보고|회의록|요지|접속어|어휘|영어|지시어)/.test(text)) return 'document'
   if (hasVisual || /(표|그래프|도표|차트|자료 해석)/.test(text)) return 'visual'
@@ -71,6 +74,15 @@ const DEEPENING = {
       ['응답 유지', '같은 응답이 가능한 빈칸 앞뒤 표현을 짚어 보세요.', '응답 기능이 유지되는 근거 찾기', '빈칸 앞뒤에서 요청·질문·감정 표현을 각각 확인합니다.', '“___라는 말을 들었으므로 ___라고 응답하겠다.”'],
       ['응답 바꾸기', '응답을 바꾸게 만든 새 발화를 정확히 말해 보세요.', '달라진 발화에 맞춰 응답 고치기', '처음 들은 표현과 달라진 표현의 의도를 비교합니다.', '“처음에는 ___로 들었지만, ___이므로 응답을 ___로 바꾸겠다.”'],
       ['다시 들을 부분', '전체가 아니라 결정에 필요한 발화 위치를 골라 보세요.', '다시 들을 한 구간 정하기', '화자와 빈칸의 앞·뒤 중 어느 지점이 필요한지 고릅니다.', '“___의 ___번째 말을 다시 들으면 ___을 판단할 수 있다.”'],
+    ],
+  },
+  english: {
+    label: '원문의 조건이 달라지면?', materialLabel: '다시 대조할 영어 근거',
+    material: '발문이 묻는 것 · 핵심 영어 표현 · 대상·순서·조건 · 선택지의 바뀐 뜻',
+    options: [
+      ['근거 유지', '조건이 달라져도 그대로인 원문 표현을 짚어 보세요.', '같은 답을 유지할 영어 근거 찾기', '발문과 직접 연결되는 원문 문장과 변하지 않은 조건을 표시합니다.', '“원문의 ___가 그대로이므로 선택지 ___의 판단을 유지한다.”'],
+      ['판단 수정', '바뀐 영어 표현이 대상·순서·조건을 어떻게 바꾸는지 말해 보세요.', '달라진 원문에 맞춰 판단 고치기', '처음 표현과 바뀐 표현을 나란히 읽고 뜻이 달라진 부분을 연결합니다.', '“___가 ___로 바뀌어 대상·순서·조건이 ___이므로 답을 ___로 수정한다.”'],
+      ['문맥 더 확인', '한 문장만으로 결정하기 어렵다면 앞뒤에서 확인할 표현을 고르세요.', '판단에 필요한 영어 문맥 찾기', '지시어·순서어·부정어·조건 표현 중 답을 확정할 단서를 찾습니다.', '“앞뒤의 ___ 표현을 확인하면 ___의 뜻과 답을 확정할 수 있다.”'],
     ],
   },
   writing: {
@@ -187,6 +199,7 @@ function buildDeepening(profile, subject) {
 function profileTwist(profile, quoted) {
   const prompts = {
     listening: `빈칸 앞뒤에서 들린 요청이나 질문이 달라진다면 질문 ${quoted}의 응답도 바뀌어야 할까요?`,
+    english: `원문의 대상·순서·조건을 나타내는 영어 표현 하나가 바뀐다면 질문 ${quoted}의 판단도 달라질까요?`,
     writing: `지원 직무나 문항의 필수 요구가 달라진다면 주제 ${quoted}에 사용할 경험 근거도 바뀌어야 할까요?`,
     interview: `면접관이 질문 ${quoted}에 대해 본인 행동이나 결과를 다시 묻는다면 무엇을 보완해야 할까요?`,
     reflection: `함께 있는 사람이나 장소가 달라져도 주제 ${quoted}의 행동 원칙을 같은 방식으로 적용할까요?`,
@@ -323,10 +336,54 @@ function formatLabel(question) {
   return count ? `${count}지선다형` : '선택형'
 }
 
-function strategyFor(value) {
+function englishQuestionKind(question = {}) {
+  if (!isEnglishLearningQuestion(question)) return ''
+  const sourceChoices = (question.choices || []).map(choice => typeof choice === 'object'
+    ? (choice.text ?? choice.label ?? choice.value ?? '')
+    : choice).join(' ')
+  const source = `${question.context ?? ''} ${question.stem ?? question.question ?? ''} ${sourceChoices}`
+  const id = `${question.id ?? ''} ${question.lessonId ?? ''}`
+  if (question.audioText || /dialog|listen/i.test(id)) return 'listening'
+  if (/_{2,}|빈칸|blank/i.test(source) || /vocab/i.test(id)) return 'blank'
+  if (/dialog|대화|응답|response/i.test(`${id} ${source}`)) return 'dialogue'
+  return 'reading'
+}
+
+function strategyLabelFor(value, question = {}) {
+  const englishKind = englishQuestionKind(question)
+  if (englishKind === 'listening') return '영어 듣고 푸는 순서'
+  if (englishKind === 'blank') return '영어 빈칸 푸는 순서'
+  if (englishKind === 'dialogue') return '영어 대화 푸는 순서'
+  if (englishKind === 'reading') return '영어 지문 읽는 순서'
   const text = plain(value).toLowerCase()
-  if (/(수리|계산|비율|단위|그래프|표|통계|금융|예산)/.test(text)) {
-    return ['구하려는 값·단위 먼저 표시', '주어진 수치·조건만 식에 대입', '결과의 단위·크기 재검산']
+  if (question.visual || /(그래프|도표|차트|자료 해석)/.test(text)) return '표·그래프 읽는 순서'
+  if (/(수리|계산|비율|단위|통계|금융|예산)/.test(text)) return '계산하는 순서'
+  if (/(면접|자기소개|지원동기|star|prep|블라인드)/.test(text)) return '답변 구성 순서'
+  if (/(인성|윤리|태도|성찰|책임|정직|가치관)/.test(text)) return '응답 기준 확인 순서'
+  if (/(문서|독해|이메일|안내|공지|회의록|요지|지시어)/.test(text)) return '업무 문서 읽는 순서'
+  return '판단하는 순서'
+}
+
+function strategyFor(value, question = {}) {
+  const englishKind = englishQuestionKind(question)
+  if (englishKind === 'listening') {
+    return ['빈칸 앞 질문·요청과 뒤 응답을 먼저 듣기', '장소·관계·업무 목적을 나타내는 표현 메모', '보기를 넣어 대화 흐름과 말투가 자연스러운지 확인']
+  }
+  if (englishKind === 'blank') {
+    return ['빈칸 앞뒤에서 필요한 품사와 문장 역할 확인', '업무 상황에 맞는 핵심 단어·표현 뜻 비교', '보기를 넣어 문법과 전체 의미를 함께 확인']
+  }
+  if (englishKind === 'dialogue') {
+    return ['상대의 질문·요청·감정이 무엇인지 먼저 확인', '사과·확인·제안 등 빈칸에 필요한 응답 기능 결정', '보기를 넣어 앞뒤 대화가 자연스럽게 이어지는지 확인']
+  }
+  if (englishKind === 'reading') {
+    return ['발문에서 일치·불일치·순서 중 무엇을 묻는지 표시', '지문의 순서 표현·날짜·조건·요청 행동을 직접 확인', '선지의 핵심 표현을 원문 근거와 한 항목씩 대조']
+  }
+  const text = plain(value).toLowerCase()
+  if (question.visual || /(그래프|도표|차트|자료 해석)/.test(text)) {
+    return ['자료 제목과 비교 대상을 먼저 확인', '축·범례·단위와 핵심 수치를 같은 기준으로 읽기', '선지의 주장과 실제 자료가 일치하는지 재확인']
+  }
+  if (/(수리|계산|비율|단위|통계|금융|예산)/.test(text)) {
+    return ['발문에서 구하려는 값과 단위를 먼저 표시', '필요한 수치와 조건만 골라 계산식에 연결', '계산 결과의 단위와 가능한 크기인지 재검산']
   }
   if (/(면접|자기소개|지원동기|star|prep|블라인드)/.test(text)) {
     return ['경험·의견·직무 중 질문 요구부터 구분', 'STAR 또는 PREP으로 답변 순서 구성', '추상적 장점 대신 행동·결과 제시']
@@ -334,7 +391,7 @@ function strategyFor(value) {
   if (/(인성|윤리|태도|성찰|책임|정직|가치관)/.test(text)) {
     return ['좋아 보이는 답보다 실제 행동 기준 확인', '안전·정직·책임·협업 원칙과 상황 함께 검토', '비슷한 상황에서도 응답 기준 일관성 확인']
   }
-  if (/(문서|독해|이메일|안내|공지|회의록|요지|지시어|영어)/.test(text)) {
+  if (/(문서|독해|이메일|안내|공지|회의록|요지|지시어)/.test(text)) {
     return ['일치·불일치·요지 중 발문 요구 먼저 표시', '날짜·수량·조건·결정 표현을 지문에서 직접 확인', '선택지와 지문 근거를 한 항목씩 대조']
   }
   return ['발문이 요구하는 판단을 한 문장으로 정리', '확인된 사실과 추측을 분리', '선택지를 원칙·근거에 대조']
@@ -358,6 +415,7 @@ function toSampleQuestion(question, point) {
       explanation: plain(question.explanation),
       limit: Number(question.limit) || 700,
       thinkingSteps: strategyFor(`자기소개서 ${point.topic ?? ''} ${point.learn ?? ''}`),
+      thinkingLabel: '작성 순서',
       sourceQuestion: question,
     }
   }
@@ -390,6 +448,7 @@ function toSampleQuestion(question, point) {
       modelAnswer: plain(question.modelAnswer),
       answerPoints: (question.answerPoints || []).map(plain).filter(Boolean),
       thinkingSteps: strategyFor(`면접 ${point.topic ?? ''} ${point.learn ?? ''}`),
+      thinkingLabel: '답변 구성 순서',
       sourceQuestion: question,
     }
   }
@@ -412,7 +471,8 @@ function toSampleQuestion(question, point) {
     table: question.table,
     explanation: plain(question.explanation),
     format: formatLabel(question),
-    thinkingSteps: strategyFor(`${point.topic ?? ''} ${point.learn ?? ''}`),
+    thinkingSteps: strategyFor(`${point.topic ?? ''} ${point.learn ?? ''}`, question),
+    thinkingLabel: strategyLabelFor(`${point.topic ?? ''} ${point.learn ?? ''}`, question),
     sourceQuestion: question,
   }
 }
@@ -431,6 +491,7 @@ function toInterviewSample(value, point) {
     modelAnswer: parts.slice(1).join(' ').trim(),
     answerPoints: [],
     thinkingSteps: strategyFor(`면접 ${point.topic ?? ''} ${point.learn ?? ''}`),
+    thinkingLabel: '답변 구성 순서',
   }
 }
 
@@ -581,7 +642,7 @@ function conceptText(question) {
   lines.push(`핵심｜${evidence ? noteStyle(evidence) : '자료의 수치·조건을 판단 기준과 대조'}`)
   const equation = equationFrom(source)
   if (equation) lines.push(`계산｜${equation}`)
-  const check = strategyFor(`${question.area ?? ''} ${question.lessonTitle ?? ''} ${question.stem ?? ''}`)[0]
+  const check = strategyFor(`${question.area ?? ''} ${question.lessonTitle ?? ''} ${question.stem ?? ''}`, question)[0]
   lines.push(`확인｜${noteStyle(check)}`)
   return lines.join('\n')
 }
@@ -723,7 +784,7 @@ export function buildLearningMistakes(summary, questions = []) {
       whyWrong: specificReason || clip(question.explanation, 260),
       correctChoice,
       correction: clip(question.explanation, 320),
-      checklist: strategyFor(`${summary?.title ?? ''} ${question.stem ?? ''}`),
+      checklist: strategyFor(`${summary?.title ?? ''} ${question.stem ?? ''}`, question),
       sourceQuestion: question,
     })
   }

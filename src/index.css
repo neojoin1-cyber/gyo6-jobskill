@@ -1829,6 +1829,8 @@ html.classroom-focus-mode .trial-session-bar { display: none; }
 
   .teacher-learning-preview.is-teaching .study-summary-point { padding: 22px 24px 24px !important; }
   .teacher-learning-preview.is-teaching .study-summary-point-grid { display: grid; grid-template-columns: minmax(390px,.88fr) minmax(480px,1.12fr); gap: 26px; align-items: start; }
+  .teacher-learning-preview.is-teaching .study-summary-point-reveal { grid-column: 1 / -1; grid-template-columns: minmax(280px,.8fr) minmax(420px,1.2fr); align-items: start; margin-top: 0; }
+  .teacher-learning-preview.is-teaching .study-summary-point-reveal > .learning-reconsider { grid-column: 1 / -1; }
   .teacher-learning-preview.is-teaching .study-summary-point-context .learning-scene { height: 270px; }
   .teacher-learning-preview.is-teaching .study-summary-point-context .learning-situation { padding: 16px 18px; }
   .teacher-learning-preview.is-teaching .study-summary-point-context .learning-situation p:last-child,
@@ -2041,3 +2043,14 @@ html.classroom-focus-mode .trial-session-bar { display: none; }
 .learning-case-provenance b { display: block; color: #3730a3; font-size: 12px; }
 .learning-case-provenance p { margin: 4px 0 0; color: #334155; font-size: 12px; line-height: 1.55; }
 .learning-case-provenance small { display: block; margin-top: 4px; color: #64748b; font-size: 11px; line-height: 1.5; }
+.learning-translation { margin: 9px 0 10px; }
+.learning-translation > button { min-height: 38px; display: inline-flex; align-items: center; gap: 6px; padding: 7px 10px; border: 1px solid #93c5fd; border-radius: 7px; background: #fff; color: #1d4ed8; font-size: 11.5px; font-weight: 900; cursor: pointer; }
+.learning-translation > button svg { width: 16px; height: 16px; flex: 0 0 auto; }
+.learning-translation > button svg:last-child { width: 13px; height: 13px; }
+.learning-translation > section { margin-top: 7px; padding: 11px 12px; border: 1px solid #bfdbfe; border-left: 4px solid #2563eb; background: #eff6ff; }
+.learning-translation > section > b { color: #1d4ed8; font-size: 11px; }
+.learning-translation > section > p { margin: 5px 0 0; color: #1e3a5f; font-size: 12.5px; font-weight: 650; line-height: 1.7; white-space: pre-wrap; }
+.learning-translation ol { display: grid; gap: 4px; margin: 9px 0 0; padding: 0; list-style: none; }
+.learning-translation li { display: grid; grid-template-columns: 20px minmax(0,1fr); gap: 7px; color: #334e70; font-size: 11.5px; line-height: 1.5; }
+.learning-translation li > span { color: #1d4ed8; font-weight: 900; }
+.learning-translation small { display: block; margin-top: 8px; color: #64748b; font-size: 10px; }

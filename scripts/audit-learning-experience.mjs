@@ -22,6 +22,7 @@ import interviewQuizData from '../data/interview-quiz.json'
 import { buildInterviewLearningQuestions } from '../src/lib/interviewLearning.js'
 import { COVER_STUDY_PROGRAM } from '../src/lib/coverStudyProgram.js'
 import { PERSONALITY_STUDY_PROGRAM } from '../src/lib/guidedLearningPrograms.js'
+import { englishLearningSupport, isEnglishLearningQuestion } from '../src/lib/englishLearningSupport.js'
 
 const failures = []
 const metrics = {
@@ -29,6 +30,7 @@ const metrics = {
   engagementPrompts: new Set(),
   deepeningKinds: new Set(),
   deepeningMaterials: new Set(),
+  englishSupport: 0,
   courses: { 직업공통: 0, NCS: 0, 채용심화: 0, 면접: 0 },
 }
 
@@ -105,6 +107,21 @@ function auditSummary(scope, summary, questions, { requireMistakes = true } = {}
       failures.push(`${scope} 핵심 ${index + 1}: 선택 전 정답 문자 노출`)
     }
     if (!sample?.thinkingSteps?.length) failures.push(`${scope} 핵심 ${index + 1}: 풀이 순서 없음`)
+    if (sample && isEnglishLearningQuestion(sample)) {
+      metrics.englishSupport += 1
+      if (!englishLearningSupport(sample)?.passage) {
+        failures.push(`${scope} 핵심 ${index + 1}: 영어 문항 해석 자료 누락 (${sample.sourceQuestion?.id || 'id 없음'})`)
+      }
+      if (!/(영어|듣고)/.test(sample.thinkingLabel || '')) {
+        failures.push(`${scope} 핵심 ${index + 1}: 영어 문항 전용 풀이 순서 제목 누락 (${sample.sourceQuestion?.id || 'id 없음'})`)
+      }
+      if ((sample.thinkingSteps || []).some(step => /계산식|구하려는 값|단위.*재검산/.test(step))) {
+        failures.push(`${scope} 핵심 ${index + 1}: 영어 문항에 수리 풀이 안내 노출 (${sample.sourceQuestion?.id || 'id 없음'})`)
+      }
+      if (point.engagement?.deepen?.kind === 'math' || /(계산 유지|다시 계산|수치·단위)/.test(JSON.stringify(point.engagement?.deepen || {}))) {
+        failures.push(`${scope} 핵심 ${index + 1}: 영어 문항에 수리 심화 자료 노출 (${sample.sourceQuestion?.id || 'id 없음'})`)
+      }
+    }
     if (!point.visual?.src) failures.push(`${scope} 핵심 ${index + 1}: 상황 삽화 없음`)
   })
   const mistakes = buildLearningMistakes(summary, questions)
@@ -198,5 +215,5 @@ if (metrics.deepeningKinds.size < 7 || metrics.deepeningMaterials.size < 7) {
   process.exit(1)
 }
 
-console.log(`[학습경험] 통과 — ${metrics.units}학습단원 + 특수진단 ${metrics.special}개 · 핵심 ${metrics.points}개 · 장면별 판단 문구 ${metrics.engagementPrompts.size}개 · 심화 유형 ${metrics.deepeningKinds.size}개 · 확인 자료 ${metrics.deepeningMaterials.size}종 · 실제 문항 ${metrics.covered}개 · 실제 오답 ${metrics.mistakes}개 · 상황 삽화 ${metrics.visuals}개`)
+console.log(`[학습경험] 통과 — ${metrics.units}학습단원 + 특수진단 ${metrics.special}개 · 핵심 ${metrics.points}개 · 장면별 판단 문구 ${metrics.engagementPrompts.size}개 · 심화 유형 ${metrics.deepeningKinds.size}개 · 확인 자료 ${metrics.deepeningMaterials.size}종 · 영어 해석 ${metrics.englishSupport}개 · 실제 문항 ${metrics.covered}개 · 실제 오답 ${metrics.mistakes}개 · 상황 삽화 ${metrics.visuals}개`)
 console.log(`  직업공통 ${metrics.courses.직업공통}학습+진단 ${metrics.special} · NCS ${metrics.courses.NCS} · 채용필기 심화 ${metrics.courses.채용심화} · 고졸면접 ${metrics.courses.면접}`)
