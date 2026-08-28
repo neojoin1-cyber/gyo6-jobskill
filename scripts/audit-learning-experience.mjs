@@ -6,6 +6,8 @@ import {
   buildLearningMistakes,
   buildLearningPoints,
   buildQuestionDrivenSummary,
+  buildReasoningLink,
+  learningPromptIntegrity,
 } from '../src/lib/learningExperience.js'
 import { buildJcOfficialAreas, jcLessonMatches, jcStudyQuestions } from '../src/lib/jobCommonAreas.js'
 import { buildNcs2026Areas, ncs2026Questions } from '../src/lib/ncs2026.js'
@@ -31,6 +33,10 @@ const metrics = {
   deepeningKinds: new Set(),
   deepeningMaterials: new Set(),
   englishSupport: 0,
+  promptLinks: 0,
+  causalLinks: 0,
+  sourcePrompts: 0,
+  sourceCausalLinks: 0,
   courses: { 직업공통: 0, NCS: 0, 채용심화: 0, 면접: 0 },
 }
 
@@ -73,6 +79,19 @@ function auditSummary(scope, summary, questions, { requireMistakes = true } = {}
     }
     if (sample?.stem) metrics.covered += 1
     else failures.push(`${scope} 핵심 ${index + 1}: 실제 문항 연결 없음`)
+    if (sample?.stem && !sample.isInterview && sample.type !== 'reflection' && sample.type !== 'writing-practice') {
+      const integrity = learningPromptIntegrity(sample)
+      if (!integrity.valid) {
+        failures.push(`${scope} 핵심 ${index + 1}: 발문이 가리키는 상황·빈칸·원인/결과 근거 연결 누락 (${sample.sourceQuestion?.id || sample.stem})`)
+      }
+      const reasoningLink = buildReasoningLink(sample)
+      if (!reasoningLink?.items?.every(item => item.label && item.text)) {
+        failures.push(`${scope} 핵심 ${index + 1}: 단서→판단→결론 근거 연결을 만들 수 없음 (${sample.sourceQuestion?.id || sample.stem})`)
+      } else {
+        metrics.promptLinks += 1
+        if (integrity.asksCausalLink) metrics.causalLinks += 1
+      }
+    }
     if (sample && !sample.isInterview) {
       const type = sample.type || 'choice'
       const choices = Array.isArray(sample.choices) ? sample.choices : []
@@ -188,6 +207,21 @@ for (const lesson of interviewStudy.lessons || []) {
   auditSummary(`면접/${lesson.id}`, summary ? { ...summary, courseKind: 'interview' } : null, questions)
 }
 
+// 핵심 카드로 뽑힌 대표 문항뿐 아니라 자율학습 원문항 전체도 검사한다.
+// "위 상황/다음 자료/빈칸/원인/결과"라고 묻고 정작 화면 근거가 없는 문항은
+// 대표 카드에 우연히 선택되지 않았더라도 출시를 막아야 한다.
+const auditedSourceIds = new Set()
+for (const question of [...jcQuestions, ...ncsStudyQuestions, ...recruitStudyQuestions, ...interviewQuiz]) {
+  if (!question || question.excludeFromQuiz || !question.stem) continue
+  const key = String(question.id || `${question.stem}:${question.answer}`)
+  if (auditedSourceIds.has(key)) continue
+  auditedSourceIds.add(key)
+  metrics.sourcePrompts += 1
+  const integrity = learningPromptIntegrity(question)
+  if (integrity.asksCausalLink) metrics.sourceCausalLinks += 1
+  if (!integrity.valid) failures.push(`원문항 ${key}: 상황·사례·빈칸·원인/결과 발문과 화면 근거 연결 누락`)
+}
+
 for (const program of [COVER_STUDY_PROGRAM, PERSONALITY_STUDY_PROGRAM]) {
   for (const area of program.areas || []) for (const lesson of area.lessons || []) {
     auditSummary(`${program.title}/${area.id}/${lesson.id}`, lesson.summary, [], { requireMistakes: false })
@@ -215,5 +249,5 @@ if (metrics.deepeningKinds.size < 7 || metrics.deepeningMaterials.size < 7) {
   process.exit(1)
 }
 
-console.log(`[학습경험] 통과 — ${metrics.units}학습단원 + 특수진단 ${metrics.special}개 · 핵심 ${metrics.points}개 · 장면별 판단 문구 ${metrics.engagementPrompts.size}개 · 심화 유형 ${metrics.deepeningKinds.size}개 · 확인 자료 ${metrics.deepeningMaterials.size}종 · 영어 해석 ${metrics.englishSupport}개 · 실제 문항 ${metrics.covered}개 · 실제 오답 ${metrics.mistakes}개 · 상황 삽화 ${metrics.visuals}개`)
+console.log(`[학습경험] 통과 — ${metrics.units}학습단원 + 특수진단 ${metrics.special}개 · 핵심 ${metrics.points}개 · 장면별 판단 문구 ${metrics.engagementPrompts.size}개 · 심화 유형 ${metrics.deepeningKinds.size}개 · 확인 자료 ${metrics.deepeningMaterials.size}종 · 영어 해석 ${metrics.englishSupport}개 · 화면 근거 연결 ${metrics.promptLinks}개(원인·결과 ${metrics.causalLinks}개) · 원문항 연결 검사 ${metrics.sourcePrompts}개(원인·결과 ${metrics.sourceCausalLinks}개) · 실제 오답 ${metrics.mistakes}개 · 상황 삽화 ${metrics.visuals}개`)
 console.log(`  직업공통 ${metrics.courses.직업공통}학습+진단 ${metrics.special} · NCS ${metrics.courses.NCS} · 채용필기 심화 ${metrics.courses.채용심화} · 고졸면접 ${metrics.courses.면접}`)

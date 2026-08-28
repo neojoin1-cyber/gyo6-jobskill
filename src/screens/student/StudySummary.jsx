@@ -4,7 +4,7 @@ import QuestionMedia from './QuestionMedia.jsx'
 import QuestionPriorityBadge from './QuestionPriorityBadge.jsx'
 import ListeningPrompt, { ListeningBlankGuide } from './ListeningPrompt.jsx'
 import PulldownForm from './PulldownForm.jsx'
-import { buildEngagementCopy, buildLearningMistakes, buildLearningPoints, learningVisualFor } from '../../lib/learningExperience.js'
+import { buildEngagementCopy, buildLearningMistakes, buildLearningPoints, buildReasoningLink, learningVisualFor } from '../../lib/learningExperience.js'
 import { analyzeWritingDraft } from '../../lib/writingDraftCheck.js'
 import { buildAutonomousFormative } from '../../lib/autonomousFormative.js'
 import { learningCaseProvenance } from '../../lib/learningCaseProvenance.js'
@@ -247,6 +247,24 @@ function EnglishTranslationToggle({ sample }) {
   )
 }
 
+function ReasoningLink({ sample }) {
+  const link = buildReasoningLink(sample)
+  if (!link) return null
+  return (
+    <section className="learning-link-chain" data-learning-link={link.kind}>
+      <b>근거를 이렇게 연결해요</b>
+      <div>
+        {link.items.map((item, index) => (
+          <article key={`${item.label}:${index}`}>
+            <span>{index + 1}</span>
+            <div><strong>{item.label}</strong><p>{item.text}</p></div>
+          </article>
+        ))}
+      </div>
+    </section>
+  )
+}
+
 function SampleQuestionCard({ sample, example, courseKind, isOpen, selected, onSelect, onChange, onOpen }) {
   const language = learningLanguage(courseKind, !!sample.sourceQuestion?.audioText)
   if (sample.type === 'writing-practice') {
@@ -381,6 +399,7 @@ function SampleQuestionCard({ sample, example, courseKind, isOpen, selected, onS
           </button>
         )}
         {isOpen && sample.explanation && <div className="learning-evidence"><p className="learning-block-label">정답 근거</p><ExpandableText text={sample.explanation} style={{ fontSize: 12.5, lineHeight: 1.72 }} /></div>}
+        {isOpen && <ReasoningLink sample={sample} />}
       </div>
     )
   }
@@ -432,6 +451,7 @@ function SampleQuestionCard({ sample, example, courseKind, isOpen, selected, onS
           {example && <div style={{ marginTop: 10, borderTop: '1px solid #FFE082', paddingTop: 8 }}><p style={{ fontSize: 12, color: '#B45309', fontWeight: 700, marginBottom: 4 }}>출제 포인트</p><CompactText text={example} maxItemChars={70} style={{ fontSize: 12, color: 'var(--text-muted)' }} /></div>}
           {sample.thinkingSteps?.length > 0 && <div className="learning-reasoning"><p className="learning-block-label">{sample.thinkingLabel || '문제를 읽는 순서'}</p><ol>{sample.thinkingSteps.map((step, index) => <li key={index}>{step}</li>)}</ol></div>}
           {sample.explanation && <div className="learning-evidence"><p className="learning-block-label">정답 근거</p><ExpandableText text={sample.explanation} style={{ fontSize: 12.5, lineHeight: 1.72 }} /></div>}
+          <ReasoningLink sample={sample} />
         </div>
       )}
     </div>
@@ -510,6 +530,13 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, for
   const { title, intro, keyPoints = [], mustRemember = [], terms = [], tips = [] } = summary || {}
   const learningPoints = useMemo(() => buildLearningPoints(summary, questions), [summary, questions])
   const learningMistakes = useMemo(() => buildLearningMistakes(summary, questions), [summary, questions])
+  const firstTopic = String(learningPoints.find(point => point && typeof point === 'object' && point.topic)?.topic || title || '')
+    .replace(/[?？.!。]+$/g, '')
+    .replace(/(?:은|는)$/g, '')
+    .trim()
+  const introCopy = /공식 영역 안에서|상위 등급 판단/.test(String(intro || ''))
+    ? `핵심 판단은 “${firstTopic}”입니다. 상황 속 조건과 근거를 찾고, 처음 보는 사례에도 적용해요.`
+    : intro
   const introVisual = useMemo(() => learningVisualFor(`${title ?? ''} ${intro ?? ''}`, summary?.courseKind), [title, intro, summary?.courseKind])
   const listeningQuestionCount = questions.filter(question => !!question?.audioText).length
   const isListeningLesson = listeningQuestionCount > 0 && listeningQuestionCount === questions.length
@@ -665,14 +692,19 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, for
                 </figure>
               </div>
               <div className="study-summary-intro-copy">
-                {intro && (
+                {introCopy && (
                   <div style={{ background: 'var(--bg)', borderRadius: 10, padding: '12px 14px', border: '1px solid var(--border)' }}>
                     <p style={{ fontSize: 12, fontWeight: 800, color: 'var(--primary)', marginBottom: 6 }}>📌 이 단원에서 배우는 것</p>
-                    <CompactText text={intro} maxItemChars={76} style={{ fontSize: 'clamp(13px, 3.85vw, 14.5px)', color: 'var(--text)' }} />
+                    <CompactText text={introCopy} maxItemChars={76} style={{ fontSize: 'clamp(13px, 3.85vw, 14.5px)', color: 'var(--text)' }} />
                   </div>
                 )}
-                <p className="study-summary-count" style={{ fontSize: 12, color: 'var(--primary)', marginTop: 14, fontWeight: 700, textAlign: 'center' }}>
-                  핵심 {keyPoints.length}개 · {language.countLabel} {terms.length}개 — 한 장씩 넘기며 확인해요
+                <div className="learning-journey-steps" aria-label="학습 순서">
+                  <span><b>1</b>상황 파악</span>
+                  <span><b>2</b>근거 연결</span>
+                  <span><b>3</b>새 상황 적용</span>
+                </div>
+                <p className="study-summary-count">
+                  완료 목표: <b>“{firstTopic}”</b> 근거 설명하기
                 </p>
               </div>
             </div>

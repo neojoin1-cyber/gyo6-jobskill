@@ -90,6 +90,18 @@ const SUBJECTS = [
 // 교육부·대한상의 직업공통능력 인증 = 5개 인증영역.
 const JOB_AREAS = buildJcOfficialAreas()
 
+const AREA_GOALS = {
+  '의사소통 국어': '업무 문서와 대화에서 요구·근거·의도를 정확히 찾기',
+  '의사소통 영어': '현장 영어의 요청·순서·조건을 듣고 읽어 대응하기',
+  '수리활용': '표·그래프·수치에서 필요한 정보를 골라 판단하기',
+  '문제해결': '문제의 원인과 조건을 찾아 해결 순서를 세우기',
+  '직무적응': '좋아 보이는 답이 아닌 평소 행동 기준을 점검하기',
+}
+
+function areaGoal(area) {
+  return AREA_GOALS[area?.label] || `${area?.label || '이 영역'}의 핵심 판단을 실제 문제에 적용하기`
+}
+
 export default function StudyScreen({ initialSubject, initialTrack, initialArea, initialLesson, initialQuestionId, initialQuestionIndex, initialStep = 0, initialInteraction = null, onLearningContext, onBack }) {
   const subjectId = initialSubject ?? 'job-common'
   const [trackId,          setTrackId]          = useState(initialTrack ?? null)
@@ -307,7 +319,7 @@ export default function StudyScreen({ initialSubject, initialTrack, initialArea,
   // 문항 변경 시 스크롤 최상단
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: 0, behavior: 'instant' })
-  }, [questionIdx])
+  }, [areaId, lessonId, questionIdx, studyMode])
 
   const backRef = useRef(null)
   backRef.current = () => {
@@ -390,6 +402,18 @@ export default function StudyScreen({ initialSubject, initialTrack, initialArea,
   // ── 영역 선택 ─────────────────────────────────────────────────────────
   if (!areaId) {
     const selectedTrack = getRecruitTrack(trackId)
+    const areaQuestions = area => {
+      const questions = subject?.questions ?? []
+      if (subjectId === 'job-common') {
+        const lessonIds = (area.lessons || []).map(lesson => lesson.id)
+        return questions.filter(question => !question.excludeFromQuiz && lessonIds.some(id => jcLessonMatches(question, id)))
+      }
+      if (subjectId === 'ncs-basic') return questions.filter(question => !question.excludeFromQuiz && question.area === area.id)
+      return questions.filter(question => !question.excludeFromQuiz && question.recruitmentTrack === trackId && recruitAreaId(question.area) === area.id)
+    }
+    const recommendedArea = areas.find(area => areaQuestions(area).some(question => ssProgress[question.id] !== 'done')) || areas[0]
+    const recommendedQuestions = recommendedArea ? areaQuestions(recommendedArea) : []
+    const recommendedDone = recommendedQuestions.filter(question => ssProgress[question.id] === 'done').length
     return (
       <div className="screen">
         <div className="appbar">
@@ -398,9 +422,9 @@ export default function StudyScreen({ initialSubject, initialTrack, initialArea,
           )}
           <span className="appbar-title">{subject?.label ?? '학습하기'}</span>
         </div>
-        <div className="screen-body">
+        <div ref={scrollRef} className="screen-body">
           <p className="section-title">
-            {subjectId === 'recruit-written' && !trackId ? '지원 분야 선택' : '영역 선택'}
+            {subjectId === 'recruit-written' && !trackId ? '지원 분야 선택' : '오늘의 학습'}
           </p>
           {subjectId === 'ncs-basic' && (
             <div style={{ background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 12, padding: '11px 13px', marginBottom: 12 }}>
@@ -462,7 +486,20 @@ export default function StudyScreen({ initialSubject, initialTrack, initialArea,
               )}
             </>
           )}
-          {areas.map(a => {
+          {recommendedArea && (
+            <button className="guided-next-card" onClick={() => selectArea(recommendedArea.id)}>
+              <span>{recommendedDone > 0 ? '이어서 학습' : '추천 시작'}</span>
+              <strong>{recommendedArea.label}</strong>
+              <p>{areaGoal(recommendedArea)}</p>
+              <footer>
+                <i><em style={{ width: `${recommendedQuestions.length ? Math.round(recommendedDone / recommendedQuestions.length * 100) : 0}%` }} /></i>
+                <b>{recommendedDone}/{recommendedQuestions.length || recommendedArea.lessons?.length || 0} 완료</b>
+                <u>시작 →</u>
+              </footer>
+            </button>
+          )}
+          {areas.length > 1 && <p className="section-title">다른 영역 보기</p>}
+          {areas.filter(area => area.id !== recommendedArea?.id).map(a => {
             const t = subjectId === 'ncs-basic' ? ncsTier(a.id) : null
             return (
               <button key={a.id} onClick={() => selectArea(a.id)}
@@ -505,13 +542,25 @@ export default function StudyScreen({ initialSubject, initialTrack, initialArea,
   }
 
   if (!lessonId && lessons.length > 0 && ['job-common', 'ncs-basic', 'recruit-written'].includes(subjectId)) {
+    const questionsForLesson = lesson => {
+      if (subjectId === 'ncs-basic') return (subject?.questions ?? []).filter(q => !q.excludeFromQuiz && q.ncsAbility === lesson.id)
+      if (subjectId === 'recruit-written') return (subject?.questions ?? []).filter(q =>
+        !q.excludeFromQuiz && q.recruitmentTrack === trackId && recruitAreaId(q.area) === areaId && recruitLessonTitle(q) === lesson.id)
+      return (subject?.questions ?? []).filter(q => !q.excludeFromQuiz && jcLessonMatches(q, lesson.id))
+    }
+    const recommendedLesson = lessons.find(lesson => {
+      const questions = questionsForLesson(lesson)
+      return lesson.kind === 'self-report' || questions.some(question => ssProgress[question.id] !== 'done')
+    }) || lessons[0]
+    const recommendedLessonQuestions = questionsForLesson(recommendedLesson)
+    const recommendedLessonDone = recommendedLessonQuestions.filter(question => ssProgress[question.id] === 'done').length
     return (
       <div className="screen">
         <div className="appbar">
           <button className="appbar-back" onClick={triggerBack} aria-label="이전 화면">←</button>
           <span className="appbar-title">{selectedArea?.label}</span>
         </div>
-        <div className="screen-body">
+        <div ref={scrollRef} className="screen-body">
           {/* 문제해결 단원은 시험의 4대 내용영역으로 세웠고 수준 배지가 없다.
               그런데도 "기초·표준·심화·보충 중에서 고르세요" 범례를 띄우면
               있지도 않은 것을 고르라는 안내가 된다. 단원에 수준이 붙은
@@ -529,7 +578,7 @@ export default function StudyScreen({ initialSubject, initialTrack, initialArea,
           )}
           {subjectId === 'job-common' && lessons.some(l => l.level) && (
           <div style={{ background: '#eff6ff', borderRadius: 12, padding: '12px 14px', border: '1px solid #bfdbfe', marginBottom: 12 }}>
-            <p style={{ fontSize: 12, fontWeight: 800, color: '#1d4ed8', marginBottom: 6 }}>자율학습 수준 선택</p>
+            <p style={{ fontSize: 12, fontWeight: 800, color: '#1d4ed8', marginBottom: 6 }}>학습은 기초부터 순서대로 이어져요</p>
             <div style={{ display: 'flex', gap: 4, alignItems: 'center', flexWrap: 'wrap' }}>
               {['기초', '표준', '심화', '보충'].map((lv, i) => (
                 <span key={lv} style={{ fontSize: 12, fontWeight: 700, padding: '3px 9px', borderRadius: 20,
@@ -540,28 +589,23 @@ export default function StudyScreen({ initialSubject, initialTrack, initialArea,
               ))}
             </div>
             <p style={{ fontSize: 12, color: '#3b82f6', marginTop: 6 }}>
-              순서가 정해진 과정이 아닙니다. 원하는 수준과 단원을 직접 선택하세요.
+              아래 추천 단원부터 시작하면 다음 수준을 앱이 이어서 안내합니다.
             </p>
           </div>
           )}
-          <button className="btn btn-secondary btn-full" style={{ marginBottom: 14 }}
-            onClick={() => { setLessonId('__all__'); setLearnIdx(0); setGameIdx(0); resetGame() }}>
-            이 영역 전체 학습 ({questionPool.length}문항)
+          <button className="guided-next-card" onClick={() => selectLesson(recommendedLesson.id)}>
+            <span>{recommendedLessonDone > 0 ? '이어서 학습' : '다음 학습'}</span>
+            <strong>{recommendedLesson.label}</strong>
+            <p>{recommendedLesson.level ? `${recommendedLesson.level} 수준부터 차근차근 진행` : '이 영역의 첫 판단부터 순서대로 진행'}</p>
+            <footer>
+              <i><em style={{ width: `${recommendedLessonQuestions.length ? Math.round(recommendedLessonDone / recommendedLessonQuestions.length * 100) : 0}%` }} /></i>
+              <b>{recommendedLesson.kind === 'self-report' ? '검사 시작 준비' : `${recommendedLessonDone}/${recommendedLessonQuestions.length} 완료`}</b>
+              <u>시작 →</u>
+            </footer>
           </button>
-          <p className="section-title">{subjectId === 'ncs-basic' ? '하위 능력 선택' : '단원 선택'}</p>
-          {lessons.map(l => {
-            const cnt = subjectId === 'ncs-basic'
-              ? (subject?.questions ?? []).filter(q => !q.excludeFromQuiz && q.ncsAbility === l.id).length
-              : subjectId === 'recruit-written'
-                ? (subject?.questions ?? []).filter(q =>
-                    !q.excludeFromQuiz &&
-                    q.recruitmentTrack === trackId &&
-                    recruitAreaId(q.area) === areaId &&
-                    recruitLessonTitle(q) === l.id
-                  ).length
-              : (subject?.questions ?? []).filter(
-                  q => !q.excludeFromQuiz && jcLessonMatches(q, l.id)
-                ).length
+          {lessons.length > 1 && <p className="section-title">다른 단원 보기</p>}
+          {lessons.filter(lesson => lesson.id !== recommendedLesson.id).map(l => {
+            const cnt = questionsForLesson(l).length
             const levelColor = {
               '진단': '#7e22ce', '기초': '#1d4ed8', '표준': '#15803d',
               '심화': '#b45309', '종합': '#b91c1c', '보충': '#64748b',
@@ -593,6 +637,10 @@ export default function StudyScreen({ initialSubject, initialTrack, initialArea,
               </button>
             )
           })}
+          <button className="btn btn-secondary btn-full" style={{ marginTop: 8 }}
+            onClick={() => { setLessonId('__all__'); setLearnIdx(0); setGameIdx(0); resetGame() }}>
+            복습용 전체 문제 보기 ({questionPool.length}문항)
+          </button>
         </div>
       </div>
     )

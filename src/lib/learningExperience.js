@@ -41,6 +41,86 @@ function clip(value, max = 220) {
   return [...text].length > max ? `${[...text].slice(0, max).join('').trim()}...` : text
 }
 
+function answerValues(sample = {}) {
+  const answers = new Set((Array.isArray(sample.answer) ? sample.answer : [sample.answer])
+    .map(value => String(value ?? '').trim().toUpperCase())
+    .filter(Boolean))
+  return (sample.choices || [])
+    .filter(choice => answers.has(String(choice?.value ?? '').trim().toUpperCase()))
+    .map(choice => plain(choice?.text ?? choice))
+    .filter(Boolean)
+}
+
+function firstEvidence(value) {
+  const parts = String(value ?? '')
+    .replace(/•/g, '\n')
+    .split(/\n|(?<=[.!?])\s+/)
+    .map(plain)
+    .filter(Boolean)
+  return clip(parts[0] || '', 105)
+}
+
+/**
+ * 정답 공개 뒤 화면에 표시할 근거 연결을 만든다.
+ * 별도 AI 호출 없이 번들된 지문·해설·정답만 사용하므로 오프라인에서도 동일하다.
+ */
+export function buildReasoningLink(sample = {}) {
+  const source = sample.sourceQuestion || {}
+  const stem = plain(sample.stem || source.stem || source.question)
+  const context = plain(sample.context || source.context || source.passage || source.audioText)
+  const explanation = plain(sample.explanation || source.explanation)
+  const conclusion = answerValues(sample)[0] || firstEvidence(explanation)
+  if (!stem || !explanation || !conclusion) return null
+
+  const text = `${stem} ${context} ${explanation}`
+  let labels = ['자료의 단서', '판단 기준', '결론']
+  if (/(원인|이유|까닭|왜|발생한 요인)/.test(stem)) labels = ['상황의 단서', '원인', '그에 따른 판단']
+  else if (/(결과|영향|효과|파급|이어질|초래)/.test(stem)) labels = ['원인·조건', '이어지는 변화', '결과 판단']
+  else if (/(순서|먼저|다음 행동|우선)/.test(text)) labels = ['현재 조건', '우선 판단', '다음 행동']
+  else if (/(빈칸|_{2,}|\(\s*\)|□)/.test(text)) labels = ['빈칸 앞뒤 단서', '문맥·기능', '들어갈 말']
+
+  const clue = firstEvidence(context) || clip(stem.replace(/^(다음|위|아래).{0,18}?[,.]?\s*/, ''), 105)
+  const reason = firstEvidence(explanation)
+  if (!clue || !reason) return null
+  return {
+    kind: labels[1],
+    items: [
+      { label: labels[0], text: clue },
+      { label: labels[1], text: reason },
+      { label: labels[2], text: conclusion },
+    ],
+  }
+}
+
+/** 정황을 가리키는 발문이 실제 지문·자료와 연결됐는지 배포 게이트에서 검사한다. */
+export function learningPromptIntegrity(sample = {}) {
+  const source = sample.sourceQuestion || sample
+  const stem = plain(sample.stem || source.stem || source.question)
+  const context = plain(sample.context || source.context || source.passage || source.audioText)
+  const explanation = plain(sample.explanation || source.explanation)
+  const rawStem = String(sample.stem || source.stem || source.question || '')
+  const embeddedMaterial = (rawStem.match(/\|/g) || []).length >= 4
+    || /(?:표이다|그래프이다|자료이다).{12,}/.test(rawStem)
+    || /상황\s*(?:[:：]|[1-9])/.test(rawStem)
+    || /\n\s*(?:\n|["“【[*])/.test(rawStem)
+    || /\*[^*]{12,}\*/.test(rawStem)
+    || /다음\s*자료.{8,}\d/.test(rawStem)
+  const hasMaterial = Boolean(context || embeddedMaterial || source.visual || source.table || source.data || source.audioText || (source.blanks || sample.blanks)?.length)
+  const refersToMaterial = /(?:위|다음|아래)(?:의)?\s*(?:상황|사례|문장|글|자료|표|그래프|대화|안내문|지문)/.test(stem)
+  const asksBlank = /(빈칸|_{2,}|\(\s*\)|□)/.test(`${stem} ${context}`)
+  const blankLocated = /(_{2,}|\(\s*\)|□|\[\s*\])/.test(`${stem} ${context} ${source.audioText || ''}`) || Boolean((source.blanks || sample.blanks)?.length) || Boolean(source.audioText)
+  const asksCausalLink = /(원인|이유|까닭|왜|결과|영향|효과|파급|초래)/.test(stem)
+  return {
+    valid: (!refersToMaterial || hasMaterial) && (!asksBlank || blankLocated) && (!asksCausalLink || explanation.length >= 12),
+    refersToMaterial,
+    hasMaterial,
+    asksBlank,
+    blankLocated,
+    asksCausalLink,
+    hasExplanation: explanation.length >= 12,
+  }
+}
+
 function engagementSubject(point = {}) {
   const sample = typeof point.sampleQuestion === 'object' ? point.sampleQuestion : {}
   const value = point.topic || sample.stem || point.situation || sample.context || '이 장면의 판단'

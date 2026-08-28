@@ -31,6 +31,7 @@ let sourceMediaCards = 0
 let englishTranslationCards = 0
 let activeExitCards = 0
 let formativeCards = 0
+let reasoningLinks = 0
 let rawSourceQuestions = 0
 const inspectedRawSources = new Set()
 
@@ -242,6 +243,14 @@ function inspect(scope, summary, questions) {
     if (sample.type === 'pulldown') {
       const expected = sample.blanks?.length || 0
       if ($('select').length !== expected) failures.push(`${scope} 핵심 ${index + 1}: 풀다운 ${$('select').length}/${expected}개 렌더링`)
+      const revealedHtml = renderToStaticMarkup(React.createElement(StudySummary, {
+        summary,
+        questions,
+        initialStep: index + 1,
+        initialInteraction: { step: index + 1, revealed: true },
+      }))
+      if (load(revealedHtml)('[data-learning-link] article').length !== 3) failures.push(`${scope} 핵심 ${index + 1}: 풀다운 정답 공개 뒤 3단 근거 연결 미렌더링`)
+      else reasoningLinks += 1
       return
     }
     const expected = sample.choices?.length || 0
@@ -249,6 +258,16 @@ function inspect(scope, summary, questions) {
     if (shown !== expected || shown < 2) failures.push(`${scope} 핵심 ${index + 1}: 선택지 버튼 ${shown}/${expected}개 렌더링`)
     if ($('[data-learning-answer-state="hidden"]').length !== 1) failures.push(`${scope} 핵심 ${index + 1}: 선택 전 정답 숨김 상태 없음`)
     if ($('[data-correct]').length || $('[aria-label="정답"]').length) failures.push(`${scope} 핵심 ${index + 1}: 선택 전 정답 표시됨`)
+    const revealedHtml = renderToStaticMarkup(React.createElement(StudySummary, {
+      summary,
+      questions,
+      initialStep: index + 1,
+      initialInteraction: { step: index + 1, revealed: true },
+    }))
+    const revealedPage = load(revealedHtml)
+    if (revealedPage('[data-learning-link] article').length !== 3) {
+      failures.push(`${scope} 핵심 ${index + 1}: 정답 공개 뒤 단서→판단→결론 3단 연결 미렌더링`)
+    } else reasoningLinks += 1
   })
 }
 
@@ -289,4 +308,4 @@ if (failures.length) {
   failures.slice(0, 50).forEach(failure => console.error(`  - ${failure}`))
   process.exit(1)
 }
-console.log(`[학습화면 렌더링] 통과 — ${units}단원 · 원문항 ${rawSourceQuestions}개 · ${cards}개 핵심 카드 · 능동 마무리 ${activeExitCards}개 · 3문항 형성평가 ${formativeCards}개 · 영어 해석 ${englishTranslationCards}개 · 듣기 ${audioCards}개 · 표·그래프 ${sourceMediaCards}개 · 먼저 판단·정답 숨김 DOM 확인`)
+console.log(`[학습화면 렌더링] 통과 — ${units}단원 · 원문항 ${rawSourceQuestions}개 · ${cards}개 핵심 카드 · 근거 3단 연결 ${reasoningLinks}개 · 능동 마무리 ${activeExitCards}개 · 3문항 형성평가 ${formativeCards}개 · 영어 해석 ${englishTranslationCards}개 · 듣기 ${audioCards}개 · 표·그래프 ${sourceMediaCards}개 · 먼저 판단·정답 숨김 DOM 확인`)

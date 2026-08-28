@@ -169,6 +169,7 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
   // 직업공통능력만 학년별로 진단 규모가 다르다. 기기에만 저장한다(서버 왕복 없음).
   const [goal,   setGoalState] = useState(getAssessGoal)
   const setGoal = id => { setAssessGoal(id); setGoalState(id) }
+  const [showOtherModes, setShowOtherModes] = useState(false)
   const [allowed, setAllowed] = useState(null) // Set<id> = 배정된 교재만 | null = 전체
 
   // 열람 가능 교재 결정: 역할별 resolver(교사·학교관리자) 또는 기본(학생 배정). 미배정·오류=전체.
@@ -337,7 +338,7 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
           <button className="appbar-back" onClick={backToList}>←</button>
           <span className="appbar-title">{selected.icon} {selected.name}</span>
         </div>
-      <div className="screen-body">
+      <div className="screen-body learning-mode-flow">
           {(course === 'ncs-basic' || course === 'recruit-written') && (
             <div className={`written-path-guide ${course === 'ncs-basic' ? 'core' : 'advanced'}`}>
               <strong>{course === 'ncs-basic' ? 'STEP 1 · 필기 공통 필수' : 'STEP 2 · 지원처 심화 필수'}</strong>
@@ -345,7 +346,7 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
             </div>
           )}
           {/* 면접은 지식 점검 뒤 실제 행동 리허설까지 네 기능으로 완성한다. */}
-          <div style={{ background: 'var(--card)', border: '1px solid var(--border)', borderRadius: 12, padding: '12px 14px', marginBottom: 16 }}>
+          <div className="learning-mode-overview" style={{ background: 'var(--card)', border: '1px solid var(--border)', borderRadius: 12, padding: '12px 14px', marginBottom: 16 }}>
             <p style={{ fontSize: 12, fontWeight: 800, color: 'var(--text)', marginBottom: 8 }}>이 과목에서 제공하는 학습 기능</p>
             <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
               {(isPersonality
@@ -366,7 +367,7 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
             </div>
           </div>
 
-          {course === 'job-common' && (
+          {showOtherModes && course === 'job-common' && <div className="learning-mode-goal">{(
             goal === null ? (
               /* 고르기 전까지는 아래 카드가 어느 규모인지 알 수 없으므로 먼저 묻는다. */
               <div style={{ background: 'var(--card)', border: '2px solid var(--primary)', borderRadius: 14, padding: '14px', marginBottom: 16 }}>
@@ -405,11 +406,12 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
                 </button>
               </div>
             )
-          )}
+          )}</div>}
 
-          <p className="section-title">학습 방식 선택</p>
+          <p className="section-title learning-mode-title">추천 학습</p>
 
           <button onClick={() => setMode('study')}
+            className="learning-mode-primary"
             style={{
               width: '100%', textAlign: 'left', background: 'var(--card)',
               border: '1px solid var(--border)', borderRadius: 14,
@@ -432,15 +434,21 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
             <span style={{ color: 'var(--text-muted)', fontSize: 20, flexShrink: 0 }}>›</span>
           </button>
 
+          <button type="button" className="learning-mode-more" onClick={() => setShowOtherModes(value => !value)} aria-expanded={showOtherModes}>
+            <span>{showOtherModes ? '다른 방식 접기' : '진단·모의·실전 보기'}</span>
+            <b>{showOtherModes ? '↑' : '↓'}</b>
+          </button>
+
           <button onClick={() => diagReady && setMode('diagnostic')}
             disabled={!diagReady}
+            className="learning-mode-option learning-mode-diagnostic"
             style={{
               width: '100%', textAlign: 'left',
               background: diagReady ? 'var(--card)' : 'var(--bg)',
               border: '1px solid var(--border)', borderRadius: 14,
               padding: '16px', marginBottom: 12,
               cursor: diagReady ? 'pointer' : 'default', opacity: diagReady ? 1 : 0.6,
-              display: 'flex', alignItems: 'center', gap: 14,
+              display: showOtherModes ? 'flex' : 'none', alignItems: 'center', gap: 14,
             }}>
             <div style={{ width: 48, height: 48, borderRadius: 12, flexShrink: 0, background: '#E0E7FF', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>📊</div>
             <div style={{ flex: 1, minWidth: 0 }}>
@@ -455,13 +463,14 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
 
           <button onClick={() => mockReady && setMode('mock')}
             disabled={!mockReady}
+            className="learning-mode-option learning-mode-mock"
             style={{
               width: '100%', textAlign: 'left',
               background: mockReady ? 'var(--card)' : 'var(--bg)',
               border: '1px solid var(--border)', borderRadius: 14,
               padding: '16px', marginBottom: 12,
               cursor: mockReady ? 'pointer' : 'default', opacity: mockReady ? 1 : 0.6,
-              display: 'flex', alignItems: 'center', gap: 14,
+              display: showOtherModes ? 'flex' : 'none', alignItems: 'center', gap: 14,
             }}>
             <div style={{ width: 48, height: 48, borderRadius: 12, flexShrink: 0, background: '#DBEAFE', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>📝</div>
             <div style={{ flex: 1, minWidth: 0 }}>
@@ -477,11 +486,12 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
 
           {course === 'interview' && (
             <button onClick={() => setMode('practical')}
+              className="learning-mode-option learning-mode-practical"
               style={{
                 width: '100%', textAlign: 'left', background: '#ECFDF5',
                 border: '2px solid #0F766E', borderRadius: 14,
                 padding: '16px', marginBottom: 12, cursor: 'pointer',
-                display: 'flex', alignItems: 'center', gap: 14,
+                display: showOtherModes ? 'flex' : 'none', alignItems: 'center', gap: 14,
               }}>
               <div style={{ width: 48, height: 48, borderRadius: 12, flexShrink: 0, background: '#CCFBF1', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>🎬</div>
               <div style={{ flex: 1, minWidth: 0 }}>
@@ -496,11 +506,12 @@ export default function CourseListScreen({ resolveSubjects, onBack, hideAppbar, 
 
           {course === 'cover-letter' && (
             <button onClick={() => setMode('cover-practical')}
+              className="learning-mode-option learning-mode-practical"
               style={{
                 width: '100%', textAlign: 'left', background: '#ECFDF5',
                 border: '2px solid #0F766E', borderRadius: 14,
                 padding: '16px', marginBottom: 12, cursor: 'pointer',
-                display: 'flex', alignItems: 'center', gap: 14,
+                display: showOtherModes ? 'flex' : 'none', alignItems: 'center', gap: 14,
               }}>
               <div style={{ width: 48, height: 48, borderRadius: 12, flexShrink: 0, background: '#CCFBF1', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>✍️</div>
               <div style={{ flex: 1, minWidth: 0 }}>
