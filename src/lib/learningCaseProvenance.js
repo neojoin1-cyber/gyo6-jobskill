@@ -1,4 +1,5 @@
 import { evaluateOfficialItemRights, isOfficialItemCandidate } from './officialContentRights.js'
+import { contextualLearningFocus } from './contextualDeepening.js'
 
 const COURSE_CASES = {
   'education-certification': {
@@ -56,6 +57,7 @@ export function learningCaseProvenance(courseKind, sample = {}) {
   }
   const officialItem = isOfficialItemCandidate(source)
   const rights = evaluateOfficialItemRights(source)
+  const focus = contextualLearningFocus(sample)
 
   if (officialItem && rights.cleared) {
     return {
@@ -84,7 +86,11 @@ export function learningCaseProvenance(courseKind, sample = {}) {
 
   return {
     kind: 'aligned-practice',
-    ...base,
+    label: `${base.label} · ${[...focus.stem].slice(0, 26).join('')}${[...focus.stem].length > 26 ? '...' : ''}`,
+    detail: `${base.detail} 이번 화면에서는 “${focus.stem}”을 바탕으로 ${focus.skill}입니다.`,
+    caution: focus.evidence
+      ? `${base.caution} 판단 뒤에는 “${focus.evidence}”를 현재 문항의 근거로 다시 확인합니다.`
+      : `${base.caution} 판단 뒤에는 현재 지문·해설의 근거와 직접 대조합니다.`,
     sourceUrl: source.sourceUrl || '',
     rightsState: 'not-required',
   }
