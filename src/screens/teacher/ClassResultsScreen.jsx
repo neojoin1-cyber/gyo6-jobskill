@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../../lib/supabase.js'
 import { formatDuration } from '../../lib/dateUtils.js'
+import { demoClassResults } from '../../lib/teacherDemoAnalytics.js'
 
-export default function ClassResultsScreen({ classId, className, onBack }) {
+export default function ClassResultsScreen({ classId, className, onBack, demo = false }) {
   const [missions, setMissions] = useState([])
   const [selectedMission, setSelectedMission] = useState(null)
   const [rankings, setRankings] = useState([])
@@ -10,9 +11,17 @@ export default function ClassResultsScreen({ classId, className, onBack }) {
 
   useEffect(() => {
     loadMissions()
-  }, [])
+  }, [classId, demo])
 
   async function loadMissions() {
+    if (demo) {
+      const sample = demoClassResults(classId)
+      setMissions(sample.missions)
+      setSelectedMission(sample.missions[0] || null)
+      setRankings(sample.rankings)
+      setLoading(false)
+      return
+    }
     const { data } = await supabase
       .from('missions')
       .select('id, title, mission_type, status, question_count')
@@ -27,6 +36,11 @@ export default function ClassResultsScreen({ classId, className, onBack }) {
   async function selectMission(mission) {
     setSelectedMission(mission)
     setLoading(true)
+    if (demo) {
+      setRankings(demoClassResults(classId).rankings)
+      setLoading(false)
+      return
+    }
     const { data } = await supabase
       .from('class_rankings')
       .select('*')
@@ -42,7 +56,7 @@ export default function ClassResultsScreen({ classId, className, onBack }) {
   return (
     <div className="screen">
       <div className="appbar">
-        <button className="appbar-back" onClick={onBack}>←</button>
+        {onBack && <button className="appbar-back" onClick={onBack}>←</button>}
         <span className="appbar-title">{className} — 결과</span>
       </div>
 

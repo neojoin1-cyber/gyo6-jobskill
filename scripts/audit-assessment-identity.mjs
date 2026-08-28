@@ -12,6 +12,7 @@ import { readFileSync } from 'node:fs'
 const failures = []
 const subjects = ['ncs-basic', 'recruit-written', 'interview']
 const diagnosticScreenSource = readFileSync(new URL('../src/screens/student/DiagnosticScreen.jsx', import.meta.url), 'utf8')
+const mockAssessmentSource = readFileSync(new URL('../src/screens/student/MockAssessmentScreen.jsx', import.meta.url), 'utf8')
 
 function assert(ok, message) { if (!ok) failures.push(message) }
 
@@ -72,6 +73,8 @@ assert(diagnosticScreenSource.includes('개 영역 중 현재 1개 선택'), '�
 assert(diagnosticScreenSource.includes('개 소단원 중 현재 1개 선택'), '진단 화면: 소단원 전체 수와 현재 선택 범위를 구분하는 안내 없음')
 assert(diagnosticScreenSource.includes('문항 풀은 반복할 때 출제할 수 있는 전체 문항 수'), '진단 화면: 문항 풀과 1회 응시 문항 수를 구분하는 안내 없음')
 assert(diagnosticScreenSource.includes('이 소단원은 5문항 빠른 확인용'), '진단 화면: 소단원 5문항의 진단 한계 안내 없음')
+assert(mockAssessmentSource.includes("'interview':    buildInterviewAreas"), '모의면접 화면: 통합 면접 범위 빌더가 연결되지 않음')
+assert(mockAssessmentSource.includes("getMockScopes('interview')"), '모의면접 화면: 진단·모의 공용 범위를 사용하지 않음')
 
 if (failures.length) {
   console.error(`[평가 정체성] 실패 ${failures.length}건`)

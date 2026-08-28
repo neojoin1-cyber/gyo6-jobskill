@@ -458,10 +458,25 @@ const FOUNDATION_AREAS = {
 }
 
 const letters = ['A', 'B', 'C', 'D']
-const makeQuestion = (id, area, lessonId, stem, choices, answerIndex, explanation, lessonTitle = area) => ({
-  id, area, category: area, lessonId, lessonTitle, stem, choices, answer: letters[answerIndex], explanation,
-  questionMode: 'mcq', learningLane: 'assessment', _mockArea: area,
-})
+
+function balancedChoices(id, choices, answerIndex) {
+  const offset = [...String(id)].reduce((sum, character) => sum + character.charCodeAt(0), 0) % choices.length
+  return {
+    choices: choices.map((_, index) => choices[(index + offset) % choices.length]),
+    answerIndex: (answerIndex - offset + choices.length) % choices.length,
+  }
+}
+
+const makeQuestion = (id, area, lessonId, stem, choices, answerIndex, explanation, lessonTitle = area) => {
+  const balanced = balancedChoices(id, choices, answerIndex)
+  return {
+    id, area, category: area, lessonId, lessonTitle, stem,
+    choices: balanced.choices,
+    answer: letters[balanced.answerIndex],
+    explanation,
+    questionMode: 'mcq', learningLane: 'assessment', _mockArea: area,
+  }
+}
 
 export const INTERVIEW_CAREER_ASSESSMENT_QUESTIONS = [
   ...Object.entries(FOUNDATION_AREAS).flatMap(([area, principle], areaIndex) => Array.from({ length: 10 }, (_, index) => {

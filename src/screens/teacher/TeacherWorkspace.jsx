@@ -370,7 +370,7 @@ export default function TeacherWorkspace({
                 </div>
               )}
               {pane !== 'students' && pane !== 'missions' && Pane && (
-                <Pane key={`${cls.id}:${pane}`} classId={cls.id} className={cls.name} onBack={null} embedded
+                <Pane key={`${cls.id}:${pane}`} classId={cls.id} className={cls.name} onBack={null} embedded demo={demo}
                   onMessage={student => onOpenMessages?.({ scope: 'personal', target: student.student_id, studentName: student.display_name })} />
               )}
             </div>

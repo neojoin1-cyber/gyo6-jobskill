@@ -1,6 +1,13 @@
 import fs from 'node:fs'
 import { buildTeacherContextMaterials } from '../src/lib/teacherContextMaterials.js'
 import { STUDENT_CAMPUS_HALLS } from '../src/lib/studentCampusRoutes.js'
+import {
+  demoClassDiagnostics,
+  demoClassPersonality,
+  demoClassProgress,
+  demoClassResults,
+  demoClassWeakness,
+} from '../src/lib/teacherDemoAnalytics.js'
 
 const errors = []
 const read = path => fs.readFileSync(path, 'utf8')
@@ -28,6 +35,11 @@ const studentHome = read('src/screens/student/StudentCampusHome.jsx')
 const classJourney = read('src/lib/classLessonJourney.js')
 const studentJourney = read('src/lib/studentLearningJourney.js')
 const practicalCss = read('src/styles/interview-practical.css')
+const diagnosticsScreen = read('src/screens/teacher/ClassDiagnosticsScreen.jsx')
+const weaknessScreen = read('src/screens/teacher/ClassWeaknessScreen.jsx')
+const progressScreen = read('src/screens/teacher/ClassProgressScreen.jsx')
+const resultsScreen = read('src/screens/teacher/ClassResultsScreen.jsx')
+const personalityScreen = read('src/screens/teacher/ClassPersonalityScreen.jsx')
 
 if (!classroom.includes('TeacherLearningPreview') || !classroom.includes('teachingMode')) {
   errors.push('Classroom does not render the shared student learning surface')
@@ -52,6 +64,30 @@ if (teacherShell.includes("navigate('mission-create')")) errors.push('Teacher mi
 if (!teacherWorkspace.includes('teacher-empty-workspace')) errors.push('Teacher no-class workspace is missing preparation tools')
 if (!teacherWorkspace.includes('ClassLessonJourney') || !teacherWorkspace.includes(".from('class_sessions')")) errors.push('Teacher class-specific lesson journey is missing')
 if (!teacherShell.includes('demo={Boolean(isTrial)}')) errors.push('Public teacher trial does not demonstrate multiple class journeys')
+if (!teacherWorkspace.includes('demo={demo}')) errors.push('Teacher analytics panes do not receive the trial-data boundary')
+for (const [name, source, marker] of [
+  ['diagnostics', diagnosticsScreen, 'demoClassDiagnostics(classId)'],
+  ['weakness', weaknessScreen, 'demoClassWeakness(classId)'],
+  ['progress', progressScreen, 'demoClassProgress(classId)'],
+  ['results', resultsScreen, 'demoClassResults(classId)'],
+  ['personality', personalityScreen, 'demoClassPersonality(classId)'],
+]) {
+  if (!source.includes(marker)) errors.push(`Teacher trial ${name} pane can still query the production database with a demo class ID`)
+}
+for (const [name, source] of [
+  ['diagnostics', diagnosticsScreen],
+  ['weakness', weaknessScreen],
+  ['progress', progressScreen],
+  ['personality', personalityScreen],
+]) {
+  if (!source.includes('if (!onBack) return') || !source.includes('{onBack && <button')) {
+    errors.push(`Embedded teacher ${name} pane can expose a no-op back control or consume Android back`)
+  }
+}
+if (!resultsScreen.includes('{onBack && <button')) errors.push('Embedded teacher results pane exposes a no-op back control')
+if (!teacherShell.includes('<TeacherInterviewPracticeScreen') || !teacherShell.includes('demo={Boolean(isTrial)}')) {
+  errors.push('Teacher interview coaching does not receive trial classes and students')
+}
 if (!teacherWorkspace.includes('initialContext') || !teacherShell.includes('initialClassId={screen.classId}')) errors.push('Selected class and resume position do not reach the classroom')
 if (!classJourney.includes('STUDENT_CAMPUS_HALLS.map') || !classJourney.includes('completedCount') || !classJourney.includes('inProgressCount')) errors.push('Six-hall class journey states are incomplete')
 if (!classProgressMigration.includes('class_lesson_progress') || !classProgressMigration.includes('completed_at') || !classProgressMigration.includes('rpc_set_class_focus')) errors.push('Class lesson progress persistence is missing')
@@ -150,6 +186,19 @@ if (!contextQuestion) {
   if (!hidden.explanations.some(line => line.includes('선지 확인 항목'))) errors.push('Classroom context lacks question-specific pre-reveal support')
   if (!revealed.answerSummary || !revealed.good.length || revealed.bad.length < 3) errors.push('Classroom context lacks post-reveal answer cases')
   if (revealed.bad.some(item => item.detail.includes('조건 중 하나'))) errors.push('Classroom context still uses generic wrong-choice feedback')
+}
+
+for (const classId of ['c1', 'c2', 'c3']) {
+  const diagnostics = demoClassDiagnostics(classId)
+  const weakness = demoClassWeakness(classId)
+  const progress = demoClassProgress(classId)
+  const results = demoClassResults(classId)
+  const personalityRows = demoClassPersonality(classId)
+  if (!diagnostics.length || !diagnostics.some(row => row.total > 0)) errors.push(`Teacher demo ${classId} has no diagnostic results`)
+  if (!weakness.areas.length || !weakness.students.length) errors.push(`Teacher demo ${classId} has no weakness analysis`)
+  if (!progress.students.length || !progress.subjects.length) errors.push(`Teacher demo ${classId} has no learning progress`)
+  if (!results.missions.length || !results.rankings.length) errors.push(`Teacher demo ${classId} has no formative results`)
+  if (!personalityRows.some(row => row.profile.length)) errors.push(`Teacher demo ${classId} has no personality tendency data`)
 }
 
 if (errors.length) {

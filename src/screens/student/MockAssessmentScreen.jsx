@@ -14,8 +14,7 @@ import { ncs2026Questions as ncsQuestions, buildNcs2026Areas } from '../../lib/n
 import { recruitWrittenQuestions, RECRUIT_WRITTEN_TRACKS } from '../../lib/recruitWritten.js'
 import foodServiceQuestions from '../../lib/foodServiceBank.js'
 import qualityMock          from '../../../data/mock-quality-pool.json'
-import interviewMock        from '../../../data/mock-interview-pool.json'
-import { buildSubjectMockPaper, getMockScopeCapacity } from '../../lib/mockData.js'
+import { buildSubjectMockPaper, getMockScopeCapacity, getMockScopes } from '../../lib/mockData.js'
 import {
   buildJcAreaPaper,
   buildJcMockAreas,
@@ -101,13 +100,27 @@ function buildAreasFromPool(poolFile, subjectId) {
   return (poolFile.scopes || []).map(s => map[s.key]).filter(a => a && a.count > 0)
 }
 
+function buildInterviewAreas() {
+  return getMockScopes('interview')
+    .filter(scope => scope.key !== '__all__')
+    .map(scope => ({
+      id: scope.key,
+      scopeKey: scope.key,
+      displayName: scope.name,
+      description: '선택한 면접 과정의 질문을 실제 전형처럼 연속 점검함.',
+      count: getMockScopeCapacity('interview', scope.key),
+      areaIds: [scope.key],
+    }))
+    .filter(area => area.count > 0)
+}
+
 const AREA_BUILDERS = {
   'job-common':   buildJobAreas,
   'ncs-basic':    buildNcsAreas,
   'recruit-written': buildRecruitAreas,
   'food-service': buildFoodAreas,
   'quality':      () => buildAreasFromPool(qualityMock, 'quality'),
-  'interview':    () => buildAreasFromPool(interviewMock, 'interview'),
+  'interview':    buildInterviewAreas,
 }
 
 export default function MockAssessmentScreen({ subjectId, subjectName, onBack, onLearningContext }) {

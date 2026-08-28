@@ -6,23 +6,33 @@
 import { useState, useEffect } from 'react'
 import { pushBack, popBack } from '../../lib/backButton.js'
 import { loadClassPersonality, aggregateClassPersonality } from '../../lib/personalityResults.js'
+import { demoClassPersonality } from '../../lib/teacherDemoAnalytics.js'
 
 const band = (v) => v >= 66 ? 'high' : v >= 40 ? 'mid' : 'low'
 const bandColor = { high: '#22c55e', mid: '#6366f1', low: '#f59e0b' }
 
-export default function ClassPersonalityScreen({ classId, className, onBack }) {
+export default function ClassPersonalityScreen({ classId, className, onBack, demo = false }) {
   const [rows, setRows] = useState(null)
   const [err, setErr] = useState('')
 
-  useEffect(() => { const id = pushBack(() => onBack?.()); return () => popBack(id) }, [])
+  useEffect(() => {
+    if (!onBack) return
+    const id = pushBack(onBack)
+    return () => popBack(id)
+  }, [onBack])
 
   useEffect(() => {
+    if (demo) {
+      setErr('')
+      setRows(demoClassPersonality(classId))
+      return
+    }
     let alive = true
     loadClassPersonality(classId)
       .then(data => { if (alive) setRows(data) })
       .catch(e => { if (alive) setErr(e.message || '불러오기 실패') })
     return () => { alive = false }
-  }, [classId])
+  }, [classId, demo])
 
   const agg = rows ? aggregateClassPersonality(rows) : null
   const done = (rows || []).filter(r => Array.isArray(r.profile) && r.profile.length > 0)
@@ -30,7 +40,7 @@ export default function ClassPersonalityScreen({ classId, className, onBack }) {
   return (
     <div className="screen">
       <div className="appbar">
-        <button className="appbar-back" onClick={onBack}>←</button>
+        {onBack && <button className="appbar-back" onClick={onBack}>←</button>}
         <span className="appbar-title">🧭 {className} 인성검사 경향</span>
       </div>
       <div className="screen-body">

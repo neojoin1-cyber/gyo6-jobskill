@@ -11,6 +11,7 @@ import { supabase } from '../../lib/supabase.js'
 import { pushBack, popBack } from '../../lib/backButton.js'
 import { COMMON_ABILITY_COURSES } from '../../lib/officialStandards.js'
 import { filterActiveSubjects } from '../../lib/subjectCatalog.js'
+import { demoClassProgress } from '../../lib/teacherDemoAnalytics.js'
 
 const SUBJECT_NAME = {
   'job-common': COMMON_ABILITY_COURSES['job-common'].title,
@@ -26,15 +27,24 @@ function Bar({ pct }) {
   )
 }
 
-export default function ClassProgressScreen({ classId, className, onBack, onMessage }) {
+export default function ClassProgressScreen({ classId, className, onBack, onMessage, demo = false }) {
   const [data, setData] = useState(null)
   const [err, setErr] = useState('')
 
-  useEffect(() => { const id = pushBack(() => onBack?.()); return () => popBack(id) }, [])
   useEffect(() => {
+    if (!onBack) return
+    const id = pushBack(onBack)
+    return () => popBack(id)
+  }, [onBack])
+  useEffect(() => {
+    if (demo) {
+      setErr('')
+      setData(demoClassProgress(classId))
+      return
+    }
     supabase.rpc('rpc_class_progress', { p_class_id: classId })
       .then(({ data, error }) => { if (error) setErr(error.message); else setData(data || { students: [], subjects: [] }) })
-  }, [classId])
+  }, [classId, demo])
 
   const students = (data?.students || []).map(student => {
     const subjects = filterActiveSubjects(student.subjects)
@@ -58,7 +68,7 @@ export default function ClassProgressScreen({ classId, className, onBack, onMess
   return (
     <div className="screen">
       <div className="appbar">
-        <button className="appbar-back" onClick={onBack}>←</button>
+        {onBack && <button className="appbar-back" onClick={onBack}>←</button>}
         <span className="appbar-title">📈 {className || '학급'} 학습 진행현황</span>
       </div>
       <div className="screen-body">

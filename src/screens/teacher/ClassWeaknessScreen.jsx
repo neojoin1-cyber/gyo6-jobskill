@@ -6,18 +6,28 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../../lib/supabase.js'
 import { pushBack, popBack } from '../../lib/backButton.js'
+import { demoClassWeakness } from '../../lib/teacherDemoAnalytics.js'
 
 const COURSE_NAME = { 1: '직업공통능력', 4: '면접', 5: '인성검사' }
 
-export default function ClassWeaknessScreen({ classId, className, onBack }) {
+export default function ClassWeaknessScreen({ classId, className, onBack, demo = false }) {
   const [data, setData] = useState(null)
   const [err, setErr] = useState('')
 
-  useEffect(() => { const id = pushBack(() => onBack?.()); return () => popBack(id) }, [])
   useEffect(() => {
+    if (!onBack) return
+    const id = pushBack(onBack)
+    return () => popBack(id)
+  }, [onBack])
+  useEffect(() => {
+    if (demo) {
+      setErr('')
+      setData(demoClassWeakness(classId))
+      return
+    }
     supabase.rpc('rpc_class_weakness', { p_class_id: classId })
       .then(({ data, error }) => { if (error) setErr(error.message); else setData(data || { areas: [], students: [] }) })
-  }, [classId])
+  }, [classId, demo])
 
   const areas = (data?.areas || []).filter(area => ![2, 3].includes(Number(area.course_id)))
   const students = data?.students || []
@@ -27,7 +37,7 @@ export default function ClassWeaknessScreen({ classId, className, onBack }) {
   return (
     <div className="screen">
       <div className="appbar">
-        <button className="appbar-back" onClick={onBack}>←</button>
+        {onBack && <button className="appbar-back" onClick={onBack}>←</button>}
         <span className="appbar-title">📉 {className || '학급'} 약점 현황</span>
       </div>
       <div className="screen-body">

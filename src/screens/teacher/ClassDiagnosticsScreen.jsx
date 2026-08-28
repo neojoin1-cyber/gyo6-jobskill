@@ -1,22 +1,29 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../../lib/supabase.js'
 import { pushBack, popBack } from '../../lib/backButton.js'
+import { demoClassDiagnostics } from '../../lib/teacherDemoAnalytics.js'
 
 /**
  * 학급 진단 현황 — 담당 교사가 학급 학생들의 자가 진단평가 성취도·취약 영역을 확인.
  * rpc_class_diagnostics(class_id) → [{student_id, display_name, score, total, area_scores, created_at}]
  * 교사가 근거를 갖고 모의고사(약한 영역/난이도)를 오픈하도록 지원.
  */
-export default function ClassDiagnosticsScreen({ classId, className, onBack }) {
+export default function ClassDiagnosticsScreen({ classId, className, onBack, demo = false }) {
   const [rows, setRows] = useState(null)
   const [err, setErr] = useState('')
 
   useEffect(() => {
+    if (!onBack) return
     const id = pushBack(() => onBack?.())
     return () => popBack(id)
-  }, [])
+  }, [onBack])
 
   useEffect(() => {
+    if (demo) {
+      setErr('')
+      setRows(demoClassDiagnostics(classId))
+      return
+    }
     let alive = true
     supabase.rpc('rpc_class_diagnostics', { p_class_id: classId })
       .then(({ data, error }) => {
@@ -25,7 +32,7 @@ export default function ClassDiagnosticsScreen({ classId, className, onBack }) {
         setRows(Array.isArray(data) ? data : [])
       })
     return () => { alive = false }
-  }, [classId])
+  }, [classId, demo])
 
   const done = (rows || []).filter(r => r.total != null && r.total > 0)
   const avg = done.length ? Math.round(done.reduce((s, r) => s + (r.score / r.total) * 100, 0) / done.length) : null
@@ -47,7 +54,7 @@ export default function ClassDiagnosticsScreen({ classId, className, onBack }) {
   return (
     <div className="screen">
       <div className="appbar">
-        <button className="appbar-back" onClick={onBack}>←</button>
+        {onBack && <button className="appbar-back" onClick={onBack}>←</button>}
         <span className="appbar-title">📊 {className} 진단 현황</span>
       </div>
       <div className="screen-body">

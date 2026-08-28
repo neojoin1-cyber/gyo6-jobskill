@@ -27,8 +27,19 @@ function readReview(studentId, stageId) {
 
 export default function TeacherInterviewPracticeScreen({ onBack, initialClassId, onMessage, demo = false }) {
   const { profile } = useAuth() ?? {}
-  const [classes, setClasses] = useState(demo ? [{ id: 'c1', name: '3학년 2반' }] : [])
-  const [students, setStudents] = useState(demo ? [{ id: 's1', classId: 'c1', name: '이수현' }, { id: 's2', classId: 'c1', name: '박민준' }] : [])
+  const [classes, setClasses] = useState(demo ? [
+    { id: 'c1', name: '3학년 2반' },
+    { id: 'c2', name: '2학년 취업반' },
+    { id: 'c3', name: '1학년 진로반' },
+  ] : [])
+  const [students, setStudents] = useState(demo ? [
+    { id: 'c1-s1', classId: 'c1', name: '이수현' },
+    { id: 'c1-s2', classId: 'c1', name: '박민준' },
+    { id: 'c2-s1', classId: 'c2', name: '윤지호' },
+    { id: 'c2-s2', classId: 'c2', name: '한예린' },
+    { id: 'c3-s1', classId: 'c3', name: '강민서' },
+    { id: 'c3-s2', classId: 'c3', name: '신도현' },
+  ] : [])
   const [classId, setClassId] = useState(initialClassId || '')
   const [studentId, setStudentId] = useState('')
   const [stageId, setStageId] = useState(INTERVIEW_PRACTICAL_STAGES[0].id)

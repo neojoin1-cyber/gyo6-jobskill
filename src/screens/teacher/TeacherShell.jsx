@@ -227,6 +227,7 @@ export default function TeacherShell() {
           <TeacherInterviewPracticeScreen
             onBack={closeScreen}
             initialClassId={screen.classId}
+            demo={Boolean(isTrial)}
             onMessage={params => navigate('messages', params)}
           />
         </Suspense>
