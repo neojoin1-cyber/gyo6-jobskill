@@ -1,5 +1,7 @@
 import { interviewFoundationArea } from './interviewFoundationCourses.js'
 import { COVER_LETTER_QUESTION_LIBRARY } from './coverQuestionLibrary.js'
+import { EXPANDED_EMPLOYER_SEEDS } from './employerIntelligenceData.js'
+import { buildEmployerIntelligence } from './employerIntelligence.js'
 export { COVER_LETTER_QUESTION_LIBRARY } from './coverQuestionLibrary.js'
 
 const learningUnit = (title, concept, example, trap, practice) => ({ title, concept, example, trap, practice })
@@ -134,6 +136,7 @@ function particle(word, withBatchim, withoutBatchim) {
 
 const objectValue = word => particle(word, '을', '를')
 const subjectValue = word => particle(word, '이', '가')
+const topicValue = word => particle(word, '은', '는')
 const quotedDefinition = word => particle(word, '이라는', '라는')
 
 function buildQuestions(name, identity, roles, values) {
@@ -303,7 +306,7 @@ function buildFieldExamples(name, sector, identity, roles, values, sample) {
 function buildOrganizationCourse(name, sector, identity, roles, values) {
   const guide = SECTOR_RESEARCH[sector]
   return [
-    { id: 'identity', title: '지원처를 60초로 설명', goal: `${name}의 존재 이유와 주요 고객을 자신의 말로 정리함.`, tasks: [`공식 자료에서 ${objectValue(`“${identity}”`)} 뒷받침하는 핵심 사업 1개 찾기`, '유사 지원처와 다른 역할 1개 적기', '최근 공고의 지원 자격·전형 순서 확인하기'], output: `${name}은 누구에게 어떤 가치를 제공하며, 내가 관심을 가진 이유는 무엇인지 60초 답변` },
+    { id: 'identity', title: '지원처를 60초로 설명', goal: `${name}의 존재 이유와 주요 고객을 자신의 말로 정리함.`, tasks: [`공식 자료에서 ${objectValue(`“${identity}”`)} 뒷받침하는 핵심 사업 1개 찾기`, '유사 지원처와 다른 역할 1개 적기', '최근 공고의 지원 자격·전형 순서 확인하기'], output: `${topicValue(name)} 누구에게 어떤 가치를 제공하며, 내가 관심을 가진 이유는 무엇인지 60초 답변` },
     { id: 'role', title: '직무 요구를 내 경험에 연결', goal: `${roles.join('·')} 중 실제 지원 직무의 지식·기술·태도를 구분함.`, tasks: [`${roles[0]} 업무에서 자주 확인할 기준 3개 찾기`, '전공 실습에서 같은 기준을 지킨 행동 2개 고르기', '아직 부족한 역량과 입사 전 보완 계획 적기'], output: '직무 요구 1개 → 전공 행동 → 확인 가능한 결과로 이어지는 50초 답변' },
     { id: 'evidence', title: '지원처 가치의 증거 만들기', goal: `${objectValue(values.join('·'))} 표어가 아니라 자신의 행동으로 증명함.`, tasks: [`${objectValue(values[0])} 보여 준 실제 상황 한 가지 선택하기`, '상황 설명을 줄이고 내가 한 행동을 세 동사로 쓰기', `${guide.result} 중 실제로 확인 가능한 결과 붙이기`], output: '후속 질문에도 사실관계가 바뀌지 않는 STAR 경험 답변' },
     { id: 'questions', title: '기관형 질문 3개 실전 답변', goal: '지원동기·직무원칙·경험 질문을 지원처 특성에 맞춰 각각 완성함.', tasks: ['첫 답변을 60초 안에 녹음하기', '지원처 이름을 다른 곳으로 바꿔도 같은 답인지 확인하기', '모범 골격과 비교해 공식 근거·내 행동·결과를 보완하기'], output: '지원처 전용 핵심 답변 3개와 예상 후속 질문 6개' },
@@ -330,7 +333,7 @@ function recommendedQuestionIds(sector) {
 
 const profile = (id, name, sector, group, identity, roles, values, officialUrl) => {
   const sample = sampleExperience(id, sector)
-  return {
+  const organization = {
     id, name, sector, group, identity, roles, values, officialUrl,
     fieldExamples: buildFieldExamples(name, sector, identity, roles, values, sample),
     evidenceExamples: buildEvidenceExamples(name, sector, roles, values, sample),
@@ -342,6 +345,15 @@ const profile = (id, name, sector, group, identity, roles, values, officialUrl) 
     coverLetterBridge: `${name}의 “${identity}” 역할을 보여 주는 공식 근거 1개와 ${roles[0]} 직무에서 필요한 행동 1개를 골라 자기소개서 지원동기·직무역량 칸에 연결함.`,
     verifiedAt: '2026-08',
   }
+  organization.intelligence = buildEmployerIntelligence(organization)
+  return organization
+}
+
+const expandedProfile = seed => {
+  const organization = profile(seed.id, seed.name, seed.sector, seed.group, seed.identity, seed.roles, seed.values, seed.officialUrl)
+  organization.themes = seed.themes
+  organization.intelligence = buildEmployerIntelligence(organization)
+  return organization
 }
 
 export const INTERVIEW_ORGANIZATIONS = [
@@ -393,6 +405,7 @@ export const INTERVIEW_ORGANIZATIONS = [
   profile('ski', 'SK이노베이션', 'enterprise', '에너지·소재', '에너지와 화학·소재 분야의 제품과 솔루션을 개발·생산하는 기업', ['생산·공정', '설비·정비', '안전·환경'], ['안전', '공정 이해', '변화 대응'], 'https://www.skinnovation.com/recruit/org_culture'),
   profile('kai', '한국항공우주산업', 'enterprise', '항공·우주', '항공기와 우주 관련 체계를 개발·생산·정비하는 기업', ['생산·조립', '품질·검사', '설비·정비'], ['품질', '보안·윤리', '정확성'], 'https://www.koreaaero.com/KO/Recruit/RecruitIntro.aspx'),
   profile('hd-hhi', 'HD현대중공업', 'enterprise', '조선·해양', '선박과 해양·에너지 설비를 설계·제작하는 중공업 기업', ['생산·용접', '설비·정비', '품질·안전'], ['안전', '기술 숙련', '협업'], 'https://recruit.hd.com/'),
+  ...EXPANDED_EMPLOYER_SEEDS.map(expandedProfile),
 ]
 
 export const COVER_LETTER_STEPS = [

@@ -44,6 +44,7 @@ import {
   INTERVIEW_ORGANIZATIONS,
   INTERVIEW_TRACKS,
 } from '../../lib/interviewCareerContent.js'
+import { buildEmployerFit, readEmployerStudentContext } from '../../lib/employerIntelligence.js'
 import {
   COVER_EVIDENCE_ACTIONS,
   COVER_EVIDENCE_MAJOR_GROUPS,
@@ -316,7 +317,12 @@ function OrganizationList({ onOpen }) {
     try { return new Set(JSON.parse(localStorage.getItem('iv_saved_orgs') || '[]')) }
     catch { return new Set() }
   })
-  const rows = useMemo(() => INTERVIEW_ORGANIZATIONS.filter(item => item.sector === sector && (!query || `${item.name} ${item.group} ${item.identity}`.toLowerCase().includes(query.toLowerCase()))), [sector, query])
+  const studentContext = useMemo(() => readEmployerStudentContext(), [])
+  const hasStudentContext = studentContext.hasStudentData
+  const rows = useMemo(() => INTERVIEW_ORGANIZATIONS
+    .filter(item => item.sector === sector && (!query || `${item.name} ${item.group} ${item.identity} ${item.roles.join(' ')}`.toLowerCase().includes(query.toLowerCase())))
+    .map(item => ({ ...item, fit: buildEmployerFit(item, studentContext) }))
+    .sort((a, b) => hasStudentContext ? b.fit.score - a.fit.score || a.name.localeCompare(b.name, 'ko') : a.name.localeCompare(b.name, 'ko')), [sector, query, studentContext, hasStudentContext])
 
   function toggleSave(id) {
     const next = new Set(saved)
@@ -327,17 +333,19 @@ function OrganizationList({ onOpen }) {
 
   return (
     <>
-      <div className="interview-source-note"><ShieldCheck size={20} weight="fill" /><p>연구 자료는 답을 대신 써 주는 문장이 아님. 공식 자료와 내 경험을 연결해 면접·자기소개서에 함께 사용함.</p></div>
+      <div className="interview-source-note"><ShieldCheck size={20} weight="fill" /><p>{hasStudentContext ? `${studentContext.departmentName || '내 전공'}·자격·활동 근거와 가까운 지원처부터 정렬함. ` : ''}연구 자료는 답을 대신 써 주지 않으며 공식 자료와 내 경험을 연결해 면접·자기소개서에 함께 사용함.</p></div>
       <div className="interview-sector-tabs" role="tablist" aria-label="지원처 분야">{SECTORS.map(item => { const Icon = item.icon; return <button key={item.id} role="tab" aria-selected={sector === item.id} className={sector === item.id ? 'is-active' : ''} onClick={() => setSector(item.id)}><Icon size={17} />{item.label}</button> })}</div>
       <label className="interview-search"><MagnifyingGlass size={18} /><input value={query} onChange={event => setQuery(event.target.value)} placeholder="기관·기업 검색" /></label>
       <p className="interview-result-count">{rows.length}곳 · 전체 {INTERVIEW_ORGANIZATIONS.length}곳 · 관심 지원처 {saved.size}곳</p>
-      <div className="interview-org-list">{rows.map(item => <div key={item.id} className="interview-org-row"><button className="interview-org-main" onClick={() => onOpen(item.id)}><span><strong>{item.name}</strong><em>{item.group}</em><small>{item.identity}</small></span><CaretRight size={18} /></button><button className={`interview-save ${saved.has(item.id) ? 'is-saved' : ''}`} onClick={() => toggleSave(item.id)} aria-label={`${item.name} ${saved.has(item.id) ? '관심 해제' : '관심 저장'}`}><BookmarkSimple size={19} weight={saved.has(item.id) ? 'fill' : 'regular'} /></button></div>)}</div>
+      <div className="interview-org-list">{rows.map(item => <div key={item.id} className="interview-org-row"><button className="interview-org-main" onClick={() => onOpen(item.id)}><span><strong>{item.name}</strong><em>{item.group}</em>{hasStudentContext && <i>{item.fit.score}점 · {item.fit.level}</i>}<small>{item.identity}</small></span><CaretRight size={18} /></button><button className={`interview-save ${saved.has(item.id) ? 'is-saved' : ''}`} onClick={() => toggleSave(item.id)} aria-label={`${item.name} ${saved.has(item.id) ? '관심 해제' : '관심 저장'}`}><BookmarkSimple size={19} weight={saved.has(item.id) ? 'fill' : 'regular'} /></button></div>)}</div>
     </>
   )
 }
 
 function OrganizationDetail({ organization, onBack, onOpenCover }) {
   const sectorLabel = SECTORS.find(item => item.id === organization.sector)?.label
+  const studentContext = useMemo(() => readEmployerStudentContext(), [])
+  const fit = useMemo(() => buildEmployerFit(organization, studentContext), [organization, studentContext])
   const [checks, setChecks] = useState(() => {
     try { return JSON.parse(localStorage.getItem(`iv_org_checks_${organization.id}`) || '{}') }
     catch { return {} }
@@ -354,7 +362,7 @@ function OrganizationDetail({ organization, onBack, onOpenCover }) {
   }
 
   function bridgeToCover() {
-    localStorage.setItem('iv_cover_seed', JSON.stringify({ sector: organization.sector, organizationId: organization.id, targetName: organization.name, targetEvidence: organization.identity, role: organization.roles[0] }))
+    localStorage.setItem('iv_cover_seed', JSON.stringify({ sector: organization.sector, organizationId: organization.id, targetName: organization.name, targetEvidence: `${organization.identity} · 확인 주제: ${organization.intelligence.themes[0]}`, role: fit.role }))
     onOpenCover?.()
   }
 
@@ -370,6 +378,17 @@ function OrganizationDetail({ organization, onBack, onOpenCover }) {
       <header className="appbar interview-career-appbar"><button className="appbar-back" onClick={triggerBack} aria-label="기업·기관 목록으로 돌아가기"><ArrowLeft /></button><div><span className="interview-career-eyebrow">{sectorLabel} · {organization.group}</span><span className="appbar-title">{organization.name}</span></div></header>
       <div className="screen-body interview-career-body">
         <section className="interview-org-identity"><h2>핵심 정체성</h2><CompactText text={organization.identity} maxItemChars={72} /></section>
+        <section className="employer-fit-panel">
+          <header><div><span>내 준비 연결</span><h3>{fit.studentLabel} → {fit.role}</h3></div><b>{fit.score}점<small>{fit.level}</small></b></header>
+          <div className="employer-fit-columns"><div><strong>지금 쓸 수 있는 근거</strong><ul>{fit.matches.map(item => <li key={item}><CheckCircle weight="fill" />{item}</li>)}</ul></div><div><strong>지원 전 보완할 근거</strong><ol>{fit.gaps.map(item => <li key={item}>{item}</li>)}</ol></div></div>
+          <p><b>지원동기 골격</b>{fit.draftBridge}</p>
+        </section>
+        <section className="interview-detail-section employer-timeline">
+          <header><div><h3>최근 3개 연도 자료 확인</h3><p className="interview-section-help">인재상 문구를 외우지 않고 지속된 방향·직무 요구·최신 공고를 차례로 대조함.</p></div><span>{organization.intelligence.sourceLevel}</span></header>
+          <div>{organization.intelligence.timeline.map(item => <article key={item.year}><b>{item.year}</b><span><strong>{item.title}</strong><small>{item.detail}</small></span><em>{item.status}</em></article>)}</div>
+          <div className="employer-provenance">{organization.intelligence.provenance.map(item => <a key={item.url} href={item.url} target="_blank" rel="noreferrer"><ArrowSquareOut />{item.label}<small>{item.kind}</small></a>)}</div>
+          <p className="employer-source-notice"><ShieldCheck weight="fill" />{organization.intelligence.notice}</p>
+        </section>
         <section className="interview-detail-section organization-course"><header><div><h3>이 지원처 면접 완성과정</h3><p className="interview-section-help">기관 이름만 외우지 않고 5개 결과물을 차례로 완성함.</p></div><b>{courseDone.size}/5</b></header>{organization.interviewCourse.map((stage, index) => <details key={stage.id} open={index === 0}><summary><span>{courseDone.has(stage.id) ? <CheckCircle weight="fill" /> : index + 1}</span><div><strong>{stage.title}</strong><small>{stage.goal}</small></div><CaretRight /></summary><div className="organization-course-body"><ul>{stage.tasks.map(task => <li key={task}>{task}</li>)}</ul><p><b>완성 결과물</b>{stage.output}</p><button className={courseDone.has(stage.id) ? 'is-done' : ''} onClick={() => toggleCourse(stage.id)}>{courseDone.has(stage.id) ? '완료 취소' : '이 단계 완료'}</button></div></details>)}</section>
         <section className="interview-detail-section"><h3>연결할 직무</h3><div className="interview-chip-row">{organization.roles.map(role => <span key={role}>{role}</span>)}</div></section>
         <section className="interview-detail-section organization-evidence"><h3>답변에서 증명할 기준과 실례</h3><p className="interview-section-help">가치 단어만 말하지 않고 아래와 같은 행동·결과로 증명함.</p>{organization.evidenceExamples.map(item => <article key={item.value}><header><CheckCircle size={18} weight="fill" /><strong>{item.value}</strong></header><ul>{item.examples.map(example => <li key={example}>{example}</li>)}</ul></article>)}</section>

@@ -96,7 +96,7 @@ for (const item of INTERVIEW_ORGANIZATIONS) {
     sampleCoverLetter: item.sampleCoverLetter,
     coverLetterBridge: item.coverLetterBridge,
   })
-  const foreignNames = otherOrganizations.filter(other => supportText.includes(other.name))
+  const foreignNames = otherOrganizations.filter(other => !item.name.includes(other.name) && supportText.includes(other.name))
   const foreignIdentities = otherOrganizations.filter(other => other.identity !== item.identity && supportText.includes(other.identity))
   check(/^https:\/\//.test(item.officialUrl), `기관 공식 URL 오류: ${item.id}`)
   check(Boolean(new URL(item.officialUrl).hostname), `기관 공식 URL 파싱 오류: ${item.id}`)
