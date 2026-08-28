@@ -6,9 +6,11 @@ import {
   getMockScopes,
   getMockScopeCapacity,
 } from '../src/lib/mockData.js'
+import { readFileSync } from 'node:fs'
 
 const failures = []
 const subjects = ['ncs-basic', 'recruit-written', 'interview']
+const diagnosticScreenSource = readFileSync(new URL('../src/screens/student/DiagnosticScreen.jsx', import.meta.url), 'utf8')
 
 function assert(ok, message) { if (!ok) failures.push(message) }
 
@@ -41,7 +43,11 @@ for (const subjectId of subjects) {
 
   const mockScopes = getMockScopes(subjectId).filter(s => s.key !== '__all__')
   if (subjectId === 'interview') {
+    const allScope = diagnosticScopes.find(s => s.level === 'all')
     assert(areaScopes.length === 10, `interview: 진단 영역은 기초 6 + 심화 4여야 함(${areaScopes.length})`)
+    assert(unitScopes.length === 63, `interview: 진단 소단원은 63개여야 함(${unitScopes.length})`)
+    assert(allScope?.count === 510, `interview: 전체 진단 문항 풀은 510개여야 함(${allScope?.count})`)
+    assert(areaScopes.reduce((sum, scope) => sum + scope.count, 0) === allScope?.count, 'interview: 영역별 문항 합계가 전체 문항 풀과 다름')
     assert(mockScopes.length === 10, `interview: 모의 범위는 기초 6 + 심화 4여야 함(${mockScopes.length})`)
     assert(unitScopes.every(scope => !/^(FOUNDATION|ORG|COVER)-/.test(scope.name)), 'interview: 소단원 선택에 내부 코드가 노출됨')
   }
@@ -57,6 +63,11 @@ for (const subjectId of subjects) {
 
   console.log(`${subjectId}: 진단 전체 1 · 영역 ${areaScopes.length} · 소단원 ${unitScopes.length} · 모의 범위 ${mockScopes.length}`)
 }
+
+assert(diagnosticScreenSource.includes('개 영역 중 현재 1개 선택'), '진단 화면: 영역 전체 수와 현재 선택 범위를 구분하는 안내 없음')
+assert(diagnosticScreenSource.includes('개 소단원 중 현재 1개 선택'), '진단 화면: 소단원 전체 수와 현재 선택 범위를 구분하는 안내 없음')
+assert(diagnosticScreenSource.includes('문항 풀은 반복할 때 출제할 수 있는 전체 문항 수'), '진단 화면: 문항 풀과 1회 응시 문항 수를 구분하는 안내 없음')
+assert(diagnosticScreenSource.includes('이 소단원은 5문항 빠른 확인용'), '진단 화면: 소단원 5문항의 진단 한계 안내 없음')
 
 if (failures.length) {
   console.error(`[평가 정체성] 실패 ${failures.length}건`)

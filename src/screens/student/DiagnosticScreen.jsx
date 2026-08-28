@@ -63,8 +63,14 @@ export default function DiagnosticScreen({ subjectId, subjectName, onBack, onGoT
   const courseId = COURSE_ID[subjectId] ?? 1
   const selectedScope = scopes.find(s => s.key === scopeKey) || scopes[0] || { key: '__all__', name: '전체 영역', count: 0, level: 'all' }
   const visibleScopes = scopes.filter(s => s.level === scopeLevel)
+  const scopeTotals = useMemo(() => ({
+    all: scopes.find(s => s.level === 'all')?.count || 0,
+    areas: scopes.filter(s => s.level === 'area').length,
+    units: scopes.filter(s => s.level === 'unit').length,
+  }), [scopes])
   const countOptions = COUNT_PRESETS.filter(n => n <= selectedScope.count)
   const safeCountOptions = countOptions.length ? countOptions : [Math.max(1, selectedScope.count)]
+  const isQuickUnit = selectedScope.level === 'unit' && selectedScope.count < 10
   const hist = loadHist(subjectId, selectedScope.key)
 
   useEffect(() => {
@@ -194,19 +200,40 @@ export default function DiagnosticScreen({ subjectId, subjectName, onBack, onGoT
               </select>
             )}
             {visibleScopes.length === 1 && <p style={selectionSummary}>{visibleScopes[0].name} · 문항 풀 {visibleScopes[0].count}개</p>}
+            <div style={scopeGuide} aria-live="polite">
+              <p style={scopeGuideTitle}>
+                {scopeLevel === 'all' && `${scopeTotals.areas}개 영역 · ${scopeTotals.units}개 소단원 전체`}
+                {scopeLevel === 'area' && `${scopeTotals.areas}개 영역 중 현재 1개 선택`}
+                {scopeLevel === 'unit' && `${scopeTotals.units}개 소단원 중 현재 1개 선택`}
+              </p>
+              <p style={scopeGuideText}>
+                {scopeLevel === 'all'
+                  ? `전체 문항 풀 ${scopeTotals.all}개에서 고르게 출제됩니다.`
+                  : `${selectedScope.name}에서 출제할 수 있는 문항은 ${selectedScope.count}개입니다.`}
+              </p>
+            </div>
+            <p style={poolHelp}>문항 풀은 반복할 때 출제할 수 있는 전체 문항 수입니다. 한 번에 풀 문항 수는 아래에서 선택합니다.</p>
           </section>
 
           <section style={sectionBlock}>
-            <p style={sectionLabel}>2. 진단 깊이</p>
+            <p style={sectionLabel}>2. 한 번에 풀 문항 수</p>
             <div style={segmented}>
               {safeCountOptions.map(n => (
                 <button key={n} onClick={() => setQuestionCount(n)} style={{ ...segmentBtn, ...(questionCount === n ? segmentActive : {}) }}>{n}문항</button>
               ))}
             </div>
-            <p style={helperText}>{questionCount <= 5 ? '빠른 확인' : questionCount <= 10 ? '핵심 확인' : questionCount <= 20 ? '표준 진단' : '정밀 진단'} · 시간 제한 없음 · 결과에서 보완 순서 제공</p>
+            <p style={helperText}>
+              {questionCount <= 5 ? '빠른 확인' : questionCount <= 10 ? '핵심 확인' : questionCount <= 20 ? '표준 진단' : '정밀 진단'} · 시간 제한 없음 · 결과에서 보완 순서 제공
+            </p>
+            {isQuickUnit && (
+              <div style={quickCheckNotice} role="note">
+                <b>이 소단원은 5문항 빠른 확인용입니다.</b>
+                <span>더 안정적으로 약점을 찾으려면 상단에서 <b>영역</b>을 선택해 20문항 진단을 진행하세요.</span>
+              </div>
+            )}
           </section>
 
-          <button onClick={start} style={primaryBtn}>{selectedScope.name} 진단 시작 · {questionCount}문항</button>
+          <button onClick={start} style={primaryBtn}>{selectedScope.name} {isQuickUnit ? '빠른 확인' : '진단'} 시작 · {questionCount}문항</button>
           <p style={{ ...helperText, textAlign: 'center', marginTop: 10 }}>오답은 오답노트에 저장됨 · 공식 인증·합격 결과가 아님</p>
 
           {last && (
@@ -313,6 +340,11 @@ const segmentBtn = { flex: 1, minHeight: 40, border: '1px solid transparent', bo
 const segmentActive = { background: 'var(--card)', color: 'var(--primary)', borderColor: 'var(--primary)', boxShadow: '0 1px 3px rgba(15,23,42,.08)' }
 const selectStyle = { width: '100%', minHeight: 46, marginTop: 9, border: '1px solid var(--border)', borderRadius: 8, background: 'var(--card)', color: 'var(--text)', padding: '0 12px', fontSize: 13.5, fontWeight: 700 }
 const selectionSummary = { marginTop: 9, padding: '11px 12px', border: '1px solid var(--border)', borderRadius: 8, fontSize: 13.5, fontWeight: 700 }
+const scopeGuide = { display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 8, flexWrap: 'wrap', marginTop: 9, padding: '10px 12px', borderLeft: '3px solid var(--primary)', background: '#EEF2FF' }
+const scopeGuideTitle = { fontSize: 12.5, fontWeight: 900, color: '#3730A3' }
+const scopeGuideText = { fontSize: 12.5, fontWeight: 700, color: '#374151' }
+const poolHelp = { fontSize: 11.5, color: 'var(--text-muted)', lineHeight: 1.55, marginTop: 6 }
+const quickCheckNotice = { display: 'flex', flexDirection: 'column', gap: 3, marginTop: 9, padding: '10px 12px', borderLeft: '3px solid #D97706', background: '#FFFBEB', color: '#78350F', fontSize: 12.5, lineHeight: 1.55 }
 const helperText = { fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.55, marginTop: 7 }
 const primaryBtn = { width: '100%', minHeight: 48, padding: 12, borderRadius: 10, border: 'none', background: 'var(--primary)', color: '#fff', fontWeight: 800, fontSize: 14, cursor: 'pointer' }
 const outlineBtn = { minHeight: 48, padding: 12, borderRadius: 10, border: '1px solid var(--border)', background: 'var(--card)', color: 'var(--text)', fontWeight: 700, fontSize: 14, cursor: 'pointer' }
