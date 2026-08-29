@@ -15,7 +15,7 @@ const REMIND_HOUR = 17   // 오후 5시
 
 export function isReviewReminderEnabled() {
   const v = localStorage.getItem(FLAG_KEY)
-  return v === null ? true : v === '1'   // 기본 ON
+  return v === '1'   // 시스템 권한은 사용자가 직접 켠 경우에만 요청한다.
 }
 
 function setFlag(on) { localStorage.setItem(FLAG_KEY, on ? '1' : '0') }
@@ -34,10 +34,10 @@ async function buildBody() {
 }
 
 /**
- * 권한이 이미 있으면(또는 요청 성공 시) 복습 알림을 (재)예약한다.
- * 앱 시작 시 호출 — 조용히 실패(권한 거부/웹/플러그인 없음)해도 앱에 영향 없음.
+ * 권한이 이미 있으면 복습 알림을 (재)예약한다. 새 권한 요청은 사용자가
+ * 화면의 토글을 직접 켠 경우에만 허용한다.
  */
-export async function scheduleReviewReminder() {
+export async function scheduleReviewReminder({ requestPermission = false } = {}) {
   if (!Capacitor.isNativePlatform()) return
   if (!isReviewReminderEnabled()) return
   const LN = await loadPlugin()
@@ -45,7 +45,7 @@ export async function scheduleReviewReminder() {
   try {
     const perm = await LN.checkPermissions()
     let display = perm.display
-    if (display !== 'granted') {
+    if (display !== 'granted' && requestPermission) {
       const req = await LN.requestPermissions()
       display = req.display
     }
@@ -77,9 +77,11 @@ export async function setReviewReminderEnabled(on) {
   if (!LN) return on
   try {
     if (on) {
-      await scheduleReviewReminder()
+      await scheduleReviewReminder({ requestPermission: true })
       const perm = await LN.checkPermissions()
-      return perm.display === 'granted'
+      const granted = perm.display === 'granted'
+      if (!granted) setFlag(false)
+      return granted
     } else {
       await LN.cancel({ notifications: [{ id: REMINDER_ID }] })
       return false

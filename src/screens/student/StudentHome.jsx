@@ -556,7 +556,11 @@ export default function StudentHome({ profile, onOpenMission, onLogout, onGoStud
           </div>
           <button
             role="switch" aria-checked={remindOn}
-            onClick={async () => { const next = !remindOn; setRemindOn(next); await setReviewReminderEnabled(next) }}
+            onClick={async () => {
+              const next = !remindOn
+              const enabled = await setReviewReminderEnabled(next)
+              setRemindOn(enabled)
+            }}
             style={{
               width: 46, height: 26, borderRadius: 13, border: 'none', cursor: 'pointer',
               background: remindOn ? '#7C3AED' : 'var(--border)', position: 'relative', transition: 'background .2s', flexShrink: 0,

@@ -1,10 +1,11 @@
-import { useMemo, useState } from 'react'
-import { ArrowsClockwise, CheckCircle, Desktop, SignOut, Trash } from '@phosphor-icons/react'
+import { useEffect, useMemo, useState } from 'react'
+import { ArrowsClockwise, Bell, CheckCircle, Desktop, SignOut, Trash } from '@phosphor-icons/react'
 import { useAuth } from '../../App.jsx'
 import { getDeviceSyncStatus, syncDeviceState } from '../../lib/deviceSync.js'
 import { isSharedDevice, setSharedDevice } from '../../lib/deviceSettings.js'
 import { LEARNING_DATA_GROUPS, resetLearningGroup } from '../../lib/learningDataManagement.js'
 import { deleteOwnAccount, logoutSafely } from '../../lib/sessionLifecycle.js'
+import { getPushPermissionStatus, requestPushNotifications } from '../../lib/pushNotifications.js'
 import RankingScreen from './RankingScreen.jsx'
 import SaveExitDialog from '../../components/SaveExitDialog.jsx'
 
@@ -26,7 +27,27 @@ export default function AccountDataScreen() {
   const [deletePhrase, setDeletePhrase] = useState('')
   const [deleting, setDeleting] = useState(false)
   const [deleteError, setDeleteError] = useState('')
+  const [pushState, setPushState] = useState({ loading: true, supported: true, enabled: false, message: '' })
   const initials = useMemo(() => String(profile?.display_name || '나').slice(0, 1), [profile?.display_name])
+
+  useEffect(() => {
+    let active = true
+    getPushPermissionStatus().then(result => {
+      if (active) setPushState({ loading: false, ...result, message: '' })
+    })
+    return () => { active = false }
+  }, [])
+
+  async function enablePush() {
+    setPushState(previous => ({ ...previous, loading: true, message: '' }))
+    const result = await requestPushNotifications(profile?.id)
+    const current = await getPushPermissionStatus()
+    setPushState({
+      loading: false,
+      ...current,
+      message: result?.ok ? '선생님 메시지와 학습 알림을 받을 수 있습니다.' : '기기 설정에서 JOB고 알림을 허용해 주세요.',
+    })
+  }
 
   async function syncNow() {
     setSyncing(true)
@@ -82,6 +103,14 @@ export default function AccountDataScreen() {
           <Desktop />
           <div><b>공용 PC 모드</b><span>로그아웃 전에 동기화하고 이 계정의 기기 사본을 제거함</span></div>
           <button className={`switch-control${shared ? ' is-on' : ''}`} role="switch" aria-checked={shared} aria-label="공용 PC 모드" onClick={() => { const next = !shared; setShared(next); setSharedDevice(next) }}><span /></button>
+        </section>
+
+        <section className="account-setting-row">
+          <Bell />
+          <div><b>기기 알림</b><span>{pushState.enabled ? '선생님 메시지와 복습 소식을 받을 수 있음' : pushState.message || '필요할 때 직접 켜며 로그인 중에는 권한 창을 띄우지 않음'}</span></div>
+          <button className="account-setting-action" disabled={pushState.loading || pushState.enabled || !pushState.supported} onClick={enablePush}>
+            {pushState.loading ? '확인 중' : pushState.enabled ? '켜짐' : pushState.supported ? '켜기' : '미지원'}
+          </button>
         </section>
 
         <section className="account-reset-section">

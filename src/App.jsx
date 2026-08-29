@@ -232,7 +232,10 @@ function AppInner() {
           }
           setProfile(data)
           setProfileError(false)
-          if (data?.role === 'student') { initPushNotifications(data.id); scheduleReviewReminder() }
+          if (data?.role === 'student') {
+            initPushNotifications(data.id, { requestPermission: false })
+            scheduleReviewReminder({ requestPermission: false })
+          }
         } else {
           let cached = null
           try { cached = JSON.parse(userLocalStorage.getItem('sst.cached-profile') || 'null') } catch { /* 캐시 손상 */ }
