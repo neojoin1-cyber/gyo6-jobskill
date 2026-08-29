@@ -226,12 +226,13 @@ export function certificateOptions(majorGroup = 'general') {
   return majorExampleProfile(majorGroup).certificates
 }
 
-function evidenceScene({ majorGroup, departmentName = '', sourceType, certificateId, variant = 0 }) {
+function evidenceScene({ majorGroup, departmentName = '', sourceType, certificateId, qualificationName = '', qualificationIssuer = '', variant = 0 }) {
   const baseMajor = majorExampleProfile(majorGroup)
   const specialty = departmentSpecialtyProfile(departmentName)
   const major = specialty ? { ...baseMajor, ...specialty, id: baseMajor.id, label: baseMajor.label, certificates: baseMajor.certificates } : baseMajor
   const activity = activityExampleProfile(sourceType)
   const certificate = major.certificates.find(item => item.id === certificateId)
+    || (qualificationName ? { id: `custom-${qualificationName}`, label: qualificationName, competency: `${qualificationIssuer ? `${qualificationIssuer}의 ` : ''}시험 기준을 실제 과제에 적용하는 연습` } : null)
   const tool = choose(major.tools, variant)
   const standard = choose(major.standards, variant + 1)
   const task = choose(major.tasks, variant + 2)

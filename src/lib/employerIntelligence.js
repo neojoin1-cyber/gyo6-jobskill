@@ -116,7 +116,9 @@ export function readEmployerStudentContext() {
   } catch { /* 저장 근거 없음 */ }
   try { draft = JSON.parse(localStorage.getItem('iv_cover_draft') || '{}') } catch { /* 작성 초안 없음 */ }
   const departmentName = personalized.departmentName || draft.major || ''
-  const hasStudentData = Boolean(personalized.majorGroup || departmentName || personalized.certificateId || personalized.sourceType || evidence)
+  const qualification = Array.isArray(personalized.qualifications) ? personalized.qualifications[0] : null
+  const activity = Array.isArray(personalized.extracurricularActivities) ? personalized.extracurricularActivities[0] : null
+  const hasStudentData = Boolean(personalized.majorGroup || departmentName || personalized.certificateId || qualification || personalized.sourceType || activity || evidence)
   return {
     ...personalized,
     hasStudentData,
@@ -124,6 +126,9 @@ export function readEmployerStudentContext() {
     majorGroup: personalized.majorGroup || evidence?.majorGroup || inferMajorGroup(departmentName),
     sourceType: personalized.sourceType || evidence?.sourceType || '',
     certificateId: personalized.certificateId || '',
+    qualificationName: qualification?.name || '',
+    qualificationIssuer: qualification?.issuer || '',
+    activityName: activity?.name || '',
     evidenceTitle: evidence?.title || '',
     evidenceSkills: Array.isArray(evidence?.skills) ? evidence.skills : [],
     evidenceAction: evidence?.action || '',
@@ -141,6 +146,7 @@ export function buildEmployerFit(organization, context = {}) {
   const specialty = departmentSpecialtyProfile(context.departmentName || '')
   const activity = activityExampleProfile(context.sourceType || 'major-practice')
   const certificate = certificateOptions(context.majorGroup || 'general').find(item => item.id === context.certificateId)
+    || (context.qualificationName ? { label: context.qualificationName, competency: `${context.qualificationIssuer ? `${context.qualificationIssuer}의 ` : ''}시험 기준을 과제에 적용하는 연습` } : null)
   const matchingIds = matchingMajorIds(organization)
   const majorMatched = context.majorGroup && matchingIds.includes(context.majorGroup)
   const specialtyCorpus = `${specialty?.role || ''} ${specialty?.field || ''}`

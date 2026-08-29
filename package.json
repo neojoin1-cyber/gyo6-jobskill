@@ -56,7 +56,8 @@
     "gate:boot-recovery": "node scripts/gate-boot-recovery.mjs",
     "gate:notification-consent": "node scripts/gate-notification-consent.mjs",
     "gate:native-startup": "node scripts/gate-native-startup-surface.mjs",
-    "gate:account-career": "node scripts/gate-account-career.mjs",
+    "gate:account-career": "node scripts/gate-account-career.mjs && npm run gate:career-profile",
+    "gate:career-profile": "npx esbuild scripts/gate-career-profile.mjs --bundle --platform=node --format=esm --loader:.json=json --outfile=.cache/gate-career-profile.mjs --log-level=error && node .cache/gate-career-profile.mjs",
     "gate:release-security": "node scripts/gate-release-security.mjs --source",
     "gate:paid-api": "node scripts/gate-paid-api-boundary.mjs",
     "gate:release-automation": "node scripts/gate-release-automation.mjs",
@@ -69,7 +70,8 @@
     "release:android": "node scripts/release/verify-android-recovery.mjs",
     "release:verify": "npm run release:migrations -- --apply && npm run release:sync && npm run release:android",
     "internal:aab": "node scripts/release/build-internal-aab.mjs",
-    "internal:test": "npm run release:migrations && npm run release:sync && npm run release:android && npm run internal:aab -- --skip-sync"
+    "internal:test": "npm run release:migrations && npm run release:sync && npm run release:android && npm run internal:aab -- --skip-sync",
+    "internal:publish-config": "node scripts/release/publish-app-config.mjs"
   },
   "keywords": [],
   "author": "",

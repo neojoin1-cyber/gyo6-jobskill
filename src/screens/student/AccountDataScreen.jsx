@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { ArrowsClockwise, Bell, Briefcase, CheckCircle, Desktop, SignOut, Trash } from '@phosphor-icons/react'
+import { ArrowsClockwise, Bell, Briefcase, CheckCircle, Desktop, Plus, SignOut, Trash } from '@phosphor-icons/react'
 import { useAuth } from '../../App.jsx'
 import { supabase } from '../../lib/supabase.js'
 import { getDeviceSyncStatus, syncDeviceState } from '../../lib/deviceSync.js'
@@ -7,32 +7,31 @@ import { isSharedDevice, setSharedDevice } from '../../lib/deviceSettings.js'
 import { LEARNING_DATA_GROUPS, resetLearningGroup } from '../../lib/learningDataManagement.js'
 import { deleteOwnAccount, logoutSafely } from '../../lib/sessionLifecycle.js'
 import { userLocalStorage } from '../../lib/userLocalStorage.js'
+import { PERSONALIZED_MAJOR_PROFILES } from '../../lib/personalizedCareerExamples.js'
 import {
-  PERSONALIZED_ACTIVITY_PROFILES,
-  PERSONALIZED_MAJOR_PROFILES,
-  certificateOptions,
-} from '../../lib/personalizedCareerExamples.js'
+  CAREER_CONTEXT_KEY,
+  EXTRACURRICULAR_CATEGORIES,
+  QUALIFICATION_CATALOG,
+  QUALIFICATION_STATUSES,
+  careerContextForEngine,
+  createRecordId,
+  normalizeCareerContext,
+} from '../../lib/careerProfile.js'
 import { hifiveDepartment, hifiveDepartmentOptions } from '../../lib/hifiveDepartmentCatalog.js'
+import SearchSuggestionInput from '../../components/SearchSuggestionInput.jsx'
 import RankingScreen from './RankingScreen.jsx'
 import SaveExitDialog from '../../components/SaveExitDialog.jsx'
 
-const CAREER_CONTEXT_KEY = 'iv_personalized_example_context'
-
 function readCareerContext() {
   try {
-    const value = JSON.parse(userLocalStorage.getItem(CAREER_CONTEXT_KEY) || '{}')
-    const source = PERSONALIZED_ACTIVITY_PROFILES.find(item => item.id === value.sourceType || item.label === value.sourceType)
-    return {
-      majorGroup: value.majorGroup || 'general',
-      departmentName: value.departmentName || '',
-      certificateId: value.certificateId || '',
-      sourceType: source?.id || 'major-practice',
-      styleId: value.styleId || 'clear',
-    }
+    return normalizeCareerContext(JSON.parse(userLocalStorage.getItem(CAREER_CONTEXT_KEY) || '{}'))
   } catch {
-    return { majorGroup: 'general', departmentName: '', certificateId: '', sourceType: 'major-practice', styleId: 'clear' }
+    return normalizeCareerContext()
   }
 }
+
+const emptyQualification = () => ({ name: '', issuer: '', status: 'preparing', profileId: '', catalogId: '' })
+const emptyActivity = () => ({ category: 'club', name: '', organizer: '', rank: '', role: '', outcome: '', notes: '' })
 
 function formatSync(value) {
   if (!value) return '이 기기에서 아직 동기화하지 않음'
@@ -53,11 +52,13 @@ export default function AccountDataScreen({ onOpenCareer }) {
   const [deleting, setDeleting] = useState(false)
   const [deleteError, setDeleteError] = useState('')
   const [career, setCareer] = useState(readCareerContext)
+  const [qualificationDraft, setQualificationDraft] = useState(emptyQualification)
+  const [activityDraft, setActivityDraft] = useState(emptyActivity)
   const [careerSaved, setCareerSaved] = useState('')
   const [evidenceStatus, setEvidenceStatus] = useState({ loading: true, count: 0, error: false })
   const initials = useMemo(() => String(profile?.display_name || '나').slice(0, 1), [profile?.display_name])
   const departments = useMemo(() => hifiveDepartmentOptions({ includeExpansion: true }), [])
-  const certificates = useMemo(() => certificateOptions(career.majorGroup), [career.majorGroup])
+  const qualificationCatalog = QUALIFICATION_CATALOG
 
   useEffect(() => {
     let active = true
@@ -76,7 +77,7 @@ export default function AccountDataScreen({ onOpenCareer }) {
   function changeCareer(key, value) {
     setCareerSaved('')
     setCareer(current => {
-      if (key === 'majorGroup') return { ...current, majorGroup: value, departmentName: '', certificateId: '' }
+      if (key === 'majorGroup') return { ...current, majorGroup: value }
       if (key === 'departmentName') {
         const matched = hifiveDepartment(value)
         return { ...current, departmentName: value, majorGroup: matched?.majorGroup || current.majorGroup, certificateId: matched && matched.majorGroup !== current.majorGroup ? '' : current.certificateId }
@@ -85,8 +86,54 @@ export default function AccountDataScreen({ onOpenCareer }) {
     })
   }
 
+  function chooseDepartment(item) {
+    setCareerSaved('')
+    setCareer(current => ({ ...current, departmentName: item.name, majorGroup: item.majorGroup || current.majorGroup }))
+  }
+
+  function chooseQualification(item) {
+    setQualificationDraft(current => ({ ...current, name: item.name, issuer: item.issuer, profileId: item.profileId || '', catalogId: item.id }))
+  }
+
+  function addQualification() {
+    const name = qualificationDraft.name.trim()
+    if (!name) return
+    if (career.qualifications.some(item => item.name.trim() === name && String(item.issuer || '').trim() === qualificationDraft.issuer.trim())) {
+      setCareerSaved('같은 자격과 발급기관이 이미 등록되어 있습니다.')
+      return
+    }
+    const record = { ...qualificationDraft, id: createRecordId('qualification'), name, issuer: qualificationDraft.issuer.trim() }
+    setCareer(current => ({ ...current, qualifications: [...current.qualifications, record] }))
+    setQualificationDraft(emptyQualification())
+    setCareerSaved('')
+  }
+
+  function updateQualification(id, key, value) {
+    setCareer(current => ({ ...current, qualifications: current.qualifications.map(item => item.id === id ? { ...item, [key]: value } : item) }))
+    setCareerSaved('')
+  }
+
+  function addActivity() {
+    const name = activityDraft.name.trim()
+    if (!name) return
+    if (career.extracurricularActivities.some(item => item.category === activityDraft.category && item.name.trim() === name && String(item.organizer || '').trim() === activityDraft.organizer.trim())) {
+      setCareerSaved('같은 교과외활동과 주관기관이 이미 등록되어 있습니다.')
+      return
+    }
+    setCareer(current => ({ ...current, extracurricularActivities: [...current.extracurricularActivities, { ...activityDraft, id: createRecordId('activity'), name }] }))
+    setActivityDraft(emptyActivity())
+    setCareerSaved('')
+  }
+
+  function updateActivity(id, key, value) {
+    setCareer(current => ({ ...current, extracurricularActivities: current.extracurricularActivities.map(item => item.id === id ? { ...item, [key]: value } : item) }))
+    setCareerSaved('')
+  }
+
   function saveCareerContext() {
-    userLocalStorage.setItem(CAREER_CONTEXT_KEY, JSON.stringify(career))
+    const payload = careerContextForEngine(career)
+    userLocalStorage.setItem(CAREER_CONTEXT_KEY, JSON.stringify(payload))
+    setCareer(payload)
     setStatus(getDeviceSyncStatus())
     setCareerSaved('저장됨 · 다음 동기화 때 PC와 휴대폰에 함께 반영됨')
   }
@@ -136,13 +183,44 @@ export default function AccountDataScreen({ onOpenCareer }) {
         <header className="account-identity"><span>{initials}</span><div><h1>{profile?.display_name || '학생'}</h1><p>내 학습 기록과 기기 연결</p></div></header>
 
         <section className="account-career-panel">
-          <header><Briefcase weight="duotone" /><div><h2>취업 준비 기본정보</h2><p>자기소개서와 면접에서 공통으로 사용할 학과·자격·활동 기준</p></div></header>
+          <header><Briefcase weight="duotone" /><div><h2>취업 준비 기본정보</h2><p>자기소개서와 면접에서 공통으로 사용할 학과·자격·교과외활동 기록</p></div></header>
           <div className="account-career-fields">
-            <label className="is-wide"><span>학과</span><input list="account-hifive-departments" value={career.departmentName} onChange={event => changeCareer('departmentName', event.target.value)} placeholder="학과명을 입력하거나 선택" /><datalist id="account-hifive-departments">{departments.map(item => <option key={item.name} value={item.name}>{item.schoolCount}개교</option>)}</datalist></label>
-            <label><span>학과군</span><select value={career.majorGroup} onChange={event => changeCareer('majorGroup', event.target.value)}>{PERSONALIZED_MAJOR_PROFILES.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
-            <label><span>대표 활동</span><select value={career.sourceType} onChange={event => changeCareer('sourceType', event.target.value)}>{PERSONALIZED_ACTIVITY_PROFILES.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
-            <label className="is-wide"><span>취득·준비 중인 자격</span><select value={career.certificateId} onChange={event => changeCareer('certificateId', event.target.value)}><option value="">아직 선택하지 않음</option>{certificates.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
+            <label className="is-wide"><span>학과 <small>가나다순 목록 선택 또는 직접 입력</small></span><SearchSuggestionInput value={career.departmentName} onChange={value => changeCareer('departmentName', value)} onSelect={chooseDepartment} items={departments} getLabel={item => item.name} getMeta={item => `${PERSONALIZED_MAJOR_PROFILES.find(group => group.id === item.majorGroup)?.label || '공통·기타'} · ${item.schoolCount}개교`} placeholder="예: 스마트기계, 조리, 회계" ariaLabel="학과 검색 및 직접 입력" /></label>
+            <label className="is-wide"><span>학과군 <small>학과 선택 후에도 직접 변경 가능</small></span><select value={career.majorGroup} onChange={event => changeCareer('majorGroup', event.target.value)}>{PERSONALIZED_MAJOR_PROFILES.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
           </div>
+
+          <section className="account-career-editor">
+            <header><div><h3>취득·준비 중인 자격</h3><p>공식 목록을 검색하거나 명칭과 발급기관을 직접 입력합니다.</p></div><span>{career.qualifications.length}개</span></header>
+            <div className="account-record-form qualification-form">
+              <label className="is-wide"><span>자격 명칭</span><SearchSuggestionInput value={qualificationDraft.name} onChange={value => setQualificationDraft(current => ({ ...current, name: value, catalogId: '', profileId: '' }))} onSelect={chooseQualification} items={qualificationCatalog} getLabel={item => item.name} getMeta={item => `${item.issuer} · ${item.type}`} placeholder="자격 명칭 검색 또는 직접 입력" ariaLabel="자격 명칭 검색 및 직접 입력" /></label>
+              <label><span>발급·시행기관</span><input value={qualificationDraft.issuer} onChange={event => setQualificationDraft(current => ({ ...current, issuer: event.target.value }))} placeholder="직접 입력 가능" /></label>
+              <label><span>상태</span><select value={qualificationDraft.status} onChange={event => setQualificationDraft(current => ({ ...current, status: event.target.value }))}>{QUALIFICATION_STATUSES.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
+              <button type="button" className="account-add-record" onClick={addQualification} disabled={!qualificationDraft.name.trim()}><Plus /> 자격 추가</button>
+            </div>
+            <div className="account-record-list">{career.qualifications.map(item => <article key={item.id}>
+              <div className="account-record-grid"><label><span>자격 명칭</span><input value={item.name} onChange={event => updateQualification(item.id, 'name', event.target.value)} /></label><label><span>발급·시행기관</span><input value={item.issuer || ''} onChange={event => updateQualification(item.id, 'issuer', event.target.value)} /></label><label><span>상태</span><select value={item.status || 'preparing'} onChange={event => updateQualification(item.id, 'status', event.target.value)}>{QUALIFICATION_STATUSES.map(status => <option key={status.id} value={status.id}>{status.label}</option>)}</select></label></div>
+              <button type="button" className="account-remove-record" onClick={() => setCareer(current => ({ ...current, qualifications: current.qualifications.filter(value => value.id !== item.id) }))} aria-label={`${item.name} 삭제`} title={`${item.name} 삭제`}><Trash /></button>
+            </article>)}</div>
+          </section>
+
+          <section className="account-career-editor">
+            <header><div><h3>교과외활동</h3><p>동아리·봉사·대회·수상·기타 활동을 각각 기록합니다.</p></div><span>{career.extracurricularActivities.length}개</span></header>
+            <div className="account-record-form activity-form">
+              <label><span>구분</span><select value={activityDraft.category} onChange={event => setActivityDraft(current => ({ ...current, category: event.target.value }))}>{EXTRACURRICULAR_CATEGORIES.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
+              <label><span>명칭</span><input value={activityDraft.name} onChange={event => setActivityDraft(current => ({ ...current, name: event.target.value }))} placeholder="활동·대회·수상명" /></label>
+              <label><span>주관기관</span><input value={activityDraft.organizer} onChange={event => setActivityDraft(current => ({ ...current, organizer: event.target.value }))} placeholder="학교·기관·단체" /></label>
+              {(activityDraft.category === 'competition' || activityDraft.category === 'award') && <label><span>순위·등급</span><input value={activityDraft.rank} onChange={event => setActivityDraft(current => ({ ...current, rank: event.target.value }))} placeholder="예: 금상, 2위" /></label>}
+              <label><span>역할</span><input value={activityDraft.role} onChange={event => setActivityDraft(current => ({ ...current, role: event.target.value }))} placeholder="내가 맡은 일" /></label>
+              <label><span>성과</span><input value={activityDraft.outcome} onChange={event => setActivityDraft(current => ({ ...current, outcome: event.target.value }))} placeholder="수치·변화·완료 결과" /></label>
+              <label className="is-wide"><span>비고</span><input value={activityDraft.notes} onChange={event => setActivityDraft(current => ({ ...current, notes: event.target.value }))} placeholder="기간·배운 점 등" /></label>
+              <button type="button" className="account-add-record" onClick={addActivity} disabled={!activityDraft.name.trim()}><Plus /> 활동 추가</button>
+            </div>
+            <div className="account-record-list">{career.extracurricularActivities.map(item => <article key={item.id}>
+              <div className="account-record-grid activity-record-grid"><label><span>구분</span><select value={item.category} onChange={event => updateActivity(item.id, 'category', event.target.value)}>{EXTRACURRICULAR_CATEGORIES.map(category => <option key={category.id} value={category.id}>{category.label}</option>)}</select></label><label><span>명칭</span><input value={item.name} onChange={event => updateActivity(item.id, 'name', event.target.value)} /></label><label><span>주관기관</span><input value={item.organizer || ''} onChange={event => updateActivity(item.id, 'organizer', event.target.value)} /></label>{(item.category === 'competition' || item.category === 'award') && <label><span>순위·등급</span><input value={item.rank || ''} onChange={event => updateActivity(item.id, 'rank', event.target.value)} /></label>}<label><span>역할</span><input value={item.role || ''} onChange={event => updateActivity(item.id, 'role', event.target.value)} /></label><label><span>성과</span><input value={item.outcome || ''} onChange={event => updateActivity(item.id, 'outcome', event.target.value)} /></label><label className="is-wide"><span>비고</span><input value={item.notes || ''} onChange={event => updateActivity(item.id, 'notes', event.target.value)} /></label></div>
+              <button type="button" className="account-remove-record" onClick={() => setCareer(current => ({ ...current, extracurricularActivities: current.extracurricularActivities.filter(value => value.id !== item.id) }))} aria-label={`${item.name} 삭제`} title={`${item.name} 삭제`}><Trash /></button>
+            </article>)}</div>
+          </section>
+          <div className="account-career-sources"><span>자격 목록 확인</span><a href="https://www.q-net.or.kr/" target="_blank" rel="noreferrer">Q-Net</a><a href="https://license.korcham.net/" target="_blank" rel="noreferrer">대한상공회의소</a><a href="https://license.kpc.or.kr/" target="_blank" rel="noreferrer">KPC</a></div>
           <div className="account-career-actions"><button onClick={saveCareerContext}>기본정보 저장</button><button onClick={() => onOpenCareer?.()}>작성근거 관리</button></div>
           <p className={evidenceStatus.error ? 'is-error' : ''}>{evidenceStatus.loading ? '저장한 작성근거 확인 중' : evidenceStatus.error ? '작성근거를 불러오지 못함 · 자기소개서관에서 다시 확인' : `저장한 작성근거 ${evidenceStatus.count}장`}{careerSaved ? ` · ${careerSaved}` : ''}</p>
         </section>

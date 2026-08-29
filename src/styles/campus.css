@@ -472,18 +472,55 @@ html.teacher-mode[data-teacher-view='wide'] .learning-link-chain > div { grid-te
 .account-career-panel { display: grid; gap: 12px; margin-top: 16px; padding: 15px; border: 1px solid #b9d5ce; border-left: 4px solid #0f766e; border-radius: 7px; background: #fff; }
 .account-career-panel > header { display: flex; align-items: flex-start; gap: 9px; }
 .account-career-panel > header > svg { width: 24px; flex: 0 0 auto; color: #0f766e; }
-.account-career-panel h2 { margin: 0; font-size: 14px; }
-.account-career-panel header p { margin: 3px 0 0; color: #667487; font-size: 9px; line-height: 1.45; }
+.account-career-panel h2 { margin: 0; font-size: 16px; }
+.account-career-panel header p { margin: 3px 0 0; color: #526174; font-size: 12px; line-height: 1.45; }
 .account-career-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .account-career-fields label { min-width: 0; display: grid; gap: 4px; }
 .account-career-fields label.is-wide { grid-column: 1 / -1; }
-.account-career-fields label > span { color: #334155; font-size: 9px; font-weight: 900; }
-.account-career-fields input, .account-career-fields select { width: 100%; min-height: 40px; padding: 0 9px; border: 1px solid #cbd5e1; border-radius: 6px; background: #fff; color: #172033; font: inherit; font-size: 10px; }
+.account-career-fields label > span { color: #243247; font-size: 12px; font-weight: 900; }
+.account-career-fields label > span small { margin-left: 4px; color: #667487; font-size: 11px; font-weight: 600; }
+.account-career-fields input, .account-career-fields select { width: 100%; min-height: 42px; padding: 0 10px; border: 1px solid #b8c5d6; border-radius: 6px; background: #fff; color: #111827; font: inherit; font-size: 13px; color-scheme: light; }
 .account-career-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
-.account-career-actions button { min-height: 40px; border: 1px solid #0f766e; border-radius: 6px; background: #fff; color: #0f766e; font-size: 10px; font-weight: 900; }
+.account-career-actions button { min-height: 42px; border: 1px solid #0f766e; border-radius: 6px; background: #fff; color: #0f766e; font-size: 13px; font-weight: 900; }
 .account-career-actions button:first-child { background: #0f766e; color: #fff; }
-.account-career-panel > p { margin: 0; color: #137b69; font-size: 9px; font-weight: 700; line-height: 1.45; }
+.account-career-panel > p { margin: 0; color: #137b69; font-size: 12px; font-weight: 700; line-height: 1.45; }
 .account-career-panel > p.is-error { color: #b45309; }
+.search-suggestion-input { position: relative; min-width: 0; }
+.search-suggestion-control { display: grid; grid-template-columns: 22px minmax(0, 1fr) 38px; align-items: center; min-height: 42px; border: 1px solid #b8c5d6; border-radius: 6px; background: #fff; color: #334155; }
+.search-suggestion-control:focus-within { border-color: #1769f6; box-shadow: 0 0 0 2px rgba(23, 105, 246, .12); }
+.search-suggestion-control > svg { width: 16px; margin-left: 8px; }
+.search-suggestion-control > input { min-width: 0; min-height: 40px; padding: 0 7px !important; border: 0 !important; outline: 0; background: #fff !important; color: #111827 !important; box-shadow: none !important; color-scheme: light; }
+.search-suggestion-control > button { width: 38px; height: 40px; display: grid; place-items: center; border: 0; border-left: 1px solid #d8e0ea; background: #f8fafc; color: #334155; cursor: pointer; }
+.search-suggestion-control > button svg { width: 16px; }
+.search-suggestion-menu { position: absolute; z-index: 80; top: calc(100% + 4px); left: 0; right: 0; max-height: 280px; overflow-y: auto; border: 1px solid #94a3b8; border-radius: 6px; background: #fff !important; color: #111827 !important; box-shadow: 0 12px 28px rgba(15, 23, 42, .2); color-scheme: light; }
+.search-suggestion-menu > header { position: sticky; z-index: 1; top: 0; display: flex; justify-content: space-between; padding: 8px 10px; border-bottom: 1px solid #d8e0ea; background: #eef4ff !important; color: #1e3a5f !important; font-size: 11px; }
+.search-suggestion-menu > button { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px; border: 0; border-bottom: 1px solid #edf1f5; background: #fff !important; color: #111827 !important; text-align: left; cursor: pointer; }
+.search-suggestion-menu > button:hover, .search-suggestion-menu > button:focus { outline: 0; background: #eaf2ff !important; }
+.search-suggestion-menu > button b { font-size: 13px; }
+.search-suggestion-menu > button span { color: #526174 !important; font-size: 11px; text-align: right; }
+.search-suggestion-menu > p { margin: 0; padding: 14px 10px; color: #526174 !important; font-size: 12px; }
+.account-career-editor { display: grid; gap: 10px; padding-top: 13px; border-top: 1px solid #d7e2e0; }
+.account-career-editor > header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.account-career-editor h3 { margin: 0; color: #172033; font-size: 14px; }
+.account-career-editor > header p { margin: 2px 0 0; color: #667487; font-size: 11px; }
+.account-career-editor > header > span { flex: 0 0 auto; color: #0f766e; font-size: 12px; font-weight: 900; }
+.account-record-form { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 10px 0; background: #f6faf9; }
+.account-record-form label, .account-record-grid label { min-width: 0; display: grid; gap: 4px; }
+.account-record-form label.is-wide, .account-record-grid label.is-wide { grid-column: 1 / -1; }
+.account-record-form label > span, .account-record-grid label > span { color: #334155; font-size: 11px; font-weight: 800; }
+.account-record-form input, .account-record-form select, .account-record-grid input, .account-record-grid select { width: 100%; min-height: 40px; padding: 0 9px; border: 1px solid #b8c5d6; border-radius: 5px; background: #fff; color: #111827; font: inherit; font-size: 12px; color-scheme: light; }
+.account-add-record { min-height: 40px; align-self: end; display: flex; align-items: center; justify-content: center; gap: 5px; border: 0; border-radius: 5px; background: #1769f6; color: #fff; font-size: 12px; font-weight: 900; cursor: pointer; }
+.account-add-record:disabled { background: #aab4c2; cursor: default; }
+.account-add-record svg { width: 16px; }
+.account-record-list { display: grid; gap: 8px; }
+.account-record-list > article { position: relative; padding: 10px 42px 10px 0; border-top: 1px solid #d8e0ea; }
+.account-record-grid { display: grid; grid-template-columns: 1fr 1fr 110px; gap: 7px; }
+.activity-record-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.account-remove-record { position: absolute; top: 14px; right: 2px; width: 34px; height: 34px; display: grid; place-items: center; border: 1px solid #f0b8b8; border-radius: 5px; background: #fff; color: #b42318; cursor: pointer; }
+.account-remove-record svg { width: 16px; }
+.account-career-sources { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; color: #667487; font-size: 11px; }
+.account-career-sources a { color: #1769f6; font-weight: 800; text-decoration: none; }
+.account-career-sources a:hover { text-decoration: underline; }
 .account-identity { display: flex; align-items: center; gap: 12px; padding-bottom: 17px; border-bottom: 1px solid #dce3eb; }
 .account-identity > span { width: 48px; height: 48px; display: grid; place-items: center; flex: 0 0 auto; border-radius: 8px; background: #1769f6; color: #fff; font-size: 18px; font-weight: 900; }
 .account-identity h1 { margin: 0; font-size: 18px; }
@@ -506,6 +543,8 @@ html.teacher-mode[data-teacher-view='wide'] .learning-link-chain > div { grid-te
 @media (max-width: 430px) {
   .account-career-fields, .account-career-actions { grid-template-columns: 1fr; }
   .account-career-fields label.is-wide { grid-column: 1; }
+  .account-record-form, .account-record-grid, .activity-record-grid { grid-template-columns: 1fr; }
+  .account-record-form label.is-wide, .account-record-grid label.is-wide { grid-column: 1; }
 }
 .switch-control { width: 42px; height: 24px; padding: 3px; border: 0; border-radius: 12px; background: #c7ced8; cursor: pointer; }
 .switch-control span { width: 18px; height: 18px; display: block; border-radius: 50%; background: #fff; transition: transform .15s ease; }

@@ -12,6 +12,7 @@ const requiredFiles = [
   'scripts/release/verify-device-sync-remote.mjs',
   'scripts/release/verify-android-recovery.mjs',
   'scripts/release/build-internal-aab.mjs',
+  'scripts/release/publish-app-config.mjs',
   'android/app/src/androidTest/java/com/gyo6/jobskill/ReleaseRecoveryInstrumentedTest.java',
   'supabase/migrations/20260827130000_release_verification_privileges.sql',
 ]
@@ -20,7 +21,7 @@ for (const path of requiredFiles) {
 }
 
 const pkg = JSON.parse(read('package.json'))
-for (const name of ['release:migrations', 'release:sync', 'release:android', 'release:verify', 'internal:aab', 'internal:test']) {
+for (const name of ['release:migrations', 'release:sync', 'release:android', 'release:verify', 'internal:aab', 'internal:test', 'internal:publish-config']) {
   if (!pkg.scripts?.[name]) failures.push(`npm 명령 누락: ${name}`)
 }
 requireText(pkg.scripts?.prebuild ?? '', 'gate:release-automation', '일반 빌드에서 출시 자동화 연결 상태를 검사하지 않음')
@@ -33,6 +34,11 @@ for (const token of ['production-approval:', 'OPERATIONS_APPROVED', 'supabase li
 const internal = read('.github/workflows/internal-test.yml')
 for (const token of ['"codex/**"', 'supabase link --project-ref', 'release:sync', 'release:android -- --skip-web-build', 'actions/upload-artifact@v4']) {
   requireText(internal, token, `GitHub 내부 테스트 게이트 누락: ${token}`)
+}
+
+const publishConfig = read('scripts/release/publish-app-config.mjs')
+for (const token of ['latest_build', 'latest_version', "projects', 'api-keys'", 'force-minimum']) {
+  requireText(publishConfig, token, `내부 테스트 업데이트 안내 자동화 누락: ${token}`)
 }
 
 const sync = read('scripts/release/verify-device-sync-remote.mjs')

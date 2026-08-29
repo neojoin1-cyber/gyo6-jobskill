@@ -1,4 +1,4 @@
-import { useEffect, useId, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { ArrowDown, CheckCircle, PencilSimple, Plus, ShieldCheck } from '@phosphor-icons/react'
 import { userLocalStorage as localStorage } from '../lib/userLocalStorage.js'
 import {
@@ -15,6 +15,8 @@ import {
   hifiveDepartment,
   hifiveDepartmentOptions,
 } from '../lib/hifiveDepartmentCatalog.js'
+import { careerContextForEngine } from '../lib/careerProfile.js'
+import SearchSuggestionInput from './SearchSuggestionInput.jsx'
 import '../styles/personalized-career-example.css'
 
 function readContext() {
@@ -34,12 +36,12 @@ export default function PersonalizedCareerExamplePanel({
   canReveal = true,
   onUseStarter,
 }) {
-  const listId = `hifive-departments-${useId().replace(/:/g, '')}`
   const cached = useMemo(readContext, [])
-  const [majorGroup, setMajorGroup] = useState(cached.majorGroup || defaultMajorGroup)
+  const engineContext = useMemo(() => careerContextForEngine(cached), [cached])
+  const [majorGroup, setMajorGroup] = useState(engineContext.majorGroup || defaultMajorGroup)
   const [departmentName, setDepartmentName] = useState(cached.departmentName || '')
-  const [sourceType, setSourceType] = useState(cached.sourceType || defaultSourceType)
-  const [certificateId, setCertificateId] = useState(cached.certificateId || '')
+  const [sourceType, setSourceType] = useState(engineContext.sourceType || defaultSourceType)
+  const [certificateId, setCertificateId] = useState(engineContext.certificateId || '')
   const [styleId, setStyleId] = useState(cached.styleId || 'clear')
   const [variant, setVariant] = useState(0)
   const [includeExpansion, setIncludeExpansion] = useState(false)
@@ -51,11 +53,11 @@ export default function PersonalizedCareerExamplePanel({
       / coverage.majors
       * HIFIVE_DEPARTMENT_SUMMARY.departmentNames,
   )
-  const options = { questionId, type: interviewType, majorGroup, departmentName, sourceType, certificateId, styleId, variant, role, targetName, evidenceAction, evidenceResult }
+  const options = { questionId, type: interviewType, majorGroup, departmentName, sourceType, certificateId, qualificationName: engineContext.qualificationName, qualificationIssuer: engineContext.qualificationIssuer, styleId, variant, role, targetName, evidenceAction, evidenceResult }
   const example = interviewType ? buildPersonalizedInterviewExample(options) : buildPersonalizedCoverExample(options)
 
   useEffect(() => {
-    localStorage.setItem('iv_personalized_example_context', JSON.stringify({ majorGroup, departmentName, sourceType, certificateId, styleId }))
+    localStorage.setItem('iv_personalized_example_context', JSON.stringify({ ...readContext(), majorGroup, departmentName, sourceType, certificateId, styleId }))
   }, [certificateId, departmentName, majorGroup, sourceType, styleId])
 
   function changeMajor(value) {
@@ -78,7 +80,7 @@ export default function PersonalizedCareerExamplePanel({
   return <section className="personalized-example-panel">
     <header><div><span>HIFIVE 학과 기반 · 가상 구조 예시</span><b>{interviewType ? '내 조건으로 답변 비교' : '내 조건으로 문항 예시 비교'}</b><small>공통 학과 {HIFIVE_DEPARTMENT_SUMMARY.repeatedDepartmentNames}개 우선 · 학과 반영 {departmentCoverage.toLocaleString('ko-KR')}개 조합</small></div><button onClick={() => setVariant(value => (value + 1) % coverage.variants)} aria-label="다른 가상 사례 보기"><ArrowDown />다른 사례</button></header>
     <div className="personalized-example-controls">
-      <label className="is-wide"><span>학과</span><input list={listId} value={departmentName} onChange={event => changeDepartment(event.target.value)} placeholder="학과명을 입력하거나 선택" /><datalist id={listId}>{departments.map(item => <option key={item.name} value={item.name}>{item.schoolCount}개교</option>)}</datalist></label>
+      <label className="is-wide"><span>학과</span><SearchSuggestionInput value={departmentName} onChange={changeDepartment} onSelect={item => changeDepartment(item.name)} items={departments} getLabel={item => item.name} getMeta={item => `${item.schoolCount}개교`} placeholder="학과명 검색 또는 직접 입력" ariaLabel="학과 검색 및 직접 입력" /></label>
       <label><span>학과군</span><select value={majorGroup} onChange={event => changeMajor(event.target.value)}>{PERSONALIZED_MAJOR_PROFILES.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
       <label><span>실제 활동</span><select value={sourceType} onChange={event => { setSourceType(event.target.value); setVariant(0) }}>{PERSONALIZED_ACTIVITY_PROFILES.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
       <label className="is-wide"><span>취득·준비한 자격 <small>없으면 선택 안 함</small></span><select value={certificateId} onChange={event => { setCertificateId(event.target.value); setVariant(0) }}><option value="">자격을 답변에 넣지 않음</option>{certificates.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
