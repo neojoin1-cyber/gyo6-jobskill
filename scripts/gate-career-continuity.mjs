@@ -72,7 +72,7 @@ const review = read('src/screens/teacher/CoverLetterReviewScreen.jsx')
 const migration = read('supabase/migrations/20260829160000_student_career_profiles.sql')
 for (const token of ['careerProfileReadiness', 'careerGradeRoadmap', '근거 카드로 발전', '담당 선생님 지도']) expect(account.includes(token), `학생 장기 프로필 UI 연결 누락: ${token}`)
 for (const token of ['careerEvidenceSeeds', 'careerEvidenceQuality', 'careerProfileSnapshot', 'career_source_id']) expect(careerLab.includes(token), `근거은행·제출 연결 누락: ${token}`)
-for (const token of ['rpc_class_career_profiles', 'rpc_review_student_career_profile', '취업 준비 자산']) expect(teacher.includes(token), `교사 성장 지도 연결 누락: ${token}`)
+for (const token of ['rpc_class_career_profiles', 'rpc_review_student_career_profile', '취업 준비 자산', 'qualificationStatusLabel', 'extracurricularCategoryLabel']) expect(teacher.includes(token), `교사 성장 지도 연결 누락: ${token}`)
 expect(review.includes('careerProfileSnapshot') && review.includes('제출 시점 취업 준비정보'), '교사 첨삭 스냅샷 연결 누락')
 for (const token of ['student_career_profiles', 'student_career_feedback', 'SECURITY DEFINER', 'teacher_classes', 'auth.uid()']) expect(migration.includes(token), `담당 학급 권한 계약 누락: ${token}`)
 

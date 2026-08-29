@@ -53,7 +53,7 @@ export default function PersonalizedCareerExamplePanel({
       / coverage.majors
       * HIFIVE_DEPARTMENT_SUMMARY.departmentNames,
   )
-  const options = { questionId, type: interviewType, majorGroup, departmentName, sourceType, certificateId, qualificationName: engineContext.qualificationName, qualificationIssuer: engineContext.qualificationIssuer, activityName: engineContext.activityName, activityRole: engineContext.activityRole, activityOutcome: engineContext.activityOutcome, styleId, variant, role: role || engineContext.targetRole, targetName, evidenceAction, evidenceResult }
+  const options = { questionId, type: interviewType, majorGroup, departmentName, sourceType, certificateId, qualificationName: [engineContext.qualificationName, engineContext.qualificationLevel].filter(Boolean).join(' '), qualificationIssuer: engineContext.qualificationIssuer, activityName: engineContext.activityName, activityRole: engineContext.activityRole, activityOutcome: engineContext.activityOutcome, styleId, variant, role: role || engineContext.targetRole, targetName, evidenceAction, evidenceResult }
   const example = interviewType ? buildPersonalizedInterviewExample(options) : buildPersonalizedCoverExample(options)
 
   useEffect(() => {

@@ -90,15 +90,15 @@ try {
   expect(!ownRows.error && ownRows.data.every(row => row.user_id === userId), '학생 RLS가 다른 사용자의 행을 노출했습니다.')
 
   const careerProfile = {
-    profileVersion: 3,
+    profileVersion: 4,
     currentGrade: 1,
     departmentName: '스마트기계과',
     majorGroup: 'mechanical',
     targetIndustry: '자동차 부품',
     targetRole: '생산설비',
     semesterGoal: '실습 근거 카드 2장 완성',
-    qualifications: [{ id: 'release-q1', name: '생산자동화기능사', issuer: '한국산업인력공단', status: 'preparing', grade: 1 }],
-    extracurricularActivities: [{ id: 'release-a1', category: 'club', name: '메이커 동아리', role: '부품 조립', outcome: '작동 시제품 완성', grade: 1 }],
+    qualifications: [{ id: 'release-q1', name: '컴퓨터활용능력', issuer: '대한상공회의소', status: 'writtenPassed', level: '1급', levelKind: 'preset', validityType: 'none', grade: 1 }],
+    extracurricularActivities: [{ id: 'release-a1', category: 'other', customCategoryName: '교내 방송 제작', name: '졸업 영상', role: '촬영 장비 설정', outcome: '상영본 완성', grade: 1, customFields: [{ id: 'release-field-1', label: '담당 장비', value: '미러리스 카메라' }] }],
   }
   const careerWrite = await pc.rpc('rpc_upsert_my_career_profile', {
     p_profile: careerProfile,
@@ -112,7 +112,9 @@ try {
     .single()
   expect(!careerMobile.error, `휴대폰 취업 프로필 조회 실패: ${careerMobile.error?.message}`)
   expect(careerMobile.data?.profile_data?.targetRole === '생산설비', '휴대폰이 PC의 관심 직무를 받지 못했습니다.')
-  expect(careerMobile.data?.profile_data?.extracurricularActivities?.[0]?.name === '메이커 동아리', '휴대폰이 PC의 교과외활동을 받지 못했습니다.')
+  expect(careerMobile.data?.profile_data?.qualifications?.[0]?.level === '1급' && careerMobile.data?.profile_data?.qualifications?.[0]?.status === 'writtenPassed', '휴대폰이 PC의 자격 급수·진행 상태를 받지 못했습니다.')
+  expect(careerMobile.data?.profile_data?.extracurricularActivities?.[0]?.customCategoryName === '교내 방송 제작', '휴대폰이 PC의 직접 입력 활동 구분을 받지 못했습니다.')
+  expect(careerMobile.data?.profile_data?.extracurricularActivities?.[0]?.customFields?.[0]?.value === '미러리스 카메라', '휴대폰이 PC의 활동 추가 입력칸을 받지 못했습니다.')
   expect(careerMobile.data?.readiness_score === 61 && careerMobile.data?.evidence_count === 1, '장기 취업 준비도·근거 수가 기기 간 일치하지 않습니다.')
 
   logPass('실제 운영 학생 계정 · PC↔휴대폰 양방향/취업 프로필/충돌/RLS/요청량 상한')

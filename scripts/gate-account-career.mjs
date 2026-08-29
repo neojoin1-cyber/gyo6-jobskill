@@ -17,6 +17,10 @@ for (const token of [
   '교과외활동',
   'QUALIFICATION_CATALOG',
   'SearchSuggestionInput',
+  'CareerChoiceMenu',
+  '상태 직접 입력',
+  '유효기간',
+  '입력칸 추가',
   "from('cover_letter_evidence')",
 ]) {
   if (!account.includes(token)) failures.push(`나 화면의 취업 준비 정보에 ${token} 연결이 없음`)

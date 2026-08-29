@@ -1,5 +1,5 @@
 export const CAREER_CONTEXT_KEY = 'iv_personalized_example_context'
-export const CAREER_PROFILE_VERSION = 3
+export const CAREER_PROFILE_VERSION = 4
 
 export const SCHOOL_GRADE_OPTIONS = [
   { id: 1, label: '1학년' },
@@ -8,17 +8,31 @@ export const SCHOOL_GRADE_OPTIONS = [
 ]
 
 export const QUALIFICATION_STATUSES = [
-  { id: 'preparing', label: '준비 중' },
-  { id: 'acquired', label: '취득' },
   { id: 'planned', label: '준비 예정' },
+  { id: 'preparing', label: '준비 중' },
+  { id: 'writtenPassed', label: '필기 합격' },
+  { id: 'practicalPassed', label: '실기 합격' },
+  { id: 'acquired', label: '최종 합격·취득' },
+  { id: 'custom', label: '직접 입력' },
+]
+
+export const QUALIFICATION_VALIDITY_TYPES = [
+  { id: 'none', label: '유효기간 없음' },
+  { id: 'expires', label: '유효기간 있음' },
+  { id: 'check', label: '확인 필요' },
 ]
 
 export const EXTRACURRICULAR_CATEGORIES = [
-  { id: 'club', label: '동아리', sourceType: 'club', evidenceSource: '동아리' },
-  { id: 'volunteer', label: '봉사활동', sourceType: 'volunteer', evidenceSource: '봉사' },
-  { id: 'competition', label: '대회', sourceType: 'team-project', evidenceSource: '팀 프로젝트' },
-  { id: 'award', label: '수상', sourceType: 'team-project', evidenceSource: '팀 프로젝트' },
-  { id: 'other', label: '기타', sourceType: 'major-practice', evidenceSource: '개인 학습' },
+  { id: 'club', label: '동아리', sourceType: 'club', evidenceSource: '동아리', nameLabel: '동아리명', organizerLabel: '소속·지도교사', roleLabel: '맡은 역할', outcomeLabel: '완성한 결과·변화' },
+  { id: 'volunteer', label: '봉사활동', sourceType: 'volunteer', evidenceSource: '봉사', nameLabel: '봉사활동명', organizerLabel: '봉사기관', roleLabel: '담당 활동', outcomeLabel: '도움을 준 내용·변화', usesHours: true },
+  { id: 'competition', label: '대회·경진대회', sourceType: 'team-project', evidenceSource: '대회', nameLabel: '대회명', organizerLabel: '주최·주관기관', roleLabel: '팀 역할·담당 과제', outcomeLabel: '성과·본선·완성 결과', usesRank: true },
+  { id: 'award', label: '수상·표창', sourceType: 'team-project', evidenceSource: '수상', nameLabel: '수상·표창명', organizerLabel: '수여기관', roleLabel: '수상에 기여한 역할', outcomeLabel: '선정 이유·성과', usesRank: true },
+  { id: 'project', label: '프로젝트·과제', sourceType: 'team-project', evidenceSource: '프로젝트', nameLabel: '프로젝트명', organizerLabel: '교과·팀·기관', roleLabel: '담당 업무', outcomeLabel: '산출물·개선 결과' },
+  { id: 'leadership', label: '학생자치·리더십', sourceType: 'team-project', evidenceSource: '학생자치', nameLabel: '조직·활동명', organizerLabel: '학교·학급·학생회', roleLabel: '직책·담당 역할', outcomeLabel: '운영 결과·변화' },
+  { id: 'careerExperience', label: '진로체험·캠프', sourceType: 'major-practice', evidenceSource: '진로체험', nameLabel: '체험·캠프명', organizerLabel: '운영기관·기업', roleLabel: '수행한 활동', outcomeLabel: '완성 결과·배운 점' },
+  { id: 'fieldPractice', label: '현장실습·인턴', sourceType: 'major-practice', evidenceSource: '현장실습', nameLabel: '실습·인턴명', organizerLabel: '기업·기관·부서', roleLabel: '담당 업무', outcomeLabel: '업무 결과·피드백' },
+  { id: 'workExperience', label: '근로·아르바이트', sourceType: 'major-practice', evidenceSource: '근로경험', nameLabel: '근무·업무명', organizerLabel: '근무처', roleLabel: '담당 업무', outcomeLabel: '고객·업무 개선 결과' },
+  { id: 'other', label: '기타·직접 입력', sourceType: 'major-practice', evidenceSource: '기타 활동', nameLabel: '활동명', organizerLabel: '관련 기관·단체', roleLabel: '내가 한 일', outcomeLabel: '결과·변화' },
 ]
 
 export const CAREER_PROFILE_REFERENCES = [
@@ -59,7 +73,41 @@ const MAJOR_DEVELOPMENT_ACTIONS = {
   general: ['수업·학급·동아리에서 맡은 일을 행동과 결과로 나누어 기록', '관심 직무를 정한 뒤 필요한 자격과 활동을 비교'],
 }
 
-const q = (id, name, issuer, type, majorGroups = [], profileId = '') => ({ id, name, issuer, type, majorGroups, profileId })
+const QUALIFICATION_DETAILS = {
+  'kcci-computer-skills': { levels: ['1급', '2급'] },
+  'kcci-computer-accounting': { levels: ['1급', '2급', '3급'] },
+  'kcci-distribution': { levels: ['1급', '2급', '3급'] },
+  'kcci-electronic-commerce': { levels: ['1급', '2급'] },
+  'kcci-trade-english': { levels: ['1급', '2급', '3급'] },
+  'kcci-secretary': { levels: ['1급', '2급', '3급'] },
+  'kpc-itq': { levels: ['A등급', 'B등급', 'C등급'] },
+  'kpc-gtq': { levels: ['1급', '2급', '3급'] },
+  'kpc-gtqi': { levels: ['1급', '2급', '3급'] },
+  'kpc-erp': { levels: ['1급', '2급'] },
+  'kacpta-computer-accounting': { levels: ['1급', '2급'] },
+  'kacpta-computer-tax': { levels: ['1급', '2급'] },
+  'kicpa-fat': { levels: ['1급', '2급'] },
+  'kicpa-tat': { levels: ['1급', '2급'] },
+  history: { levels: ['1급', '2급', '3급', '4급', '5급', '6급'] },
+  toeic: { levelLabel: '점수·등급', validityType: 'expires', validityMonths: 24, validityNote: '공식 성적 유효기간은 시험일로부터 2년', validitySource: 'https://exam.toeic.co.kr/common/template/viewContents.php?contentsCode=87' },
+  opic: { levels: ['AL', 'IH', 'IM3', 'IM2', 'IM1', 'IL', 'NH', 'NM', 'NL'], levelLabel: '등급', validityType: 'expires', validityMonths: 24, validityNote: '공식 성적 유효기간은 응시일로부터 2년', validitySource: 'https://www.opic.or.kr/opics/servlet/controller.opic.site.applyinfor.ActflTestRuleServlet?p_process=move-actfl_test_rule' },
+}
+
+const q = (id, name, issuer, type, majorGroups = [], profileId = '') => ({
+  id,
+  name,
+  issuer,
+  type,
+  majorGroups,
+  profileId,
+  levels: [],
+  levelLabel: '급수·등급',
+  validityType: type === '어학시험' ? 'check' : 'none',
+  validityMonths: 0,
+  validityNote: '',
+  validitySource: '',
+  ...(QUALIFICATION_DETAILS[id] || {}),
+})
 
 export const QUALIFICATION_CATALOG = [
   q('kcci-computer-skills', '컴퓨터활용능력', '대한상공회의소', '국가기술자격', ['business', 'software', 'general'], 'computer-skills'),
@@ -142,12 +190,27 @@ const grade = value => Math.max(1, Math.min(3, Number(value) || 1))
 const list = value => Array.isArray(value) ? value.filter(Boolean) : []
 
 function normalizeQualification(item = {}, index = 0, currentGrade = 1) {
+  const catalog = QUALIFICATION_CATALOG.find(value => value.id === item.catalogId)
+  const knownStatus = !item.status ? 'preparing' : QUALIFICATION_STATUSES.some(status => status.id === item.status) ? item.status : 'custom'
+  const inferredLevelKind = item.levelKind || (item.level ? (catalog?.levels?.includes(item.level) ? 'preset' : 'custom') : 'none')
+  const validityType = QUALIFICATION_VALIDITY_TYPES.some(value => value.id === item.validityType)
+    ? item.validityType
+    : catalog?.validityType || 'none'
   return {
     ...item,
     id: item.id || `qualification-legacy-${index}`,
     name: text(item.name),
     issuer: text(item.issuer),
-    status: QUALIFICATION_STATUSES.some(status => status.id === item.status) ? item.status : 'preparing',
+    status: knownStatus,
+    statusDetail: knownStatus === 'custom' ? text(item.statusDetail || item.status) : text(item.statusDetail),
+    level: text(item.level),
+    levelKind: ['none', 'preset', 'custom'].includes(inferredLevelKind) ? inferredLevelKind : 'custom',
+    validityType,
+    validFrom: text(item.validFrom),
+    validUntil: text(item.validUntil),
+    validityMonths: Math.max(0, Math.min(240, Number(item.validityMonths ?? catalog?.validityMonths) || 0)),
+    validityNote: text(item.validityNote || catalog?.validityNote),
+    validitySource: text(item.validitySource || catalog?.validitySource),
     grade: grade(item.grade || currentGrade),
     achievedAt: text(item.achievedAt),
     targetDate: text(item.targetDate),
@@ -163,6 +226,7 @@ function normalizeActivity(item = {}, index = 0, currentGrade = 1) {
     ...item,
     id: item.id || `activity-legacy-${index}`,
     category: EXTRACURRICULAR_CATEGORIES.some(category => category.id === item.category) ? item.category : 'other',
+    customCategoryName: text(item.customCategoryName),
     name: text(item.name),
     organizer: text(item.organizer),
     rank: text(item.rank),
@@ -171,14 +235,48 @@ function normalizeActivity(item = {}, index = 0, currentGrade = 1) {
     notes: text(item.notes),
     proof: text(item.proof),
     period: text(item.period),
+    hours: text(item.hours),
     grade: grade(item.grade || currentGrade),
     skills: list(item.skills).map(text).filter(Boolean).slice(0, 8),
+    customFields: list(item.customFields).map((field, fieldIndex) => ({
+      id: text(field?.id) || `custom-field-${fieldIndex}`,
+      label: text(field?.label),
+      value: text(field?.value),
+    })).filter(field => field.label || field.value).slice(0, 10),
   }
 }
 
+export function qualificationStatusLabel(item = {}) {
+  if (item.status === 'custom') return text(item.statusDetail) || '직접 입력 상태'
+  return QUALIFICATION_STATUSES.find(status => status.id === item.status)?.label || text(item.status) || '준비 중'
+}
+
+export function qualificationCatalogDefaults(item = {}) {
+  return {
+    levelKind: item.levels?.length ? 'preset' : 'none',
+    level: '',
+    validityType: item.validityType || 'none',
+    validityMonths: Number(item.validityMonths) || 0,
+    validityNote: text(item.validityNote),
+    validitySource: text(item.validitySource),
+    validFrom: '',
+    validUntil: '',
+  }
+}
+
+export function extracurricularCategory(item = {}) {
+  return EXTRACURRICULAR_CATEGORIES.find(category => category.id === item.category)
+    || EXTRACURRICULAR_CATEGORIES.find(category => category.id === 'other')
+}
+
+export function extracurricularCategoryLabel(item = {}) {
+  const category = extracurricularCategory(item)
+  return item.category === 'other' && text(item.customCategoryName) ? text(item.customCategoryName) : category.label
+}
+
 function qualificationStrength(item = {}) {
-  return (item.status === 'acquired' ? 40 : item.status === 'preparing' ? 22 : 10)
-    + (item.profileId ? 8 : 0) + (item.proof ? 8 : 0) + (item.achievedAt || item.targetDate ? 4 : 0)
+  return (item.status === 'acquired' ? 40 : item.status === 'practicalPassed' ? 32 : item.status === 'writtenPassed' ? 27 : item.status === 'preparing' ? 22 : 10)
+    + (item.profileId ? 8 : 0) + (item.proof ? 8 : 0) + (item.level ? 4 : 0) + (item.achievedAt || item.targetDate ? 4 : 0)
 }
 
 function activityStrength(item = {}) {
@@ -219,10 +317,13 @@ export function careerContextForEngine(value = {}) {
     qualificationName: qualification?.name || '',
     qualificationIssuer: qualification?.issuer || '',
     qualificationStatus: qualification?.status || '',
-    qualificationSummary: context.qualifications.slice().sort((a, b) => qualificationStrength(b) - qualificationStrength(a)).slice(0, 3).map(item => `${item.name}(${QUALIFICATION_STATUSES.find(status => status.id === item.status)?.label || item.status})`),
+    qualificationStatusLabel: qualificationStatusLabel(qualification),
+    qualificationLevel: qualification?.level || '',
+    qualificationValidUntil: qualification?.validUntil || '',
+    qualificationSummary: context.qualifications.slice().sort((a, b) => qualificationStrength(b) - qualificationStrength(a)).slice(0, 3).map(item => `${item.name}${item.level ? ` ${item.level}` : ''}(${qualificationStatusLabel(item)})`),
     sourceType: category?.sourceType || context.sourceType || 'major-practice',
     activityName: activity?.name || '',
-    activitySummary: context.extracurricularActivities.slice().sort((a, b) => activityStrength(b) - activityStrength(a)).slice(0, 3).map(item => [item.name, item.role, item.outcome].filter(Boolean).join(' · ')),
+    activitySummary: context.extracurricularActivities.slice().sort((a, b) => activityStrength(b) - activityStrength(a)).slice(0, 3).map(item => [extracurricularCategoryLabel(item), item.name, item.role, item.outcome].filter(Boolean).join(' · ')),
     activityRole: activity?.role || '',
     activityOutcome: activity?.outcome || '',
     activityProof: activity?.proof || '',
@@ -287,17 +388,18 @@ export function careerEvidenceSeeds(value = {}) {
     .slice()
     .sort((a, b) => activityStrength(b) - activityStrength(a))
     .map(item => {
-      const category = EXTRACURRICULAR_CATEGORIES.find(value => value.id === item.category)
+      const category = extracurricularCategory(item)
+      const customDetail = item.customFields.filter(field => field.label && field.value).map(field => `${field.label}: ${field.value}`).join(', ')
       return {
         id: item.id,
         careerSourceId: item.id,
         majorGroup: context.majorGroup,
-        sourceType: category?.evidenceSource || '개인 학습',
+        sourceType: item.category === 'other' && item.customCategoryName ? item.customCategoryName : category?.evidenceSource || '개인 학습',
         title: item.name,
-        situation: [item.period ? `${item.period}에` : `${item.grade}학년에`, item.organizer ? `${item.organizer}에서` : '학교 활동에서', `${item.name}에 참여함.`].join(' '),
+        situation: [item.period ? `${item.period}에` : `${item.grade}학년에`, item.organizer ? `${item.organizer}에서` : '학교 활동에서', `${item.name}에 참여함.`, item.hours ? `기록 시간은 ${item.hours}입니다.` : '', customDetail ? `추가 기록은 ${customDetail}입니다.` : ''].filter(Boolean).join(' '),
         task: item.role ? `제가 맡은 역할은 ${item.role}입니다.` : '',
         action: '',
-        result: item.outcome || '',
+        result: [item.rank, item.outcome].filter(Boolean).join(' · '),
         proof: item.proof || '',
         skills: item.skills,
         grade: item.grade,

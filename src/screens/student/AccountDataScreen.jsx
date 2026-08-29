@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { ArrowRight, ArrowsClockwise, Bell, Briefcase, CheckCircle, ClipboardText, Desktop, Plus, SignOut, Target, Trash } from '@phosphor-icons/react'
+import { ArrowRight, ArrowsClockwise, Bell, Briefcase, CheckCircle, ClipboardText, Desktop, Minus, Plus, SignOut, Target, Trash } from '@phosphor-icons/react'
 import { useAuth } from '../../App.jsx'
 import { supabase } from '../../lib/supabase.js'
 import { getDeviceSyncStatus, syncDeviceState } from '../../lib/deviceSync.js'
@@ -14,16 +14,20 @@ import {
   EXTRACURRICULAR_CATEGORIES,
   QUALIFICATION_CATALOG,
   QUALIFICATION_STATUSES,
+  QUALIFICATION_VALIDITY_TYPES,
   SCHOOL_GRADE_OPTIONS,
   careerEvidenceSeeds,
   careerGradeRoadmap,
   careerContextForEngine,
   careerProfileReadiness,
   createRecordId,
+  extracurricularCategory,
+  qualificationCatalogDefaults,
   normalizeCareerContext,
 } from '../../lib/careerProfile.js'
 import { hifiveDepartment, hifiveDepartmentOptions } from '../../lib/hifiveDepartmentCatalog.js'
 import SearchSuggestionInput from '../../components/SearchSuggestionInput.jsx'
+import CareerChoiceMenu from '../../components/CareerChoiceMenu.jsx'
 import RankingScreen from './RankingScreen.jsx'
 import SaveExitDialog from '../../components/SaveExitDialog.jsx'
 
@@ -35,8 +39,94 @@ function readCareerContext() {
   }
 }
 
-const emptyQualification = (currentGrade = 1) => ({ name: '', issuer: '', status: 'preparing', grade: currentGrade, achievedAt: '', targetDate: '', proof: '', notes: '', profileId: '', catalogId: '' })
-const emptyActivity = (currentGrade = 1) => ({ category: 'club', name: '', organizer: '', rank: '', role: '', outcome: '', notes: '', proof: '', period: '', grade: currentGrade, skills: [] })
+const emptyQualification = (currentGrade = 1) => ({ name: '', issuer: '', status: 'preparing', statusDetail: '', level: '', levelKind: 'none', validityType: 'none', validFrom: '', validUntil: '', validityMonths: 0, validityNote: '', validitySource: '', grade: currentGrade, achievedAt: '', targetDate: '', proof: '', notes: '', profileId: '', catalogId: '' })
+const emptyActivity = (currentGrade = 1) => ({ category: 'club', customCategoryName: '', name: '', organizer: '', rank: '', hours: '', role: '', outcome: '', notes: '', proof: '', period: '', grade: currentGrade, skills: [], customFields: [] })
+
+const addMonths = (date, months) => {
+  if (!date || !months) return ''
+  const value = new Date(`${date}T00:00:00`)
+  if (Number.isNaN(value.getTime())) return ''
+  value.setMonth(value.getMonth() + Number(months))
+  return value.toISOString().slice(0, 10)
+}
+
+function QualificationDetailFields({ record, onChange, currentGrade }) {
+  const catalog = QUALIFICATION_CATALOG.find(item => item.id === record.catalogId)
+  const levelOptions = [
+    { id: 'none', label: '해당 없음', description: '급수나 점수를 구분하지 않는 자격' },
+    ...(catalog?.levels || []).map(level => ({ id: `preset:${level}`, label: level })),
+    { id: 'custom', label: '직접 입력', description: '목록에 없는 급수·등급·점수' },
+  ]
+  const levelChoice = record.levelKind === 'custom' ? 'custom' : record.levelKind === 'preset' && record.level ? `preset:${record.level}` : 'none'
+  const passed = ['writtenPassed', 'practicalPassed', 'acquired', 'custom'].includes(record.status)
+  const dateLabel = record.status === 'writtenPassed' ? '필기 합격일' : record.status === 'practicalPassed' ? '실기 합격일' : record.status === 'acquired' ? '최종 합격·취득일' : record.status === 'custom' ? '상태 기준일' : '목표일'
+
+  function changeLevel(choice) {
+    if (choice === 'none') {
+      onChange('levelKind', 'none')
+      onChange('level', '')
+      return
+    }
+    if (choice === 'custom') {
+      onChange('levelKind', 'custom')
+      if (catalog?.levels?.includes(record.level)) onChange('level', '')
+      return
+    }
+    onChange('levelKind', 'preset')
+    onChange('level', choice.replace(/^preset:/, ''))
+  }
+
+  function changeResultDate(value) {
+    onChange(passed ? 'achievedAt' : 'targetDate', value)
+    if (passed && record.validityType === 'expires') {
+      onChange('validFrom', value)
+      if (record.validityMonths) onChange('validUntil', addMonths(value, record.validityMonths))
+    }
+  }
+
+  return <>
+    <CareerChoiceMenu label={catalog?.levelLabel || '급수·등급'} hint="선택 또는 직접 입력" value={levelChoice} options={levelOptions} onChange={changeLevel} />
+    {record.levelKind === 'custom' && <label><span>{catalog?.levelLabel || '급수·등급'} 직접 입력</span><input value={record.level || ''} onChange={event => onChange('level', event.target.value)} placeholder="예: 1급, A등급, 850점" /></label>}
+    <CareerChoiceMenu label="진행 상태" hint="전형에 맞게 선택" value={record.status || 'preparing'} options={QUALIFICATION_STATUSES} onChange={value => onChange('status', value)} />
+    {record.status === 'custom' && <label><span>상태 직접 입력</span><input value={record.statusDetail || ''} onChange={event => onChange('statusDetail', event.target.value)} placeholder="예: 서류 제출, 면접 대기" /></label>}
+    <label><span>기록 학년</span><select value={record.grade || currentGrade} onChange={event => onChange('grade', Number(event.target.value))}>{SCHOOL_GRADE_OPTIONS.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
+    <label><span>{dateLabel}</span><input type="date" value={passed ? record.achievedAt || '' : record.targetDate || ''} onChange={event => changeResultDate(event.target.value)} /></label>
+    <CareerChoiceMenu label="유효기간" hint="자격별로 다름" value={record.validityType || 'none'} options={QUALIFICATION_VALIDITY_TYPES} onChange={value => onChange('validityType', value)} />
+    {record.validityType === 'expires' && <>
+      <label><span>유효 시작일</span><input type="date" value={record.validFrom || ''} onChange={event => onChange('validFrom', event.target.value)} /></label>
+      <label><span>만료일</span><input type="date" value={record.validUntil || ''} onChange={event => onChange('validUntil', event.target.value)} /></label>
+    </>}
+    {(record.validityType === 'check' || record.validityNote) && <label className="is-wide"><span>유효기간 메모</span><input value={record.validityNote || ''} onChange={event => onChange('validityNote', event.target.value)} placeholder="발급기관 기준을 확인해 기록" /></label>}
+    {record.validitySource && <a className="account-validity-source is-wide" href={record.validitySource} target="_blank" rel="noreferrer">발급기관의 유효기간 기준 확인</a>}
+    <label className="is-wide"><span>확인 자료</span><input value={record.proof || ''} onChange={event => onChange('proof', event.target.value)} placeholder="예: 합격 확인서·자격증 번호 일부·학습 기록" /></label>
+  </>
+}
+
+function ActivityDetailFields({ record, onChange, currentGrade }) {
+  const guide = extracurricularCategory(record)
+  const customFields = Array.isArray(record.customFields) ? record.customFields : []
+  const updateCustomField = (index, key, value) => onChange('customFields', customFields.map((field, fieldIndex) => fieldIndex === index ? { ...field, [key]: value } : field))
+
+  return <>
+    <CareerChoiceMenu label="활동 구분" hint="선택하면 입력 항목이 바뀜" value={record.category || 'club'} options={EXTRACURRICULAR_CATEGORIES} onChange={value => onChange('category', value)} className="is-wide" />
+    {record.category === 'other' && <label className="is-wide"><span>특별 활동 구분명</span><input value={record.customCategoryName || ''} onChange={event => onChange('customCategoryName', event.target.value)} placeholder="예: 교내 방송 제작, 가족 돌봄, 개인 창작" /></label>}
+    <label><span>{guide.nameLabel}</span><input value={record.name || ''} onChange={event => onChange('name', event.target.value)} placeholder={`${guide.nameLabel} 직접 입력`} /></label>
+    <label><span>{guide.organizerLabel}</span><input value={record.organizer || ''} onChange={event => onChange('organizer', event.target.value)} placeholder="학교·기업·기관·단체" /></label>
+    <label><span>기록 학년</span><select value={record.grade || currentGrade} onChange={event => onChange('grade', Number(event.target.value))}>{SCHOOL_GRADE_OPTIONS.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
+    <label><span>활동 기간</span><input value={record.period || ''} onChange={event => onChange('period', event.target.value)} placeholder="예: 2026.03~2026.07" /></label>
+    {guide.usesHours && <label><span>봉사 시간</span><input value={record.hours || ''} onChange={event => onChange('hours', event.target.value)} placeholder="예: 24시간" /></label>}
+    {guide.usesRank && <label><span>순위·등급</span><input value={record.rank || ''} onChange={event => onChange('rank', event.target.value)} placeholder="예: 금상, 2위, 본선" /></label>}
+    <label><span>{guide.roleLabel}</span><input value={record.role || ''} onChange={event => onChange('role', event.target.value)} placeholder="내가 직접 한 일을 구체적으로" /></label>
+    <label><span>{guide.outcomeLabel}</span><input value={record.outcome || ''} onChange={event => onChange('outcome', event.target.value)} placeholder="수치·변화·산출물·피드백" /></label>
+    <label><span>사용한 기술·태도</span><input value={(record.skills || []).join(', ')} onChange={event => onChange('skills', event.target.value.split(',').map(value => value.trim()).filter(Boolean))} placeholder="예: 협업, 검산, 고객응대" /></label>
+    <label className="is-wide"><span>확인 자료</span><input value={record.proof || ''} onChange={event => onChange('proof', event.target.value)} placeholder="작업 파일·활동일지·사진·담당자 피드백" /></label>
+    <label className="is-wide"><span>비고·배운 점</span><input value={record.notes || ''} onChange={event => onChange('notes', event.target.value)} placeholder="상황 설명이나 다음에 보완할 점" /></label>
+    <div className="account-custom-fields is-wide">
+      <header><div><b>나만의 추가 항목</b><small>이 활동에만 필요한 입력칸을 직접 만듭니다.</small></div><button type="button" onClick={() => onChange('customFields', [...customFields, { id: createRecordId('field'), label: '', value: '' }])}><Plus /> 입력칸 추가</button></header>
+      {customFields.map((field, index) => <div key={field.id}><input aria-label="추가 항목명" value={field.label || ''} onChange={event => updateCustomField(index, 'label', event.target.value)} placeholder="항목명 예: 담당 장비" /><input aria-label="추가 항목 내용" value={field.value || ''} onChange={event => updateCustomField(index, 'value', event.target.value)} placeholder="내용 입력" /><button type="button" aria-label="추가 항목 삭제" onClick={() => onChange('customFields', customFields.filter((_, fieldIndex) => fieldIndex !== index))}><Minus /></button></div>)}
+    </div>
+  </>
+}
 
 function formatSync(value) {
   if (!value) return '이 기기에서 아직 동기화하지 않음'
@@ -109,14 +199,14 @@ export default function AccountDataScreen({ onOpenCareer }) {
   }
 
   function chooseQualification(item) {
-    setQualificationDraft(current => ({ ...current, name: item.name, issuer: item.issuer, profileId: item.profileId || '', catalogId: item.id }))
+    setQualificationDraft(current => ({ ...current, ...qualificationCatalogDefaults(item), name: item.name, issuer: item.issuer, profileId: item.profileId || '', catalogId: item.id }))
   }
 
   function addQualification() {
     const name = qualificationDraft.name.trim()
     if (!name) return
-    if (career.qualifications.some(item => item.name.trim() === name && String(item.issuer || '').trim() === qualificationDraft.issuer.trim())) {
-      setCareerSaved('같은 자격과 발급기관이 이미 등록되어 있습니다.')
+    if (career.qualifications.some(item => item.name.trim() === name && String(item.issuer || '').trim() === qualificationDraft.issuer.trim() && String(item.level || '').trim() === qualificationDraft.level.trim())) {
+      setCareerSaved('같은 자격·급수와 발급기관이 이미 등록되어 있습니다.')
       return
     }
     const record = { ...qualificationDraft, id: createRecordId('qualification'), name, issuer: qualificationDraft.issuer.trim() }
@@ -233,40 +323,27 @@ export default function AccountDataScreen({ onOpenCareer }) {
           </div>
 
           <section className="account-career-editor">
-            <header><div><h3>취득·준비 중인 자격</h3><p>공식 목록을 검색하거나 명칭과 발급기관을 직접 입력합니다.</p></div><span>{career.qualifications.length}개</span></header>
+            <header><div><h3>취득·준비 중인 자격</h3><p>급수·진행 상태·유효기간까지 실제 전형에 맞게 기록합니다.</p></div><span>{career.qualifications.length}개</span></header>
             <div className="account-record-form qualification-form">
               <label className="is-wide"><span>자격 명칭</span><SearchSuggestionInput value={qualificationDraft.name} onChange={value => setQualificationDraft(current => ({ ...current, name: value, catalogId: '', profileId: '' }))} onSelect={chooseQualification} items={qualificationCatalog} getLabel={item => item.name} getMeta={item => `${item.issuer} · ${item.type}`} placeholder="자격 명칭 검색 또는 직접 입력" ariaLabel="자격 명칭 검색 및 직접 입력" /></label>
               <label><span>발급·시행기관</span><input value={qualificationDraft.issuer} onChange={event => setQualificationDraft(current => ({ ...current, issuer: event.target.value }))} placeholder="직접 입력 가능" /></label>
-              <label><span>상태</span><select value={qualificationDraft.status} onChange={event => setQualificationDraft(current => ({ ...current, status: event.target.value }))}>{QUALIFICATION_STATUSES.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
-              <label><span>기록 학년</span><select value={qualificationDraft.grade} onChange={event => setQualificationDraft(current => ({ ...current, grade: Number(event.target.value) }))}>{SCHOOL_GRADE_OPTIONS.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
-              <label><span>{qualificationDraft.status === 'acquired' ? '취득일' : '목표일'}</span><input type="date" value={qualificationDraft.status === 'acquired' ? qualificationDraft.achievedAt : qualificationDraft.targetDate} onChange={event => setQualificationDraft(current => ({ ...current, [current.status === 'acquired' ? 'achievedAt' : 'targetDate']: event.target.value }))} /></label>
-              <label className="is-wide"><span>확인 자료</span><input value={qualificationDraft.proof} onChange={event => setQualificationDraft(current => ({ ...current, proof: event.target.value }))} placeholder="예: 자격증 번호 일부·합격 확인서·학습 기록" /></label>
+              <QualificationDetailFields record={qualificationDraft} currentGrade={career.currentGrade} onChange={(key, value) => setQualificationDraft(current => ({ ...current, [key]: value }))} />
               <button type="button" className="account-add-record" onClick={addQualification} disabled={!qualificationDraft.name.trim()}><Plus /> 자격 추가</button>
             </div>
             <div className="account-record-list">{career.qualifications.map(item => <article key={item.id}>
-              <div className="account-record-grid"><label><span>자격 명칭</span><input value={item.name} onChange={event => updateQualification(item.id, 'name', event.target.value)} /></label><label><span>발급·시행기관</span><input value={item.issuer || ''} onChange={event => updateQualification(item.id, 'issuer', event.target.value)} /></label><label><span>상태</span><select value={item.status || 'preparing'} onChange={event => updateQualification(item.id, 'status', event.target.value)}>{QUALIFICATION_STATUSES.map(status => <option key={status.id} value={status.id}>{status.label}</option>)}</select></label><label><span>기록 학년</span><select value={item.grade || career.currentGrade} onChange={event => updateQualification(item.id, 'grade', Number(event.target.value))}>{SCHOOL_GRADE_OPTIONS.map(grade => <option key={grade.id} value={grade.id}>{grade.label}</option>)}</select></label><label><span>{item.status === 'acquired' ? '취득일' : '목표일'}</span><input type="date" value={item.status === 'acquired' ? item.achievedAt || '' : item.targetDate || ''} onChange={event => updateQualification(item.id, item.status === 'acquired' ? 'achievedAt' : 'targetDate', event.target.value)} /></label><label className="is-wide"><span>확인 자료</span><input value={item.proof || ''} onChange={event => updateQualification(item.id, 'proof', event.target.value)} /></label></div>
+              <div className="account-record-grid"><label><span>자격 명칭</span><input value={item.name} onChange={event => updateQualification(item.id, 'name', event.target.value)} /></label><label><span>발급·시행기관</span><input value={item.issuer || ''} onChange={event => updateQualification(item.id, 'issuer', event.target.value)} /></label><QualificationDetailFields record={item} currentGrade={career.currentGrade} onChange={(key, value) => updateQualification(item.id, key, value)} /></div>
               <button type="button" className="account-remove-record" onClick={() => setCareer(current => ({ ...current, qualifications: current.qualifications.filter(value => value.id !== item.id) }))} aria-label={`${item.name} 삭제`} title={`${item.name} 삭제`}><Trash /></button>
             </article>)}</div>
           </section>
 
           <section className="account-career-editor">
-            <header><div><h3>교과외활동</h3><p>동아리·봉사·대회·수상·기타 활동을 각각 기록합니다.</p></div><span>{career.extracurricularActivities.length}개</span></header>
+            <header><div><h3>교과외활동</h3><p>활동을 고르면 그 상황에 필요한 기록 항목이 나타납니다.</p></div><span>{career.extracurricularActivities.length}개</span></header>
             <div className="account-record-form activity-form">
-              <label><span>구분</span><select value={activityDraft.category} onChange={event => setActivityDraft(current => ({ ...current, category: event.target.value }))}>{EXTRACURRICULAR_CATEGORIES.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
-              <label><span>명칭</span><input value={activityDraft.name} onChange={event => setActivityDraft(current => ({ ...current, name: event.target.value }))} placeholder="활동·대회·수상명" /></label>
-              <label><span>주관기관</span><input value={activityDraft.organizer} onChange={event => setActivityDraft(current => ({ ...current, organizer: event.target.value }))} placeholder="학교·기관·단체" /></label>
-              <label><span>기록 학년</span><select value={activityDraft.grade} onChange={event => setActivityDraft(current => ({ ...current, grade: Number(event.target.value) }))}>{SCHOOL_GRADE_OPTIONS.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
-              <label><span>활동 기간</span><input value={activityDraft.period} onChange={event => setActivityDraft(current => ({ ...current, period: event.target.value }))} placeholder="예: 2026.03~2026.07" /></label>
-              {(activityDraft.category === 'competition' || activityDraft.category === 'award') && <label><span>순위·등급</span><input value={activityDraft.rank} onChange={event => setActivityDraft(current => ({ ...current, rank: event.target.value }))} placeholder="예: 금상, 2위" /></label>}
-              <label><span>역할</span><input value={activityDraft.role} onChange={event => setActivityDraft(current => ({ ...current, role: event.target.value }))} placeholder="내가 맡은 일" /></label>
-              <label><span>성과</span><input value={activityDraft.outcome} onChange={event => setActivityDraft(current => ({ ...current, outcome: event.target.value }))} placeholder="수치·변화·완료 결과" /></label>
-              <label><span>사용한 기술·태도</span><input value={activityDraft.skills.join(', ')} onChange={event => setActivityDraft(current => ({ ...current, skills: event.target.value.split(',').map(value => value.trim()).filter(Boolean) }))} placeholder="예: 협업, 검산, 고객응대" /></label>
-              <label className="is-wide"><span>확인 자료</span><input value={activityDraft.proof} onChange={event => setActivityDraft(current => ({ ...current, proof: event.target.value }))} placeholder="예: 작업 파일·활동일지·사진·담당 교사 피드백" /></label>
-              <label className="is-wide"><span>비고</span><input value={activityDraft.notes} onChange={event => setActivityDraft(current => ({ ...current, notes: event.target.value }))} placeholder="기간·배운 점 등" /></label>
+              <ActivityDetailFields record={activityDraft} currentGrade={career.currentGrade} onChange={(key, value) => setActivityDraft(current => ({ ...current, [key]: value }))} />
               <button type="button" className="account-add-record" onClick={addActivity} disabled={!activityDraft.name.trim()}><Plus /> 활동 추가</button>
             </div>
             <div className="account-record-list">{career.extracurricularActivities.map(item => <article key={item.id}>
-              <div className="account-record-grid activity-record-grid"><label><span>구분</span><select value={item.category} onChange={event => updateActivity(item.id, 'category', event.target.value)}>{EXTRACURRICULAR_CATEGORIES.map(category => <option key={category.id} value={category.id}>{category.label}</option>)}</select></label><label><span>명칭</span><input value={item.name} onChange={event => updateActivity(item.id, 'name', event.target.value)} /></label><label><span>주관기관</span><input value={item.organizer || ''} onChange={event => updateActivity(item.id, 'organizer', event.target.value)} /></label><label><span>기록 학년</span><select value={item.grade || career.currentGrade} onChange={event => updateActivity(item.id, 'grade', Number(event.target.value))}>{SCHOOL_GRADE_OPTIONS.map(grade => <option key={grade.id} value={grade.id}>{grade.label}</option>)}</select></label><label><span>활동 기간</span><input value={item.period || ''} onChange={event => updateActivity(item.id, 'period', event.target.value)} /></label>{(item.category === 'competition' || item.category === 'award') && <label><span>순위·등급</span><input value={item.rank || ''} onChange={event => updateActivity(item.id, 'rank', event.target.value)} /></label>}<label><span>역할</span><input value={item.role || ''} onChange={event => updateActivity(item.id, 'role', event.target.value)} /></label><label><span>성과</span><input value={item.outcome || ''} onChange={event => updateActivity(item.id, 'outcome', event.target.value)} /></label><label><span>사용한 기술·태도</span><input value={(item.skills || []).join(', ')} onChange={event => updateActivity(item.id, 'skills', event.target.value.split(',').map(value => value.trim()).filter(Boolean))} /></label><label className="is-wide"><span>확인 자료</span><input value={item.proof || ''} onChange={event => updateActivity(item.id, 'proof', event.target.value)} /></label><label className="is-wide"><span>비고</span><input value={item.notes || ''} onChange={event => updateActivity(item.id, 'notes', event.target.value)} /></label></div>
+              <div className="account-record-grid activity-record-grid"><ActivityDetailFields record={item} currentGrade={career.currentGrade} onChange={(key, value) => updateActivity(item.id, key, value)} /></div>
               <button type="button" className="account-develop-evidence" onClick={() => developActivity(item)}><ClipboardText />근거 카드로 발전<ArrowRight /></button>
               <button type="button" className="account-remove-record" onClick={() => setCareer(current => ({ ...current, extracurricularActivities: current.extracurricularActivities.filter(value => value.id !== item.id) }))} aria-label={`${item.name} 삭제`} title={`${item.name} 삭제`}><Trash /></button>
             </article>)}</div>
