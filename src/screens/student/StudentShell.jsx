@@ -242,7 +242,10 @@ export default function StudentShell() {
             onBack={() => { setFollowLink(null); setTab('home') }} />}
 
           {tab === 'wrong'         && <WrongAnswerScreen profile={profile} />}
-          {tab === 'ranking'       && <AccountDataScreen />}
+          {tab === 'ranking'       && <AccountDataScreen onOpenCareer={() => {
+            setFollowLink({ subject: 'cover-letter', area: null, lesson: null, mode: 'cover-practical' })
+            setTab('study')
+          }} />}
           {tab === 'notifications' && <NotificationsScreen />}
         </Suspense>
       </div>

@@ -16,8 +16,11 @@ if (!push.includes('if (receive !== \'granted\' && requestPermission)')) {
 if (!reminders.includes('if (display !== \'granted\' && requestPermission)')) {
   failures.push('로컬 알림 권한이 사용자 요청 없이 열릴 수 있음')
 }
-if (!account.includes('requestPushNotifications(profile?.id)')) {
-  failures.push('학생이 직접 알림을 켤 수 있는 진입점이 없음')
+if (account.includes('pushNotifications') || account.includes('getPushPermissionStatus') || account.includes('requestPushNotifications')) {
+  failures.push('학생 나 화면 진입 시 네이티브 알림 모듈을 불러올 수 있음')
+}
+if (!account.includes('기기 알림은 안정화 뒤 다시 제공함')) {
+  failures.push('기기 알림 임시 중단 상태를 학생에게 설명하지 않음')
 }
 
 if (failures.length) {
@@ -25,4 +28,4 @@ if (failures.length) {
   process.exit(1)
 }
 
-console.log('[notification-consent] PASS - app boot is notification-plugin-free and consent is user initiated')
+console.log('[notification-consent] PASS - app boot and account entry are notification-plugin-free')

@@ -1,20 +1,45 @@
 import { useEffect, useMemo, useState } from 'react'
-import { ArrowsClockwise, Bell, CheckCircle, Desktop, SignOut, Trash } from '@phosphor-icons/react'
+import { ArrowsClockwise, Bell, Briefcase, CheckCircle, Desktop, SignOut, Trash } from '@phosphor-icons/react'
 import { useAuth } from '../../App.jsx'
+import { supabase } from '../../lib/supabase.js'
 import { getDeviceSyncStatus, syncDeviceState } from '../../lib/deviceSync.js'
 import { isSharedDevice, setSharedDevice } from '../../lib/deviceSettings.js'
 import { LEARNING_DATA_GROUPS, resetLearningGroup } from '../../lib/learningDataManagement.js'
 import { deleteOwnAccount, logoutSafely } from '../../lib/sessionLifecycle.js'
-import { getPushPermissionStatus, requestPushNotifications } from '../../lib/pushNotifications.js'
+import { userLocalStorage } from '../../lib/userLocalStorage.js'
+import {
+  PERSONALIZED_ACTIVITY_PROFILES,
+  PERSONALIZED_MAJOR_PROFILES,
+  certificateOptions,
+} from '../../lib/personalizedCareerExamples.js'
+import { hifiveDepartment, hifiveDepartmentOptions } from '../../lib/hifiveDepartmentCatalog.js'
 import RankingScreen from './RankingScreen.jsx'
 import SaveExitDialog from '../../components/SaveExitDialog.jsx'
+
+const CAREER_CONTEXT_KEY = 'iv_personalized_example_context'
+
+function readCareerContext() {
+  try {
+    const value = JSON.parse(userLocalStorage.getItem(CAREER_CONTEXT_KEY) || '{}')
+    const source = PERSONALIZED_ACTIVITY_PROFILES.find(item => item.id === value.sourceType || item.label === value.sourceType)
+    return {
+      majorGroup: value.majorGroup || 'general',
+      departmentName: value.departmentName || '',
+      certificateId: value.certificateId || '',
+      sourceType: source?.id || 'major-practice',
+      styleId: value.styleId || 'clear',
+    }
+  } catch {
+    return { majorGroup: 'general', departmentName: '', certificateId: '', sourceType: 'major-practice', styleId: 'clear' }
+  }
+}
 
 function formatSync(value) {
   if (!value) return '이 기기에서 아직 동기화하지 않음'
   return new Date(value).toLocaleString('ko-KR', { month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })
 }
 
-export default function AccountDataScreen() {
+export default function AccountDataScreen({ onOpenCareer }) {
   const { profile } = useAuth() ?? {}
   const [view, setView] = useState('account')
   const [shared, setShared] = useState(() => isSharedDevice())
@@ -27,26 +52,43 @@ export default function AccountDataScreen() {
   const [deletePhrase, setDeletePhrase] = useState('')
   const [deleting, setDeleting] = useState(false)
   const [deleteError, setDeleteError] = useState('')
-  const [pushState, setPushState] = useState({ loading: true, supported: true, enabled: false, message: '' })
+  const [career, setCareer] = useState(readCareerContext)
+  const [careerSaved, setCareerSaved] = useState('')
+  const [evidenceStatus, setEvidenceStatus] = useState({ loading: true, count: 0, error: false })
   const initials = useMemo(() => String(profile?.display_name || '나').slice(0, 1), [profile?.display_name])
+  const departments = useMemo(() => hifiveDepartmentOptions({ includeExpansion: true }), [])
+  const certificates = useMemo(() => certificateOptions(career.majorGroup), [career.majorGroup])
 
   useEffect(() => {
     let active = true
-    getPushPermissionStatus().then(result => {
-      if (active) setPushState({ loading: false, ...result, message: '' })
+    if (!profile?.id) {
+      setEvidenceStatus({ loading: false, count: 0, error: false })
+      return () => { active = false }
+    }
+    supabase.from('cover_letter_evidence').select('id').eq('student_id', profile.id).then(({ data, error }) => {
+      if (active) setEvidenceStatus({ loading: false, count: Array.isArray(data) ? data.length : 0, error: Boolean(error) })
+    }).catch(() => {
+      if (active) setEvidenceStatus({ loading: false, count: 0, error: true })
     })
     return () => { active = false }
-  }, [])
+  }, [profile?.id])
 
-  async function enablePush() {
-    setPushState(previous => ({ ...previous, loading: true, message: '' }))
-    const result = await requestPushNotifications(profile?.id)
-    const current = await getPushPermissionStatus()
-    setPushState({
-      loading: false,
-      ...current,
-      message: result?.ok ? '선생님 메시지와 학습 알림을 받을 수 있습니다.' : '기기 설정에서 JOB고 알림을 허용해 주세요.',
+  function changeCareer(key, value) {
+    setCareerSaved('')
+    setCareer(current => {
+      if (key === 'majorGroup') return { ...current, majorGroup: value, departmentName: '', certificateId: '' }
+      if (key === 'departmentName') {
+        const matched = hifiveDepartment(value)
+        return { ...current, departmentName: value, majorGroup: matched?.majorGroup || current.majorGroup, certificateId: matched && matched.majorGroup !== current.majorGroup ? '' : current.certificateId }
+      }
+      return { ...current, [key]: value }
     })
+  }
+
+  function saveCareerContext() {
+    userLocalStorage.setItem(CAREER_CONTEXT_KEY, JSON.stringify(career))
+    setStatus(getDeviceSyncStatus())
+    setCareerSaved('저장됨 · 다음 동기화 때 PC와 휴대폰에 함께 반영됨')
   }
 
   async function syncNow() {
@@ -93,6 +135,18 @@ export default function AccountDataScreen() {
       <div className="screen-body account-data-body">
         <header className="account-identity"><span>{initials}</span><div><h1>{profile?.display_name || '학생'}</h1><p>내 학습 기록과 기기 연결</p></div></header>
 
+        <section className="account-career-panel">
+          <header><Briefcase weight="duotone" /><div><h2>취업 준비 기본정보</h2><p>자기소개서와 면접에서 공통으로 사용할 학과·자격·활동 기준</p></div></header>
+          <div className="account-career-fields">
+            <label className="is-wide"><span>학과</span><input list="account-hifive-departments" value={career.departmentName} onChange={event => changeCareer('departmentName', event.target.value)} placeholder="학과명을 입력하거나 선택" /><datalist id="account-hifive-departments">{departments.map(item => <option key={item.name} value={item.name}>{item.schoolCount}개교</option>)}</datalist></label>
+            <label><span>학과군</span><select value={career.majorGroup} onChange={event => changeCareer('majorGroup', event.target.value)}>{PERSONALIZED_MAJOR_PROFILES.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
+            <label><span>대표 활동</span><select value={career.sourceType} onChange={event => changeCareer('sourceType', event.target.value)}>{PERSONALIZED_ACTIVITY_PROFILES.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
+            <label className="is-wide"><span>취득·준비 중인 자격</span><select value={career.certificateId} onChange={event => changeCareer('certificateId', event.target.value)}><option value="">아직 선택하지 않음</option>{certificates.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
+          </div>
+          <div className="account-career-actions"><button onClick={saveCareerContext}>기본정보 저장</button><button onClick={() => onOpenCareer?.()}>작성근거 관리</button></div>
+          <p className={evidenceStatus.error ? 'is-error' : ''}>{evidenceStatus.loading ? '저장한 작성근거 확인 중' : evidenceStatus.error ? '작성근거를 불러오지 못함 · 자기소개서관에서 다시 확인' : `저장한 작성근거 ${evidenceStatus.count}장`}{careerSaved ? ` · ${careerSaved}` : ''}</p>
+        </section>
+
         <section className="account-sync-panel">
           <div><b>PC·휴대폰 이어하기</b><span>{formatSync(status.lastSync)} · {status.dirty}개 변경 대기</span></div>
           <button onClick={syncNow} disabled={syncing}><ArrowsClockwise /> {syncing ? '동기화 중' : '지금 동기화'}</button>
@@ -107,10 +161,8 @@ export default function AccountDataScreen() {
 
         <section className="account-setting-row">
           <Bell />
-          <div><b>기기 알림</b><span>{pushState.enabled ? '선생님 메시지와 복습 소식을 받을 수 있음' : pushState.message || '필요할 때 직접 켜며 로그인 중에는 권한 창을 띄우지 않음'}</span></div>
-          <button className="account-setting-action" disabled={pushState.loading || pushState.enabled || !pushState.supported} onClick={enablePush}>
-            {pushState.loading ? '확인 중' : pushState.enabled ? '켜짐' : pushState.supported ? '켜기' : '미지원'}
-          </button>
+          <div><b>기기 알림</b><span>현재 앱에서는 선생님 메시지를 소식 메뉴에서 확인함. 기기 알림은 안정화 뒤 다시 제공함.</span></div>
+          <button className="account-setting-action" disabled>준비 중</button>
         </section>
 
         <section className="account-reset-section">

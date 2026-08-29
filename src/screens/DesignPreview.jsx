@@ -9,6 +9,7 @@ import GuidedStudyScreen from './student/GuidedStudyScreen.jsx'
 import InterviewStudyScreen from './student/InterviewStudyScreen.jsx'
 import TeacherLearningPreview from './teacher/TeacherLearningPreview.jsx'
 import CourseListScreen from './student/CourseListScreen.jsx'
+import AccountDataScreen from './student/AccountDataScreen.jsx'
 import { campusCourseTarget } from '../lib/studentCampusRoutes.js'
 import { rememberStudentLearningContext } from '../lib/studentLearningJourney.js'
 import { buildStudySummaryCards } from './student/StudySummary.jsx'
@@ -59,7 +60,7 @@ export default function DesignPreview() {
               onGoStudy={target => { setStudentTarget(typeof target === 'string' || target == null ? campusCourseTarget(target) : target); setMode('student-study') }}
               onGoWrong={() => {}}
               onOpenMission={() => {}} />
-            <PreviewBottomNav onMessages={() => setMode('student-messages')} />
+            <PreviewBottomNav onMessages={() => setMode('student-messages')} onMe={() => setMode('student-account')} />
           </div>
         )}
         {mode === 'student-study' && <div className="preview-learning"><CourseListScreen
@@ -68,7 +69,13 @@ export default function DesignPreview() {
           onBack={() => setMode('student')}
         /></div>}
         {mode === 'student-messages' && (
-          <div className="preview-phone"><NotificationsScreen demo /><PreviewBottomNav active="messages" onMessages={() => {}} /></div>
+          <div className="preview-phone"><NotificationsScreen demo /><PreviewBottomNav active="messages" onMessages={() => {}} onMe={() => setMode('student-account')} /></div>
+        )}
+        {mode === 'student-account' && (
+          <div className="preview-phone"><AccountDataScreen onOpenCareer={() => {
+            setStudentTarget({ subject: 'cover-letter', area: null, lesson: null, mode: 'cover-practical' })
+            setMode('student-study')
+          }} /><PreviewBottomNav active="me" onMessages={() => setMode('student-messages')} onMe={() => {}} /></div>
         )}
         {mode === 'personality-wording' && (() => {
           const lesson = PERSONALITY_STUDY_PROGRAM.areas.find(area => area.id === 'response')?.lessons.find(item => item.id === 'personality-wording')
@@ -123,13 +130,13 @@ export default function DesignPreview() {
   )
 }
 
-function PreviewBottomNav({ active = 'home', onMessages }) {
+function PreviewBottomNav({ active = 'home', onMessages, onMe }) {
   const items = [
     { id: 'home', label: '홈', icon: House },
     { id: 'study', label: '탐험', icon: Compass },
     { id: 'growth', label: '성장', icon: ChartLineUp },
     { id: 'messages', label: '소식', icon: Bell, onClick: onMessages },
-    { id: 'me', label: '나', icon: UserCircle },
+    { id: 'me', label: '나', icon: UserCircle, onClick: onMe },
   ]
   return <nav className="bottom-tab preview-bottom-tab">{items.map(item => { const Icon = item.icon; return <button key={item.id} className={`tab-item ${active === item.id ? 'active' : ''}`} onClick={item.onClick}><span className="tab-icon"><Icon weight={active === item.id ? 'fill' : 'regular'} /></span>{item.label}</button> })}</nav>
 }

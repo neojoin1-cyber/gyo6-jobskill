@@ -469,6 +469,21 @@ html.teacher-mode[data-teacher-view='wide'] .learning-link-chain > div { grid-te
 .account-section-tabs button { flex: 1; border: 0; border-bottom: 3px solid transparent; background: transparent; color: #687586; font-size: 12px; font-weight: 800; cursor: pointer; }
 .account-section-tabs button.is-on { border-bottom-color: #1769f6; color: #1769f6; }
 .account-data-body { padding: 18px 16px 28px; }
+.account-career-panel { display: grid; gap: 12px; margin-top: 16px; padding: 15px; border: 1px solid #b9d5ce; border-left: 4px solid #0f766e; border-radius: 7px; background: #fff; }
+.account-career-panel > header { display: flex; align-items: flex-start; gap: 9px; }
+.account-career-panel > header > svg { width: 24px; flex: 0 0 auto; color: #0f766e; }
+.account-career-panel h2 { margin: 0; font-size: 14px; }
+.account-career-panel header p { margin: 3px 0 0; color: #667487; font-size: 9px; line-height: 1.45; }
+.account-career-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.account-career-fields label { min-width: 0; display: grid; gap: 4px; }
+.account-career-fields label.is-wide { grid-column: 1 / -1; }
+.account-career-fields label > span { color: #334155; font-size: 9px; font-weight: 900; }
+.account-career-fields input, .account-career-fields select { width: 100%; min-height: 40px; padding: 0 9px; border: 1px solid #cbd5e1; border-radius: 6px; background: #fff; color: #172033; font: inherit; font-size: 10px; }
+.account-career-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+.account-career-actions button { min-height: 40px; border: 1px solid #0f766e; border-radius: 6px; background: #fff; color: #0f766e; font-size: 10px; font-weight: 900; }
+.account-career-actions button:first-child { background: #0f766e; color: #fff; }
+.account-career-panel > p { margin: 0; color: #137b69; font-size: 9px; font-weight: 700; line-height: 1.45; }
+.account-career-panel > p.is-error { color: #b45309; }
 .account-identity { display: flex; align-items: center; gap: 12px; padding-bottom: 17px; border-bottom: 1px solid #dce3eb; }
 .account-identity > span { width: 48px; height: 48px; display: grid; place-items: center; flex: 0 0 auto; border-radius: 8px; background: #1769f6; color: #fff; font-size: 18px; font-weight: 900; }
 .account-identity h1 { margin: 0; font-size: 18px; }
@@ -488,6 +503,10 @@ html.teacher-mode[data-teacher-view='wide'] .learning-link-chain > div { grid-te
 .account-setting-row span { color: #748193; font-size: 9px; line-height: 1.45; }
 .account-setting-action { min-width: 58px; min-height: 34px; padding: 0 10px; border: 1px solid #1769f6; border-radius: 6px; background: #fff; color: #1769f6; font-size: 10px; font-weight: 900; cursor: pointer; }
 .account-setting-action:disabled { border-color: #cbd5e1; color: #748193; cursor: default; }
+@media (max-width: 430px) {
+  .account-career-fields, .account-career-actions { grid-template-columns: 1fr; }
+  .account-career-fields label.is-wide { grid-column: 1; }
+}
 .switch-control { width: 42px; height: 24px; padding: 3px; border: 0; border-radius: 12px; background: #c7ced8; cursor: pointer; }
 .switch-control span { width: 18px; height: 18px; display: block; border-radius: 50%; background: #fff; transition: transform .15s ease; }
 .switch-control.is-on { background: #137b69; }
