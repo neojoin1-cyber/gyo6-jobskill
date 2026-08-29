@@ -554,6 +554,7 @@ html.teacher-mode[data-teacher-view='wide'] .learning-link-chain > div { grid-te
 .account-custom-fields > header b { color: #334155; font-size: 11px; }
 .account-custom-fields > header small { margin-top: 2px; color: #667487; font-size: 9px; }
 .account-custom-fields > header button { min-height: 34px; flex: 0 0 auto; display: inline-flex; align-items: center; gap: 4px; padding: 0 9px; border: 1px solid #0f766e; border-radius: 5px; background: #fff; color: #0f766e; font-size: 10px; font-weight: 900; white-space: nowrap; cursor: pointer; }
+.account-custom-fields > header button:disabled { border-color: #b8c5d6; color: #667487; background: #eef2f6; cursor: default; }
 .account-custom-fields > header button svg { width: 14px; }
 .account-custom-fields > div { display: grid; grid-template-columns: minmax(90px, .7fr) minmax(0, 1.3fr) 36px; gap: 5px; }
 .account-custom-fields > div button { width: 36px; min-height: 40px; display: grid; place-items: center; border: 1px solid #d8a7a7; border-radius: 5px; background: #fff; color: #b42318; cursor: pointer; }

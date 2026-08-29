@@ -1,5 +1,6 @@
 export const CAREER_CONTEXT_KEY = 'iv_personalized_example_context'
 export const CAREER_PROFILE_VERSION = 4
+export const CAREER_PROFILE_SYNC_MAX_BYTES = 350_000
 
 export const SCHOOL_GRADE_OPTIONS = [
   { id: 1, label: '1학년' },
@@ -185,63 +186,90 @@ export const QUALIFICATION_CATALOG = [
   q('opic', 'OPIc', 'ACTFL·멀티캠퍼스', '어학시험', ['general', 'business', 'service']),
 ].sort((a, b) => a.name.localeCompare(b.name, 'ko-KR', { sensitivity: 'base' }))
 
-const text = value => String(value || '').trim()
+const text = (value, maxLength = 1000) => String(value || '').trim().slice(0, maxLength)
 const grade = value => Math.max(1, Math.min(3, Number(value) || 1))
 const list = value => Array.isArray(value) ? value.filter(Boolean) : []
+
+export function careerProfileByteLength(value) {
+  const serialized = JSON.stringify(value || {})
+  return typeof TextEncoder === 'undefined' ? serialized.length * 2 : new TextEncoder().encode(serialized).length
+}
+
+export function addMonthsToIsoDate(value, months) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(text(value))
+  const amount = Number(months)
+  if (!match || !Number.isInteger(amount) || amount <= 0) return ''
+  const year = Number(match[1])
+  const month = Number(match[2]) - 1
+  const day = Number(match[3])
+  if (month < 0 || month > 11) return ''
+  const inputLastDay = new Date(Date.UTC(year, month + 1, 0)).getUTCDate()
+  if (day < 1 || day > inputLastDay) return ''
+  const targetMonth = month + amount
+  const targetYear = year + Math.floor(targetMonth / 12)
+  const normalizedMonth = ((targetMonth % 12) + 12) % 12
+  const lastDay = new Date(Date.UTC(targetYear, normalizedMonth + 1, 0)).getUTCDate()
+  return `${targetYear}-${String(normalizedMonth + 1).padStart(2, '0')}-${String(Math.min(day, lastDay)).padStart(2, '0')}`
+}
 
 function normalizeQualification(item = {}, index = 0, currentGrade = 1) {
   const catalog = QUALIFICATION_CATALOG.find(value => value.id === item.catalogId)
   const knownStatus = !item.status ? 'preparing' : QUALIFICATION_STATUSES.some(status => status.id === item.status) ? item.status : 'custom'
-  const inferredLevelKind = item.levelKind || (item.level ? (catalog?.levels?.includes(item.level) ? 'preset' : 'custom') : 'none')
+  const rawLevel = text(item.level)
+  const inferredLevelKind = item.levelKind || (rawLevel ? (catalog?.levels?.includes(rawLevel) ? 'preset' : 'custom') : 'none')
+  const levelKind = inferredLevelKind === 'preset' && !catalog?.levels?.includes(rawLevel)
+    ? (rawLevel ? 'custom' : 'none')
+    : ['none', 'preset', 'custom'].includes(inferredLevelKind) ? inferredLevelKind : 'custom'
   const validityType = QUALIFICATION_VALIDITY_TYPES.some(value => value.id === item.validityType)
     ? item.validityType
     : catalog?.validityType || 'none'
+  const completed = ['writtenPassed', 'practicalPassed', 'acquired', 'custom'].includes(knownStatus)
   return {
-    ...item,
-    id: item.id || `qualification-legacy-${index}`,
-    name: text(item.name),
-    issuer: text(item.issuer),
+    id: text(item.id, 100) || `qualification-legacy-${index}`,
+    name: text(item.name, 120),
+    issuer: text(item.issuer, 160),
     status: knownStatus,
-    statusDetail: knownStatus === 'custom' ? text(item.statusDetail || item.status) : text(item.statusDetail),
-    level: text(item.level),
-    levelKind: ['none', 'preset', 'custom'].includes(inferredLevelKind) ? inferredLevelKind : 'custom',
+    statusDetail: knownStatus === 'custom' ? text(item.statusDetail || item.status, 120) : '',
+    level: levelKind === 'none' ? '' : text(rawLevel, 60),
+    levelKind,
     validityType,
-    validFrom: text(item.validFrom),
-    validUntil: text(item.validUntil),
-    validityMonths: Math.max(0, Math.min(240, Number(item.validityMonths ?? catalog?.validityMonths) || 0)),
-    validityNote: text(item.validityNote || catalog?.validityNote),
-    validitySource: text(item.validitySource || catalog?.validitySource),
+    validFrom: validityType === 'expires' ? text(item.validFrom) : '',
+    validUntil: validityType === 'expires' ? text(item.validUntil) : '',
+    validityMonths: validityType === 'expires' ? Math.max(0, Math.min(240, Number(item.validityMonths ?? catalog?.validityMonths) || 0)) : 0,
+    validityNote: text(item.validityNote || catalog?.validityNote, 300),
+    validitySource: text(item.validitySource || catalog?.validitySource, 500),
     grade: grade(item.grade || currentGrade),
-    achievedAt: text(item.achievedAt),
-    targetDate: text(item.targetDate),
-    proof: text(item.proof),
-    notes: text(item.notes),
-    profileId: text(item.profileId),
-    catalogId: text(item.catalogId),
+    achievedAt: completed ? text(item.achievedAt) : '',
+    targetDate: completed ? '' : text(item.targetDate),
+    proof: text(item.proof, 500),
+    notes: text(item.notes, 1000),
+    profileId: text(item.profileId, 100),
+    catalogId: text(item.catalogId, 100),
   }
 }
 
 function normalizeActivity(item = {}, index = 0, currentGrade = 1) {
+  const categoryId = EXTRACURRICULAR_CATEGORIES.some(category => category.id === item.category) ? item.category : 'other'
+  const category = EXTRACURRICULAR_CATEGORIES.find(value => value.id === categoryId)
   return {
-    ...item,
-    id: item.id || `activity-legacy-${index}`,
-    category: EXTRACURRICULAR_CATEGORIES.some(category => category.id === item.category) ? item.category : 'other',
-    customCategoryName: text(item.customCategoryName),
-    name: text(item.name),
-    organizer: text(item.organizer),
-    rank: text(item.rank),
-    role: text(item.role),
-    outcome: text(item.outcome),
-    notes: text(item.notes),
-    proof: text(item.proof),
-    period: text(item.period),
-    hours: text(item.hours),
+    id: text(item.id, 100) || `activity-legacy-${index}`,
+    category: categoryId,
+    customCategoryName: categoryId === 'other' ? text(item.customCategoryName, 80) : '',
+    name: text(item.name, 160),
+    organizer: text(item.organizer, 160),
+    rank: category?.usesRank ? text(item.rank, 80) : '',
+    role: text(item.role, 500),
+    outcome: text(item.outcome, 1000),
+    notes: text(item.notes, 1000),
+    proof: text(item.proof, 500),
+    period: text(item.period, 80),
+    hours: category?.usesHours ? text(item.hours, 40) : '',
     grade: grade(item.grade || currentGrade),
-    skills: list(item.skills).map(text).filter(Boolean).slice(0, 8),
+    skills: list(item.skills).map(value => text(value, 80)).filter(Boolean).slice(0, 8),
     customFields: list(item.customFields).map((field, fieldIndex) => ({
-      id: text(field?.id) || `custom-field-${fieldIndex}`,
-      label: text(field?.label),
-      value: text(field?.value),
+      id: text(field?.id, 100) || `custom-field-${fieldIndex}`,
+      label: text(field?.label, 80),
+      value: text(field?.value, 500),
     })).filter(field => field.label || field.value).slice(0, 10),
   }
 }
@@ -286,21 +314,20 @@ function activityStrength(item = {}) {
 
 export function normalizeCareerContext(value = {}) {
   const currentGrade = grade(value.currentGrade)
-  const qualifications = list(value.qualifications).filter(item => item?.name).map((item, index) => normalizeQualification(item, index, currentGrade))
-  const extracurricularActivities = list(value.extracurricularActivities).filter(item => item?.name).map((item, index) => normalizeActivity(item, index, currentGrade))
+  const qualifications = list(value.qualifications).filter(item => item?.name).slice(0, 100).map((item, index) => normalizeQualification(item, index, currentGrade))
+  const extracurricularActivities = list(value.extracurricularActivities).filter(item => item?.name).slice(0, 200).map((item, index) => normalizeActivity(item, index, currentGrade))
   return {
-    ...value,
     profileVersion: CAREER_PROFILE_VERSION,
     currentGrade,
-    majorGroup: value.majorGroup || 'general',
-    departmentName: text(value.departmentName),
-    targetIndustry: text(value.targetIndustry),
-    targetRole: text(value.targetRole),
-    semesterGoal: text(value.semesterGoal),
-    lastReviewedAt: text(value.lastReviewedAt),
-    styleId: value.styleId || 'clear',
-    sourceType: value.sourceType || 'major-practice',
-    certificateId: value.certificateId || '',
+    majorGroup: Object.prototype.hasOwnProperty.call(MAJOR_DEVELOPMENT_ACTIONS, value.majorGroup) ? value.majorGroup : 'general',
+    departmentName: text(value.departmentName, 120),
+    targetIndustry: text(value.targetIndustry, 160),
+    targetRole: text(value.targetRole, 160),
+    semesterGoal: text(value.semesterGoal, 500),
+    lastReviewedAt: text(value.lastReviewedAt, 40),
+    styleId: text(value.styleId, 40) || 'clear',
+    sourceType: text(value.sourceType, 60) || 'major-practice',
+    certificateId: text(value.certificateId, 100),
     qualifications,
     extracurricularActivities,
   }
@@ -319,7 +346,7 @@ export function careerContextForEngine(value = {}) {
     qualificationStatus: qualification?.status || '',
     qualificationStatusLabel: qualificationStatusLabel(qualification),
     qualificationLevel: qualification?.level || '',
-    qualificationValidUntil: qualification?.validUntil || '',
+    qualificationValidUntil: qualification?.validityType === 'expires' ? qualification.validUntil || '' : '',
     qualificationSummary: context.qualifications.slice().sort((a, b) => qualificationStrength(b) - qualificationStrength(a)).slice(0, 3).map(item => `${item.name}${item.level ? ` ${item.level}` : ''}(${qualificationStatusLabel(item)})`),
     sourceType: category?.sourceType || context.sourceType || 'major-practice',
     activityName: activity?.name || '',

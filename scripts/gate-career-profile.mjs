@@ -1,8 +1,11 @@
 import {
   EXTRACURRICULAR_CATEGORIES,
   QUALIFICATION_CATALOG,
+  CAREER_PROFILE_SYNC_MAX_BYTES,
   QUALIFICATION_STATUSES,
   QUALIFICATION_VALIDITY_TYPES,
+  addMonthsToIsoDate,
+  careerProfileByteLength,
   careerContextForEngine,
   extracurricularCategoryLabel,
   normalizeCareerContext,
@@ -58,6 +61,32 @@ expect(detailed.qualifications[0].status === 'custom' && qualificationStatusLabe
 expect(detailed.qualifications[0].level === '심화' && detailed.qualifications[0].validUntil === '2027-01-01', '직접 급수·유효기간 보존 실패')
 expect(extracurricularCategoryLabel(detailed.extracurricularActivities[0]) === '교내 방송 제작', '직접 활동 구분명 보존 실패')
 expect(detailed.extracurricularActivities[0].customFields[0].value === '카메라', '활동 추가 입력칸 보존 실패')
+
+expect(addMonthsToIsoDate('2026-01-01', 24) === '2028-01-01', '한국 시간대 자격 유효기간 날짜 밀림')
+expect(addMonthsToIsoDate('2024-02-29', 12) === '2025-02-28', '윤년 자격 유효기간 말일 보정 실패')
+expect(addMonthsToIsoDate('2026-13-01', 12) === '' && addMonthsToIsoDate('2026-02-30', 12) === '', '잘못된 기준일 차단 실패')
+expect(addMonthsToIsoDate('2026-01-01', 1.5) === '', '소수 유효기간 차단 실패')
+const ghosts = normalizeCareerContext({
+  qualifications: [{ name: '숨은 값 검사', status: 'preparing', statusDetail: '합격', level: '1급', levelKind: 'none', validityType: 'none', validFrom: '2026-01-01', validUntil: '2030-01-01', achievedAt: '2026-01-01', targetDate: '2026-12-01' }],
+  extracurricularActivities: [{ category: 'club', customCategoryName: '숨은 구분', name: '활동', rank: '금상', hours: '99시간' }],
+})
+expect(!ghosts.qualifications[0].level && !ghosts.qualifications[0].statusDetail, '선택 변경 뒤 숨은 급수·상태 값 제거 실패')
+expect(!ghosts.qualifications[0].validFrom && !ghosts.qualifications[0].validUntil && !ghosts.qualifications[0].achievedAt, '유효기간·진행상태 변경 뒤 숨은 날짜 제거 실패')
+expect(ghosts.qualifications[0].targetDate === '2026-12-01', '준비 중 자격 목표일 보존 실패')
+expect(!ghosts.extracurricularActivities[0].customCategoryName && !ghosts.extracurricularActivities[0].rank && !ghosts.extracurricularActivities[0].hours, '활동 구분 변경 뒤 숨은 값 제거 실패')
+
+const oversized = normalizeCareerContext({
+  injectedAdminFlag: true,
+  majorGroup: 'not-a-real-major',
+  departmentName: '학'.repeat(5000),
+  qualifications: Array.from({ length: 150 }, (_, index) => ({ name: `자격${index}`, unknownPayload: 'x'.repeat(5000) })),
+  extracurricularActivities: Array.from({ length: 250 }, (_, index) => ({ category: 'other', name: `활동${index}`, customFields: Array.from({ length: 20 }, () => ({ label: '항목'.repeat(100), value: '값'.repeat(1000) })) })),
+})
+expect(!Object.hasOwn(oversized, 'injectedAdminFlag') && !Object.hasOwn(oversized.qualifications[0], 'unknownPayload'), '허용되지 않은 프로필 속성 제거 실패')
+expect(oversized.majorGroup === 'general' && oversized.departmentName.length === 120, '프로필 열거값·문자열 상한 실패')
+expect(oversized.qualifications.length === 100 && oversized.extracurricularActivities.length === 200, '프로필 기록 개수 상한 실패')
+expect(oversized.extracurricularActivities[0].customFields.length === 10 && oversized.extracurricularActivities[0].customFields[0].value.length === 500, '사용자 정의 입력 상한 실패')
+expect(careerProfileByteLength(oversized) > CAREER_PROFILE_SYNC_MAX_BYTES, '동기화 용량 초과 입력 탐지 실패')
 
 if (failures.length) {
   failures.forEach(message => console.error(`[career-profile] FAIL: ${message}`))

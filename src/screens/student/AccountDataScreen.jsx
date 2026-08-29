@@ -16,8 +16,11 @@ import {
   QUALIFICATION_STATUSES,
   QUALIFICATION_VALIDITY_TYPES,
   SCHOOL_GRADE_OPTIONS,
+  CAREER_PROFILE_SYNC_MAX_BYTES,
+  addMonthsToIsoDate,
   careerEvidenceSeeds,
   careerGradeRoadmap,
+  careerProfileByteLength,
   careerContextForEngine,
   careerProfileReadiness,
   createRecordId,
@@ -41,14 +44,6 @@ function readCareerContext() {
 
 const emptyQualification = (currentGrade = 1) => ({ name: '', issuer: '', status: 'preparing', statusDetail: '', level: '', levelKind: 'none', validityType: 'none', validFrom: '', validUntil: '', validityMonths: 0, validityNote: '', validitySource: '', grade: currentGrade, achievedAt: '', targetDate: '', proof: '', notes: '', profileId: '', catalogId: '' })
 const emptyActivity = (currentGrade = 1) => ({ category: 'club', customCategoryName: '', name: '', organizer: '', rank: '', hours: '', role: '', outcome: '', notes: '', proof: '', period: '', grade: currentGrade, skills: [], customFields: [] })
-
-const addMonths = (date, months) => {
-  if (!date || !months) return ''
-  const value = new Date(`${date}T00:00:00`)
-  if (Number.isNaN(value.getTime())) return ''
-  value.setMonth(value.getMonth() + Number(months))
-  return value.toISOString().slice(0, 10)
-}
 
 function QualificationDetailFields({ record, onChange, currentGrade }) {
   const catalog = QUALIFICATION_CATALOG.find(item => item.id === record.catalogId)
@@ -80,18 +75,39 @@ function QualificationDetailFields({ record, onChange, currentGrade }) {
     onChange(passed ? 'achievedAt' : 'targetDate', value)
     if (passed && record.validityType === 'expires') {
       onChange('validFrom', value)
-      if (record.validityMonths) onChange('validUntil', addMonths(value, record.validityMonths))
+      if (record.validityMonths) onChange('validUntil', addMonthsToIsoDate(value, record.validityMonths))
+    }
+  }
+
+  function changeStatus(value) {
+    const nextPassed = ['writtenPassed', 'practicalPassed', 'acquired', 'custom'].includes(value)
+    onChange('status', value)
+    if (value !== 'custom') onChange('statusDetail', '')
+    if (nextPassed) onChange('targetDate', '')
+    else onChange('achievedAt', '')
+  }
+
+  function changeValidity(value) {
+    onChange('validityType', value)
+    if (value !== 'expires') {
+      onChange('validFrom', '')
+      onChange('validUntil', '')
+      return
+    }
+    if (record.achievedAt) {
+      onChange('validFrom', record.achievedAt)
+      if (record.validityMonths) onChange('validUntil', addMonthsToIsoDate(record.achievedAt, record.validityMonths))
     }
   }
 
   return <>
     <CareerChoiceMenu label={catalog?.levelLabel || '급수·등급'} hint="선택 또는 직접 입력" value={levelChoice} options={levelOptions} onChange={changeLevel} />
     {record.levelKind === 'custom' && <label><span>{catalog?.levelLabel || '급수·등급'} 직접 입력</span><input value={record.level || ''} onChange={event => onChange('level', event.target.value)} placeholder="예: 1급, A등급, 850점" /></label>}
-    <CareerChoiceMenu label="진행 상태" hint="전형에 맞게 선택" value={record.status || 'preparing'} options={QUALIFICATION_STATUSES} onChange={value => onChange('status', value)} />
+    <CareerChoiceMenu label="진행 상태" hint="전형에 맞게 선택" value={record.status || 'preparing'} options={QUALIFICATION_STATUSES} onChange={changeStatus} />
     {record.status === 'custom' && <label><span>상태 직접 입력</span><input value={record.statusDetail || ''} onChange={event => onChange('statusDetail', event.target.value)} placeholder="예: 서류 제출, 면접 대기" /></label>}
     <label><span>기록 학년</span><select value={record.grade || currentGrade} onChange={event => onChange('grade', Number(event.target.value))}>{SCHOOL_GRADE_OPTIONS.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
     <label><span>{dateLabel}</span><input type="date" value={passed ? record.achievedAt || '' : record.targetDate || ''} onChange={event => changeResultDate(event.target.value)} /></label>
-    <CareerChoiceMenu label="유효기간" hint="자격별로 다름" value={record.validityType || 'none'} options={QUALIFICATION_VALIDITY_TYPES} onChange={value => onChange('validityType', value)} />
+    <CareerChoiceMenu label="유효기간" hint="자격별로 다름" value={record.validityType || 'none'} options={QUALIFICATION_VALIDITY_TYPES} onChange={changeValidity} />
     {record.validityType === 'expires' && <>
       <label><span>유효 시작일</span><input type="date" value={record.validFrom || ''} onChange={event => onChange('validFrom', event.target.value)} /></label>
       <label><span>만료일</span><input type="date" value={record.validUntil || ''} onChange={event => onChange('validUntil', event.target.value)} /></label>
@@ -106,9 +122,16 @@ function ActivityDetailFields({ record, onChange, currentGrade }) {
   const guide = extracurricularCategory(record)
   const customFields = Array.isArray(record.customFields) ? record.customFields : []
   const updateCustomField = (index, key, value) => onChange('customFields', customFields.map((field, fieldIndex) => fieldIndex === index ? { ...field, [key]: value } : field))
+  const changeCategory = value => {
+    const next = extracurricularCategory({ category: value })
+    onChange('category', value)
+    if (value !== 'other') onChange('customCategoryName', '')
+    if (!next.usesRank) onChange('rank', '')
+    if (!next.usesHours) onChange('hours', '')
+  }
 
   return <>
-    <CareerChoiceMenu label="활동 구분" hint="선택하면 입력 항목이 바뀜" value={record.category || 'club'} options={EXTRACURRICULAR_CATEGORIES} onChange={value => onChange('category', value)} className="is-wide" />
+    <CareerChoiceMenu label="활동 구분" hint="선택하면 입력 항목이 바뀜" value={record.category || 'club'} options={EXTRACURRICULAR_CATEGORIES} onChange={changeCategory} className="is-wide" />
     {record.category === 'other' && <label className="is-wide"><span>특별 활동 구분명</span><input value={record.customCategoryName || ''} onChange={event => onChange('customCategoryName', event.target.value)} placeholder="예: 교내 방송 제작, 가족 돌봄, 개인 창작" /></label>}
     <label><span>{guide.nameLabel}</span><input value={record.name || ''} onChange={event => onChange('name', event.target.value)} placeholder={`${guide.nameLabel} 직접 입력`} /></label>
     <label><span>{guide.organizerLabel}</span><input value={record.organizer || ''} onChange={event => onChange('organizer', event.target.value)} placeholder="학교·기업·기관·단체" /></label>
@@ -122,7 +145,7 @@ function ActivityDetailFields({ record, onChange, currentGrade }) {
     <label className="is-wide"><span>확인 자료</span><input value={record.proof || ''} onChange={event => onChange('proof', event.target.value)} placeholder="작업 파일·활동일지·사진·담당자 피드백" /></label>
     <label className="is-wide"><span>비고·배운 점</span><input value={record.notes || ''} onChange={event => onChange('notes', event.target.value)} placeholder="상황 설명이나 다음에 보완할 점" /></label>
     <div className="account-custom-fields is-wide">
-      <header><div><b>나만의 추가 항목</b><small>이 활동에만 필요한 입력칸을 직접 만듭니다.</small></div><button type="button" onClick={() => onChange('customFields', [...customFields, { id: createRecordId('field'), label: '', value: '' }])}><Plus /> 입력칸 추가</button></header>
+      <header><div><b>나만의 추가 항목</b><small>이 활동에만 필요한 입력칸을 최대 10개까지 만듭니다.</small></div><button type="button" disabled={customFields.length >= 10} onClick={() => onChange('customFields', [...customFields, { id: createRecordId('field'), label: '', value: '' }])}><Plus /> {customFields.length >= 10 ? '10개 완료' : '입력칸 추가'}</button></header>
       {customFields.map((field, index) => <div key={field.id}><input aria-label="추가 항목명" value={field.label || ''} onChange={event => updateCustomField(index, 'label', event.target.value)} placeholder="항목명 예: 담당 장비" /><input aria-label="추가 항목 내용" value={field.value || ''} onChange={event => updateCustomField(index, 'value', event.target.value)} placeholder="내용 입력" /><button type="button" aria-label="추가 항목 삭제" onClick={() => onChange('customFields', customFields.filter((_, fieldIndex) => fieldIndex !== index))}><Minus /></button></div>)}
     </div>
   </>
@@ -239,6 +262,10 @@ export default function AccountDataScreen({ onOpenCareer }) {
 
   async function saveCareerContext() {
     const payload = careerContextForEngine({ ...career, lastReviewedAt: new Date().toISOString() })
+    if (careerProfileByteLength(payload) > CAREER_PROFILE_SYNC_MAX_BYTES) {
+      setCareerSaved('저장 용량을 넘었습니다 · 긴 비고·추가 항목을 줄인 뒤 다시 저장하세요')
+      return
+    }
     userLocalStorage.setItem(CAREER_CONTEXT_KEY, JSON.stringify(payload))
     setCareer(payload)
     setStatus(getDeviceSyncStatus())
@@ -254,10 +281,15 @@ export default function AccountDataScreen({ onOpenCareer }) {
   function developActivity(item) {
     const seed = careerEvidenceSeeds(career).find(value => value.id === item.id)
     if (!seed) return
+    const profile = careerContextForEngine(career)
+    if (careerProfileByteLength(profile) > CAREER_PROFILE_SYNC_MAX_BYTES) {
+      setCareerSaved('작성근거로 보내기 전에 긴 비고·추가 항목을 줄여 저장하세요')
+      return
+    }
     userLocalStorage.setItem('iv_cover_evidence_seed_v1', JSON.stringify(seed))
     userLocalStorage.setItem('iv_cover_open_evidence', '1')
-    userLocalStorage.setItem(CAREER_CONTEXT_KEY, JSON.stringify(careerContextForEngine(career)))
-    onOpenCareer?.({ workspace: 'evidence', evidenceSeed: seed, careerProfile: careerContextForEngine(career) })
+    userLocalStorage.setItem(CAREER_CONTEXT_KEY, JSON.stringify(profile))
+    onOpenCareer?.({ workspace: 'evidence', evidenceSeed: seed, careerProfile: profile })
   }
 
   async function syncNow() {
