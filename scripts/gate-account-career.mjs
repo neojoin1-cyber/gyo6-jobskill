@@ -28,7 +28,7 @@ for (const token of ['role="combobox"', 'role="listbox"', '직접 입력']) {
   if (!searchInput.includes(token)) failures.push(`검색·직접입력 컴포넌트에 ${token} 계약이 없음`)
 }
 if (!departmentCatalog.includes("localeCompare(b.name, 'ko-KR'")) failures.push('학과 목록이 가나다순으로 정렬되지 않음')
-if (!shell.includes("mode: 'cover-practical'")) failures.push('나 화면에서 실전자기소개서 근거 관리로 이동하지 못함')
+if (!shell.includes("'cover-evidence'") || !account.includes("workspace: 'evidence'")) failures.push('나 화면의 활동에서 근거 작성 화면으로 직접 이동하지 못함')
 if (!preview.includes("mode === 'student-account'") || !preview.includes('onMe')) failures.push('학생 웹 미리보기에서 나 화면을 검증할 수 없음')
 if (!migration.includes('TO service_role')) failures.push('근거은행 운영 자동검증 권한이 없음')
 if (account.includes('pushNotifications') || account.includes('getPushPermissionStatus')) failures.push('나 화면 진입이 네이티브 알림 모듈을 호출함')

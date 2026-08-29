@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { ArrowsClockwise, Bell, Briefcase, CheckCircle, Desktop, Plus, SignOut, Trash } from '@phosphor-icons/react'
+import { ArrowRight, ArrowsClockwise, Bell, Briefcase, CheckCircle, ClipboardText, Desktop, Plus, SignOut, Target, Trash } from '@phosphor-icons/react'
 import { useAuth } from '../../App.jsx'
 import { supabase } from '../../lib/supabase.js'
 import { getDeviceSyncStatus, syncDeviceState } from '../../lib/deviceSync.js'
@@ -7,13 +7,18 @@ import { isSharedDevice, setSharedDevice } from '../../lib/deviceSettings.js'
 import { LEARNING_DATA_GROUPS, resetLearningGroup } from '../../lib/learningDataManagement.js'
 import { deleteOwnAccount, logoutSafely } from '../../lib/sessionLifecycle.js'
 import { userLocalStorage } from '../../lib/userLocalStorage.js'
+import { loadMyCareerFeedback, publishCareerProfile } from '../../lib/careerProfileCloud.js'
 import { PERSONALIZED_MAJOR_PROFILES } from '../../lib/personalizedCareerExamples.js'
 import {
   CAREER_CONTEXT_KEY,
   EXTRACURRICULAR_CATEGORIES,
   QUALIFICATION_CATALOG,
   QUALIFICATION_STATUSES,
+  SCHOOL_GRADE_OPTIONS,
+  careerEvidenceSeeds,
+  careerGradeRoadmap,
   careerContextForEngine,
+  careerProfileReadiness,
   createRecordId,
   normalizeCareerContext,
 } from '../../lib/careerProfile.js'
@@ -30,8 +35,8 @@ function readCareerContext() {
   }
 }
 
-const emptyQualification = () => ({ name: '', issuer: '', status: 'preparing', profileId: '', catalogId: '' })
-const emptyActivity = () => ({ category: 'club', name: '', organizer: '', rank: '', role: '', outcome: '', notes: '' })
+const emptyQualification = (currentGrade = 1) => ({ name: '', issuer: '', status: 'preparing', grade: currentGrade, achievedAt: '', targetDate: '', proof: '', notes: '', profileId: '', catalogId: '' })
+const emptyActivity = (currentGrade = 1) => ({ category: 'club', name: '', organizer: '', rank: '', role: '', outcome: '', notes: '', proof: '', period: '', grade: currentGrade, skills: [] })
 
 function formatSync(value) {
   if (!value) return '이 기기에서 아직 동기화하지 않음'
@@ -52,13 +57,16 @@ export default function AccountDataScreen({ onOpenCareer }) {
   const [deleting, setDeleting] = useState(false)
   const [deleteError, setDeleteError] = useState('')
   const [career, setCareer] = useState(readCareerContext)
-  const [qualificationDraft, setQualificationDraft] = useState(emptyQualification)
-  const [activityDraft, setActivityDraft] = useState(emptyActivity)
+  const [qualificationDraft, setQualificationDraft] = useState(() => emptyQualification(readCareerContext().currentGrade))
+  const [activityDraft, setActivityDraft] = useState(() => emptyActivity(readCareerContext().currentGrade))
   const [careerSaved, setCareerSaved] = useState('')
   const [evidenceStatus, setEvidenceStatus] = useState({ loading: true, count: 0, error: false })
+  const [teacherFeedback, setTeacherFeedback] = useState(null)
   const initials = useMemo(() => String(profile?.display_name || '나').slice(0, 1), [profile?.display_name])
   const departments = useMemo(() => hifiveDepartmentOptions({ includeExpansion: true }), [])
   const qualificationCatalog = QUALIFICATION_CATALOG
+  const readiness = useMemo(() => careerProfileReadiness(career, { evidenceCount: evidenceStatus.count }), [career, evidenceStatus.count])
+  const roadmap = useMemo(() => careerGradeRoadmap(career, { evidenceCount: evidenceStatus.count }), [career, evidenceStatus.count])
 
   useEffect(() => {
     let active = true
@@ -70,6 +78,15 @@ export default function AccountDataScreen({ onOpenCareer }) {
       if (active) setEvidenceStatus({ loading: false, count: Array.isArray(data) ? data.length : 0, error: Boolean(error) })
     }).catch(() => {
       if (active) setEvidenceStatus({ loading: false, count: 0, error: true })
+    })
+    return () => { active = false }
+  }, [profile?.id])
+
+  useEffect(() => {
+    let active = true
+    if (!profile?.id) return () => { active = false }
+    loadMyCareerFeedback().then(result => {
+      if (active && result.ok) setTeacherFeedback(result.feedback)
     })
     return () => { active = false }
   }, [profile?.id])
@@ -104,7 +121,7 @@ export default function AccountDataScreen({ onOpenCareer }) {
     }
     const record = { ...qualificationDraft, id: createRecordId('qualification'), name, issuer: qualificationDraft.issuer.trim() }
     setCareer(current => ({ ...current, qualifications: [...current.qualifications, record] }))
-    setQualificationDraft(emptyQualification())
+    setQualificationDraft(emptyQualification(career.currentGrade))
     setCareerSaved('')
   }
 
@@ -121,7 +138,7 @@ export default function AccountDataScreen({ onOpenCareer }) {
       return
     }
     setCareer(current => ({ ...current, extracurricularActivities: [...current.extracurricularActivities, { ...activityDraft, id: createRecordId('activity'), name }] }))
-    setActivityDraft(emptyActivity())
+    setActivityDraft(emptyActivity(career.currentGrade))
     setCareerSaved('')
   }
 
@@ -130,17 +147,33 @@ export default function AccountDataScreen({ onOpenCareer }) {
     setCareerSaved('')
   }
 
-  function saveCareerContext() {
-    const payload = careerContextForEngine(career)
+  async function saveCareerContext() {
+    const payload = careerContextForEngine({ ...career, lastReviewedAt: new Date().toISOString() })
     userLocalStorage.setItem(CAREER_CONTEXT_KEY, JSON.stringify(payload))
     setCareer(payload)
     setStatus(getDeviceSyncStatus())
-    setCareerSaved('저장됨 · 다음 동기화 때 PC와 휴대폰에 함께 반영됨')
+    setCareerSaved('이 기기에 저장됨 · 학교 계정 연결 중')
+    const published = await publishCareerProfile(payload, { evidenceCount: evidenceStatus.count })
+    setCareerSaved(published.ok
+      ? '저장·학교 계정 연결 완료 · PC와 휴대폰에서 이어짐'
+      : published.offline
+        ? '이 기기에 저장됨 · 인터넷 연결 후 학교 계정에 반영됨'
+        : '이 기기에는 저장됨 · 지금 동기화에서 다시 연결할 수 있음')
+  }
+
+  function developActivity(item) {
+    const seed = careerEvidenceSeeds(career).find(value => value.id === item.id)
+    if (!seed) return
+    userLocalStorage.setItem('iv_cover_evidence_seed_v1', JSON.stringify(seed))
+    userLocalStorage.setItem('iv_cover_open_evidence', '1')
+    userLocalStorage.setItem(CAREER_CONTEXT_KEY, JSON.stringify(careerContextForEngine(career)))
+    onOpenCareer?.({ workspace: 'evidence', evidenceSeed: seed, careerProfile: careerContextForEngine(career) })
   }
 
   async function syncNow() {
     setSyncing(true)
     const result = await syncDeviceState()
+    if (result.ok) await publishCareerProfile(career, { evidenceCount: evidenceStatus.count })
     setStatus(getDeviceSyncStatus())
     setSyncResult(result.ok
       ? 'PC와 휴대폰에서 이어갈 준비가 됐습니다.'
@@ -184,9 +217,19 @@ export default function AccountDataScreen({ onOpenCareer }) {
 
         <section className="account-career-panel">
           <header><Briefcase weight="duotone" /><div><h2>취업 준비 기본정보</h2><p>자기소개서와 면접에서 공통으로 사용할 학과·자격·교과외활동 기록</p></div></header>
+          <section className="account-career-readiness">
+            <header><div><span>{career.currentGrade}학년 · {roadmap.stage}</span><h3>{readiness.level}</h3><p>{roadmap.headline}</p></div><strong>{readiness.score}<small>/100</small></strong></header>
+            <div className="account-readiness-bars">{readiness.checks.map(item => <div key={item.id}><span>{item.label}<b>{item.score}/{item.max}</b></span><i><em style={{ width: `${Math.round(item.score / item.max * 100)}%` }} /></i></div>)}</div>
+            <div className="account-grade-picker" aria-label="현재 학년">{SCHOOL_GRADE_OPTIONS.map(item => <button key={item.id} className={career.currentGrade === item.id ? 'is-on' : ''} onClick={() => changeCareer('currentGrade', item.id)}>{item.label}</button>)}</div>
+            <section><Target weight="fill" /><div><b>지금 먼저 할 일</b>{roadmap.nextActions.slice(0, 3).map(item => <p key={item}>{item}</p>)}</div></section>
+          </section>
+          {teacherFeedback && <section className="account-career-feedback"><ClipboardText weight="fill" /><div><span>담당 선생님 지도</span><b>{teacherFeedback.next_action}</b><p>{teacherFeedback.note}</p>{teacherFeedback.review_on && <small>{teacherFeedback.review_on}에 함께 확인</small>}</div></section>}
           <div className="account-career-fields">
             <label className="is-wide"><span>학과 <small>가나다순 목록 선택 또는 직접 입력</small></span><SearchSuggestionInput value={career.departmentName} onChange={value => changeCareer('departmentName', value)} onSelect={chooseDepartment} items={departments} getLabel={item => item.name} getMeta={item => `${PERSONALIZED_MAJOR_PROFILES.find(group => group.id === item.majorGroup)?.label || '공통·기타'} · ${item.schoolCount}개교`} placeholder="예: 스마트기계, 조리, 회계" ariaLabel="학과 검색 및 직접 입력" /></label>
             <label className="is-wide"><span>학과군 <small>학과 선택 후에도 직접 변경 가능</small></span><select value={career.majorGroup} onChange={event => changeCareer('majorGroup', event.target.value)}>{PERSONALIZED_MAJOR_PROFILES.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
+            <label><span>관심 산업·분야</span><input value={career.targetIndustry} onChange={event => changeCareer('targetIndustry', event.target.value)} placeholder="예: 반도체·공공 전력" /></label>
+            <label><span>관심 직무</span><input value={career.targetRole} onChange={event => changeCareer('targetRole', event.target.value)} placeholder="예: 설비보전·사무행정" /></label>
+            <label className="is-wide"><span>이번 학기 목표</span><input value={career.semesterGoal} onChange={event => changeCareer('semesterGoal', event.target.value)} placeholder="예: 전기기능사 취득과 실습 근거 카드 2장 완성" /></label>
           </div>
 
           <section className="account-career-editor">
@@ -195,10 +238,13 @@ export default function AccountDataScreen({ onOpenCareer }) {
               <label className="is-wide"><span>자격 명칭</span><SearchSuggestionInput value={qualificationDraft.name} onChange={value => setQualificationDraft(current => ({ ...current, name: value, catalogId: '', profileId: '' }))} onSelect={chooseQualification} items={qualificationCatalog} getLabel={item => item.name} getMeta={item => `${item.issuer} · ${item.type}`} placeholder="자격 명칭 검색 또는 직접 입력" ariaLabel="자격 명칭 검색 및 직접 입력" /></label>
               <label><span>발급·시행기관</span><input value={qualificationDraft.issuer} onChange={event => setQualificationDraft(current => ({ ...current, issuer: event.target.value }))} placeholder="직접 입력 가능" /></label>
               <label><span>상태</span><select value={qualificationDraft.status} onChange={event => setQualificationDraft(current => ({ ...current, status: event.target.value }))}>{QUALIFICATION_STATUSES.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
+              <label><span>기록 학년</span><select value={qualificationDraft.grade} onChange={event => setQualificationDraft(current => ({ ...current, grade: Number(event.target.value) }))}>{SCHOOL_GRADE_OPTIONS.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
+              <label><span>{qualificationDraft.status === 'acquired' ? '취득일' : '목표일'}</span><input type="date" value={qualificationDraft.status === 'acquired' ? qualificationDraft.achievedAt : qualificationDraft.targetDate} onChange={event => setQualificationDraft(current => ({ ...current, [current.status === 'acquired' ? 'achievedAt' : 'targetDate']: event.target.value }))} /></label>
+              <label className="is-wide"><span>확인 자료</span><input value={qualificationDraft.proof} onChange={event => setQualificationDraft(current => ({ ...current, proof: event.target.value }))} placeholder="예: 자격증 번호 일부·합격 확인서·학습 기록" /></label>
               <button type="button" className="account-add-record" onClick={addQualification} disabled={!qualificationDraft.name.trim()}><Plus /> 자격 추가</button>
             </div>
             <div className="account-record-list">{career.qualifications.map(item => <article key={item.id}>
-              <div className="account-record-grid"><label><span>자격 명칭</span><input value={item.name} onChange={event => updateQualification(item.id, 'name', event.target.value)} /></label><label><span>발급·시행기관</span><input value={item.issuer || ''} onChange={event => updateQualification(item.id, 'issuer', event.target.value)} /></label><label><span>상태</span><select value={item.status || 'preparing'} onChange={event => updateQualification(item.id, 'status', event.target.value)}>{QUALIFICATION_STATUSES.map(status => <option key={status.id} value={status.id}>{status.label}</option>)}</select></label></div>
+              <div className="account-record-grid"><label><span>자격 명칭</span><input value={item.name} onChange={event => updateQualification(item.id, 'name', event.target.value)} /></label><label><span>발급·시행기관</span><input value={item.issuer || ''} onChange={event => updateQualification(item.id, 'issuer', event.target.value)} /></label><label><span>상태</span><select value={item.status || 'preparing'} onChange={event => updateQualification(item.id, 'status', event.target.value)}>{QUALIFICATION_STATUSES.map(status => <option key={status.id} value={status.id}>{status.label}</option>)}</select></label><label><span>기록 학년</span><select value={item.grade || career.currentGrade} onChange={event => updateQualification(item.id, 'grade', Number(event.target.value))}>{SCHOOL_GRADE_OPTIONS.map(grade => <option key={grade.id} value={grade.id}>{grade.label}</option>)}</select></label><label><span>{item.status === 'acquired' ? '취득일' : '목표일'}</span><input type="date" value={item.status === 'acquired' ? item.achievedAt || '' : item.targetDate || ''} onChange={event => updateQualification(item.id, item.status === 'acquired' ? 'achievedAt' : 'targetDate', event.target.value)} /></label><label className="is-wide"><span>확인 자료</span><input value={item.proof || ''} onChange={event => updateQualification(item.id, 'proof', event.target.value)} /></label></div>
               <button type="button" className="account-remove-record" onClick={() => setCareer(current => ({ ...current, qualifications: current.qualifications.filter(value => value.id !== item.id) }))} aria-label={`${item.name} 삭제`} title={`${item.name} 삭제`}><Trash /></button>
             </article>)}</div>
           </section>
@@ -209,18 +255,23 @@ export default function AccountDataScreen({ onOpenCareer }) {
               <label><span>구분</span><select value={activityDraft.category} onChange={event => setActivityDraft(current => ({ ...current, category: event.target.value }))}>{EXTRACURRICULAR_CATEGORIES.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
               <label><span>명칭</span><input value={activityDraft.name} onChange={event => setActivityDraft(current => ({ ...current, name: event.target.value }))} placeholder="활동·대회·수상명" /></label>
               <label><span>주관기관</span><input value={activityDraft.organizer} onChange={event => setActivityDraft(current => ({ ...current, organizer: event.target.value }))} placeholder="학교·기관·단체" /></label>
+              <label><span>기록 학년</span><select value={activityDraft.grade} onChange={event => setActivityDraft(current => ({ ...current, grade: Number(event.target.value) }))}>{SCHOOL_GRADE_OPTIONS.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>
+              <label><span>활동 기간</span><input value={activityDraft.period} onChange={event => setActivityDraft(current => ({ ...current, period: event.target.value }))} placeholder="예: 2026.03~2026.07" /></label>
               {(activityDraft.category === 'competition' || activityDraft.category === 'award') && <label><span>순위·등급</span><input value={activityDraft.rank} onChange={event => setActivityDraft(current => ({ ...current, rank: event.target.value }))} placeholder="예: 금상, 2위" /></label>}
               <label><span>역할</span><input value={activityDraft.role} onChange={event => setActivityDraft(current => ({ ...current, role: event.target.value }))} placeholder="내가 맡은 일" /></label>
               <label><span>성과</span><input value={activityDraft.outcome} onChange={event => setActivityDraft(current => ({ ...current, outcome: event.target.value }))} placeholder="수치·변화·완료 결과" /></label>
+              <label><span>사용한 기술·태도</span><input value={activityDraft.skills.join(', ')} onChange={event => setActivityDraft(current => ({ ...current, skills: event.target.value.split(',').map(value => value.trim()).filter(Boolean) }))} placeholder="예: 협업, 검산, 고객응대" /></label>
+              <label className="is-wide"><span>확인 자료</span><input value={activityDraft.proof} onChange={event => setActivityDraft(current => ({ ...current, proof: event.target.value }))} placeholder="예: 작업 파일·활동일지·사진·담당 교사 피드백" /></label>
               <label className="is-wide"><span>비고</span><input value={activityDraft.notes} onChange={event => setActivityDraft(current => ({ ...current, notes: event.target.value }))} placeholder="기간·배운 점 등" /></label>
               <button type="button" className="account-add-record" onClick={addActivity} disabled={!activityDraft.name.trim()}><Plus /> 활동 추가</button>
             </div>
             <div className="account-record-list">{career.extracurricularActivities.map(item => <article key={item.id}>
-              <div className="account-record-grid activity-record-grid"><label><span>구분</span><select value={item.category} onChange={event => updateActivity(item.id, 'category', event.target.value)}>{EXTRACURRICULAR_CATEGORIES.map(category => <option key={category.id} value={category.id}>{category.label}</option>)}</select></label><label><span>명칭</span><input value={item.name} onChange={event => updateActivity(item.id, 'name', event.target.value)} /></label><label><span>주관기관</span><input value={item.organizer || ''} onChange={event => updateActivity(item.id, 'organizer', event.target.value)} /></label>{(item.category === 'competition' || item.category === 'award') && <label><span>순위·등급</span><input value={item.rank || ''} onChange={event => updateActivity(item.id, 'rank', event.target.value)} /></label>}<label><span>역할</span><input value={item.role || ''} onChange={event => updateActivity(item.id, 'role', event.target.value)} /></label><label><span>성과</span><input value={item.outcome || ''} onChange={event => updateActivity(item.id, 'outcome', event.target.value)} /></label><label className="is-wide"><span>비고</span><input value={item.notes || ''} onChange={event => updateActivity(item.id, 'notes', event.target.value)} /></label></div>
+              <div className="account-record-grid activity-record-grid"><label><span>구분</span><select value={item.category} onChange={event => updateActivity(item.id, 'category', event.target.value)}>{EXTRACURRICULAR_CATEGORIES.map(category => <option key={category.id} value={category.id}>{category.label}</option>)}</select></label><label><span>명칭</span><input value={item.name} onChange={event => updateActivity(item.id, 'name', event.target.value)} /></label><label><span>주관기관</span><input value={item.organizer || ''} onChange={event => updateActivity(item.id, 'organizer', event.target.value)} /></label><label><span>기록 학년</span><select value={item.grade || career.currentGrade} onChange={event => updateActivity(item.id, 'grade', Number(event.target.value))}>{SCHOOL_GRADE_OPTIONS.map(grade => <option key={grade.id} value={grade.id}>{grade.label}</option>)}</select></label><label><span>활동 기간</span><input value={item.period || ''} onChange={event => updateActivity(item.id, 'period', event.target.value)} /></label>{(item.category === 'competition' || item.category === 'award') && <label><span>순위·등급</span><input value={item.rank || ''} onChange={event => updateActivity(item.id, 'rank', event.target.value)} /></label>}<label><span>역할</span><input value={item.role || ''} onChange={event => updateActivity(item.id, 'role', event.target.value)} /></label><label><span>성과</span><input value={item.outcome || ''} onChange={event => updateActivity(item.id, 'outcome', event.target.value)} /></label><label><span>사용한 기술·태도</span><input value={(item.skills || []).join(', ')} onChange={event => updateActivity(item.id, 'skills', event.target.value.split(',').map(value => value.trim()).filter(Boolean))} /></label><label className="is-wide"><span>확인 자료</span><input value={item.proof || ''} onChange={event => updateActivity(item.id, 'proof', event.target.value)} /></label><label className="is-wide"><span>비고</span><input value={item.notes || ''} onChange={event => updateActivity(item.id, 'notes', event.target.value)} /></label></div>
+              <button type="button" className="account-develop-evidence" onClick={() => developActivity(item)}><ClipboardText />근거 카드로 발전<ArrowRight /></button>
               <button type="button" className="account-remove-record" onClick={() => setCareer(current => ({ ...current, extracurricularActivities: current.extracurricularActivities.filter(value => value.id !== item.id) }))} aria-label={`${item.name} 삭제`} title={`${item.name} 삭제`}><Trash /></button>
             </article>)}</div>
           </section>
-          <div className="account-career-sources"><span>자격 목록 확인</span><a href="https://www.q-net.or.kr/" target="_blank" rel="noreferrer">Q-Net</a><a href="https://license.korcham.net/" target="_blank" rel="noreferrer">대한상공회의소</a><a href="https://license.kpc.or.kr/" target="_blank" rel="noreferrer">KPC</a></div>
+          <div className="account-career-sources"><span>공식 자료 확인</span><a href="https://www.career.go.kr/" target="_blank" rel="noreferrer">커리어넷</a><a href="https://www.hifive.go.kr/" target="_blank" rel="noreferrer">HIFIVE</a><a href="https://www.q-net.or.kr/" target="_blank" rel="noreferrer">Q-Net</a><a href="https://license.korcham.net/" target="_blank" rel="noreferrer">대한상공회의소</a><a href="https://license.kpc.or.kr/" target="_blank" rel="noreferrer">KPC</a></div>
           <div className="account-career-actions"><button onClick={saveCareerContext}>기본정보 저장</button><button onClick={() => onOpenCareer?.()}>작성근거 관리</button></div>
           <p className={evidenceStatus.error ? 'is-error' : ''}>{evidenceStatus.loading ? '저장한 작성근거 확인 중' : evidenceStatus.error ? '작성근거를 불러오지 못함 · 자기소개서관에서 다시 확인' : `저장한 작성근거 ${evidenceStatus.count}장`}{careerSaved ? ` · ${careerSaved}` : ''}</p>
         </section>

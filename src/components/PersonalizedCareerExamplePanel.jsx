@@ -53,7 +53,7 @@ export default function PersonalizedCareerExamplePanel({
       / coverage.majors
       * HIFIVE_DEPARTMENT_SUMMARY.departmentNames,
   )
-  const options = { questionId, type: interviewType, majorGroup, departmentName, sourceType, certificateId, qualificationName: engineContext.qualificationName, qualificationIssuer: engineContext.qualificationIssuer, styleId, variant, role, targetName, evidenceAction, evidenceResult }
+  const options = { questionId, type: interviewType, majorGroup, departmentName, sourceType, certificateId, qualificationName: engineContext.qualificationName, qualificationIssuer: engineContext.qualificationIssuer, activityName: engineContext.activityName, activityRole: engineContext.activityRole, activityOutcome: engineContext.activityOutcome, styleId, variant, role: role || engineContext.targetRole, targetName, evidenceAction, evidenceResult }
   const example = interviewType ? buildPersonalizedInterviewExample(options) : buildPersonalizedCoverExample(options)
 
   useEffect(() => {
@@ -79,6 +79,7 @@ export default function PersonalizedCareerExamplePanel({
 
   return <section className="personalized-example-panel">
     <header><div><span>HIFIVE 학과 기반 · 가상 구조 예시</span><b>{interviewType ? '내 조건으로 답변 비교' : '내 조건으로 문항 예시 비교'}</b><small>공통 학과 {HIFIVE_DEPARTMENT_SUMMARY.repeatedDepartmentNames}개 우선 · 학과 반영 {departmentCoverage.toLocaleString('ko-KR')}개 조합</small></div><button onClick={() => setVariant(value => (value + 1) % coverage.variants)} aria-label="다른 가상 사례 보기"><ArrowDown />다른 사례</button></header>
+    {(engineContext.qualificationSummary.length > 0 || engineContext.activitySummary.length > 0 || engineContext.targetRole) && <section className="personalized-profile-applied"><b>회원정보에서 연결됨</b><div>{engineContext.targetRole && <span>관심 직무 · {engineContext.targetRole}</span>}{engineContext.qualificationSummary.map(item => <span key={item}>자격 · {item}</span>)}{engineContext.activitySummary.map(item => <span key={item}>활동 · {item}</span>)}</div><small>목록 순서가 아니라 취득 상태와 역할·결과·확인 자료가 충실한 기록을 우선 반영함.</small></section>}
     <div className="personalized-example-controls">
       <label className="is-wide"><span>학과</span><SearchSuggestionInput value={departmentName} onChange={changeDepartment} onSelect={item => changeDepartment(item.name)} items={departments} getLabel={item => item.name} getMeta={item => `${item.schoolCount}개교`} placeholder="학과명 검색 또는 직접 입력" ariaLabel="학과 검색 및 직접 입력" /></label>
       <label><span>학과군</span><select value={majorGroup} onChange={event => changeMajor(event.target.value)}>{PERSONALIZED_MAJOR_PROFILES.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></label>

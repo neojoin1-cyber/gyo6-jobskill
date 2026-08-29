@@ -5,6 +5,7 @@ import {
   majorExampleProfile,
 } from './personalizedCareerExamples.js'
 import { userLocalStorage as localStorage } from './userLocalStorage.js'
+import { careerContextForEngine } from './careerProfile.js'
 
 const SOURCE_REGISTRY = {
   finance: {
@@ -115,20 +116,19 @@ export function readEmployerStudentContext() {
     evidence = Array.isArray(items) ? items[0] : null
   } catch { /* 저장 근거 없음 */ }
   try { draft = JSON.parse(localStorage.getItem('iv_cover_draft') || '{}') } catch { /* 작성 초안 없음 */ }
-  const departmentName = personalized.departmentName || draft.major || ''
-  const qualification = Array.isArray(personalized.qualifications) ? personalized.qualifications[0] : null
-  const activity = Array.isArray(personalized.extracurricularActivities) ? personalized.extracurricularActivities[0] : null
-  const hasStudentData = Boolean(personalized.majorGroup || departmentName || personalized.certificateId || qualification || personalized.sourceType || activity || evidence)
+  const career = careerContextForEngine(personalized)
+  const departmentName = career.departmentName || draft.major || ''
+  const hasStudentData = Boolean(career.majorGroup || departmentName || career.certificateId || career.qualificationName || career.sourceType || career.activityName || evidence)
   return {
-    ...personalized,
+    ...career,
     hasStudentData,
     departmentName,
-    majorGroup: personalized.majorGroup || evidence?.majorGroup || inferMajorGroup(departmentName),
-    sourceType: personalized.sourceType || evidence?.sourceType || '',
-    certificateId: personalized.certificateId || '',
-    qualificationName: qualification?.name || '',
-    qualificationIssuer: qualification?.issuer || '',
-    activityName: activity?.name || '',
+    majorGroup: career.majorGroup || evidence?.majorGroup || inferMajorGroup(departmentName),
+    sourceType: career.sourceType || evidence?.sourceType || '',
+    certificateId: career.certificateId || '',
+    qualificationName: career.qualificationName || '',
+    qualificationIssuer: career.qualificationIssuer || '',
+    activityName: career.activityName || '',
     evidenceTitle: evidence?.title || '',
     evidenceSkills: Array.isArray(evidence?.skills) ? evidence.skills : [],
     evidenceAction: evidence?.action || '',

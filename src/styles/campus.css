@@ -485,6 +485,32 @@ html.teacher-mode[data-teacher-view='wide'] .learning-link-chain > div { grid-te
 .account-career-actions button:first-child { background: #0f766e; color: #fff; }
 .account-career-panel > p { margin: 0; color: #137b69; font-size: 12px; font-weight: 700; line-height: 1.45; }
 .account-career-panel > p.is-error { color: #b45309; }
+.account-career-readiness { display: grid; gap: 11px; padding: 13px; border: 1px solid #bdd3fa; border-left: 4px solid #1769f6; background: #f7faff; }
+.account-career-readiness > header { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.account-career-readiness > header span { color: #1769f6; font-size: 10px; font-weight: 900; }
+.account-career-readiness > header h3 { margin: 3px 0; font-size: 16px; }
+.account-career-readiness > header p { margin: 0; color: #526174; font-size: 11px; line-height: 1.45; }
+.account-career-readiness > header strong { flex: 0 0 auto; color: #0f766e; font-size: 27px; line-height: 1; }
+.account-career-readiness > header strong small { color: #667487; font-size: 10px; }
+.account-readiness-bars { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 6px; }
+.account-readiness-bars > div > span { display: flex; justify-content: space-between; gap: 3px; color: #526174; font-size: 8.5px; font-weight: 800; }
+.account-readiness-bars b { color: #172033; font-size: 8px; }
+.account-readiness-bars i { height: 5px; display: block; margin-top: 4px; overflow: hidden; background: #dce5f2; }
+.account-readiness-bars em { height: 100%; display: block; background: #1769f6; }
+.account-grade-picker { display: grid; grid-template-columns: repeat(3,1fr); gap: 5px; }
+.account-grade-picker button { min-height: 34px; border: 1px solid #b8c5d6; border-radius: 5px; background: #fff; color: #526174; font-size: 11px; font-weight: 900; }
+.account-grade-picker button.is-on { border-color: #1769f6; background: #1769f6; color: #fff; }
+.account-career-readiness > section { display: grid; grid-template-columns: 25px minmax(0,1fr); gap: 8px; padding-top: 10px; border-top: 1px solid #d8e3f1; }
+.account-career-readiness > section > svg { width: 21px; color: #0f766e; }
+.account-career-readiness > section b { font-size: 11px; }
+.account-career-readiness > section p { margin: 4px 0 0; color: #415269; font-size: 10px; line-height: 1.45; }
+.account-career-feedback { display: grid; grid-template-columns: 26px minmax(0,1fr); gap: 9px; padding: 12px; border: 1px solid #f0d58a; border-left: 4px solid #d99a13; background: #fffaf0; }
+.account-career-feedback > svg { width: 22px; color: #b7790a; }
+.account-career-feedback span, .account-career-feedback b, .account-career-feedback small { display: block; }
+.account-career-feedback span { color: #9a6708; font-size: 9px; font-weight: 900; }
+.account-career-feedback b { margin-top: 3px; font-size: 12px; }
+.account-career-feedback p { margin: 4px 0; color: #574a33; font-size: 10px; line-height: 1.55; }
+.account-career-feedback small { color: #7c6a48; font-size: 9px; }
 .search-suggestion-input { position: relative; min-width: 0; }
 .search-suggestion-control { display: grid; grid-template-columns: 22px minmax(0, 1fr) 38px; align-items: center; min-height: 42px; border: 1px solid #b8c5d6; border-radius: 6px; background: #fff; color: #334155; }
 .search-suggestion-control:focus-within { border-color: #1769f6; box-shadow: 0 0 0 2px rgba(23, 105, 246, .12); }
@@ -518,6 +544,8 @@ html.teacher-mode[data-teacher-view='wide'] .learning-link-chain > div { grid-te
 .activity-record-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .account-remove-record { position: absolute; top: 14px; right: 2px; width: 34px; height: 34px; display: grid; place-items: center; border: 1px solid #f0b8b8; border-radius: 5px; background: #fff; color: #b42318; cursor: pointer; }
 .account-remove-record svg { width: 16px; }
+.account-develop-evidence { min-height: 34px; display: flex; align-items: center; justify-content: center; gap: 5px; margin-top: 8px; padding: 0 10px; border: 1px solid #0f766e; border-radius: 5px; background: #effbf7; color: #0f766e; font-size: 10px; font-weight: 900; }
+.account-develop-evidence svg { width: 14px; }
 .account-career-sources { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; color: #667487; font-size: 11px; }
 .account-career-sources a { color: #1769f6; font-weight: 800; text-decoration: none; }
 .account-career-sources a:hover { text-decoration: underline; }
@@ -545,6 +573,7 @@ html.teacher-mode[data-teacher-view='wide'] .learning-link-chain > div { grid-te
   .account-career-fields label.is-wide { grid-column: 1; }
   .account-record-form, .account-record-grid, .activity-record-grid { grid-template-columns: 1fr; }
   .account-record-form label.is-wide, .account-record-grid label.is-wide { grid-column: 1; }
+  .account-readiness-bars { grid-template-columns: 1fr; }
 }
 .switch-control { width: 42px; height: 24px; padding: 3px; border: 0; border-radius: 12px; background: #c7ced8; cursor: pointer; }
 .switch-control span { width: 18px; height: 18px; display: block; border-radius: 50%; background: #fff; transition: transform .15s ease; }
@@ -563,6 +592,87 @@ html.teacher-mode[data-teacher-view='wide'] .learning-link-chain > div { grid-te
 .account-reset-list button svg { width: 17px; }
 .account-logout { width: 100%; min-height: 44px; display: flex; align-items: center; justify-content: center; gap: 7px; margin-top: 18px; border: 1px solid #d9a9a9; border-radius: 7px; background: #fff; color: #ad3535; font-size: 12px; font-weight: 900; cursor: pointer; }
 .account-logout svg { width: 18px; }
+
+.teacher-career-portfolio { display: grid; gap: 12px; padding: 14px; color: #172033; }
+.teacher-career-portfolio > header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px; border-left: 5px solid #0f766e; background: #effbf7; }
+.teacher-career-portfolio > header span { color: #0f766e; font-size: 9px; font-weight: 900; }
+.teacher-career-portfolio > header h2 { margin: 3px 0; font-size: 19px; }
+.teacher-career-portfolio > header p { margin: 0; color: #526174; font-size: 10px; }
+.teacher-career-portfolio > header button { min-height: 34px; display: flex; align-items: center; gap: 5px; padding: 0 9px; border: 1px solid #0f766e; border-radius: 6px; background: #fff; color: #0f766e; font-size: 9px; font-weight: 900; }
+.teacher-career-summary { display: grid; grid-template-columns: repeat(3,1fr); gap: 7px; }
+.teacher-career-summary > div { padding: 10px 12px; border: 1px solid #d8e0e9; background: #fff; }
+.teacher-career-summary b, .teacher-career-summary span { display: block; }
+.teacher-career-summary b { color: #0f766e; font-size: 19px; }
+.teacher-career-summary span { margin-top: 2px; color: #667085; font-size: 8.5px; font-weight: 800; }
+.teacher-career-layout { min-height: 560px; display: grid; grid-template-columns: 220px minmax(330px,1fr) 260px; border: 1px solid #d8e0e9; background: #fff; }
+.teacher-career-layout > aside:first-child { border-right: 1px solid #d8e0e9; background: #f8fafc; }
+.teacher-career-filters { display: grid; gap: 7px; padding: 10px; border-bottom: 1px solid #d8e0e9; }
+.teacher-career-filters label { min-height: 34px; display: flex; align-items: center; gap: 5px; padding: 0 8px; border: 1px solid #cbd5e1; border-radius: 6px; background: #fff; }
+.teacher-career-filters label svg { width: 14px; color: #64748b; }
+.teacher-career-filters input { min-width: 0; flex: 1; border: 0; outline: 0; font-size: 9px; }
+.teacher-career-filters > div { display: grid; grid-template-columns: repeat(4,1fr); gap: 3px; }
+.teacher-career-filters button { min-height: 27px; border: 0; border-radius: 4px; background: #e7edf3; color: #64748b; font-size: 8px; font-weight: 900; }
+.teacher-career-filters button.is-on { background: #0f766e; color: #fff; }
+.teacher-career-list { max-height: 520px; overflow-y: auto; }
+.teacher-career-list > p { padding: 16px 10px; color: #64748b; font-size: 9px; text-align: center; }
+.teacher-career-list > button { width: 100%; display: grid; grid-template-columns: 28px minmax(0,1fr); gap: 7px; padding: 10px; border: 0; border-bottom: 1px solid #e3e8ee; background: transparent; color: #172033; text-align: left; }
+.teacher-career-list > button.is-on { background: #e7f7f2; box-shadow: inset 3px 0 #0f766e; }
+.teacher-career-list > button > svg { width: 25px; color: #1769f6; }
+.teacher-career-list span, .teacher-career-list b, .teacher-career-list small, .teacher-career-list em { min-width: 0; display: block; }
+.teacher-career-list b { font-size: 10px; }
+.teacher-career-list small { margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #667085; font-size: 8px; }
+.teacher-career-list em { margin-top: 4px; color: #0f766e; font-size: 8px; font-style: normal; font-weight: 900; }
+.teacher-career-layout > main { min-width: 0; padding: 16px; overflow-y: auto; }
+.teacher-career-student-head { display: flex; justify-content: space-between; gap: 10px; padding-bottom: 12px; border-bottom: 3px solid #0f766e; }
+.teacher-career-student-head span { color: #0f766e; font-size: 8.5px; font-weight: 900; }
+.teacher-career-student-head h3 { margin: 2px 0; font-size: 19px; }
+.teacher-career-student-head p { margin: 0; color: #667085; font-size: 9px; }
+.teacher-career-student-head strong { color: #0f766e; font-size: 26px; }
+.teacher-career-student-head strong small { font-size: 8px; }
+.teacher-career-metrics { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 5px; margin: 12px 0; }
+.teacher-career-metrics span { display: flex; justify-content: space-between; color: #64748b; font-size: 7.5px; font-weight: 800; }
+.teacher-career-metrics i { height: 5px; display: block; margin-top: 3px; overflow: hidden; background: #e2e8f0; }
+.teacher-career-metrics em { height: 100%; display: block; background: #1769f6; }
+.teacher-career-assets { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.teacher-career-assets article { padding: 10px; border: 1px solid #d8e0e9; }
+.teacher-career-assets header { display: flex; justify-content: space-between; gap: 6px; padding-bottom: 7px; border-bottom: 1px solid #e5e9ef; font-size: 9px; }
+.teacher-career-assets header span { color: #0f766e; font-weight: 900; }
+.teacher-career-assets p { display: grid; grid-template-columns: 15px minmax(0,1fr); margin: 8px 0 0; color: #334155; font-size: 9px; font-weight: 800; }
+.teacher-career-assets p svg { width: 13px; color: #0f766e; }
+.teacher-career-assets p small { grid-column: 2; margin-top: 2px; color: #64748b; font-size: 7.5px; font-weight: 600; }
+.teacher-career-assets p.is-empty { display: block; color: #8a94a3; font-weight: 600; }
+.teacher-career-next { display: grid; grid-template-columns: 22px minmax(0,1fr); gap: 7px; margin-top: 10px; padding: 10px; border-left: 4px solid #d99a13; background: #fff9e9; }
+.teacher-career-next > svg { width: 19px; color: #b7790a; }
+.teacher-career-next b { font-size: 9px; }
+.teacher-career-next p { margin: 4px 0 0; color: #574a33; font-size: 8px; }
+.teacher-career-meta { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+.teacher-career-meta span { padding: 4px 6px; border-radius: 4px; background: #eef2f6; color: #526175; font-size: 8px; font-weight: 800; }
+.teacher-career-coach { padding: 13px; border-left: 1px solid #d8e0e9; background: #f8fafc; }
+.teacher-career-coach > header { display: flex; gap: 6px; padding-bottom: 9px; border-bottom: 1px solid #d8e0e9; }
+.teacher-career-coach > header svg { width: 18px; color: #0f766e; }
+.teacher-career-coach > header b { font-size: 11px; }
+.teacher-career-coach > header p { margin: 2px 0 0; color: #667085; font-size: 8px; line-height: 1.4; }
+.teacher-career-coach label { display: grid; gap: 4px; margin-top: 10px; }
+.teacher-career-coach label span { font-size: 8.5px; font-weight: 900; }
+.teacher-career-coach textarea, .teacher-career-coach input { width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; background: #fff; color: #172033; font: inherit; font-size: 9px; resize: vertical; }
+.teacher-career-coach > p { display: flex; gap: 4px; margin: 9px 0 0; padding: 7px; font-size: 8px; line-height: 1.4; }
+.teacher-career-coach > p.is-ok { background: #e9f8f2; color: #087f69; }
+.teacher-career-coach > p.is-error { background: #fff2e8; color: #a33f13; }
+.teacher-career-coach > button { width: 100%; min-height: 38px; display: flex; align-items: center; justify-content: center; gap: 5px; margin-top: 10px; border: 0; border-radius: 6px; background: #0f766e; color: #fff; font-size: 9px; font-weight: 900; }
+.teacher-career-coach > button.is-secondary { margin-top: 6px; border: 1px solid #1769f6; background: #fff; color: #1769f6; }
+.teacher-career-empty { min-height: 400px; display: grid; place-items: center; align-content: center; gap: 6px; color: #8792a2; }
+.teacher-career-empty svg { width: 34px; }
+
+@media (max-width: 1000px) {
+  .teacher-career-layout { grid-template-columns: 200px minmax(0,1fr); }
+  .teacher-career-coach { grid-column: 1 / -1; border-left: 0; border-top: 1px solid #d8e0e9; }
+}
+@media (max-width: 680px) {
+  .teacher-career-layout { grid-template-columns: 1fr; }
+  .teacher-career-layout > aside:first-child { border-right: 0; border-bottom: 1px solid #d8e0e9; }
+  .teacher-career-list { max-height: 240px; }
+  .teacher-career-assets, .teacher-career-metrics { grid-template-columns: 1fr; }
+}
 .account-confirm { position: fixed; inset: 0; z-index: 11000; display: grid; place-items: center; padding: 22px; background: rgba(14, 25, 39, .66); }
 .account-confirm > div { width: min(100%, 360px); padding: 22px; border-radius: 8px; background: #fff; }
 .account-confirm h2 { margin: 0; font-size: 17px; }

@@ -72,8 +72,8 @@ export default function DesignPreview() {
           <div className="preview-phone"><NotificationsScreen demo /><PreviewBottomNav active="messages" onMessages={() => {}} onMe={() => setMode('student-account')} /></div>
         )}
         {mode === 'student-account' && (
-          <div className="preview-phone"><AccountDataScreen onOpenCareer={() => {
-            setStudentTarget({ subject: 'cover-letter', area: null, lesson: null, mode: 'cover-practical' })
+          <div className="preview-phone"><AccountDataScreen onOpenCareer={(options = {}) => {
+            setStudentTarget({ subject: 'cover-letter', area: null, lesson: null, mode: options.workspace === 'evidence' ? 'cover-evidence' : 'cover-practical', evidenceSeed: options.evidenceSeed, careerProfile: options.careerProfile })
             setMode('student-study')
           }} /><PreviewBottomNav active="me" onMessages={() => setMode('student-messages')} onMe={() => {}} /></div>
         )}

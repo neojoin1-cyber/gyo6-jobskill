@@ -45,6 +45,14 @@ import {
   INTERVIEW_TRACKS,
 } from '../../lib/interviewCareerContent.js'
 import { buildEmployerFit, readEmployerStudentContext } from '../../lib/employerIntelligence.js'
+import { publishCareerProfile } from '../../lib/careerProfileCloud.js'
+import {
+  CAREER_CONTEXT_KEY,
+  careerEvidenceQuality,
+  careerEvidenceSeeds,
+  careerProfileSnapshot,
+  normalizeCareerContext,
+} from '../../lib/careerProfile.js'
 import {
   COVER_EVIDENCE_ACTIONS,
   COVER_EVIDENCE_MAJOR_GROUPS,
@@ -99,6 +107,16 @@ const APPLICATION_STATUS = {
   passed: '서류 합격',
   not_selected: '미선발',
   archived: '보관',
+}
+
+function readCareerProfile() {
+  try { return normalizeCareerContext(JSON.parse(localStorage.getItem(CAREER_CONTEXT_KEY) || '{}')) }
+  catch { return normalizeCareerContext() }
+}
+
+function readCareerEvidenceSeed() {
+  try { return JSON.parse(localStorage.getItem('iv_cover_evidence_seed_v1') || 'null') }
+  catch { return null }
 }
 
 function newApplicationId() {
@@ -195,7 +213,7 @@ function coverAnswerBoxHeight(limit) {
   return Math.max(180, Math.ceil(limit / 44) * 23 + 34)
 }
 
-export default function InterviewCareerLab({ section, onBack, onOpenCover, initialWorkspace = 'learn', onLearningContext }) {
+export default function InterviewCareerLab({ section, onBack, onOpenCover, initialWorkspace = 'learn', initialEvidenceSeed, initialCareerProfile, onLearningContext }) {
   const [detail, setDetail] = useState(null)
   const meta = SECTION_META[section] || SECTION_META.pathways
   const backRef = useRef(null)
@@ -224,7 +242,7 @@ export default function InterviewCareerLab({ section, onBack, onOpenCover, initi
     return <LabFrame meta={meta} onBack={onBack}><InterviewScriptBuilder /></LabFrame>
   }
 
-  return <LabFrame meta={meta} onBack={onBack}><CoverLetterBuilder initialWorkspace={initialWorkspace} onLearningContext={onLearningContext} /></LabFrame>
+  return <LabFrame meta={meta} onBack={onBack}><CoverLetterBuilder initialWorkspace={initialWorkspace} initialEvidenceSeed={initialEvidenceSeed} initialCareerProfile={initialCareerProfile} onLearningContext={onLearningContext} /></LabFrame>
 }
 
 function LabFrame({ meta, onBack, children }) {
@@ -689,6 +707,7 @@ function InterviewScriptBuilder() {
     const coverItems = Object.entries(INTERVIEW_SCRIPT_LIMITS).map(([id, item]) => ({ id, label: item.label, minLength: item.minLength, limit: item.limit, answer: draft[id] }))
     const submissionDraft = {
       ...draft,
+      careerProfileSnapshot: careerProfileSnapshot(readCareerProfile(), { evidenceCount: scriptEvidence ? 1 : 0 }),
       documentType: 'interview-script',
       applicationProjectId: activeSet.id,
       sourceCoverApplicationId: linkedCoverApplication?.id || '',
@@ -786,19 +805,23 @@ function InterviewScriptBuilder() {
   </div>
 }
 
-function CoverLetterBuilder({ initialWorkspace = 'learn', onLearningContext }) {
+function CoverLetterBuilder({ initialWorkspace = 'learn', initialEvidenceSeed: linkedEvidenceSeed, initialCareerProfile: linkedCareerProfile, onLearningContext }) {
   const { profile } = useAuth() ?? {}
   const seed = useMemo(() => {
     try { return JSON.parse(localStorage.getItem('iv_cover_seed') || '{}') }
     catch { return {} }
   }, [])
   const initialPortfolio = useMemo(() => readCoverPortfolio(seed), [seed])
+  const careerProfile = useMemo(() => normalizeCareerContext(linkedCareerProfile || readCareerProfile()), [linkedCareerProfile])
+  const careerSources = useMemo(() => careerEvidenceSeeds(careerProfile), [careerProfile])
+  const initialEvidenceSeed = useMemo(() => linkedEvidenceSeed || readCareerEvidenceSeed(), [linkedEvidenceSeed])
+  const openEvidenceFirst = useMemo(() => localStorage.getItem('iv_cover_open_evidence') === '1', [])
   const [applications, setApplications] = useState(initialPortfolio.projects)
   const [activeApplicationId, setActiveApplicationId] = useState(initialPortfolio.activeId)
   const [draft, setDraft] = useState(() => initialPortfolio.projects.find(item => item.id === initialPortfolio.activeId)?.draft || initialPortfolio.projects[0].draft)
   const [stepIndex, setStepIndex] = useState(0)
-  const [workspace, setWorkspace] = useState(initialWorkspace === 'practical' ? 'practical' : initialWorkspace)
-  const [practicalFlow] = useState(initialWorkspace === 'practical')
+  const [workspace, setWorkspace] = useState(openEvidenceFirst || initialWorkspace === 'evidence' ? 'evidence' : initialWorkspace === 'practical' ? 'practical' : initialWorkspace)
+  const [practicalFlow] = useState(initialWorkspace === 'practical' || initialWorkspace === 'evidence')
   const assessmentFlow = workspace === 'diagnostic' || workspace === 'mock'
   const [view, setView] = useState('write')
   const [notice, setNotice] = useState(null)
@@ -850,6 +873,8 @@ function CoverLetterBuilder({ initialWorkspace = 'learn', onLearningContext }) {
   useEffect(() => {
     loadHistory()
     loadEvidenceBank()
+    localStorage.removeItem('iv_cover_open_evidence')
+    localStorage.removeItem('iv_cover_evidence_seed_v1')
   }, [profile?.id])
 
   useEffect(() => {
@@ -866,7 +891,7 @@ function CoverLetterBuilder({ initialWorkspace = 'learn', onLearningContext }) {
     if (!studentId) return
     const { data, error } = await supabase
       .from('cover_letter_evidence')
-      .select('id, major_group, source_type, title, situation, task, action, result, proof, skills, created_at')
+      .select('id, major_group, source_type, title, situation, task, action, result, proof, skills, school_grade, occurred_period, career_source_id, quality_score, created_at')
       .eq('student_id', studentId)
       .order('created_at', { ascending: false })
     if (error || !Array.isArray(data)) return
@@ -880,7 +905,8 @@ function CoverLetterBuilder({ initialWorkspace = 'learn', onLearningContext }) {
   }
 
   async function saveEvidence(item) {
-    const localItem = { ...item, id: item.id || `local-${Date.now()}`, createdAt: new Date().toISOString() }
+    const quality = careerEvidenceQuality(item)
+    const localItem = { ...item, qualityScore: quality.score, id: item.id || `local-${Date.now()}`, createdAt: new Date().toISOString() }
     const studentId = profile?.id || (await supabase.auth.getUser()).data.user?.id
     if (studentId) {
       const { data, error } = await supabase.from('cover_letter_evidence').insert({
@@ -894,12 +920,17 @@ function CoverLetterBuilder({ initialWorkspace = 'learn', onLearningContext }) {
         result: item.result,
         proof: item.proof,
         skills: item.skills,
-      }).select('id, major_group, source_type, title, situation, task, action, result, proof, skills, created_at').single()
+        school_grade: item.grade || null,
+        occurred_period: item.occurredPeriod || '',
+        career_source_id: item.careerSourceId || '',
+        quality_score: quality.score,
+      }).select('id, major_group, source_type, title, situation, task, action, result, proof, skills, school_grade, occurred_period, career_source_id, quality_score, created_at').single()
       if (!error && data) Object.assign(localItem, normalizeEvidence(data))
     }
     const next = [localItem, ...evidenceBank]
     setEvidenceBank(next)
     persistEvidenceInDraft(next)
+    await publishCareerProfile(careerProfile, { evidenceCount: next.length })
     setNotice({ ok: true, text: '근거 1장을 저장했어요. 작성 문항에서 바로 불러올 수 있어요.' })
   }
 
@@ -911,6 +942,7 @@ function CoverLetterBuilder({ initialWorkspace = 'learn', onLearningContext }) {
     const next = evidenceBank.filter(value => value.id !== item.id)
     setEvidenceBank(next)
     persistEvidenceInDraft(next)
+    await publishCareerProfile(careerProfile, { evidenceCount: next.length })
   }
 
   function useEvidence(item) {
@@ -1100,7 +1132,7 @@ function CoverLetterBuilder({ initialWorkspace = 'learn', onLearningContext }) {
     if (!ready || submitting) { openPreview(); return }
     setSubmitting(true)
     setNotice(null)
-    const submissionDraft = { ...draft, evidenceBank, applicationProjectId: activeApplicationId, recruitmentTitle: activeApplication?.recruitmentTitle || draft.recruitmentTitle, applicationDeadline: activeApplication?.deadline || draft.applicationDeadline }
+    const submissionDraft = { ...draft, evidenceBank, careerProfileSnapshot: careerProfileSnapshot(careerProfile, { evidenceCount: evidenceBank.length }), applicationProjectId: activeApplicationId, recruitmentTitle: activeApplication?.recruitmentTitle || draft.recruitmentTitle, applicationDeadline: activeApplication?.deadline || draft.applicationDeadline }
     const { data, error } = await supabase.rpc('rpc_submit_cover_letter', { p_sector: draft.sector, p_organization_id: draft.organizationId || null, p_target_name: draft.targetName, p_role: draft.role, p_draft: submissionDraft, p_generated_text: generated.map(item => `${item.title}\n${item.body}`).join('\n\n') })
     setSubmitting(false)
     if (error || data?.error) {
@@ -1134,7 +1166,7 @@ function CoverLetterBuilder({ initialWorkspace = 'learn', onLearningContext }) {
       {workspace === 'learn' && <CoverLearningLibrary onLearningContext={onLearningContext} />}
       {workspace === 'diagnostic' && <CoverLetterAssessment mode="diagnostic" onGoLearn={() => setWorkspace('learn')} />}
       {workspace === 'mock' && <CoverLetterAssessment mode="mock" onGoLearn={() => setWorkspace('learn')} onGoPractical={() => setWorkspace('practical')} />}
-      {workspace === 'evidence' && <><CoverApplicationContext applications={applications} activeId={activeApplicationId} mode="evidence" onSelect={id => selectApplication(id, 'evidence')} onProgress={() => setWorkspace('write')} /><EvidenceWorkbench items={evidenceBank} onSave={saveEvidence} onDelete={deleteEvidence} onUse={useEvidence} /></>}
+      {workspace === 'evidence' && <><CoverApplicationContext applications={applications} activeId={activeApplicationId} mode="evidence" onSelect={id => selectApplication(id, 'evidence')} onProgress={() => setWorkspace('write')} /><EvidenceWorkbench items={evidenceBank} sourceCandidates={careerSources} initialSeed={initialEvidenceSeed} onSave={saveEvidence} onDelete={deleteEvidence} onUse={useEvidence} /></>}
       {workspace === 'write' && <>
       <CoverApplicationContext applications={applications} activeId={activeApplicationId} mode="write" onSelect={id => selectApplication(id, 'write')} onProgress={() => setWorkspace('practical')} />
       <div className="cover-progress"><div><strong>{sector.headline}</strong><span>{completed}/{COVER_LETTER_FIELDS.length}</span></div><div><i style={{ width: `${pct}%` }} /></div><p>자동 저장됨 · 한 단계씩 점검한 뒤 완성본으로 연결함</p></div>
@@ -1358,10 +1390,12 @@ function CoverLearningLibrary({ onLearningContext }) {
   </section>
 }
 
-function EvidenceWorkbench({ items, onSave, onDelete, onUse }) {
-  const [form, setForm] = useState({ majorGroup: 'business', sourceType: '전공 실습', title: '', situation: '', task: '', action: '', result: '', proof: '', skills: [] })
+function EvidenceWorkbench({ items, sourceCandidates = [], initialSeed = null, onSave, onDelete, onUse }) {
+  const emptyForm = { majorGroup: 'business', sourceType: '전공 실습', title: '', situation: '', task: '', action: '', result: '', proof: '', skills: [], grade: 1, occurredPeriod: '', careerSourceId: '' }
+  const [form, setForm] = useState(() => ({ ...emptyForm, ...(initialSeed || {}) }))
   const major = COVER_EVIDENCE_MAJOR_GROUPS.find(item => item.id === form.majorGroup) || COVER_EVIDENCE_MAJOR_GROUPS[0]
   const ready = form.title.trim().length >= 2 && form.situation.trim().length >= 10 && form.action.trim().length >= 15 && form.result.trim().length >= 8
+  const quality = careerEvidenceQuality(form)
 
   function change(key, value) { setForm(current => ({ ...current, [key]: value })) }
   function toggleSkill(value) {
@@ -1374,26 +1408,33 @@ function EvidenceWorkbench({ items, onSave, onDelete, onUse }) {
   async function save() {
     if (!ready) return
     await onSave({ ...form, skills: form.skills.length ? form.skills : major.examples.slice(0, 1) })
-    setForm(current => ({ ...current, title: '', situation: '', task: '', action: '', result: '', proof: '', skills: [] }))
+    setForm(current => ({ ...emptyForm, majorGroup: current.majorGroup, grade: current.grade }))
+  }
+
+  function selectSource(candidate) {
+    setForm({ ...emptyForm, ...candidate, skills: candidate.skills || [] })
   }
 
   return (
     <section className="cover-evidence-workbench">
       <header><div><span>EXPERIENCE BANK</span><h3>작은 경험도 근거 1장으로</h3><p>수상 경력이 없어도 직접 한 행동과 확인 가능한 변화가 있으면 좋은 근거가 됨.</p></div><b>{items.length}</b></header>
+      {sourceCandidates.length > 0 && <section className="evidence-source-candidates"><header><div><b>내 교과외활동에서 이어 쓰기</b><p>회원정보에 쌓은 기록을 불러오고, 비어 있는 행동만 사실대로 보완합니다.</p></div><span>{sourceCandidates.filter(candidate => !items.some(item => item.careerSourceId === candidate.id)).length}개 작성 가능</span></header><div>{sourceCandidates.map(candidate => { const used = items.some(item => item.careerSourceId === candidate.id); return <button key={candidate.id} disabled={used} onClick={() => selectSource(candidate)}><span>{candidate.grade}학년 · {candidate.sourceType}</span><b>{candidate.title}</b><small>{used ? '근거 카드로 전환됨' : candidate.missing.length ? `${candidate.missing.join(' · ')} 보완 필요` : '행동을 구체화하면 저장 가능'}</small><CaretRight /></button> })}</div></section>}
       <div className="evidence-guide-strip"><b>빈칸 대신 순서대로 고름</b><span>전공·상황</span><CaretRight /><span>내 역할</span><CaretRight /><span>행동</span><CaretRight /><span>결과</span></div>
       <section className="evidence-form">
         <fieldset><legend>1. 전공·분야</legend><div className="evidence-chip-grid">{COVER_EVIDENCE_MAJOR_GROUPS.map(item => <button key={item.id} className={form.majorGroup === item.id ? 'is-on' : ''} onClick={() => change('majorGroup', item.id)}>{item.label}</button>)}</div></fieldset>
         <fieldset><legend>2. 어디에서 한 경험인가?</legend><div className="evidence-chip-grid">{COVER_EVIDENCE_SOURCES.map(value => <button key={value} className={form.sourceType === value ? 'is-on' : ''} onClick={() => change('sourceType', value)}>{value}</button>)}</div></fieldset>
         <fieldset><legend>3. 이 경험에서 쓴 기술·태도</legend><div className="evidence-chip-grid">{major.examples.map(value => <button key={value} className={form.skills.includes(value) ? 'is-on' : ''} onClick={() => toggleSkill(value)}>{value}</button>)}</div></fieldset>
+        <div className="evidence-history-fields"><label><span>기록 학년</span><select value={form.grade} onChange={event => change('grade', Number(event.target.value))}><option value="1">1학년</option><option value="2">2학년</option><option value="3">3학년</option></select></label><label><span>활동 기간</span><input value={form.occurredPeriod || ''} onChange={event => change('occurredPeriod', event.target.value)} placeholder="예: 2026.03~07" /></label></div>
         <label><span>근거 카드 이름 <small>나중에 찾기 쉬운 짧은 이름</small></span><input value={form.title} onChange={event => change('title', event.target.value)} placeholder="예: 판매 프로젝트 정산 오류 해결" /></label>
         <label><span>상황 <small>언제·어디서·무슨 일이 있었나?</small></span><div className="evidence-starters"><button onClick={() => append('situation', `${form.sourceType}에서 `)}>“{form.sourceType}에서”로 시작</button></div><textarea value={form.situation} onChange={event => change('situation', event.target.value)} placeholder="예: 교내 판매 프로젝트 마감 전 재고와 매출 기록이 맞지 않았음." rows={3} /></label>
         <label><span>내 역할·목표 <small>팀 전체가 아니라 내가 맡은 일</small></span><div className="evidence-starters"><button onClick={() => append('task', '제가 맡은 역할은 ')}>“제가 맡은 역할은” 넣기</button></div><textarea value={form.task} onChange={event => change('task', event.target.value)} placeholder="예: 거래 기록을 다시 확인해 마감 전에 정산표를 맞추는 역할" rows={3} /></label>
         <label><span>직접 한 행동 <small>확인 → 판단 → 실행 → 협업·보고</small></span><div className="evidence-starters">{COVER_EVIDENCE_ACTIONS.map(value => <button key={value} onClick={() => append('action', value)}>{value}</button>)}</div><textarea value={form.action} onChange={event => change('action', event.target.value)} placeholder="예: 거래 내역을 시간순으로 분류하고 영수증과 대조한 뒤 팀원과 수정 금액을 검산함." rows={4} /></label>
         <label><span>결과·배운 점 <small>수치·완성물·시간·오류·피드백</small></span><div className="evidence-starters">{COVER_EVIDENCE_RESULTS.map(value => <button key={value} onClick={() => append('result', value)}>{value}</button>)}</div><textarea value={form.result} onChange={event => change('result', event.target.value)} placeholder="예: 누락 3건을 찾아 정산표를 맞추고 검산 칸을 추가함." rows={3} /></label>
         <label><span>확인 근거 <small>없으면 비워도 됨</small></span><input value={form.proof} onChange={event => change('proof', event.target.value)} placeholder="예: 완성 파일·작업일지·담당 교사 피드백" /></label>
+        <div className="evidence-quality"><span><b>{quality.level}</b><strong>{quality.score}/100</strong></span><div>{quality.checks.map(item => <em key={item.id} className={item.ok ? 'is-ok' : ''}>{item.ok ? <CheckCircle weight="fill" /> : <WarningCircle />}{item.label}</em>)}</div></div>
         <button className="evidence-save" onClick={save} disabled={!ready}><Plus />근거 1장 저장</button>
       </section>
-      <section className="evidence-saved-list"><h3>저장한 근거</h3>{items.length === 0 ? <div className="evidence-empty"><ClipboardText /><b>아직 저장한 근거가 없음</b><p>전공 실습이나 작은 역할 하나부터 시작함.</p></div> : items.map(item => <article key={item.id}><header><div><span>{item.sourceType}</span><b>{item.title}</b></div><button onClick={() => onDelete(item)} aria-label="근거 삭제"><Trash /></button></header><p>{item.situation}</p><div>{item.skills.map(value => <em key={value}>{value}</em>)}</div><footer><span>{item.result}</span><button onClick={() => onUse(item)}>작성에 사용<CaretRight /></button></footer></article>)}</section>
+      <section className="evidence-saved-list"><h3>저장한 근거</h3>{items.length === 0 ? <div className="evidence-empty"><ClipboardText /><b>아직 저장한 근거가 없음</b><p>전공 실습이나 작은 역할 하나부터 시작함.</p></div> : items.map(item => { const itemQuality = careerEvidenceQuality(item); return <article key={item.id}><header><div><span>{item.grade ? `${item.grade}학년 · ` : ''}{item.sourceType}</span><b>{item.title}</b><small className={`is-quality-${itemQuality.score}`}>{itemQuality.level} · {itemQuality.score}점</small></div><button onClick={() => onDelete(item)} aria-label="근거 삭제"><Trash /></button></header><p>{item.situation}</p><div>{item.skills.map(value => <em key={value}>{value}</em>)}</div><footer><span>{item.result}</span><button onClick={() => onUse(item)}>작성에 사용<CaretRight /></button></footer></article> })}</section>
     </section>
   )
 }
@@ -1410,6 +1451,10 @@ function normalizeEvidence(row) {
     result: row.result,
     proof: row.proof || '',
     skills: Array.isArray(row.skills) ? row.skills : [],
+    grade: row.school_grade || null,
+    occurredPeriod: row.occurred_period || '',
+    careerSourceId: row.career_source_id || '',
+    qualityScore: Number(row.quality_score || 0),
     createdAt: row.created_at,
   }
 }

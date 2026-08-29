@@ -62,6 +62,16 @@
 .cover-review-application-context > div { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 7px; }
 .cover-review-application-context button { min-height: 27px; padding: 0 8px; border: 1px solid #bfdbfe; border-radius: 5px; background: #fff; color: #1d4ed8; font-size: 8px; font-weight: 900; }
 .cover-review-application-context button.is-on { border-color: #2563eb; background: #2563eb; color: #fff; }
+.cover-review-career-snapshot { margin-top: 9px; padding: 10px; border-left: 4px solid #0f766e; background: #effbf7; }
+.cover-review-career-snapshot > header { display: flex; justify-content: space-between; gap: 8px; }
+.cover-review-career-snapshot > header span, .cover-review-career-snapshot > header b { display: block; }
+.cover-review-career-snapshot > header span { color: #0f766e; font-size: 8px; font-weight: 900; }
+.cover-review-career-snapshot > header b { margin-top: 2px; font-size: 9.5px; }
+.cover-review-career-snapshot > header strong { color: #0f766e; font-size: 20px; }
+.cover-review-career-snapshot > header small { font-size: 7px; }
+.cover-review-career-snapshot > div { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 7px; }
+.cover-review-career-snapshot > div span { padding: 3px 5px; border-radius: 4px; background: #fff; color: #405064; font-size: 7.5px; font-weight: 800; }
+.cover-review-career-snapshot > p { margin: 7px 0 0; color: #8a5a08; font-size: 8px; font-weight: 800; }
 .cover-review-document > details { margin-top: 14px; border: 1px solid #d8dee7; border-radius: 7px; }
 .cover-review-document > details summary { padding: 10px 12px; color: #1d4ed8; font-size: 9px; font-weight: 900; cursor: pointer; }
 .cover-review-document > details div { padding: 8px 12px; border-top: 1px solid #e1e6ec; }

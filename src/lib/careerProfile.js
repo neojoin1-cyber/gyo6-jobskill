@@ -1,4 +1,11 @@
 export const CAREER_CONTEXT_KEY = 'iv_personalized_example_context'
+export const CAREER_PROFILE_VERSION = 3
+
+export const SCHOOL_GRADE_OPTIONS = [
+  { id: 1, label: '1학년' },
+  { id: 2, label: '2학년' },
+  { id: 3, label: '3학년' },
+]
 
 export const QUALIFICATION_STATUSES = [
   { id: 'preparing', label: '준비 중' },
@@ -7,12 +14,50 @@ export const QUALIFICATION_STATUSES = [
 ]
 
 export const EXTRACURRICULAR_CATEGORIES = [
-  { id: 'club', label: '동아리', sourceType: 'club' },
-  { id: 'volunteer', label: '봉사활동', sourceType: 'volunteer' },
-  { id: 'competition', label: '대회', sourceType: 'team-project' },
-  { id: 'award', label: '수상', sourceType: 'team-project' },
-  { id: 'other', label: '기타', sourceType: 'major-practice' },
+  { id: 'club', label: '동아리', sourceType: 'club', evidenceSource: '동아리' },
+  { id: 'volunteer', label: '봉사활동', sourceType: 'volunteer', evidenceSource: '봉사' },
+  { id: 'competition', label: '대회', sourceType: 'team-project', evidenceSource: '팀 프로젝트' },
+  { id: 'award', label: '수상', sourceType: 'team-project', evidenceSource: '팀 프로젝트' },
+  { id: 'other', label: '기타', sourceType: 'major-practice', evidenceSource: '개인 학습' },
 ]
+
+export const CAREER_PROFILE_REFERENCES = [
+  { id: 'career-net', label: '커리어넷 진로개발역량', url: 'https://www.career.go.kr/' },
+  { id: 'student-record', label: '교육부 학교생활기록부', url: 'https://star.moe.go.kr/' },
+  { id: 'hifive', label: '교육부 HIFIVE 학과정보', url: 'https://www.hifive.go.kr/' },
+  { id: 'qnet', label: 'Q-Net 국가자격정보', url: 'https://www.q-net.or.kr/' },
+]
+
+const CAREER_GRADE_ROADMAP = {
+  1: {
+    stage: '탐색·기록 시작',
+    headline: '잘한 일을 찾기보다 직접 해 본 일을 빠짐없이 남기는 시기',
+    actions: ['학과 수업과 실습에서 맡은 역할을 월 1회 기록', '관심 직무 2개를 정하고 필요한 역량 비교', '첫 자격 준비 일정과 작은 교과외활동 계획'],
+  },
+  2: {
+    stage: '집중·근거 강화',
+    headline: '관심 직무와 연결되는 자격·활동을 결과까지 완성하는 시기',
+    actions: ['대표 활동에 역할·행동·결과·확인 자료 보완', '취득 자격 또는 준비 과정의 실제 적용 경험 기록', '관심 기업·기관 3곳의 직무와 요구 역량 비교'],
+  },
+  3: {
+    stage: '지원·검증',
+    headline: '지원처별로 가장 강한 근거를 골라 작성하고 교사 피드백으로 고치는 시기',
+    actions: ['지원처별 자기소개서와 면접 답변 세트 작성', '근거 카드의 수치·역할·증빙을 최종 확인', '첨삭 이력과 면접 피드백을 반영해 최종본 관리'],
+  },
+}
+
+const MAJOR_DEVELOPMENT_ACTIONS = {
+  business: ['문서·회계·고객 응대 중 한 업무를 정해 정확도와 처리 과정을 기록', '엑셀·회계·사무 자격의 기능을 실제 과제에 적용'],
+  software: ['코드·설정·테스트 전후의 문제와 해결 기록을 저장', '작동 화면·저장소·테스트 결과처럼 다시 확인 가능한 산출물 확보'],
+  electrical: ['측정값·배선·안전 기준을 작업 전후 기록', '오류 원인과 재측정 결과를 근거 카드로 정리'],
+  mechanical: ['도면·공정·공차·안전 기준과 완성 결과를 함께 기록', '작업 시간이나 불량 감소처럼 비교 가능한 결과 확보'],
+  architecture: ['도면·측량·시공 과정에서 적용한 기준과 수정 이력 기록', '완성 도면·측정표·현장 점검표 등 증빙 확보'],
+  food: ['위생·계량·공정·서비스 기준과 완성 결과 기록', '조리 시간·품질 피드백·원가 개선처럼 확인 가능한 변화 확보'],
+  design: ['요구사항·시안·수정 이유·최종 결과를 한 묶음으로 저장', '사용자나 지도교사의 피드백 전후를 비교'],
+  bio: ['관찰·측정·안전·환경 기준을 일지로 기록', '조건 변화와 결과를 수치 또는 사진 설명으로 남김'],
+  service: ['고객 요구를 확인한 질문과 처리 과정을 기록', '불편 감소·만족 피드백·재발 방지 결과를 확보'],
+  general: ['수업·학급·동아리에서 맡은 일을 행동과 결과로 나누어 기록', '관심 직무를 정한 뒤 필요한 자격과 활동을 비교'],
+}
 
 const q = (id, name, issuer, type, majorGroups = [], profileId = '') => ({ id, name, issuer, type, majorGroups, profileId })
 
@@ -92,13 +137,69 @@ export const QUALIFICATION_CATALOG = [
   q('opic', 'OPIc', 'ACTFL·멀티캠퍼스', '어학시험', ['general', 'business', 'service']),
 ].sort((a, b) => a.name.localeCompare(b.name, 'ko-KR', { sensitivity: 'base' }))
 
+const text = value => String(value || '').trim()
+const grade = value => Math.max(1, Math.min(3, Number(value) || 1))
+const list = value => Array.isArray(value) ? value.filter(Boolean) : []
+
+function normalizeQualification(item = {}, index = 0, currentGrade = 1) {
+  return {
+    ...item,
+    id: item.id || `qualification-legacy-${index}`,
+    name: text(item.name),
+    issuer: text(item.issuer),
+    status: QUALIFICATION_STATUSES.some(status => status.id === item.status) ? item.status : 'preparing',
+    grade: grade(item.grade || currentGrade),
+    achievedAt: text(item.achievedAt),
+    targetDate: text(item.targetDate),
+    proof: text(item.proof),
+    notes: text(item.notes),
+    profileId: text(item.profileId),
+    catalogId: text(item.catalogId),
+  }
+}
+
+function normalizeActivity(item = {}, index = 0, currentGrade = 1) {
+  return {
+    ...item,
+    id: item.id || `activity-legacy-${index}`,
+    category: EXTRACURRICULAR_CATEGORIES.some(category => category.id === item.category) ? item.category : 'other',
+    name: text(item.name),
+    organizer: text(item.organizer),
+    rank: text(item.rank),
+    role: text(item.role),
+    outcome: text(item.outcome),
+    notes: text(item.notes),
+    proof: text(item.proof),
+    period: text(item.period),
+    grade: grade(item.grade || currentGrade),
+    skills: list(item.skills).map(text).filter(Boolean).slice(0, 8),
+  }
+}
+
+function qualificationStrength(item = {}) {
+  return (item.status === 'acquired' ? 40 : item.status === 'preparing' ? 22 : 10)
+    + (item.profileId ? 8 : 0) + (item.proof ? 8 : 0) + (item.achievedAt || item.targetDate ? 4 : 0)
+}
+
+function activityStrength(item = {}) {
+  return (item.outcome ? 24 : 0) + (item.role ? 18 : 0) + (item.proof ? 12 : 0)
+    + (item.organizer ? 6 : 0) + (item.period ? 4 : 0) + Math.min(8, list(item.skills).length * 2)
+}
+
 export function normalizeCareerContext(value = {}) {
-  const qualifications = Array.isArray(value.qualifications) ? value.qualifications.filter(item => item?.name) : []
-  const extracurricularActivities = Array.isArray(value.extracurricularActivities) ? value.extracurricularActivities.filter(item => item?.name) : []
+  const currentGrade = grade(value.currentGrade)
+  const qualifications = list(value.qualifications).filter(item => item?.name).map((item, index) => normalizeQualification(item, index, currentGrade))
+  const extracurricularActivities = list(value.extracurricularActivities).filter(item => item?.name).map((item, index) => normalizeActivity(item, index, currentGrade))
   return {
     ...value,
+    profileVersion: CAREER_PROFILE_VERSION,
+    currentGrade,
     majorGroup: value.majorGroup || 'general',
-    departmentName: value.departmentName || '',
+    departmentName: text(value.departmentName),
+    targetIndustry: text(value.targetIndustry),
+    targetRole: text(value.targetRole),
+    semesterGoal: text(value.semesterGoal),
+    lastReviewedAt: text(value.lastReviewedAt),
     styleId: value.styleId || 'clear',
     sourceType: value.sourceType || 'major-practice',
     certificateId: value.certificateId || '',
@@ -109,16 +210,145 @@ export function normalizeCareerContext(value = {}) {
 
 export function careerContextForEngine(value = {}) {
   const context = normalizeCareerContext(value)
-  const qualification = context.qualifications[0]
-  const activity = context.extracurricularActivities[0]
+  const qualification = [...context.qualifications].sort((a, b) => qualificationStrength(b) - qualificationStrength(a))[0]
+  const activity = [...context.extracurricularActivities].sort((a, b) => activityStrength(b) - activityStrength(a))[0]
   const category = EXTRACURRICULAR_CATEGORIES.find(item => item.id === activity?.category)
   return {
     ...context,
     certificateId: qualification?.profileId || context.certificateId || '',
     qualificationName: qualification?.name || '',
     qualificationIssuer: qualification?.issuer || '',
+    qualificationStatus: qualification?.status || '',
+    qualificationSummary: context.qualifications.slice().sort((a, b) => qualificationStrength(b) - qualificationStrength(a)).slice(0, 3).map(item => `${item.name}(${QUALIFICATION_STATUSES.find(status => status.id === item.status)?.label || item.status})`),
     sourceType: category?.sourceType || context.sourceType || 'major-practice',
     activityName: activity?.name || '',
+    activitySummary: context.extracurricularActivities.slice().sort((a, b) => activityStrength(b) - activityStrength(a)).slice(0, 3).map(item => [item.name, item.role, item.outcome].filter(Boolean).join(' · ')),
+    activityRole: activity?.role || '',
+    activityOutcome: activity?.outcome || '',
+    activityProof: activity?.proof || '',
+  }
+}
+
+export function careerProfileReadiness(value = {}, { evidenceCount = 0 } = {}) {
+  const context = normalizeCareerContext(value)
+  const acquired = context.qualifications.filter(item => item.status === 'acquired')
+  const detailedActivities = context.extracurricularActivities.filter(item => item.role && item.outcome)
+  const provenActivities = context.extracurricularActivities.filter(item => item.proof)
+  const representedGrades = new Set(context.extracurricularActivities.map(item => item.grade))
+  const checks = [
+    { id: 'direction', label: '진로 방향', score: (context.departmentName ? 7 : 0) + (context.targetRole ? 5 : 0) + (context.targetIndustry ? 3 : 0), max: 15 },
+    { id: 'qualification', label: '자격 준비', score: Math.min(20, (context.qualifications.length ? 6 : 0) + (acquired.length ? 8 : 0) + (context.qualifications.some(item => item.targetDate || item.achievedAt) ? 3 : 0) + (context.qualifications.some(item => item.proof) ? 3 : 0)), max: 20 },
+    { id: 'activity', label: '활동 기록', score: Math.min(30, (context.extracurricularActivities.length ? 8 : 0) + Math.min(12, detailedActivities.length * 6) + (provenActivities.length ? 5 : 0) + (representedGrades.size > 1 ? 5 : 0)), max: 30 },
+    { id: 'evidence', label: '작성 근거', score: Math.min(25, Number(evidenceCount || 0) * 7 + (provenActivities.length ? 4 : 0)), max: 25 },
+    { id: 'plan', label: '다음 계획', score: (context.semesterGoal ? 7 : 0) + (context.lastReviewedAt ? 3 : 0), max: 10 },
+  ]
+  const score = checks.reduce((sum, item) => sum + item.score, 0)
+  const gaps = []
+  if (!context.targetRole) gaps.push('관심 직무를 1개 이상 정하기')
+  if (!context.qualifications.length) gaps.push('학과·직무 관련 자격 준비 일정 등록하기')
+  else if (!context.qualifications.some(item => item.targetDate || item.achievedAt)) gaps.push('자격 취득일 또는 목표일 기록하기')
+  if (!context.extracurricularActivities.length) gaps.push('수업·동아리·봉사에서 직접 한 활동 1개 기록하기')
+  else if (!detailedActivities.length) gaps.push('활동에 내 역할과 확인 가능한 결과 보완하기')
+  if (!provenActivities.length) gaps.push('파일·작업일지·교사 피드백 등 확인 자료 남기기')
+  if (!evidenceCount) gaps.push('활동 하나를 상황·역할·행동·결과 근거 카드로 발전시키기')
+  if (!context.semesterGoal) gaps.push('이번 학기 취업 준비 목표 한 가지 정하기')
+  return {
+    score,
+    level: score >= 80 ? '지원 활용 가능' : score >= 55 ? '근거 강화 중' : score >= 30 ? '기록 축적 중' : '첫 기록 필요',
+    checks,
+    gaps: gaps.slice(0, 4),
+    counts: {
+      qualifications: context.qualifications.length,
+      acquired: acquired.length,
+      activities: context.extracurricularActivities.length,
+      detailedActivities: detailedActivities.length,
+      evidence: Number(evidenceCount || 0),
+      grades: representedGrades.size,
+    },
+  }
+}
+
+export function careerGradeRoadmap(value = {}, { evidenceCount = 0 } = {}) {
+  const context = normalizeCareerContext(value)
+  const base = CAREER_GRADE_ROADMAP[context.currentGrade] || CAREER_GRADE_ROADMAP[1]
+  const readiness = careerProfileReadiness(context, { evidenceCount })
+  const qualifications = QUALIFICATION_CATALOG.filter(item => item.majorGroups.includes(context.majorGroup)).slice(0, 3).map(item => `${item.name} 필요성·일정 확인`)
+  const majorActions = MAJOR_DEVELOPMENT_ACTIONS[context.majorGroup] || MAJOR_DEVELOPMENT_ACTIONS.general
+  return {
+    ...base,
+    grade: context.currentGrade,
+    nextActions: [...readiness.gaps, ...majorActions, ...qualifications].filter((item, index, array) => array.indexOf(item) === index).slice(0, 5),
+  }
+}
+
+export function careerEvidenceSeeds(value = {}) {
+  const context = normalizeCareerContext(value)
+  return context.extracurricularActivities
+    .slice()
+    .sort((a, b) => activityStrength(b) - activityStrength(a))
+    .map(item => {
+      const category = EXTRACURRICULAR_CATEGORIES.find(value => value.id === item.category)
+      return {
+        id: item.id,
+        careerSourceId: item.id,
+        majorGroup: context.majorGroup,
+        sourceType: category?.evidenceSource || '개인 학습',
+        title: item.name,
+        situation: [item.period ? `${item.period}에` : `${item.grade}학년에`, item.organizer ? `${item.organizer}에서` : '학교 활동에서', `${item.name}에 참여함.`].join(' '),
+        task: item.role ? `제가 맡은 역할은 ${item.role}입니다.` : '',
+        action: '',
+        result: item.outcome || '',
+        proof: item.proof || '',
+        skills: item.skills,
+        grade: item.grade,
+        occurredPeriod: item.period,
+        missing: [!item.role && '내 역할', '직접 한 행동', !item.outcome && '확인 가능한 결과', !item.proof && '확인 자료'].filter(Boolean),
+      }
+    })
+}
+
+export function careerEvidenceQuality(item = {}) {
+  const checks = [
+    { id: 'situation', label: '상황', ok: text(item.situation).length >= 10 },
+    { id: 'task', label: '내 역할', ok: text(item.task).length >= 8 },
+    { id: 'action', label: '직접 행동', ok: text(item.action).length >= 15 },
+    { id: 'result', label: '결과', ok: text(item.result).length >= 8 },
+    { id: 'proof', label: '확인 자료', ok: text(item.proof).length >= 2 },
+  ]
+  const rawScore = checks.filter(item => item.ok).length * 20
+  const actionReady = checks.find(item => item.id === 'action').ok
+  const coreReady = checks.filter(item => ['situation', 'action', 'result'].includes(item.id)).every(item => item.ok)
+  const score = coreReady ? rawScore : Math.min(rawScore, 60)
+  const level = !actionReady
+    ? '직접 행동 보완 필요'
+    : !coreReady
+      ? '핵심 근거 보완 필요'
+      : score >= 100
+        ? '검증 근거'
+        : score >= 60
+          ? '작성 활용 가능'
+          : '기록 보완 필요'
+  return { score, checks, level }
+}
+
+export function careerProfileSnapshot(value = {}, { evidenceCount = 0 } = {}) {
+  const context = normalizeCareerContext(value)
+  const readiness = careerProfileReadiness(context, { evidenceCount })
+  const engine = careerContextForEngine(context)
+  return {
+    profileVersion: CAREER_PROFILE_VERSION,
+    capturedAt: new Date().toISOString(),
+    currentGrade: context.currentGrade,
+    departmentName: context.departmentName,
+    majorGroup: context.majorGroup,
+    targetIndustry: context.targetIndustry,
+    targetRole: context.targetRole,
+    semesterGoal: context.semesterGoal,
+    readiness,
+    qualificationSummary: engine.qualificationSummary,
+    activitySummary: engine.activitySummary,
+    qualifications: context.qualifications,
+    extracurricularActivities: context.extracurricularActivities,
   }
 }
 

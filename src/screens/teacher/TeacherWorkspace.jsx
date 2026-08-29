@@ -34,10 +34,12 @@ import ClassWeaknessScreen from './ClassWeaknessScreen.jsx'
 import ClassProgressScreen from './ClassProgressScreen.jsx'
 import ClassResultsScreen from './ClassResultsScreen.jsx'
 import ClassPersonalityScreen from './ClassPersonalityScreen.jsx'
+import CareerPortfolioScreen from './CareerPortfolioScreen.jsx'
 import '../../styles/campus.css'
 
 const TABS = [
   { id: 'students', label: '학생 성장', icon: UsersThree },
+  { id: 'career', label: '취업 준비', icon: Briefcase, C: CareerPortfolioScreen },
   { id: 'diagnostics', label: '진단 현황', icon: PresentationChart, C: ClassDiagnosticsScreen },
   { id: 'weakness', label: '약한 영역', icon: Target, C: ClassWeaknessScreen },
   { id: 'progress', label: '학습 진도', icon: TrendUp, C: ClassProgressScreen },

@@ -242,8 +242,8 @@ export default function StudentShell() {
             onBack={() => { setFollowLink(null); setTab('home') }} />}
 
           {tab === 'wrong'         && <WrongAnswerScreen profile={profile} />}
-          {tab === 'ranking'       && <AccountDataScreen onOpenCareer={() => {
-            setFollowLink({ subject: 'cover-letter', area: null, lesson: null, mode: 'cover-practical' })
+          {tab === 'ranking'       && <AccountDataScreen onOpenCareer={(options = {}) => {
+            setFollowLink({ subject: 'cover-letter', area: null, lesson: null, mode: options.workspace === 'evidence' ? 'cover-evidence' : 'cover-practical', evidenceSeed: options.evidenceSeed, careerProfile: options.careerProfile })
             setTab('study')
           }} />}
           {tab === 'notifications' && <NotificationsScreen />}

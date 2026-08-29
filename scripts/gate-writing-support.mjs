@@ -67,7 +67,8 @@ if (duplicatedInnerRoutes.some(needle => careerSource.includes(needle))) {
 if (careerSource.includes('aria-label="실전자기소개서 메뉴"') || careerSource.includes('className="cover-workspace-tabs"')) {
   failures.push('실전자기소개서 메뉴 위계: 작성 중에 작성실·근거·현황 분기 탭이 다시 노출됨')
 }
-if (!careerSource.includes("useState(initialWorkspace === 'practical' ? 'practical' : initialWorkspace)")) {
+if (!careerSource.includes("initialWorkspace === 'practical' ? 'practical' : initialWorkspace") ||
+    !careerSource.includes("initialWorkspace === 'evidence' ? 'evidence'")) {
   failures.push('실전자기소개서 첫 화면: 지원서 선택·이어하기 화면이 먼저 열리지 않음')
 }
 if (!careerSource.includes("step.id === 'experience'") || !careerSource.includes("setWorkspace('evidence')") || !careerSource.includes('내 경험 근거부터 꺼내기')) {
