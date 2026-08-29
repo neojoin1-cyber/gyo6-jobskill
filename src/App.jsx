@@ -3,8 +3,6 @@ import { Capacitor } from '@capacitor/core'
 import { App as CapApp } from '@capacitor/app'
 import { resetWebAuthSession, supabase } from './lib/supabase.js'
 import { ThemeProvider } from './lib/theme.jsx'
-import { initPushNotifications } from './lib/pushNotifications.js'
-import { scheduleReviewReminder } from './lib/reminders.js'
 import {
   TRIAL_ACCOUNTS,
   TRIAL_TIME_LIMIT_ENABLED,
@@ -128,8 +126,8 @@ function AppInner() {
 
   // ── 앱 업데이트 체크 (네이티브 앱일 때만) ──────────────────────────────────
   // 1순위: app_config(Supabase) — 출시 시 latest_build를 올리면 재접속 즉시 감지(신뢰 소스)
-  // 2순위: Play Core 인앱 업데이트 가용성 — app_config 미갱신이어도 Play가 알려주면 감지
-  // 감지되면 명확한 '업데이트' 버튼 → market:// 으로 Play 스토어 직접 연결
+  // 네이티브 시작 경로에서는 Play Core를 초기화하지 않는다. 서버의 출시 정보만
+  // 확인하고, 사용자가 업데이트 버튼을 눌렀을 때 Play 스토어로 이동한다.
   useEffect(() => {
     if (!Capacitor.isNativePlatform()) { setUpdateState('ok'); return }
 
@@ -152,14 +150,6 @@ function AppInner() {
           info = { version: data.latest_version || '', storeUrl: data.store_url || PLAY_MARKET }
           if (currentBuild && data.min_build && currentBuild < data.min_build) state = 'force'
           else if (currentBuild && data.latest_build && currentBuild < data.latest_build) state = 'soft'
-        }
-        // 2) Play Core 네이티브 탐지 (app_config가 ok일 때만 보조 확인)
-        if (state === 'ok') {
-          const plugin = window.Capacitor?.Plugins?.Gyo6InAppUpdate
-          if (plugin?.checkAvailability) {
-            const native = await plugin.checkAvailability()
-            if (native?.available === true) state = 'soft'
-          }
         }
       } catch { /* 네트워크 실패 등 → 업데이트 막지 않음 */ }
 
@@ -232,10 +222,6 @@ function AppInner() {
           }
           setProfile(data)
           setProfileError(false)
-          if (data?.role === 'student') {
-            initPushNotifications(data.id, { requestPermission: false })
-            scheduleReviewReminder({ requestPermission: false })
-          }
         } else {
           let cached = null
           try { cached = JSON.parse(userLocalStorage.getItem('sst.cached-profile') || 'null') } catch { /* 캐시 손상 */ }
@@ -331,26 +317,10 @@ function AppInner() {
     await logoutSafely({ clearDevice: true })
   }
 
-  // ── 업데이트 버튼 → 인앱 IMMEDIATE 업데이트(진행 UI+재시작), 불가 시 스토어 폴백 ──
+  // ── 업데이트 버튼 → Play 스토어 이동 ─────────────────────────────────────
   async function triggerUpdate() {
-    const storeUrl = updateInfo.storeUrl || 'market://details?id=com.gyo6.jobskill'
-    const plugin = window.Capacitor?.Plugins?.Gyo6InAppUpdate
+    const storeUrl = updateInfo.storeUrl || 'https://play.google.com/store/apps/details?id=com.gyo6.jobskill'
     setUpdateLaunching(true)
-    // 1) Play 인앱 업데이트(앱 안에서 진행 후 자동 재시작)
-    try {
-      if (Capacitor.isNativePlatform() && plugin?.startImmediateUpdate) {
-        const r = await plugin.startImmediateUpdate()
-        if (r?.started) return
-      }
-    } catch { /* 폴백으로 진행 */ }
-    // 2) 인앱 업데이트 불가(내부테스트·롤아웃 지연 등) → 네이티브 인텐트로 Play 스토어 확실히 열기
-    try {
-      if (Capacitor.isNativePlatform() && plugin?.openStore) {
-        const r = await plugin.openStore()
-        if (r?.opened) return
-      }
-    } catch { /* 최후 폴백으로 진행 */ }
-    // 3) 최후: 웹 방식
     try { window.open(storeUrl, '_system') } catch { /* noop */ }
     finally { setUpdateLaunching(false) }
   }

@@ -61,7 +61,7 @@ const skipWebBuild = process.argv.includes('--skip-web-build')
 if (!skipWebBuild) runNpm(['run', 'android:sync'], { stdio: 'inherit' })
 const serial = await ensureEmulator()
 
-const gradleArgs = ['app:assembleDebug', 'app:assembleDebugAndroidTest', '--no-daemon']
+const gradleArgs = ['app:assembleDebug', 'app:assembleDebugAndroidTest', 'app:assembleRelease', '--no-daemon']
 const gradleCommand = process.platform === 'win32' ? (process.env.ComSpec || 'cmd.exe') : 'sh'
 const commandArgs = process.platform === 'win32'
   ? ['/d', '/c', `${gradle} ${gradleArgs.join(' ')}`]
@@ -78,33 +78,45 @@ const testDir = resolve(ROOT, 'android/app/build/outputs/apk/androidTest/debug')
 const testApk = readdirSync(testDir).find(name => name.endsWith('.apk'))
 if (!existsSync(appApk) || !testApk) throw new Error('Android 검증 APK를 찾지 못했습니다.')
 
+spawnSync(adb, ['-s', serial, 'uninstall', `${appId}.test`], { stdio: 'ignore' })
+spawnSync(adb, ['-s', serial, 'uninstall', appId], { stdio: 'ignore' })
 adbRun(serial, ['install', '-r', appApk])
 adbRun(serial, ['install', '-r', resolve(testDir, testApk)])
 const instrument = adbRun(serial, ['shell', 'am', 'instrument', '-w', `${appId}.test/androidx.test.runner.AndroidJUnitRunner`], { maxBuffer: 16 * 1024 * 1024 })
 if (!instrument.stdout.includes('OK (')) throw new Error(`Android 로컬 저장 복구 계측 실패\n${instrument.stdout}`)
 
-for (let cycle = 1; cycle <= 2; cycle += 1) {
-  adbRun(serial, ['shell', 'am', 'force-stop', appId])
-  adbRun(serial, ['logcat', '-c'])
-  const launch = adbRun(serial, ['shell', 'am', 'start', '-W', '-n', `${appId}/.MainActivity`]).stdout
-  if (!/Status:\s*ok/i.test(launch)) throw new Error(`Android ${cycle}차 재실행 실패\n${launch}`)
-  const deadline = Date.now() + 60_000
-  let ready = false
-  while (Date.now() < deadline) {
-    await sleep(1000)
-    const pid = adbRun(serial, ['shell', 'pidof', appId]).stdout.trim()
-    if (!pid) throw new Error(`Android ${cycle}차 재실행 후 프로세스가 종료됐습니다.`)
-    const logs = adbRun(serial, ['logcat', '-d', '-t', '500']).stdout
-    if (/FATAL EXCEPTION|Process: com\.gyo6\.jobskill[\s\S]*AndroidRuntime/i.test(logs)) {
-      throw new Error(`Android ${cycle}차 재실행에서 치명적 오류가 발견됐습니다.`)
+async function verifyLaunchCycles(serial, label, cycles = 2) {
+  for (let cycle = 1; cycle <= cycles; cycle += 1) {
+    adbRun(serial, ['shell', 'am', 'force-stop', appId])
+    adbRun(serial, ['logcat', '-c'])
+    const launch = adbRun(serial, ['shell', 'am', 'start', '-W', '-n', `${appId}/.MainActivity`]).stdout
+    if (!/Status:\s*ok/i.test(launch)) throw new Error(`Android ${label} ${cycle}차 재실행 실패\n${launch}`)
+    const deadline = Date.now() + 60_000
+    let ready = false
+    while (Date.now() < deadline) {
+      await sleep(1000)
+      const pid = adbRun(serial, ['shell', 'pidof', appId]).stdout.trim()
+      if (!pid) throw new Error(`Android ${label} ${cycle}차 재실행 후 프로세스가 종료됐습니다.`)
+      const logs = adbRun(serial, ['logcat', '-d', '-t', '500']).stdout
+      if (/FATAL EXCEPTION|Process: com\.gyo6\.jobskill[\s\S]*AndroidRuntime/i.test(logs)) {
+        throw new Error(`Android ${label} ${cycle}차 재실행에서 치명적 오류가 발견됐습니다.`)
+      }
+      if (/Gyo6BootGuard.*React app painted; native boot guard released/.test(logs)) {
+        ready = true
+        break
+      }
     }
-    if (/Gyo6BootGuard.*React app painted; native boot guard released/.test(logs)) {
-      ready = true
-      break
-    }
+    if (!ready) throw new Error(`Android ${label} ${cycle}차 재실행에서 학습 화면 준비 완료를 확인하지 못했습니다.`)
   }
-  if (!ready) throw new Error(`Android ${cycle}차 재실행에서 학습 화면 준비 완료를 확인하지 못했습니다.`)
 }
 
+await verifyLaunchCycles(serial, 'Debug')
+
+const releaseApk = resolve(ROOT, 'android/app/build/outputs/apk/release/app-release.apk')
+if (!existsSync(releaseApk)) throw new Error('서명된 Android Release APK를 찾지 못했습니다.')
+adbRun(serial, ['uninstall', appId])
+adbRun(serial, ['install', releaseApk])
+await verifyLaunchCycles(serial, '서명 Release')
+
 adbRun(serial, ['shell', 'am', 'force-stop', appId])
-logPass(`Android 설치 · WebView 저장 복구 · 강제종료/재실행 2회 (${serial})`)
+logPass(`Android Debug 계측 · 서명 Release 최초실행 · 강제종료/재실행 (${serial})`)

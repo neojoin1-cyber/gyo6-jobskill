@@ -7,11 +7,8 @@ const reminders = read('src/lib/reminders.js')
 const account = read('src/screens/student/AccountDataScreen.jsx')
 const failures = []
 
-if (!app.includes('initPushNotifications(data.id, { requestPermission: false })')) {
-  failures.push('로그인 직후 푸시 알림 권한 요청을 차단하지 않음')
-}
-if (!app.includes('scheduleReviewReminder({ requestPermission: false })')) {
-  failures.push('로그인 직후 복습 알림 권한 요청을 차단하지 않음')
+if (app.includes('initPushNotifications') || app.includes('scheduleReviewReminder')) {
+  failures.push('로그인·앱 시작 경로에서 알림 플러그인을 초기화함')
 }
 if (!push.includes('if (receive !== \'granted\' && requestPermission)')) {
   failures.push('푸시 알림 권한이 사용자 요청 없이 열릴 수 있음')
@@ -28,4 +25,4 @@ if (failures.length) {
   process.exit(1)
 }
 
-console.log('[notification-consent] PASS - login is prompt-free and notification consent is user initiated')
+console.log('[notification-consent] PASS - app boot is notification-plugin-free and consent is user initiated')

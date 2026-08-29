@@ -42,7 +42,6 @@ public class MainActivity extends BridgeActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        registerPlugin(Gyo6InAppUpdatePlugin.class);
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         long recoveredBuild = prefs.getLong(LAST_BUILD, -1L);
         packageChangedAtBoot = recoveredBuild != currentBuildCode();
