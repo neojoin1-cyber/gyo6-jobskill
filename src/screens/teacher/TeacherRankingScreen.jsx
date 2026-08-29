@@ -2,7 +2,19 @@ import { useState, useEffect } from 'react'
 import { filterActiveSubjects } from '../../lib/subjectCatalog.js'
 import { supabase } from '../../lib/supabase.js'
 
-export default function TeacherRankingScreen() {
+const DEMO_CLASSES = [
+  { id: 'c1', name: '3학년 2반', grade: 3 },
+  { id: 'c2', name: '2학년 취업반', grade: 2 },
+  { id: 'c3', name: '1학년 진로반', grade: 1 },
+]
+
+const DEMO_NAMES = {
+  c1: ['이수현', '박민준', '최유나', '김서연'],
+  c2: ['윤지호', '한예린', '오승현', '임다은'],
+  c3: ['강민서', '신도현', '배서윤', '조현우'],
+}
+
+export default function TeacherRankingScreen({ demo = false }) {
   const [subjects, setSubjects] = useState([])
   const [subjectId, setSubjectId] = useState(null)
   const [classes, setClasses] = useState([])
@@ -20,6 +32,16 @@ export default function TeacherRankingScreen() {
   }, [selectedClass, subjectId])
 
   async function loadInit() {
+    if (demo) {
+      setClasses(DEMO_CLASSES)
+      setSubjects([
+        { id: 'job-common', name: '교육부 직업공통능력' },
+        { id: 'ncs-basic', name: 'NCS 직업공통능력' },
+        { id: 'interview', name: '면접 스킬' },
+      ])
+      setSelectedClass(DEMO_CLASSES[0].id)
+      return
+    }
     const [{ data: tc }, { data: subs }] = await Promise.all([
       supabase.from('teacher_classes').select('class_id, classes(id, name, grade)'),
       supabase.from('subjects').select('id, name'),
@@ -32,6 +54,19 @@ export default function TeacherRankingScreen() {
 
   async function loadRankData() {
     setLoading(true)
+    if (demo) {
+      const names = DEMO_NAMES[selectedClass] || DEMO_NAMES.c1
+      setLeaderboard(names.map((display_name, index) => ({
+        student_id: `${selectedClass}-rank-${index}`,
+        display_name,
+        rank_in_class: index + 1,
+        total_score: Math.max(54, 96 - index * 11),
+        missions_done: Math.max(2, 8 - index),
+      })))
+      setPosition({ class_avg: selectedClass === 'c1' ? 82 : selectedClass === 'c2' ? 74 : 68, school_rank: selectedClass === 'c1' ? 1 : selectedClass === 'c2' ? 2 : 3, school_total: 3, national_opt_in: false })
+      setLoading(false)
+      return
+    }
     const [lb, pos] = await Promise.all([
       supabase.rpc('rpc_class_leaderboard', { p_class_id: selectedClass, p_subject_id: subjectId }),
       supabase.rpc('rpc_class_position',    { p_class_id: selectedClass, p_subject_id: subjectId }),

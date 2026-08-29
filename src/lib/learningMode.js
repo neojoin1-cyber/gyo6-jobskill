@@ -64,7 +64,10 @@ export const LEARNING_MODES = {
 function isDataQuestion(q) {
   if (q?.visual?.type === 'table' || q?.visual?.type === 'bar') return true
   const text = `${q?.stem || ''} ${q?.context || ''}`
-  return (text.match(/\d/g) || []).length >= 12
+  const digitCount = (text.match(/\d/g) || []).length
+  const asksForCalculation = /(계산|구하|얼마|몇\s*(?:개|명|원|시간|분|일|%|퍼센트)|비율|증감률|평균|합계|총액|차이|구성비|확률|속도|거리|무게|중량|단가)/.test(text)
+  const documentOnly = /(공지|안내|이메일|보고서|업무\s*지시|제출\s*기한|접수\s*일시|처리\s*기한)/.test(text) && !asksForCalculation
+  return !documentOnly && asksForCalculation && digitCount >= 2
 }
 
 /** 문항의 학습 방식. demandLevel 이 붙어 있으면 그대로, 없으면 그 자리에서 매긴다. */

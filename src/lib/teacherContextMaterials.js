@@ -88,6 +88,7 @@ function summarySource(content) {
   const mistake = card.mistake || {}
 
   if (card.type === 'intro') return {
+    stage: 'intro',
     heading: `${summary.title || '단원'} 개요`,
     explanation: summary.intro,
     examples: (summary.keyPoints || []).slice(0, 4).map(item => item?.topic || item),
@@ -186,6 +187,16 @@ export function buildTeacherContextMaterials(context = {}, guide = {}, { publicV
     question,
   )
   const choices = choiceRows(question)
+  const isOverview = source.stage === 'intro'
+  const sourceText = plain(`${source.heading || ''} ${source.situation || ''} ${source.explanation || ''} ${question.stem || ''} ${question.context || ''}`)
+  const isMathContext = /(수리|계산|비율|증감률|평균|합계|총액|단위|수량|금액|확률|속도|거리|무게|중량)/.test(sourceText)
+  const contextualImprove = isOverview
+    ? [
+        ['목표를 읽고 넘김', '단원 제목만 확인하고 실제로 익힐 행동을 말하지 못함.', '핵심 개념과 적용할 직무 장면을 각각 하나 연결해 말해 봅시다.'],
+        ['평가 목적을 혼동', '현재 학습관과 다른 평가·시험의 목적을 섞어 이해함.', '현재 학습관의 평가 목적과 문제 형식을 먼저 구분해 봅시다.'],
+        ['개념만 외움', '용어는 말하지만 어떤 상황에서 쓸지 설명하지 못함.', '첫 핵심 카드에서 이 개념이 바꾸는 행동을 한 가지 찾아봅시다.'],
+      ]
+    : (guide.improve || []).filter(item => isMathContext || !/(암산|중간값|계산)/.test(item.join(' ')))
   const correctIndexes = answerIndexes(question, choices)
   const correct = choices.filter(choice => correctIndexes.includes(choice.index))
   const wrong = choices.filter(choice => !correctIndexes.includes(choice.index))
@@ -239,7 +250,7 @@ export function buildTeacherContextMaterials(context = {}, guide = {}, { publicV
     })
   }
   if (!bad.length) {
-    bad.push(...(guide.improve || []).slice(0, 4).map(([title, text, detail]) => ({ title, text, detail })))
+    bad.push(...contextualImprove.slice(0, 4).map(([title, text, detail]) => ({ title, text, detail })))
   }
 
   const examples = unique([
@@ -251,7 +262,9 @@ export function buildTeacherContextMaterials(context = {}, guide = {}, { publicV
       ? { title: '현재 카드 핵심', text: explanation[0] }
       : [],
     !source.example && !source.situation && !question.stem && guide.activity
-      ? { title: '현재 단계 적용 활동', text: guide.activity }
+      ? { title: '현재 단계 적용 활동', text: isOverview
+          ? `${source.heading || '이 단원'}의 핵심 개념과 실제 적용 장면을 하나씩 연결함.`
+          : guide.activity }
       : [],
   ], 4)
   const resolvedExamples = examples.filter(example => plain(example.text).length >= 3)
@@ -264,20 +277,31 @@ export function buildTeacherContextMaterials(context = {}, guide = {}, { publicV
 
   const heading = plain(source.heading || context.title || context.lessonLabel || guide.focus)
   const quotedSituation = quoteText(source.situation)
+  const overviewPrompts = [
+    `${heading || '이 단원'}에서 학생이 익혀야 할 핵심 행동은 무엇인가요?`,
+    '이 단원의 개념이 실제 직무에서 필요한 장면을 하나 말해 볼까요?',
+    '첫 핵심 카드로 넘어가기 전에 반드시 구분해야 할 기준은 무엇인가요?',
+  ]
   const prompts = unique([
     ...(source.prompts || []).map(text => ({ text: plain(text) })),
     quotedSituation ? { text: `“${quotedSituation}”에서 판단 근거가 되는 정보는 무엇인가요?` } : [],
     choices.length ? { text: '가장 타당해 보이는 선택지와 탈락시킬 선택지를 한 개씩 근거와 함께 말해 볼까요?' } : [],
     mistakeDetails.length ? { text: `“${mistakeDetails[0]}” 실수를 막으려면 무엇부터 확인해야 할까요?` } : [],
-    ...(!source.prompts?.length ? (guide.prompts || []).map(text => ({ text })) : []),
+    ...(!source.prompts?.length ? (isOverview ? overviewPrompts : (guide.prompts || [])).map(text => ({ text })) : []),
     { text: `${heading || '현재 내용'} 내용을 다른 직무 상황에 적용하면 어떤 행동이 달라지나요?` },
   ], 5).map(item => plain(item.text))
 
+  const overviewChecklist = [
+    `${heading || '이 단원'}의 학습 목표를 자신의 말로 설명함`,
+    '핵심 개념과 실제 적용 장면을 각각 하나 연결함',
+    '현재 학습관과 다른 평가·시험의 목적을 구분함',
+    '첫 핵심 카드에서 확인할 행동을 하나 정함',
+  ]
   const checklist = unique([
     ...items(source.checklist),
     ...items(question.thinkingSteps),
     ...mistakeDetails.slice(0, 3),
-    ...(!source.checklist ? items(guide.checklist) : []),
+    ...(!source.checklist ? (isOverview ? overviewChecklist : items(guide.checklist)) : []),
   ], 6).map(item => plain(typeof item === 'string' ? item : item.text))
 
   const resolvedExplanations = explanation.length ? explanation : items(guide.explain)

@@ -117,6 +117,7 @@ function plain(value) {
 export function isEnglishLearningQuestion(sample = {}) {
   const source = sample.sourceQuestion || sample
   const id = String(source.id || sample.questionId || '')
+  if (ENGLISH_SUPPORT[id]) return true
   const classification = `${id} ${source.lessonId || ''} ${source.lessonTitle || ''} ${source.ncsAbility || ''}`
   if (/^(?:ENG-|JC-ENG-)/.test(id) || /(?:^|-)ENG(?:-|$)/.test(String(source.lessonId || '')) || /(?:FOREIGN|SUP-FOR|외국어)/i.test(classification)) return true
   const text = `${source.context || sample.context || ''} ${source.stem || sample.stem || ''} ${(source.choices || sample.choices || []).map(choice => typeof choice === 'object' ? (choice.text || choice.label || choice.value || '') : choice).join(' ')}`

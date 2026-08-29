@@ -22,12 +22,32 @@ const QUESTION_POOLS = {
   'food-service': foodServiceQuestions,
 }
 
+const DEMO_PENDING = [
+  {
+    id: 'demo-submission-1', source: 'mission',
+    typed_answers: {
+      'C01-0-Q01': '처리 기한과 담당 권한을 확인한 뒤 상급자에게 먼저 보고하고 지시를 받겠습니다.',
+      'C01-0-Q02': 'This is regular coffee. Would you like decaf instead?',
+    },
+    student: { id: 'c1-s1', display_name: '이수현' },
+    mission: { id: 'demo-mission-1', title: '업무 소통 서술 확인', subject_id: 'job-common', class_id: 'c1', class: { name: '3학년 2반' } },
+  },
+  {
+    id: 'demo-submission-2', source: 'mission',
+    typed_answers: {
+      'C01-0-Q01': '고객에게 바로 연락하기 전에 처리 기준과 제 권한부터 담당 선생님께 확인하겠습니다.',
+    },
+    student: { id: 'c1-s2', display_name: '박민준' },
+    mission: { id: 'demo-mission-1', title: '업무 소통 서술 확인', subject_id: 'job-common', class_id: 'c1', class: { name: '3학년 2반' } },
+  },
+]
+
 function getQuestion(subjectId, qId) {
   const pool = QUESTION_POOLS[subjectId ?? 'job-common'] ?? jobQuestions
   return pool.find(q => q.id === qId) ?? null
 }
 
-export default function TeacherGradingScreen({ onBack }) {
+export default function TeacherGradingScreen({ onBack, demo = false }) {
   const [pending,      setPending]      = useState([])   // 채점 대기 submission 목록
   const [loading,      setLoading]      = useState(true)
   const [grades,       setGrades]       = useState({})   // { submissionId: { qId: 'O'|'X' } }
@@ -41,6 +61,14 @@ export default function TeacherGradingScreen({ onBack }) {
 
   async function load() {
     setLoading(true)
+    if (demo) {
+      setPending(DEMO_PENDING)
+      setPassResults([
+        { id: 'demo-pass-1', student: { display_name: '최유나' }, subject_id: 'job-common', paper_no: 1, passed_count: 1, verdict: '보완 필요', weak_units: ['수리 활용'], created_at: new Date().toISOString() },
+      ])
+      setLoading(false)
+      return
+    }
     const [{ data: subs }, { data: mocks }, { data: tc }] = await Promise.all([
       supabase
         .from('submissions')
@@ -158,6 +186,12 @@ export default function TeacherGradingScreen({ onBack }) {
 
   async function autoSave(submissionId, subGrades, source) {
     setSaving(prev => ({ ...prev, [submissionId]: true }))
+    if (demo) {
+      setSaving(prev => ({ ...prev, [submissionId]: false }))
+      setSaved(prev => ({ ...prev, [submissionId]: true }))
+      setPending(prev => prev.filter(item => item.id !== submissionId))
+      return
+    }
     const { error } = source === 'mock'
       ? await supabase.rpc('rpc_grade_mock_assessment', { p_mock_id: submissionId, p_grades: subGrades })
       : await supabase.rpc('rpc_grade_submission', { p_submission_id: submissionId, p_grades: subGrades })

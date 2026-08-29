@@ -629,7 +629,7 @@
         "Your room has a wonderful ocean view from the large window."
       ],
       "answer": "C",
-      "explanation": "에어컨 고장을 알린 투숙객이 'I'll wait in my room.'이라고 답했으므로, 수리 직원을 보내겠다고 사과하며 안내하는 1번이 알맞습니다. 2번은 수영장 마감 시간 안내로 고장 문제와 무관합니다. 3번은 조식 안내로 상황과 관계가 없습니다. 4번은 객실 전망 이야기로 불편 사항을 해결하지 못합니다.",
+      "explanation": "에어컨 고장을 알린 투숙객이 'I'll wait in my room.'이라고 답했으므로, 수리 직원을 보내겠다고 사과하며 안내하는 3번이 알맞습니다. 1번은 수영장 마감 시간 안내로 고장 문제와 무관합니다. 2번은 조식 안내로 상황과 관계가 없습니다. 4번은 객실 전망 이야기로 불편 사항을 해결하지 못합니다.",
       "choiceOrderBalanced": true,
       "fourChoice": "공식 인증진단 형식(4지선다)에 맞춰 오답을 다시 씀"
     },

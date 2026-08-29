@@ -19,10 +19,16 @@ const TEMPLATES = [
   { id: 'remind', title: '미션 안내', body: '오늘의 캠퍼스 미션이 열렸어요. 부담 없이 짧게 시작해 보세요.' },
 ]
 
+const DEMO_CLASSES = [
+  { id: 'c1', name: '3학년 2반' },
+  { id: 'c2', name: '2학년 취업반' },
+  { id: 'c3', name: '1학년 진로반' },
+]
+
 export default function TeacherMessageScreen({ onBack, initialScope, initialTarget, initialStudentName, initialTitle = '', initialBody = '', demo = false }) {
   const { profile } = useAuth() ?? {}
   const [tab, setTab] = useState('send')
-  const [classes, setClasses] = useState(demo ? [{ id: 'c1', name: '3학년 2반' }] : [])
+  const [classes, setClasses] = useState(demo ? DEMO_CLASSES : [])
   const [students, setStudents] = useState(demo ? demoStudents() : [])
   const [scope, setScope] = useState(initialScope || 'class')
   const [target, setTarget] = useState(initialTarget || '')
@@ -81,7 +87,7 @@ export default function TeacherMessageScreen({ onBack, initialScope, initialTarg
     setSending(true)
     setResult(null)
     const response = demo
-      ? { data: { sent: scope === 'class' ? 28 : 1 }, error: null }
+      ? { data: { sent: scope === 'class' ? demoClassSize(target) : 1 }, error: null }
       : await supabase.rpc('rpc_send_message', {
           p_scope: scope, p_target: target, p_title: title.trim(), p_body: body.trim(), p_type: type,
         })
@@ -100,6 +106,11 @@ export default function TeacherMessageScreen({ onBack, initialScope, initialTarg
     if (scope === 'personal') return students.map(item => ({ id: item.id, name: item.name, meta: classes.find(c => c.id === item.classId)?.name || '' }))
     return [{ id: profile?.school_id, name: '우리 학교 전체', meta: '학교관리자 전용' }]
   }, [scope, classes, students, profile?.school_id])
+
+  useEffect(() => {
+    if (loading) return
+    if (!targetOptions.some(item => item.id === target)) setTarget(targetOptions[0]?.id || '')
+  }, [loading, target, targetOptions])
 
   const selected = targetOptions.find(item => item.id === target)
 
@@ -176,10 +187,20 @@ export default function TeacherMessageScreen({ onBack, initialScope, initialTarg
 
 function demoStudents() {
   return [
-    { id: 's1', classId: 'c1', name: '이수현' },
-    { id: 's2', classId: 'c1', name: '박민준' },
-    { id: 's3', classId: 'c1', name: '최유나' },
+    { id: 'c1-s1', classId: 'c1', name: '이수현' },
+    { id: 'c1-s2', classId: 'c1', name: '박민준' },
+    { id: 'c1-s3', classId: 'c1', name: '최유나' },
+    { id: 'c2-s1', classId: 'c2', name: '윤지호' },
+    { id: 'c2-s2', classId: 'c2', name: '한예린' },
+    { id: 'c2-s3', classId: 'c2', name: '오승현' },
+    { id: 'c3-s1', classId: 'c3', name: '강민서' },
+    { id: 'c3-s2', classId: 'c3', name: '신도현' },
+    { id: 'c3-s3', classId: 'c3', name: '배서윤' },
   ]
+}
+
+function demoClassSize(classId) {
+  return classId === 'c1' ? 28 : classId === 'c2' ? 24 : 26
 }
 
 function demoInbox() {

@@ -99,6 +99,8 @@ export default function LoginScreen() {
   const [nickname,      setNickname]      = useState('')
   const [studentSchool, setStudentSchool] = useState('')
   const [allClasses,    setAllClasses]    = useState([])
+  const [classLoading,  setClassLoading]  = useState(false)
+  const [classLoadError,setClassLoadError]= useState('')
   const [selectedDept,  setSelectedDept]  = useState('')
   const [selectedGrade, setSelectedGrade] = useState('')
   const [selectedClass, setSelectedClass] = useState('')
@@ -139,17 +141,22 @@ export default function LoginScreen() {
   // 학교 선택 시 해당 학교 전체 학급 로드
   useEffect(() => {
     if (!studentSchool) {
+      setClassLoading(false); setClassLoadError('')
       setAllClasses([]); setSelectedDept(''); setSelectedGrade(''); setSelectedClass('')
       return
     }
+    setClassLoading(true)
+    setClassLoadError('')
     supabase.from('classes')
       .select('id, department, grade, class_num')
       .eq('school_id', studentSchool)
       .order('department').order('grade').order('class_num')
-      .then(({ data }) => {
+      .then(({ data, error: loadError }) => {
         setAllClasses(data ?? [])
+        setClassLoadError(loadError ? '학급 정보를 불러오지 못했습니다. 잠시 후 학교를 다시 선택해 주세요.' : '')
         setSelectedDept(''); setSelectedGrade(''); setSelectedClass('')
       })
+      .finally(() => setClassLoading(false))
   }, [studentSchool])
 
   // 파생 목록 (클라이언트 필터링)
@@ -254,6 +261,8 @@ export default function LoginScreen() {
   async function handleStudentJoin(e) {
     e.preventDefault(); reset()
     if (!studentSchool)      { setError('학교를 선택하세요.'); return }
+    if (classLoading)        { setError('학교의 학급 정보를 불러오는 중입니다. 잠시만 기다려 주세요.'); return }
+    if (!allClasses.length)  { setError('선택한 학교에 가입 가능한 학급이 아직 없습니다. 학교관리자에게 학급 등록을 요청해 주세요.'); return }
     if (!selectedDept)       { setError('학과를 선택하세요.'); return }
     if (!selectedGrade)      { setError('학년을 선택하세요.'); return }
     if (!selectedClass)      { setError('학반을 선택하세요.'); return }
@@ -681,13 +690,18 @@ export default function LoginScreen() {
             <div className="form-group">
               <label className="form-label">학과 <span style={{ color: 'var(--danger)' }}>*</span></label>
               <select className="form-input" value={selectedDept}
-                disabled={!studentSchool || depts.length === 0}
+                disabled={!studentSchool || classLoading || depts.length === 0}
                 onChange={e => { setSelectedDept(e.target.value); setSelectedGrade(''); setSelectedClass('') }}>
                 <option value="">
-                  {!studentSchool ? '학교를 먼저 선택' : depts.length === 0 ? '학과 없음' : '학과 선택'}
+                  {!studentSchool ? '학교를 먼저 선택' : classLoading ? '학급 정보 불러오는 중' : depts.length === 0 ? '등록된 학급 없음' : '학과 선택'}
                 </option>
                 {depts.map(d => <option key={d} value={d}>{d}</option>)}
               </select>
+              {studentSchool && !classLoading && (classLoadError || depts.length === 0) && (
+                <p role="status" style={{ marginTop: 7, fontSize: 12, lineHeight: 1.55, color: classLoadError ? 'var(--danger)' : '#92400E' }}>
+                  {classLoadError || '이 학교에는 가입 가능한 학급이 아직 없습니다. 학교관리자가 학과·학년·반을 등록한 뒤 가입할 수 있습니다.'}
+                </p>
+              )}
             </div>
 
             <div className="form-group">

@@ -24,6 +24,18 @@ const STATUS = {
   approved: '첨삭 완료',
 }
 
+const DEMO_CLASSES = [
+  { id: 'c1', name: '3학년 2반' },
+  { id: 'c2', name: '2학년 취업반' },
+  { id: 'c3', name: '1학년 진로반' },
+]
+
+const DEMO_STUDENT_NAMES = {
+  c1: ['이수현', '박민준', '최유나'],
+  c2: ['윤지호', '한예린', '오승현'],
+  c3: ['강민서', '신도현', '배서윤'],
+}
+
 function documentLabel(row) {
   return row?.draft?.documentType === 'interview-script' ? '면접 답변' : '자기소개서'
 }
@@ -81,8 +93,15 @@ function careerSnapshot(draft) {
 export default function CoverLetterReviewScreen({ onBack, initialClassId, demo = false }) {
   const { profile, isTrial } = useAuth() ?? {}
   const demoMode = demo || Boolean(isTrial)
-  const demoItems = useMemo(() => demoMode ? demoRows() : [], [demoMode])
-  const [classes, setClasses] = useState(demoMode ? [{ id: 'c1', name: '3학년 2반' }] : [])
+  const demoItems = useMemo(() => demoMode ? DEMO_CLASSES.flatMap(cls => demoRows().map((row, index) => ({
+    ...row,
+    id: `${row.id}-${cls.id}`,
+    student_id: `${row.student_id}-${cls.id}`,
+    student_name: DEMO_STUDENT_NAMES[cls.id][index] || `${cls.name} 학생`,
+    class_id: cls.id,
+    class_name: cls.name,
+  }))) : [], [demoMode])
+  const [classes, setClasses] = useState(demoMode ? DEMO_CLASSES : [])
   const [classId, setClassId] = useState(initialClassId || (demoMode ? 'c1' : ''))
   const [rows, setRows] = useState(demoItems)
   const [selectedId, setSelectedId] = useState(demoItems[0]?.id || null)
@@ -101,8 +120,8 @@ export default function CoverLetterReviewScreen({ onBack, initialClassId, demo =
   useEffect(() => { if (!demoMode) loadRows() }, [demoMode, profile?.id, classId])
   useEffect(() => {
     if (!demoMode) return
-    setClasses([{ id: 'c1', name: '3학년 2반' }])
-    setClassId(current => current || 'c1')
+    setClasses(DEMO_CLASSES)
+    setClassId(current => DEMO_CLASSES.some(item => item.id === current) ? current : 'c1')
     setRows(demoItems)
     setSelectedId(current => demoItems.some(item => item.id === current) ? current : demoItems[0]?.id || null)
     setLoading(false)
@@ -132,11 +151,16 @@ export default function CoverLetterReviewScreen({ onBack, initialClassId, demo =
   }
 
   const visible = useMemo(() => rows.filter(item => {
+    const matchesClass = !classId || item.class_id === classId
     const matchesQuery = !query || `${item.student_name} ${item.target_name} ${item.role_name} ${applicationLabel(item)}`.toLowerCase().includes(query.toLowerCase())
     const matchesStatus = status === 'all' || (status === 'pending' ? ['submitted', 'in_review'].includes(item.status) : item.status === status)
-    return matchesQuery && matchesStatus
-  }), [rows, query, status])
+    return matchesClass && matchesQuery && matchesStatus
+  }), [rows, classId, query, status])
   const selected = visible.find(item => item.id === selectedId) || null
+
+  useEffect(() => {
+    if (!visible.some(item => item.id === selectedId)) setSelectedId(visible[0]?.id || null)
+  }, [selectedId, visible])
   const relatedVersions = useMemo(() => selected ? rows
     .filter(item => applicationKey(item) === applicationKey(selected))
     .sort((a, b) => b.revision_no - a.revision_no) : [], [rows, selected])

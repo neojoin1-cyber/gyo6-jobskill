@@ -20,7 +20,7 @@ const preview = read('src/screens/teacher/TeacherLearningPreview.jsx')
 requireAll('교사 수업 직전 화면 복귀', preview, [
   'triggerBack',
   'goPrevious',
-  '이전 화면으로 돌아가기',
+  '교사 캠퍼스로 돌아가기',
   'if (!focusMode) return undefined',
   'if (!coachOpen) return undefined',
 ])

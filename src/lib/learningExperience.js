@@ -312,7 +312,7 @@ function strategyLabelFor(value, question = {}) {
   if (englishKind === 'blank') return '영어 빈칸 푸는 순서'
   if (englishKind === 'dialogue') return '영어 대화 푸는 순서'
   if (englishKind === 'reading') return '영어 지문 읽는 순서'
-  const text = plain(value).toLowerCase()
+  const text = plain(`${question.stem ?? question.question ?? ''} ${question.context ?? ''} ${question.area ?? ''} ${question.lessonTitle ?? ''} ${value}`).toLowerCase()
   if (question.visual || /(그래프|도표|차트|자료 해석)/.test(text)) return '표·그래프 읽는 순서'
   if (/(수리|계산|비율|단위|통계|금융|예산)/.test(text)) return '계산하는 순서'
   if (/(면접|자기소개|지원동기|star|prep|블라인드)/.test(text)) return '답변 구성 순서'
@@ -335,7 +335,7 @@ function strategyFor(value, question = {}) {
   if (englishKind === 'reading') {
     return ['발문에서 일치·불일치·순서 중 무엇을 묻는지 표시', '지문의 순서 표현·날짜·조건·요청 행동을 직접 확인', '선지의 핵심 표현을 원문 근거와 한 항목씩 대조']
   }
-  const text = plain(value).toLowerCase()
+  const text = plain(`${question.stem ?? question.question ?? ''} ${question.context ?? ''} ${question.area ?? ''} ${question.lessonTitle ?? ''} ${value}`).toLowerCase()
   if (question.visual || /(그래프|도표|차트|자료 해석)/.test(text)) {
     return ['자료 제목과 비교 대상을 먼저 확인', '축·범례·단위와 핵심 수치를 같은 기준으로 읽기', '선지의 주장과 실제 자료가 일치하는지 재확인']
   }

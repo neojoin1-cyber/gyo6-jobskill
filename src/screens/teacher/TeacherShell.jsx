@@ -207,6 +207,7 @@ export default function TeacherShell() {
         <Suspense fallback={<div className="loading-screen"><div className="spinner" /></div>}>
           <TeacherMessageScreen
             onBack={closeScreen}
+            demo={Boolean(isTrial)}
             initialScope={screen.scope}
             initialTarget={screen.target}
             initialStudentName={screen.studentName}
@@ -235,19 +236,20 @@ export default function TeacherShell() {
     if (screen.name === 'pending-students')
       return <PendingStudentsScreen onBack={closeScreen} />
     if (screen.name === 'create-mission')
-      return <MissionCreateScreen classId={screen.classId} className={screen.className} onBack={closeScreen} />
+      return <MissionCreateScreen classId={screen.classId} className={screen.className} onBack={closeScreen} demo={Boolean(isTrial)} />
     if (screen.name === 'class-results')
-      return <ClassResultsScreen classId={screen.classId} className={screen.className} onBack={closeScreen} />
+      return <ClassResultsScreen classId={screen.classId} className={screen.className} onBack={closeScreen} demo={Boolean(isTrial)} />
     if (screen.name === 'class-diagnostics')
-      return <ClassDiagnosticsScreen classId={screen.classId} className={screen.className} onBack={closeScreen} />
+      return <ClassDiagnosticsScreen classId={screen.classId} className={screen.className} onBack={closeScreen} demo={Boolean(isTrial)} />
     if (screen.name === 'class-personality')
-      return <ClassPersonalityScreen classId={screen.classId} className={screen.className} onBack={closeScreen} />
+      return <ClassPersonalityScreen classId={screen.classId} className={screen.className} onBack={closeScreen} demo={Boolean(isTrial)} />
     if (screen.name === 'class-subjects')
       return <ClassAdminSubjectScreen classId={screen.classId} className={screen.className} onBack={closeScreen} />
     if (screen.name === 'class-weakness')
-      return <ClassWeaknessScreen classId={screen.classId} className={screen.className} onBack={closeScreen} />
+      return <ClassWeaknessScreen classId={screen.classId} className={screen.className} onBack={closeScreen} demo={Boolean(isTrial)} />
     if (screen.name === 'class-progress')
       return <ClassProgressScreen classId={screen.classId} className={screen.className} onBack={closeScreen}
+        demo={Boolean(isTrial)}
         onMessage={student => navigate('messages', { scope: 'personal', target: student.student_id, studentName: student.display_name })} />
     if (screen.name === 'textbook-browse')
       return <TeacherTextbookScreen onBack={closeScreen} />
@@ -359,11 +361,11 @@ export default function TeacherShell() {
           </nav>
         )}
         {tab === 'grading' && (
-          <TeacherGradingScreen onBack={() => setTab('dashboard')} />
+          <TeacherGradingScreen onBack={() => setTab('dashboard')} demo={Boolean(isTrial)} />
         )}
         {tab === 'ranking' && (
           <div className="screen-body" style={{ paddingTop: 0 }}>
-            <TeacherRankingScreen />
+            <TeacherRankingScreen demo={Boolean(isTrial)} />
           </div>
         )}
       </div>

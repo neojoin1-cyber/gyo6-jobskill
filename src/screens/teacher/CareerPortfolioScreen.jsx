@@ -3,12 +3,24 @@ import { ArrowClockwise, Briefcase, CalendarCheck, ChatCircleDots, CheckCircle, 
 import { supabase } from '../../lib/supabase.js'
 import { careerGradeRoadmap, careerProfileReadiness, extracurricularCategoryLabel, normalizeCareerContext, qualificationStatusLabel } from '../../lib/careerProfile.js'
 
-function demoCareerRows() {
-  const rows = [
-    { id: 's1', name: '김하늘', grade: 1, departmentName: '스마트기계과', majorGroup: 'mechanical', targetIndustry: '자동차 부품', targetRole: '생산설비', semesterGoal: '기능사 준비 일정과 실습 근거 2장 만들기', qualifications: [{ id: 'q1', name: '생산자동화기능사', issuer: '한국산업인력공단', status: 'preparing', grade: 1, targetDate: '2027-02-15' }], extracurricularActivities: [{ id: 'a1', category: 'club', name: '메이커 동아리', organizer: '교내', grade: 1, role: '부품 조립', outcome: '작동 시제품 완성', proof: '작업일지', skills: ['협업', '측정'] }], evidence: 1 },
-    { id: 's2', name: '박서준', grade: 2, departmentName: '회계금융과', majorGroup: 'business', targetIndustry: '금융', targetRole: '사무행정', semesterGoal: '전산회계 취득과 고객 응대 경험 정리', qualifications: [{ id: 'q2', name: '전산회계', issuer: '한국세무사회', status: 'acquired', grade: 2, achievedAt: '2026-06-20', proof: '합격 확인서' }], extracurricularActivities: [{ id: 'a2', category: 'competition', name: '교내 창업경진대회', organizer: '교내', grade: 2, role: '원가표 작성', outcome: '본선 진출', proof: '발표자료', skills: ['회계', '설명'] }], evidence: 3 },
-    { id: 's3', name: '이민지', grade: 1, departmentName: '', majorGroup: 'general', targetIndustry: '', targetRole: '', semesterGoal: '', qualifications: [], extracurricularActivities: [], evidence: 0 },
-  ]
+function demoCareerRows(classId = 'c1') {
+  const presets = {
+    c1: [
+      { id: 'c1-s1', name: '이수현', grade: 3, departmentName: '회계금융과', majorGroup: 'business', targetIndustry: '금융', targetRole: '기업금융', semesterGoal: '지원처별 자기소개서와 면접 근거 일치시키기', qualifications: [{ id: 'q1', name: '전산회계', issuer: '한국세무사회', status: 'acquired', level: '1급', achievedAt: '2026-06-20', proof: '합격 확인서' }], extracurricularActivities: [{ id: 'a1', category: 'competition', name: '교내 창업경진대회', organizer: '교내', grade: 2, role: '원가표 작성', outcome: '본선 진출', proof: '발표자료', skills: ['회계', '설명'] }], evidence: 4 },
+      { id: 'c1-s2', name: '박민준', grade: 3, departmentName: '스마트기계과', majorGroup: 'mechanical', targetIndustry: '자동차 부품', targetRole: '생산설비', semesterGoal: '실습 결과를 수치 근거로 보완하기', qualifications: [{ id: 'q2', name: '생산자동화기능사', issuer: '한국산업인력공단', status: 'practical_passed', targetDate: '2026-09-15' }], extracurricularActivities: [], evidence: 2 },
+      { id: 'c1-s3', name: '최유나', grade: 3, departmentName: '', majorGroup: 'general', targetIndustry: '', targetRole: '', semesterGoal: '', qualifications: [], extracurricularActivities: [], evidence: 0 },
+    ],
+    c2: [
+      { id: 'c2-s1', name: '윤지호', grade: 2, departmentName: '스마트전기과', majorGroup: 'electrical', targetIndustry: '전력', targetRole: '설비관리', semesterGoal: '전기 실습 근거 3장 만들기', qualifications: [{ id: 'q3', name: '전기기능사', issuer: '한국산업인력공단', status: 'written_passed', targetDate: '2027-01-20' }], extracurricularActivities: [{ id: 'a2', category: 'club', name: '전기설비 동아리', organizer: '교내', role: '배선 점검', outcome: '안전 점검표 완성', proof: '점검표', skills: ['안전', '협업'] }], evidence: 2 },
+      { id: 'c2-s2', name: '한예린', grade: 2, departmentName: '관광경영과', majorGroup: 'service', targetIndustry: '호텔', targetRole: '고객서비스', semesterGoal: '서비스 활동 결과 구체화', qualifications: [], extracurricularActivities: [], evidence: 1 },
+      { id: 'c2-s3', name: '오승현', grade: 2, departmentName: '', majorGroup: 'general', targetIndustry: '', targetRole: '', semesterGoal: '', qualifications: [], extracurricularActivities: [], evidence: 0 },
+    ],
+    c3: [
+      { id: 'c3-s1', name: '강민서', grade: 1, departmentName: '스마트기계과', majorGroup: 'mechanical', targetIndustry: '', targetRole: '', semesterGoal: '관심 직무 2개 비교하기', qualifications: [], extracurricularActivities: [{ id: 'a3', category: 'club', name: '메이커 동아리', organizer: '교내', role: '부품 조립', outcome: '작동 시제품 완성', proof: '작업일지', skills: ['협업', '측정'] }], evidence: 1 },
+      { id: 'c3-s2', name: '신도현', grade: 1, departmentName: '', majorGroup: 'general', targetIndustry: '', targetRole: '', semesterGoal: '', qualifications: [], extracurricularActivities: [], evidence: 0 },
+    ],
+  }
+  const rows = presets[classId] || presets.c1
   return rows.map(item => {
     const profile = normalizeCareerContext({ ...item, currentGrade: item.grade })
     return { student_id: item.id, student_name: item.name, profile_data: profile, readiness_score: careerProfileReadiness(profile, { evidenceCount: item.evidence }).score, evidence_count: item.evidence, profile_updated_at: new Date().toISOString(), feedback_note: '', feedback_next_action: '', feedback_review_on: null }
@@ -31,11 +43,11 @@ function formatDate(value) {
 }
 
 export default function CareerPortfolioScreen({ classId, className, demo = false, onMessage }) {
-  const [rows, setRows] = useState(() => demo ? demoCareerRows().map(normalizeRow) : [])
+  const [rows, setRows] = useState(() => demo ? demoCareerRows(classId).map(normalizeRow) : [])
   const [loading, setLoading] = useState(!demo)
   const [query, setQuery] = useState('')
   const [filter, setFilter] = useState('all')
-  const [selectedId, setSelectedId] = useState(() => demo ? 's1' : '')
+  const [selectedId, setSelectedId] = useState(() => demo ? demoCareerRows(classId)[0]?.id || '' : '')
   const [note, setNote] = useState('')
   const [nextAction, setNextAction] = useState('')
   const [reviewOn, setReviewOn] = useState('')
@@ -56,7 +68,15 @@ export default function CareerPortfolioScreen({ classId, className, demo = false
     setSelectedId(current => next.some(item => item.student_id === current) ? current : next[0]?.student_id || '')
   }
 
-  useEffect(() => { load() }, [classId, demo])
+  useEffect(() => {
+    if (demo) {
+      const next = demoCareerRows(classId).map(normalizeRow)
+      setRows(next)
+      setSelectedId(next[0]?.student_id || '')
+      return
+    }
+    load()
+  }, [classId, demo])
 
   const visible = useMemo(() => rows.filter(item => {
     const corpus = `${item.student_name} ${item.profile.departmentName} ${item.profile.targetRole}`.toLowerCase()

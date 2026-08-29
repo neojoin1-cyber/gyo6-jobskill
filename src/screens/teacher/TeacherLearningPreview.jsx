@@ -313,7 +313,8 @@ export default function TeacherLearningPreview({
   return (
     <div ref={rootRef} className={`screen teacher-learning-preview ${teachingMode ? 'is-teaching' : ''} ${focusMode ? 'is-focus' : ''}`}>
       <header className="teacher-preview-context">
-        <button type="button" className="teacher-preview-back" onClick={goPrevious} aria-label="이전 화면으로 돌아가기">
+        <button type="button" className="teacher-preview-back" onClick={leavePreview}
+          aria-label="교사 캠퍼스로 돌아가기" title="교사 캠퍼스로 돌아가기">
           <ArrowLeft weight="bold" />
         </button>
         <span className="teacher-preview-mark"><Buildings weight="fill" /></span>

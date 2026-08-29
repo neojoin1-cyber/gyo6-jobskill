@@ -12,6 +12,14 @@ import {
 
 const MISSION_TYPES = ['이번시간', '오늘', '이번주', '중간고사', '기말고사', '인증평가']
 
+const DEMO_SUBJECTS = [
+  { id: 'job-common', name: '교육부 직업공통능력', description: '교육부·대한상공회의소 평가 체계 연계' },
+  { id: 'ncs-basic', name: 'NCS 직업공통능력', description: '고용노동부·한국산업인력공단 NCS 직업기초능력' },
+  { id: 'recruit-written', name: '채용필기 심화', description: '공공기관·금융권·대기업 추가 출제영역' },
+  { id: 'interview', name: '면접 스킬', description: '공정채용 면접 상황·답변 연습' },
+  { id: 'personality', name: '인성검사', description: '응답 경향과 일관성 확인' },
+]
+
 // 교육부·대한상의 직업공통능력 인증 5영역 — 자율학습·모의평가와 동일 소스
 const JOB_AREAS = buildJcMissionAreas()
 
@@ -24,7 +32,7 @@ const RECRUIT_AREAS = RECRUIT_WRITTEN_TRACKS.flatMap(track =>
   }))
 )
 
-export default function MissionCreateScreen({ classId, className, onBack }) {
+export default function MissionCreateScreen({ classId, className, onBack, demo = false }) {
   const [availableSubjects, setAvailableSubjects] = useState([])
   const [title, setTitle] = useState('')
   const [subjectId, setSubjectId] = useState(null)
@@ -40,6 +48,11 @@ export default function MissionCreateScreen({ classId, className, onBack }) {
   const [success, setSuccess] = useState('')
 
   useEffect(() => {
+    if (demo) {
+      setAvailableSubjects(DEMO_SUBJECTS)
+      setSubjectId(DEMO_SUBJECTS[0].id)
+      return
+    }
     // 교사에게 배정된 과목 조회 (없으면 전체 subject 표시)
     supabase.from('teacher_subjects').select('subject_id, subjects(id, name, description)')
       .then(({ data }) => {
@@ -57,7 +70,7 @@ export default function MissionCreateScreen({ classId, className, onBack }) {
           })
         }
       })
-  }, [])
+  }, [demo])
 
   // 과목 전환 시 영역 선택 초기화
   function switchSubject(id) {
@@ -113,6 +126,11 @@ export default function MissionCreateScreen({ classId, className, onBack }) {
       // NCS: area 이름 기반
       questionIds = selectedAreas.map(a => `area:${a}`)
       areaIds = selectedAreas
+    }
+
+    if (demo) {
+      setSuccess(`${className || '선택 학급'} 미션 초안을 만들었습니다. 체험 기록은 서버에 저장되지 않습니다.`)
+      return
     }
 
     setLoading(true)
