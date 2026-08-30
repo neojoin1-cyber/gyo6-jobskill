@@ -569,7 +569,7 @@ export default function TeacherLearningPreview({
             />
           )}
           {tab === 'growth' && <WrongAnswerScreen profile={profile} />}
-          {tab === 'messages' && <NotificationsScreen />}
+          {tab === 'messages' && <NotificationsScreen demo />}
           {tab === 'ranking' && <RankingScreen />}
         </div>
         </div>

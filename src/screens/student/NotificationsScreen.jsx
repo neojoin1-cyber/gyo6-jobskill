@@ -7,6 +7,7 @@ import {
   Megaphone,
   PaperPlaneTilt,
   Sparkle,
+  TrashSimple,
   Trophy,
 } from '@phosphor-icons/react'
 import { useAuth } from '../../App.jsx'
@@ -33,6 +34,7 @@ export default function NotificationsScreen({ demo = false }) {
   const [replyTo, setReplyTo] = useState(null)
   const [replyBody, setReplyBody] = useState('')
   const [sending, setSending] = useState(false)
+  const [deleting, setDeleting] = useState(null)
   const [replySent, setReplySent] = useState({})
 
   useEffect(() => {
@@ -81,6 +83,18 @@ export default function NotificationsScreen({ demo = false }) {
     setReplySent(previous => ({ ...previous, [id]: text }))
     setReplyTo(null)
     setReplyBody('')
+  }
+
+  async function deleteMessage(id) {
+    if (!window.confirm('이 소식을 삭제할까요? 삭제한 소식은 다시 볼 수 없습니다.')) return
+    setDeleting(id)
+    const response = demo
+      ? { error: null }
+      : await supabase.from('notifications').delete().eq('id', id).eq('user_id', profile.id)
+    setDeleting(null)
+    if (response.error) return
+    setItems(previous => previous.filter(item => item.id !== id))
+    setReplyTo(current => current === id ? null : current)
   }
 
   const unreadCount = items.filter(item => !item.is_read).length
@@ -142,9 +156,22 @@ export default function NotificationsScreen({ demo = false }) {
                 )}
 
                 {canReply && !replySent[item.id] && replyTo !== item.id && (
-                  <button className="message-reply-open" onClick={event => { event.stopPropagation(); setReplyTo(item.id); setReplyBody('') }}>
-                    <PaperPlaneTilt /> 답장하기
-                  </button>
+                  <div className="message-actions">
+                    <button className="message-reply-open" onClick={event => { event.stopPropagation(); setReplyTo(item.id); setReplyBody('') }}>
+                      <PaperPlaneTilt /> 답장하기
+                    </button>
+                    <button className="message-delete" disabled={deleting === item.id} onClick={event => { event.stopPropagation(); deleteMessage(item.id) }}>
+                      <TrashSimple /> {deleting === item.id ? '삭제 중' : '삭제'}
+                    </button>
+                  </div>
+                )}
+
+                {(!canReply || replySent[item.id]) && replyTo !== item.id && (
+                  <div className="message-actions">
+                    <button className="message-delete" disabled={deleting === item.id} onClick={event => { event.stopPropagation(); deleteMessage(item.id) }}>
+                      <TrashSimple /> {deleting === item.id ? '삭제 중' : '삭제'}
+                    </button>
+                  </div>
                 )}
 
                 {replyTo === item.id && (

@@ -9,6 +9,7 @@ import { analyzeWritingDraft } from '../../lib/writingDraftCheck.js'
 import { buildAutonomousFormative } from '../../lib/autonomousFormative.js'
 import { learningCaseProvenance } from '../../lib/learningCaseProvenance.js'
 import { englishLearningSupport } from '../../lib/englishLearningSupport.js'
+import { formatStructuredLearningText } from '../../lib/structuredLearningText.js'
 import CompactText from '../../components/CompactText.jsx'
 
 const EMPTY_QUESTIONS = []
@@ -166,12 +167,12 @@ function ExpandableText({ text, style }) {
 }
 
 function readableScenario(value) {
-  return String(value ?? '')
+  return formatStructuredLearningText(value)
     .replace(/\s*•\s*/g, '\n• ')
     .replace(/([.!?~])(?=[가-힣A-Za-z0-9【[])/g, '$1\n')
     .replace(/,(?=(?:아래|다음|단,|그리고|하지만|반면))/g, ',\n')
     .replace(/\^\^(?=[가-힣A-Za-z])/g, '^^\n')
-    .replace(/^\s+|\s+$/g, '')
+    .trim()
 }
 
 function sameLearningText(left, right) {
@@ -286,7 +287,7 @@ function SampleQuestionCard({ sample, courseKind, hideContext = false, isOpen, s
       <div data-learning-question="writing-practice" className="learning-writing-practice" style={{ marginTop: 10, background: '#F8FAFF', border: '1.5px solid #A5B4FC', borderRadius: 10, padding: '12px 14px' }}>
         <CaseProvenance courseKind={courseKind} sample={sample} />
         <p style={{ fontSize: 12, fontWeight: 800, color: '#4338CA', marginBottom: 8 }}>{sample.format || '실전 고쳐쓰기'}</p>
-        {!hideContext && sample.context && <div style={{ background: '#EEF2FF', borderRadius: 8, padding: '9px 11px', marginBottom: 10 }}><b style={{ fontSize: 12, color: '#4338CA' }}>지원 문항</b><p style={{ marginTop: 4, fontSize: 13, lineHeight: 1.7 }}>{sample.context}</p></div>}
+        {!hideContext && sample.context && <div style={{ background: '#EEF2FF', borderRadius: 8, padding: '9px 11px', marginBottom: 10 }}><b style={{ fontSize: 12, color: '#4338CA' }}>지원 문항</b><p style={{ marginTop: 4, fontSize: 13, lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>{formatStructuredLearningText(sample.context)}</p></div>}
         {sample.draft && <div style={{ background: '#FFF1F2', border: '1px solid #FECDD3', borderRadius: 8, padding: '9px 11px', marginBottom: 10 }}><b style={{ fontSize: 12, color: '#BE123C' }}>감점 초안</b><p style={{ marginTop: 4, fontSize: 13, lineHeight: 1.7 }}>{sample.draft}</p></div>}
         <p style={{ fontSize: 13.5, fontWeight: 750, lineHeight: 1.65, marginBottom: 8 }}>{sample.stem}</p>
         <label style={{ display: 'block' }}>
@@ -342,7 +343,7 @@ function SampleQuestionCard({ sample, courseKind, hideContext = false, isOpen, s
       <div data-learning-question="reflection" className="learning-reflection-card">
         <CaseProvenance courseKind={courseKind} sample={sample} />
         <p className="learning-reflection-label">{sample.label || '응답 기준 성찰 · 정답 없음'}</p>
-        {!hideContext && sample.context && <p className="learning-reflection-context">{sample.context}</p>}
+        {!hideContext && sample.context && <p className="learning-reflection-context">{formatStructuredLearningText(sample.context)}</p>}
         <p className="learning-reflection-stem">{sample.stem}</p>
         <div className="learning-reflection-choices">
           {(sample.choices || []).map(choice => (
@@ -366,7 +367,7 @@ function SampleQuestionCard({ sample, courseKind, hideContext = false, isOpen, s
       <div data-learning-question="interview" style={{ marginTop: 10, background: '#FFFDE7', border: '1.5px solid #FFE082', borderRadius: 10, padding: '12px 14px' }}>
         <CaseProvenance courseKind={courseKind} sample={sample} />
         <p style={{ fontSize: 12, fontWeight: 800, color: '#B45309', marginBottom: 8 }}>{sample.format || '면접 질문형'}</p>
-        {!hideContext && sample.context && <p style={{ marginBottom: 7, color: '#92400E', fontSize: 12, fontWeight: 750 }}>{sample.context}</p>}
+        {!hideContext && sample.context && <p style={{ marginBottom: 7, color: '#92400E', fontSize: 12, fontWeight: 750, whiteSpace: 'pre-wrap' }}>{formatStructuredLearningText(sample.context)}</p>}
         <p style={{ fontSize: 'clamp(13px, 3.85vw, 14.5px)', fontWeight: 600, lineHeight: 1.75, color: 'var(--text)', marginBottom: 10 }}>{sample.stem}</p>
         {isOpen ? (
           <div style={{ background: '#e8f5e9', borderRadius: 8, padding: '10px 12px', border: '1px solid var(--success)' }}>
@@ -396,7 +397,7 @@ function SampleQuestionCard({ sample, courseKind, hideContext = false, isOpen, s
       <div data-learning-question="pulldown" style={{ marginTop: 10, background: '#FFFDE7', border: '1.5px solid #FFE082', borderRadius: 10, padding: '12px 14px' }}>
         <CaseProvenance courseKind={courseKind} sample={sample} />
         <p style={{ fontSize: 12, fontWeight: 800, color: '#B45309', marginBottom: 8 }}>{language.practiceLabel} · 풀다운형</p>
-        {!hideContext && sample.context && <p style={{ fontSize: 12.5, lineHeight: 1.75, whiteSpace: 'pre-wrap', marginBottom: 10 }}>{sample.context}</p>}
+        {!hideContext && sample.context && <p style={{ fontSize: 12.5, lineHeight: 1.75, whiteSpace: 'pre-wrap', marginBottom: 10 }}>{formatStructuredLearningText(sample.context)}</p>}
         <p style={{ fontSize: 'clamp(13px, 3.85vw, 14.5px)', fontWeight: 700, lineHeight: 1.75, color: 'var(--text)', marginBottom: 10 }}>{sample.stem}</p>
         <PulldownForm q={sample.sourceQuestion || sample} checked={isOpen} value={selected} onChange={onChange} />
         {!isOpen && (
@@ -418,7 +419,7 @@ function SampleQuestionCard({ sample, courseKind, hideContext = false, isOpen, s
       {!hideContext && sample.context && (
         <div style={{ background: '#f0f4ff', border: '1px solid #c7d7f5', borderRadius: 8, padding: '9px 11px', marginBottom: 10 }}>
           <p style={{ fontSize: 12, fontWeight: 800, color: '#3b5bdb', marginBottom: 5 }}>지문 / 상황</p>
-          <p style={{ fontSize: 'clamp(12px, 3.5vw, 13px)', lineHeight: 1.85, whiteSpace: 'pre-wrap', color: '#1a237e' }}>{sample.context}</p>
+          <p style={{ fontSize: 'clamp(12px, 3.5vw, 13px)', lineHeight: 1.85, whiteSpace: 'pre-wrap', color: '#1a237e' }}>{formatStructuredLearningText(sample.context)}</p>
         </div>
       )}
       {sample.sourceQuestion?.audioText && <ListeningBlankGuide q={sample.sourceQuestion} />}

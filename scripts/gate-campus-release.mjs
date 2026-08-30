@@ -2,6 +2,7 @@ import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { createHash } from 'node:crypto'
 import { STUDENT_CAMPUS_HALLS } from '../src/lib/studentCampusRoutes.js'
+import { formatStructuredLearningText } from '../src/lib/structuredLearningText.js'
 
 const root = new URL('..', import.meta.url).pathname.replace(/^\/(\w:)/, '$1')
 const errors = []
@@ -13,6 +14,7 @@ const teacherLessonCoach = read('src/screens/teacher/TeacherLessonCoach.jsx')
 const courseList = read('src/screens/student/CourseListScreen.jsx')
 const studentHome = read('src/screens/student/StudentCampusHome.jsx')
 const studentShell = read('src/screens/student/StudentShell.jsx')
+const notifications = read('src/screens/student/NotificationsScreen.jsx')
 const listening = read('src/screens/student/ListeningPrompt.jsx')
 const diagnostic = read('src/screens/student/DiagnosticScreen.jsx')
 const study = read('src/screens/student/StudyScreen.jsx')
@@ -54,6 +56,27 @@ if (campusMapPosition < 0 || nextStepPosition < 0 || campusMapPosition > nextSte
 if (!/\.campus-topbar\s*\{[^}]*min-height:\s*calc\([^)]*var\(--safe-top\)/s.test(campusCss)
   || !/\.campus-topbar\s*\{[^}]*padding:\s*calc\([^)]*var\(--safe-top\)/s.test(campusCss)) {
   errors.push('Student campus header must reserve the native system-bar safe area')
+}
+
+const structuredStageText = formatStructuredLearningText('개발 단계별 정보: –기획단계(5일): A팀원만 가능 –UI설계(4일): B팀원만 가능')
+const structuredProjectText = formatStructuredLearningText('【프로젝트 추진 현황】프로젝트명: 스마트 오피스PM: 기획팀■ 1단계(완료): 현황 분석회의 결정: A업체 추진')
+if (!structuredStageText.includes('\n- 기획단계') || !structuredStageText.includes('\n- UI설계')) {
+  errors.push('Learning source formatter does not separate stage bullets into readable lines')
+}
+for (const line of ['프로젝트명:', 'PM:', '■ 1단계', '회의 결정:']) {
+  if (!structuredProjectText.split('\n').some(value => value.startsWith(line))) {
+    errors.push(`Learning source formatter does not separate document field: ${line}`)
+  }
+}
+
+if (!studentShell.includes('demo={Boolean(isTrial)}') || !studentShell.includes('<NotificationsScreen demo={Boolean(isTrial)}')) {
+  errors.push('Student trial home and message screen do not share the same demo message source')
+}
+if (!notifications.includes(".from('notifications')") || notifications.includes(".eq('is_read', false)")) {
+  errors.push('Read student messages are filtered out instead of being retained')
+}
+if (!notifications.includes(".delete().eq('id', id).eq('user_id', profile.id)")) {
+  errors.push('Students cannot explicitly delete a retained message')
 }
 
 for (const label of ['교육부 · 대한상공회의소', '고용노동부']) {

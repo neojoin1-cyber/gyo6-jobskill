@@ -264,7 +264,7 @@ export default function StudentCampusHome({
         </div>
       </section>
 
-      <section className="teacher-note">
+      {(demo || message) && <section className="teacher-note">
         <button onClick={onGoMessages}>
           <span className="teacher-avatar"><PaperPlaneTilt weight="fill" /></span>
           <span className="teacher-note-copy">
@@ -274,7 +274,7 @@ export default function StudentCampusHome({
           </span>
           <ArrowRight />
         </button>
-      </section>
+      </section>}
 
     </main>
   )

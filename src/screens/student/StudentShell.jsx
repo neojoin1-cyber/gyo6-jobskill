@@ -224,6 +224,7 @@ export default function StudentShell() {
         {tab === 'home' && (
           <StudentCampusHome
             profile={profile}
+            demo={Boolean(isTrial)}
             onOpenMission={openMission}
             onGoStudy={target => {
               setFollowLink(typeof target === 'string' || target == null ? campusCourseTarget(target) : target)
@@ -246,7 +247,7 @@ export default function StudentShell() {
             setFollowLink({ subject: 'cover-letter', area: null, lesson: null, mode: options.workspace === 'evidence' ? 'cover-evidence' : 'cover-practical', evidenceSeed: options.evidenceSeed, careerProfile: options.careerProfile })
             setTab('study')
           }} />}
-          {tab === 'notifications' && <NotificationsScreen />}
+          {tab === 'notifications' && <NotificationsScreen demo={Boolean(isTrial)} />}
         </Suspense>
       </div>
 
