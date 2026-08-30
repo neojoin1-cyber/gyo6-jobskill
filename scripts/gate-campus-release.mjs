@@ -18,6 +18,7 @@ const diagnostic = read('src/screens/student/DiagnosticScreen.jsx')
 const study = read('src/screens/student/StudyScreen.jsx')
 const missionCreate = read('src/screens/teacher/MissionCreateScreen.jsx')
 const teacherShell = read('src/screens/teacher/TeacherShell.jsx')
+const campusCss = read('src/styles/campus.css')
 const questions = JSON.parse(read('data/questions.json'))
 
 if (!classroom.includes('TeacherLearningPreview') || !classroom.includes('teachingMode')) {
@@ -49,6 +50,10 @@ const campusMapPosition = studentHome.indexOf('className="campus-map"')
 const nextStepPosition = studentHome.indexOf('className="mission-dock campus-next-step"')
 if (campusMapPosition < 0 || nextStepPosition < 0 || campusMapPosition > nextStepPosition) {
   errors.push('Student home must show the campus map before the recommended next-step card')
+}
+if (!/\.campus-topbar\s*\{[^}]*min-height:\s*calc\([^)]*var\(--safe-top\)/s.test(campusCss)
+  || !/\.campus-topbar\s*\{[^}]*padding:\s*calc\([^)]*var\(--safe-top\)/s.test(campusCss)) {
+  errors.push('Student campus header must reserve the native system-bar safe area')
 }
 
 for (const label of ['교육부 · 대한상공회의소', '고용노동부']) {

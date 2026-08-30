@@ -1,4 +1,4 @@
-name: Internal Test
+name: Closed Test
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       label:
-        description: Internal test label
+        description: Closed test label
         required: false
         default: manual
         type: string
@@ -16,7 +16,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: internal-test-${{ github.ref }}
+  group: closed-test-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -36,7 +36,7 @@ jobs:
 
       - run: npm ci
 
-      - name: Require internal verification secrets
+      - name: Require closed-test verification secrets
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
           SUPABASE_PROJECT_ID: ${{ secrets.SUPABASE_PROJECT_ID }}
@@ -58,7 +58,7 @@ jobs:
           supabase link --project-ref "$SUPABASE_PROJECT_ID" --yes
           npm run release:sync
 
-      - name: Build internal web artifact
+      - name: Build closed-test web artifact
         env:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
@@ -67,7 +67,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: internal-web-${{ github.sha }}
+          name: closed-web-${{ github.sha }}
           path: dist
           retention-days: 14
 
@@ -121,6 +121,6 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: internal-android-debug-${{ github.sha }}
+          name: closed-android-debug-${{ github.sha }}
           path: android/app/build/outputs/apk/debug/app-debug.apk
           retention-days: 14

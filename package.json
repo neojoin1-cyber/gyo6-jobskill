@@ -73,10 +73,10 @@
     "release:sync": "node scripts/release/verify-device-sync-remote.mjs",
     "release:android": "node scripts/release/verify-android-recovery.mjs",
     "release:verify": "npm run release:migrations -- --apply && npm run release:sync && npm run release:android",
-    "internal:aab": "node scripts/release/build-internal-aab.mjs",
-    "internal:test": "npm run release:migrations && npm run release:sync && npm run release:android && npm run internal:aab -- --skip-sync",
-    "internal:publish-config": "node scripts/release/publish-app-config.mjs",
-    "internal:finalize": "node scripts/release/finalize-internal-release.mjs"
+    "closed:aab": "node scripts/release/build-closed-aab.mjs",
+    "closed:test": "npm run release:migrations && npm run release:sync && npm run release:android && npm run closed:aab -- --skip-sync",
+    "closed:publish-config": "node scripts/release/publish-app-config.mjs",
+    "closed:finalize": "node scripts/release/finalize-closed-release.mjs"
   },
   "keywords": [],
   "author": "",

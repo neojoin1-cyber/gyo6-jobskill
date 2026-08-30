@@ -7,7 +7,7 @@ const skipSync = process.argv.includes('--skip-sync')
 const keystore = resolve(ROOT, 'android/app/jobhigh-release.jks')
 const properties = resolve(ROOT, 'android/keystore.properties')
 if (!existsSync(keystore) || !existsSync(properties)) {
-  throw new Error('내부 테스트용 서명 키가 없습니다. GitHub에는 키를 올리지 않고 로컬에서만 AAB를 만듭니다.')
+  throw new Error('비공개 테스트용 서명 키가 없습니다. GitHub에는 키를 올리지 않고 로컬에서만 AAB를 만듭니다.')
 }
 
 if (!skipSync) runNpm(['run', 'android:sync'], { stdio: 'inherit' })
@@ -20,7 +20,7 @@ const args = process.platform === 'win32'
 run(command, args, { cwd: resolve(ROOT, 'android'), env: gradleEnv(), stdio: 'inherit' })
 
 const source = resolve(ROOT, 'android/app/build/outputs/bundle/release/app-release.aab')
-if (!existsSync(source)) throw new Error('서명된 내부 테스트 AAB를 찾지 못했습니다.')
+if (!existsSync(source)) throw new Error('서명된 비공개 테스트 AAB를 찾지 못했습니다.')
 
 const packagedManifest = resolve(ROOT, 'android/app/build/intermediates/packaged_manifests/release/processReleaseManifestForPackage/AndroidManifest.xml')
 if (!existsSync(packagedManifest)) throw new Error('AAB의 실제 버전 정보를 담은 AndroidManifest.xml을 찾지 못했습니다.')
@@ -32,22 +32,23 @@ if (!Number.isInteger(build) || build < 1 || !/^\d+\.\d+\.\d+$/.test(versionName
   throw new Error('AAB 실제 버전 또는 패키지 정보를 확인하지 못했습니다.')
 }
 
-const outDir = resolve(ROOT, 'release/internal')
+const outDir = resolve(ROOT, 'release/closed')
 mkdirSync(outDir, { recursive: true })
 const stamp = new Date().toISOString().replace(/[:.]/g, '-').replace('T', '_').replace('Z', '')
-const target = resolve(outDir, `JOBGO-v${versionName}-internal-${stamp}.aab`)
+const target = resolve(outDir, `JOBGO-v${versionName}-closed-${stamp}.aab`)
 copyFileSync(source, target)
 const digest = createHash('sha256').update(readFileSync(target)).digest('hex')
 writeFileSync(`${target}.sha256`, `${digest}  ${target.split(/[\\/]/).pop()}\n`)
 writeFileSync(`${target}.release.json`, `${JSON.stringify({
   packageName,
-  track: 'internal',
+  track: 'closed',
   build,
   version: versionName,
   aab: target.split(/[\\/]/).pop(),
   sha256: digest,
   builtAt: new Date().toISOString(),
+  playSubmitted: false,
   playPublished: false,
 }, null, 2)}\n`)
 
-logPass(`서명된 내부 테스트 AAB 생성 · build ${build} · v${versionName} · ${target}`)
+logPass(`서명된 비공개 테스트 AAB 생성 · build ${build} · v${versionName} · ${target}`)
