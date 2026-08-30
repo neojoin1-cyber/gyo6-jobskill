@@ -10,7 +10,9 @@ import {
   Compass,
   House,
   Monitor,
+  Minus,
   PresentationChart,
+  Plus,
   StopCircle,
   TextAa,
   UserCircle,
@@ -27,6 +29,44 @@ import { enterProjection, exitProjection, onFullscreenChange } from '../../lib/o
 import TeacherLessonCoach from './TeacherLessonCoach.jsx'
 
 const FOLLOWABLE_MODES = new Set(['study', 'diagnostic', 'mock', 'practical', 'cover-practical'])
+const CLASSROOM_ZOOM_LEVELS = [1, 1.25, 1.5, 1.75, 2, 2.5, 3]
+const CLASSROOM_ZOOM_STORAGE_KEY = 'gyo6_classroom_zoom'
+
+function initialClassroomZoom(teachingMode) {
+  if (!teachingMode || typeof window === 'undefined') return 1
+  try {
+    const stored = Number(window.localStorage.getItem(CLASSROOM_ZOOM_STORAGE_KEY))
+    if (CLASSROOM_ZOOM_LEVELS.includes(stored)) return stored
+    return window.localStorage.getItem('gyo6_classroom_text_size') === 'standard' ? 1 : 1.25
+  } catch {
+    return 1.25
+  }
+}
+
+function isTypingTarget(target) {
+  return target instanceof Element && Boolean(target.closest('input, textarea, select, [contenteditable="true"]'))
+}
+
+function ClassroomZoomControl({ zoom, onDecrease, onReset, onIncrease }) {
+  const percent = Math.round(zoom * 100)
+  return (
+    <div className="classroom-zoom-control" role="group" aria-label={`수업 화면 확대 ${percent}%`}>
+      <button type="button" onClick={onDecrease} disabled={zoom <= CLASSROOM_ZOOM_LEVELS[0]}
+        aria-label="수업 화면 축소" title="수업 화면 축소">
+        <Minus weight="bold" />
+      </button>
+      <button type="button" className={zoom > 1 ? 'is-on' : ''} onClick={onReset}
+        aria-label={`현재 확대율 ${percent}%, 100%로 초기화`}
+        title="현재 배율 · 누르면 100% · 확대 중에는 드래그/휠/방향키로 이동">
+        <TextAa weight="bold" /><span>{percent}%</span>
+      </button>
+      <button type="button" onClick={onIncrease} disabled={zoom >= CLASSROOM_ZOOM_LEVELS.at(-1)}
+        aria-label="수업 화면 확대" title="수업 화면 확대">
+        <Plus weight="bold" />
+      </button>
+    </div>
+  )
+}
 
 function classFocus(context) {
   if (!context?.subject) return null
@@ -89,6 +129,8 @@ export default function TeacherLearningPreview({
   onOpenMessages,
 }) {
   const rootRef = useRef(null)
+  const stageRef = useRef(null)
+  const panRef = useRef(null)
   const focusRef = useRef('')
   const restoreCoachRef = useRef(Boolean(initialCoachOpen))
   const autoStartRef = useRef(Boolean(initialClassId))
@@ -99,11 +141,8 @@ export default function TeacherLearningPreview({
   const [coachOpen, setCoachOpen] = useState(false)
   const [fullscreen, setFullscreen] = useState(false)
   const [focusMode, setFocusMode] = useState(false)
-  const [largeText, setLargeText] = useState(() => {
-    if (!teachingMode || typeof window === 'undefined') return false
-    try { return window.localStorage.getItem('gyo6_classroom_text_size') !== 'standard' }
-    catch { return true }
-  })
+  const [classroomZoom, setClassroomZoom] = useState(() => initialClassroomZoom(teachingMode))
+  const [panning, setPanning] = useState(false)
   const [classes, setClasses] = useState([])
   const [classId, setClassId] = useState(initialClassId || '')
   const [session, setSession] = useState(null)
@@ -166,9 +205,47 @@ export default function TeacherLearningPreview({
 
   useEffect(() => {
     if (!teachingMode || typeof window === 'undefined') return
-    try { window.localStorage.setItem('gyo6_classroom_text_size', largeText ? 'large' : 'standard') }
+    try { window.localStorage.setItem(CLASSROOM_ZOOM_STORAGE_KEY, String(classroomZoom)) }
     catch { }
-  }, [largeText, teachingMode])
+    if (classroomZoom === 1) stageRef.current?.scrollTo({ left: 0, top: 0 })
+  }, [classroomZoom, teachingMode])
+
+  useEffect(() => {
+    if (!teachingMode) return undefined
+    const onKeyDown = event => {
+      if (isTypingTarget(event.target)) return
+      const stage = stageRef.current
+      if (!stage) return
+      const distance = event.shiftKey ? 180 : 88
+      const movement = {
+        ArrowLeft: [-distance, 0],
+        ArrowRight: [distance, 0],
+        ArrowUp: [0, -distance],
+        ArrowDown: [0, distance],
+      }[event.key]
+      if (movement && classroomZoom > 1) {
+        event.preventDefault()
+        stage.scrollBy({ left: movement[0], top: movement[1], behavior: 'smooth' })
+        return
+      }
+      if (event.key === '0' && classroomZoom !== 1) {
+        event.preventDefault()
+        applyClassroomZoom(1)
+        return
+      }
+      if (['+', '='].includes(event.key)) {
+        event.preventDefault()
+        changeClassroomZoom(1)
+        return
+      }
+      if (event.key === '-') {
+        event.preventDefault()
+        changeClassroomZoom(-1)
+      }
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [classroomZoom, teachingMode]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!teachingMode || !focusMode) return undefined
@@ -256,6 +333,63 @@ export default function TeacherLearningPreview({
     await enterProjection(rootRef.current)
   }
 
+  function applyClassroomZoom(nextZoom) {
+    const next = CLASSROOM_ZOOM_LEVELS.includes(nextZoom) ? nextZoom : 1
+    if (next === classroomZoom) return
+    const stage = stageRef.current
+    const anchor = stage ? {
+      x: (stage.scrollLeft + stage.clientWidth / 2) / classroomZoom,
+      y: (stage.scrollTop + stage.clientHeight / 2) / classroomZoom,
+    } : null
+    setClassroomZoom(next)
+    if (!stage || !anchor) return
+    window.requestAnimationFrame(() => {
+      stage.scrollTo({
+        left: Math.max(0, anchor.x * next - stage.clientWidth / 2),
+        top: Math.max(0, anchor.y * next - stage.clientHeight / 2),
+      })
+    })
+  }
+
+  function changeClassroomZoom(direction) {
+    const current = CLASSROOM_ZOOM_LEVELS.indexOf(classroomZoom)
+    const next = Math.min(CLASSROOM_ZOOM_LEVELS.length - 1, Math.max(0, current + direction))
+    applyClassroomZoom(CLASSROOM_ZOOM_LEVELS[next])
+  }
+
+  function startPan(event) {
+    if (!teachingMode || classroomZoom <= 1 || event.button !== 0) return
+    if (event.target instanceof Element && event.target.closest('button, a, input, textarea, select, label, [contenteditable="true"]')) return
+    const stage = stageRef.current
+    if (!stage) return
+    panRef.current = {
+      id: event.pointerId,
+      x: event.clientX,
+      y: event.clientY,
+      left: stage.scrollLeft,
+      top: stage.scrollTop,
+    }
+    stage.setPointerCapture?.(event.pointerId)
+    setPanning(true)
+  }
+
+  function movePan(event) {
+    const pan = panRef.current
+    const stage = stageRef.current
+    if (!pan || !stage || pan.id !== event.pointerId) return
+    event.preventDefault()
+    stage.scrollLeft = pan.left - (event.clientX - pan.x)
+    stage.scrollTop = pan.top - (event.clientY - pan.y)
+  }
+
+  function stopPan(event) {
+    const pan = panRef.current
+    if (!pan || pan.id !== event.pointerId) return
+    stageRef.current?.releasePointerCapture?.(event.pointerId)
+    panRef.current = null
+    setPanning(false)
+  }
+
   async function startSession() {
     if (!classId || sessionBusy) return
     if (demoMode) {
@@ -323,7 +457,7 @@ export default function TeacherLearningPreview({
   ]
 
   return (
-    <div ref={rootRef} className={`screen teacher-learning-preview ${teachingMode ? 'is-teaching' : ''} ${focusMode ? 'is-focus' : ''} ${largeText ? 'is-large-text' : ''}`}>
+    <div ref={rootRef} className={`screen teacher-learning-preview ${teachingMode ? 'is-teaching' : ''} ${focusMode ? 'is-focus' : ''} ${classroomZoom > 1 ? 'is-zoomed' : ''}`}>
       <header className="teacher-preview-context">
         <button type="button" className="teacher-preview-back" onClick={leavePreview}
           aria-label="교사 캠퍼스로 돌아가기" title="교사 캠퍼스로 돌아가기">
@@ -358,11 +492,9 @@ export default function TeacherLearningPreview({
             <PresentationChart weight={coachOpen ? 'fill' : 'regular'} /><span>{contextReady ? '교사 지원' : '단원 선택 전'}</span>
           </button>
           {teachingMode && (
-            <button type="button" className={`teacher-preview-scale ${largeText ? 'is-on' : ''}`}
-              onClick={() => setLargeText(value => !value)} aria-pressed={largeText}
-              title={largeText ? '기본 글자 크기로 보기' : '교실용 큰 글자로 보기'}>
-              <TextAa weight="bold" /><span>{largeText ? '큰 글자' : '글자 확대'}</span>
-            </button>
+            <ClassroomZoomControl zoom={classroomZoom}
+              onDecrease={() => changeClassroomZoom(-1)} onReset={() => applyClassroomZoom(1)}
+              onIncrease={() => changeClassroomZoom(1)} />
           )}
           {teachingMode ? (
             <button type="button" className="teacher-preview-classroom is-focus-launch" onClick={toggleClassroomFocus}
@@ -387,9 +519,9 @@ export default function TeacherLearningPreview({
             <span><small>수업 집중</small><b>{learningContext.lessonLabel || learningContext.areaLabel || '학생 학습 화면'}</b></span>
           </div>
           <div className="classroom-focus-actions">
-            <button type="button" className={largeText ? 'is-on' : ''} onClick={() => setLargeText(value => !value)} aria-pressed={largeText}>
-              <TextAa weight="bold" /><span>{largeText ? '큰 글자' : '글자 확대'}</span>
-            </button>
+            <ClassroomZoomControl zoom={classroomZoom}
+              onDecrease={() => changeClassroomZoom(-1)} onReset={() => applyClassroomZoom(1)}
+              onIncrease={() => changeClassroomZoom(1)} />
             <button type="button" className={coachOpen ? 'is-on' : ''} disabled={!contextReady}
               onClick={() => setCoachOpen(value => !value)} aria-expanded={coachOpen} aria-haspopup="dialog">
               <PresentationChart weight={coachOpen ? 'fill' : 'regular'} /><span>교사 지원</span>
@@ -401,8 +533,22 @@ export default function TeacherLearningPreview({
         </header>
       )}
 
-      <div className={`teacher-preview-stage ${coachOpen ? 'has-coach' : ''}`}>
-        <div className="teacher-preview-body">
+      <div ref={stageRef}
+        className={`teacher-preview-stage ${coachOpen ? 'has-coach' : ''} ${classroomZoom > 1 ? 'is-pannable' : ''} ${panning ? 'is-panning' : ''}`}
+        onPointerDown={startPan} onPointerMove={movePan} onPointerUp={stopPan} onPointerCancel={stopPan}
+        aria-label={teachingMode && classroomZoom > 1 ? `확대된 수업 화면 ${Math.round(classroomZoom * 100)}%, 드래그 또는 방향키로 이동` : undefined}>
+        <div className="teacher-preview-canvas" style={teachingMode ? {
+          width: `${classroomZoom * 100}%`,
+          height: `${classroomZoom * 100}%`,
+          flexBasis: `${classroomZoom * 100}%`,
+          '--classroom-zoom': classroomZoom,
+        } : undefined}>
+        <div className="teacher-preview-body" style={teachingMode ? {
+          width: `${100 / classroomZoom}%`,
+          height: `${100 / classroomZoom}%`,
+          flex: `0 0 ${100 / classroomZoom}%`,
+          transform: `scale(${classroomZoom})`,
+        } : undefined}>
           {tab === 'home' && (
             <StudentCampusHome
               profile={profile}
@@ -425,6 +571,7 @@ export default function TeacherLearningPreview({
           {tab === 'growth' && <WrongAnswerScreen profile={profile} />}
           {tab === 'messages' && <NotificationsScreen />}
           {tab === 'ranking' && <RankingScreen />}
+        </div>
         </div>
         {coachOpen && (
           <TeacherLessonCoach

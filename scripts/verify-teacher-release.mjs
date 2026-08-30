@@ -109,6 +109,18 @@ if (!css.includes('html.shared-classroom-mode #root')) errors.push('Shared class
 if (!teacherLearningPreview.includes('toggleClassroomFocus') || !teacherLearningPreview.includes('classroom-focus-bar')) {
   errors.push('Shared classroom focus mode or its exit control is missing')
 }
+for (const [capability, marker] of [
+  ['stepped classroom zoom', 'CLASSROOM_ZOOM_LEVELS'],
+  ['persisted classroom zoom', 'CLASSROOM_ZOOM_STORAGE_KEY'],
+  ['mouse drag panning', 'onPointerMove={movePan}'],
+  ['arrow-key panning', 'ArrowRight: [distance, 0]'],
+  ['zoom reset control', 'onReset={() => applyClassroomZoom(1)}'],
+]) {
+  if (!teacherLearningPreview.includes(marker)) errors.push(`Shared classroom is missing ${capability}`)
+}
+if (!campusCss.includes('.teacher-preview-stage.is-pannable') || !campusCss.includes('cursor: grab')) {
+  errors.push('Enlarged classroom content cannot be panned without leaving the lesson')
+}
 if (!campusCss.includes('.teacher-learning-preview.is-focus .teacher-preview-context { display: none; }')) {
   errors.push('Classroom focus mode still leaves teacher-only chrome on screen')
 }

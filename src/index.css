@@ -1837,23 +1837,6 @@ html.classroom-focus-mode .trial-session-bar { display: none; }
   .teacher-learning-preview.is-teaching .study-summary-point-learning > div > p:last-child { font-size: 16px !important; }
   .teacher-learning-preview.is-teaching .study-summary-point-learning .learning-block-label { font-size: 13px; }
   .teacher-learning-preview.is-teaching .study-summary-navigation { width: min(100%,720px); align-self: center; margin-top: 22px !important; }
-  .teacher-learning-preview.is-teaching.is-large-text .study-summary { max-width: 1520px; }
-  .teacher-learning-preview.is-teaching.is-large-text .study-summary-point-grid { grid-template-columns: minmax(480px,.94fr) minmax(600px,1.06fr); }
-  .teacher-learning-preview.is-teaching.is-large-text .study-summary-point-context .learning-situation p:last-child,
-  .teacher-learning-preview.is-teaching.is-large-text .study-summary-point-learning > div > p:last-child,
-  .teacher-learning-preview.is-teaching.is-large-text [data-learning-question='choice'] > p,
-  .teacher-learning-preview.is-teaching.is-large-text [data-learning-question='choice'] button > span:nth-child(2),
-  .teacher-learning-preview.is-teaching.is-large-text [data-learning-question='choice'] > div > p:last-child,
-  .teacher-learning-preview.is-teaching.is-large-text .learning-reasoning li,
-  .teacher-learning-preview.is-teaching.is-large-text .learning-evidence p:not(.learning-block-label) { font-size: 18px !important; line-height: 1.72 !important; }
-  .teacher-learning-preview.is-teaching.is-large-text .learning-block-label,
-  .teacher-learning-preview.is-teaching.is-large-text [data-learning-question='choice'] > p:first-child,
-  .teacher-learning-preview.is-teaching.is-large-text [data-learning-question='choice'] > div > p:first-child { font-size: 14px !important; }
-  .teacher-learning-preview.is-teaching.is-large-text .learning-case-provenance b { font-size: 15px; }
-  .teacher-learning-preview.is-teaching.is-large-text .learning-case-provenance p { font-size: 16px; line-height: 1.65; }
-  .teacher-learning-preview.is-teaching.is-large-text .learning-case-provenance small { font-size: 14px; line-height: 1.6; }
-  .teacher-learning-preview.is-teaching.is-large-text [data-learning-question='choice'] button { min-height: 52px; padding: 12px 14px !important; }
-  .teacher-learning-preview.is-teaching.is-large-text [data-learning-question='choice'] button > span:first-child { font-size: 16px !important; }
   .teacher-learning-preview.is-teaching .learning-exit-grid { grid-template-columns: minmax(420px,.9fr) minmax(460px,1.1fr); gap: 24px; padding: 22px; }
   .teacher-learning-preview.is-teaching .learning-exit-mission > header { padding: 20px 22px; }
   .teacher-learning-preview.is-teaching .learning-exit-mission > header h3 { font-size: 23px; }
