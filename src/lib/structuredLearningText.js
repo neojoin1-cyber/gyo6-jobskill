@@ -29,3 +29,13 @@ export function formatStructuredLearningText(value) {
     .replace(/\n{3,}/g, '\n\n')
     .trim()
 }
+
+export function formatReadableScenario(value) {
+  return formatStructuredLearningText(value)
+    .replace(/\s*•\s*/g, '\n• ')
+    // 숫자 앞 마침표는 날짜·소수점일 수 있으므로 문장 경계로 취급하지 않는다.
+    .replace(/([.!?~])(?=[가-힣A-Za-z【[])/g, '$1\n')
+    .replace(/,(?=(?:아래|다음|단,|그리고|하지만|반면))/g, ',\n')
+    .replace(/\^\^(?=[가-힣A-Za-z])/g, '^^\n')
+    .trim()
+}

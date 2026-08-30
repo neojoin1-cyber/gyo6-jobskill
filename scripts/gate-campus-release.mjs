@@ -2,7 +2,7 @@ import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { createHash } from 'node:crypto'
 import { STUDENT_CAMPUS_HALLS } from '../src/lib/studentCampusRoutes.js'
-import { formatStructuredLearningText } from '../src/lib/structuredLearningText.js'
+import { formatReadableScenario, formatStructuredLearningText } from '../src/lib/structuredLearningText.js'
 
 const root = new URL('..', import.meta.url).pathname.replace(/^\/(\w:)/, '$1')
 const errors = []
@@ -60,6 +60,7 @@ if (!/\.campus-topbar\s*\{[^}]*min-height:\s*calc\([^)]*var\(--safe-top\)/s.test
 
 const structuredStageText = formatStructuredLearningText('개발 단계별 정보: –기획단계(5일): A팀원만 가능 –UI설계(4일): B팀원만 가능')
 const structuredProjectText = formatStructuredLearningText('【프로젝트 추진 현황】프로젝트명: 스마트 오피스PM: 기획팀■ 1단계(완료): 현황 분석회의 결정: A업체 추진')
+const structuredDateText = formatReadableScenario('작성일: 2024.03.15.다음은 확정된 일정입니다.')
 if (!structuredStageText.includes('\n- 기획단계') || !structuredStageText.includes('\n- UI설계')) {
   errors.push('Learning source formatter does not separate stage bullets into readable lines')
 }
@@ -67,6 +68,9 @@ for (const line of ['프로젝트명:', 'PM:', '■ 1단계', '회의 결정:'])
   if (!structuredProjectText.split('\n').some(value => value.startsWith(line))) {
     errors.push(`Learning source formatter does not separate document field: ${line}`)
   }
+}
+if (!structuredDateText.includes('2024.03.15.') || structuredDateText.includes('2024.\n03.') || !structuredDateText.includes('\n다음은')) {
+  errors.push('Learning source formatter must preserve dates while separating actual sentences')
 }
 
 if (!studentShell.includes('demo={Boolean(isTrial)}') || !studentShell.includes('<NotificationsScreen demo={Boolean(isTrial)}')) {

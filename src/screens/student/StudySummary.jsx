@@ -9,7 +9,7 @@ import { analyzeWritingDraft } from '../../lib/writingDraftCheck.js'
 import { buildAutonomousFormative } from '../../lib/autonomousFormative.js'
 import { learningCaseProvenance } from '../../lib/learningCaseProvenance.js'
 import { englishLearningSupport } from '../../lib/englishLearningSupport.js'
-import { formatStructuredLearningText } from '../../lib/structuredLearningText.js'
+import { formatReadableScenario, formatStructuredLearningText } from '../../lib/structuredLearningText.js'
 import CompactText from '../../components/CompactText.jsx'
 
 const EMPTY_QUESTIONS = []
@@ -167,12 +167,7 @@ function ExpandableText({ text, style }) {
 }
 
 function readableScenario(value) {
-  return formatStructuredLearningText(value)
-    .replace(/\s*•\s*/g, '\n• ')
-    .replace(/([.!?~])(?=[가-힣A-Za-z0-9【[])/g, '$1\n')
-    .replace(/,(?=(?:아래|다음|단,|그리고|하지만|반면))/g, ',\n')
-    .replace(/\^\^(?=[가-힣A-Za-z])/g, '^^\n')
-    .trim()
+  return formatReadableScenario(value)
 }
 
 function sameLearningText(left, right) {
