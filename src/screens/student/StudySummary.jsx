@@ -271,7 +271,7 @@ function ReasoningLink({ sample }) {
   )
 }
 
-function SampleQuestionCard({ sample, example, courseKind, hideContext = false, isOpen, selected, onSelect, onChange, onOpen }) {
+function SampleQuestionCard({ sample, courseKind, hideContext = false, isOpen, selected, onSelect, onChange, onOpen }) {
   const language = learningLanguage(courseKind, !!sample.sourceQuestion?.audioText)
   if (sample.type === 'writing-practice') {
     const answer = typeof selected === 'string' ? selected : ''
@@ -454,7 +454,6 @@ function SampleQuestionCard({ sample, example, courseKind, hideContext = false, 
       {!isOpen && <p data-learning-answer-state="hidden" style={{ margin: '8px 0 0', fontSize: 12, color: '#92400E', fontWeight: 700 }}>선지 선택 → 정답·근거 확인</p>}
       {isOpen && (
         <div data-learning-answer-state="revealed">
-          {example && <div style={{ marginTop: 10, borderTop: '1px solid #FFE082', paddingTop: 8 }}><p style={{ fontSize: 12, color: '#B45309', fontWeight: 700, marginBottom: 4 }}>출제 포인트</p><CompactText text={example} maxItemChars={70} style={{ fontSize: 12, color: 'var(--text-muted)' }} /></div>}
           {sample.thinkingSteps?.length > 0 && <div className="learning-reasoning"><p className="learning-block-label">{sample.thinkingLabel || '문제를 읽는 순서'}</p><ol>{sample.thinkingSteps.map((step, index) => <li key={index}>{step}</li>)}</ol></div>}
           {sample.explanation && <div className="learning-evidence"><p className="learning-block-label">정답 근거</p><ExpandableText text={sample.explanation} style={{ fontSize: 12.5, lineHeight: 1.72 }} /></div>}
           <ReasoningLink sample={sample} />
@@ -824,7 +823,6 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, for
                 typeof p.sampleQuestion === 'object' ? (
                   <SampleQuestionCard
                     sample={p.sampleQuestion}
-                    example={p.example}
                     courseKind={summary.courseKind}
                     hideContext={sameLearningText(context.text, p.sampleQuestion.context)}
                     isOpen={isOpen}

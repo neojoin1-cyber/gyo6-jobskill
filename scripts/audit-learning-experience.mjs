@@ -65,6 +65,9 @@ function auditSummary(scope, summary, questions, { requireMistakes = true } = {}
       point,
       isListening: Boolean(sample?.sourceQuestion?.audioText),
     })
+    if (!String(point.situation || sample?.context || '').trim() && /^위 상황에서/.test(engagement.first || '')) {
+      failures.push(`${scope} 핵심 ${index + 1}: 상황문이 없는데 위 상황을 가리키는 적용 문구 사용`)
+    }
     metrics.engagementPrompts.add(engagement.first)
     if (engagement.deepen?.kind) metrics.deepeningKinds.add(engagement.deepen.kind)
     if (engagement.deepen?.material) metrics.deepeningMaterials.add(engagement.deepen.material)

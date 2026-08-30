@@ -17,11 +17,14 @@ import StudySummary, { buildStudySummaryCards } from './student/StudySummary.jsx
 import { PERSONALITY_STUDY_PROGRAM } from '../lib/guidedLearningPrograms.js'
 import { buildQuestionDrivenSummary } from '../lib/learningExperience.js'
 import { generalKnowledgeQuestions } from '../lib/ncsBanks.js'
+import { ncs2026Questions } from '../lib/ncs2026.js'
+import abilitySummaries from '../../data/ability-summaries.json'
 import '../styles/campus.css'
 
 const STUDENT_PROFILE = { id: 'preview-student', display_name: '민준', role: 'student' }
 const TEACHER_PROFILE = { id: 'preview-teacher', display_name: '김선생', role: 'teacher' }
 const MBO_PREVIEW_QUESTION = generalKnowledgeQuestions.find(question => question.stem?.includes('MBO(목표관리법'))
+const TEAMWORK_PREVIEW_QUESTIONS = ncs2026Questions.filter(question => question.ncsAbility === '협업능력')
 
 export default function DesignPreview() {
   const params = new URLSearchParams(window.location.search)
@@ -113,6 +116,15 @@ export default function DesignPreview() {
             })}
             questions={[MBO_PREVIEW_QUESTION]}
             initialStep={1}
+            onStartQuiz={() => {}}
+          /></div>
+        )}
+        {mode === 'knowledge-teamwork' && (
+          <div className="preview-learning"><StudySummary
+            summary={{ ...abilitySummaries['협업능력'], courseKind: 'ncs' }}
+            questions={TEAMWORK_PREVIEW_QUESTIONS}
+            initialStep={1}
+            initialInteraction={{ step: 1, revealed: true }}
             onStartQuiz={() => {}}
           /></div>
         )}

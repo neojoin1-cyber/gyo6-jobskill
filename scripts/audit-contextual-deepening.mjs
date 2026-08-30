@@ -181,6 +181,7 @@ const adversarialCases = [
   ['math', '백분율 계산', '전체 대비 불량품의 비율을 계산하시오.', 'math:ratio-percent', {}],
   ['document', '업무 이메일', '담당자와 마감 기한을 확인해 첫 행동을 고르시오.', 'document:deadline-role', {}],
   ['workplace', '안전사고 대응', '보호구 없이 작업하라는 지시를 받았다.', 'workplace:safety', {}],
+  ['ncs', '조직 내 역할과 책임 파악하기', '내 역할과 다른 팀원의 역할이 겹칠 때 공동목표와 업무분장표를 확인한다.', 'workplace:collaboration', {}],
   ['visual', '그래프 추세', '기간별 생산량의 증가와 감소를 판단하시오.', 'visual:trend', {}],
   ['general', '원인과 결과', '작업 지연의 원인과 그 결과를 고르시오.', 'general:cause-result', {}],
 ]

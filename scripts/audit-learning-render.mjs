@@ -221,6 +221,9 @@ function inspect(scope, summary, questions) {
     if (/(이번에 익힐 판단|먼저 내 판단|먼저 파악할 상황)/.test($.root().text())) {
       failures.push(`${scope} 핵심 ${index + 1}: 역할이 불분명한 옛 학습 제목이 남아 있음`)
     }
+    if (sample.type !== 'reflection' && /응답 기준 확인 순서/.test($.root().text())) {
+      failures.push(`${scope} 핵심 ${index + 1}: 일반 학습 문항에 인성검사식 읽기 순서가 잘못 연결됨`)
+    }
     if (point?.situation && sample?.context && String(point.situation).replace(/\s+/g, '') === String(sample.context).replace(/\s+/g, '')) {
       const compactSituation = String(point.situation).replace(/\s+/g, '')
       const compactQuestionText = $('[data-learning-question]').text().replace(/\s+/g, '')
@@ -281,6 +284,9 @@ function inspect(scope, summary, questions) {
       initialInteraction: { step: index + 1, revealed: true },
     }))
     const revealedPage = load(revealedHtml)
+    if (/출제 포인트|→\s*정답\s*[:：]/.test(revealedPage.root().text())) {
+      failures.push(`${scope} 핵심 ${index + 1}: 실제 문항 아래에 별도 구형 예시문항·정답이 혼합 표시됨`)
+    }
     if (revealedPage('[data-learning-link] article').length !== 3) {
       failures.push(`${scope} 핵심 ${index + 1}: 정답 공개 뒤 단서→판단→결론 3단 연결 미렌더링`)
     } else reasoningLinks += 1

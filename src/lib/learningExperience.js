@@ -155,9 +155,9 @@ function engagementProfile({ courseKind, point, contextKind, isListening, hasVis
   if (contextKind === 'mistake') return 'mistake'
   if (isEnglishLearningQuestion(source.id ? source : sample)) return 'english'
   if (/(수리|계산|비율|단위|수량|시간|통계|예산|금액|확률|속도)/.test(text)) return 'math'
+  if (/(안전|품질|협업|갈등|팀워크|공동 목표|역할|책임 경계|조율|고객|윤리|절차|우선순위|문제해결|자원)/.test(text)) return 'workplace'
   if (/(문서|독해|이메일|안내|공지|보고|회의록|요지|접속어|어휘|영어|지시어)/.test(text)) return 'document'
-  if (hasVisual || /(표|그래프|도표|차트|자료 해석)/.test(text)) return 'visual'
-  if (/(안전|품질|협업|갈등|고객|윤리|절차|우선순위|문제해결|자원|업무)/.test(text)) return 'workplace'
+  if (hasVisual || /(그래프|도표|차트|자료 해석|(?:^|\s)표(?:\s|$|[·,:]))/.test(text)) return 'visual'
   if (courseKind === 'ncs' || courseKind === 'recruitment') return 'workplace'
   return 'general'
 }
@@ -176,7 +176,7 @@ function profileTwist(profile, quoted) {
     math: `문제의 핵심 수치나 단위 하나가 바뀐다면 질문 ${quoted}의 계산식과 결과 중 무엇이 달라질까요?`,
     document: `문서의 담당자·기한·요청 행동 중 하나가 바뀐다면 질문 ${quoted}의 첫 행동도 달라질까요?`,
     visual: `표·그래프의 축·단위·기준값 중 하나가 바뀐다면 질문 ${quoted}의 해석도 달라질까요?`,
-    workplace: `업무의 우선순위·안전 규정·가용 자원 중 하나가 바뀐다면 질문 ${quoted}의 행동 순서도 달라질까요?`,
+    workplace: `공동 목표·역할·절차·가용 자원 중 하나가 바뀐다면 질문 ${quoted}의 행동 순서도 달라질까요?`,
     misread: `오해한 표현을 원문 뜻대로 바로잡으면 질문 ${quoted}의 행동 방향도 바뀌어야 할까요?`,
     mistake: `실수 원인이 개인 행동이 아니라 절차나 시스템이라면 질문 ${quoted}의 수정 방법도 달라질까요?`,
     general: `상황의 결정 조건 하나가 바뀐다면 질문 ${quoted}의 판단도 달라져야 할까요?`,
@@ -240,7 +240,7 @@ export function buildEngagementCopy({ courseKind, point = {}, contextKind = '', 
     twist: `자료의 핵심 수치나 조건 하나가 달라지면 질문 ${quoted}의 판단도 바뀔까요?`,
   }
   else if (courseKind === 'recruitment' || courseKind === 'ncs') generated = {
-    first: `위 상황에서 ${quoted} 개념으로 판단할 기준을 한 가지 말한 뒤 출제형 문제를 풀어 보세요.`,
+    first: `${plain(point.situation || sample.context) ? '위 상황에서' : '이 문항에서'} ${quoted} 개념으로 판단할 기준을 한 가지 말한 뒤 출제형 문제를 풀어 보세요.`,
     reveal: `${quoted}의 핵심 기준과 가장 그럴듯한 오답의 차이를 한 문장으로 설명하세요.`,
     twist: `${quoted}의 핵심 조건 하나가 반대로 바뀐다면 선택도 바뀌어야 할까요?`,
   }
@@ -335,7 +335,7 @@ function strategyLabelFor(value, question = {}) {
   if (question.visual || /(그래프|도표|차트|자료 해석)/.test(text)) return '표·그래프 읽는 순서'
   if (/(수리|계산|비율|단위|통계|금융|예산)/.test(text)) return '계산하는 순서'
   if (/(면접|자기소개|지원동기|star|prep|블라인드)/.test(text)) return '답변 구성 순서'
-  if (/(인성|윤리|태도|성찰|책임|정직|가치관)/.test(text)) return '응답 기준 확인 순서'
+  if (/(인성|윤리|태도|성찰|책임|정직|가치관|협업|역할)/.test(text)) return '직업 원칙 판단 순서'
   if (/(문서|독해|이메일|안내|공지|회의록|요지|지시어)/.test(text)) return '업무 문서 읽는 순서'
   return '판단하는 순서'
 }
@@ -364,8 +364,8 @@ function strategyFor(value, question = {}) {
   if (/(면접|자기소개|지원동기|star|prep|블라인드)/.test(text)) {
     return ['경험·의견·직무 중 질문 요구부터 구분', 'STAR 또는 PREP으로 답변 순서 구성', '추상적 장점 대신 행동·결과 제시']
   }
-  if (/(인성|윤리|태도|성찰|책임|정직|가치관)/.test(text)) {
-    return ['좋아 보이는 답보다 실제 행동 기준 확인', '안전·정직·책임·협업 원칙과 상황 함께 검토', '비슷한 상황에서도 응답 기준 일관성 확인']
+  if (/(인성|윤리|태도|성찰|책임|정직|가치관|협업|역할)/.test(text)) {
+    return ['상황의 공동 목표·내 역할·적용 규정 먼저 확인', '개인 편의보다 안전·정직·책임·협업 원칙에 대조', '책임 경계와 실행 뒤 영향을 확인해 행동 선택']
   }
   if (/(문서|독해|이메일|안내|공지|회의록|요지|지시어)/.test(text)) {
     return ['일치·불일치·요지 중 발문 요구 먼저 표시', '날짜·수량·조건·결정 표현을 지문에서 직접 확인', '선택지와 지문 근거를 한 항목씩 대조']
