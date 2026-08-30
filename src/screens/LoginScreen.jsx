@@ -72,12 +72,13 @@ const FEATURES = [
 ]
 
 export default function LoginScreen() {
-  const [view,          setView]         = useState('landing') // 'landing' | 'login' | 'signup' | 'reset'
+  const memberEntry = !Capacitor.isNativePlatform() && new URLSearchParams(window.location.search).get('entry') === 'member'
+  const [view,          setView]         = useState(() => memberEntry ? 'login' : 'landing') // 'landing' | 'login' | 'signup' | 'reset'
   const [tab,           setTab]          = useState('student')
   const [email,         setEmail]        = useState('')
   const [password,      setPassword]     = useState('')
   const [loading,       setLoading]      = useState(false)
-  const [audience,      setAudience]     = useState(null)   // 'student' | 'teacher'
+  const [audience,      setAudience]     = useState(() => memberEntry ? 'student' : null)   // 'student' | 'teacher'
   const [error,         setError]        = useState('')
   const [success,       setSuccess]      = useState('')
   const [trialMessage,  setTrialMessage] = useState(() => consumeTrialNotice())
@@ -539,9 +540,9 @@ export default function LoginScreen() {
 
   // ── 공통 헤더 (로그인/가입 뷰) ──
   const backBtn = (
-    <button onClick={() => { setView('landing'); reset() }}
+    <button onClick={() => { setView('landing'); if (memberEntry) setAudience(null); reset() }}
       style={{ background: 'none', border: 'none', color: 'var(--primary)', fontSize: 14, cursor: 'pointer', padding: '0 0 4px', display: 'flex', alignItems: 'center', gap: 4 }}>
-      ← 처음으로
+      ← 체험·가입 화면
     </button>
   )
 

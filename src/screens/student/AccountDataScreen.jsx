@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
-import { ArrowRight, ArrowsClockwise, Bell, Briefcase, CheckCircle, ClipboardText, Desktop, Minus, Plus, SignOut, Target, Trash } from '@phosphor-icons/react'
+import { ArrowRight, ArrowsClockwise, Bell, Briefcase, CheckCircle, ClipboardText, Desktop, DownloadSimple, Minus, Plus, SignOut, Target, Trash } from '@phosphor-icons/react'
+import { Capacitor } from '@capacitor/core'
 import { useAuth } from '../../App.jsx'
 import { supabase } from '../../lib/supabase.js'
 import { getDeviceSyncStatus, syncDeviceState } from '../../lib/deviceSync.js'
@@ -33,6 +34,7 @@ import SearchSuggestionInput from '../../components/SearchSuggestionInput.jsx'
 import CareerChoiceMenu from '../../components/CareerChoiceMenu.jsx'
 import RankingScreen from './RankingScreen.jsx'
 import SaveExitDialog from '../../components/SaveExitDialog.jsx'
+import { canOfferPwaInstall, openPwaInstall } from '../../lib/pwaInstall.js'
 
 function readCareerContext() {
   try {
@@ -157,7 +159,7 @@ function formatSync(value) {
 }
 
 export default function AccountDataScreen({ onOpenCareer }) {
-  const { profile } = useAuth() ?? {}
+  const { profile, isTrial } = useAuth() ?? {}
   const [view, setView] = useState('account')
   const [shared, setShared] = useState(() => isSharedDevice())
   const [syncing, setSyncing] = useState(false)
@@ -390,6 +392,14 @@ export default function AccountDataScreen({ onOpenCareer }) {
           <button onClick={syncNow} disabled={syncing}><ArrowsClockwise /> {syncing ? '동기화 중' : '지금 동기화'}</button>
           {syncResult && <p><CheckCircle weight="fill" /> {syncResult}</p>}
         </section>
+
+        {!isTrial && !Capacitor.isNativePlatform() && canOfferPwaInstall() && (
+          <section className="account-setting-row">
+            <DownloadSimple />
+            <div><b>이 기기에 JOB고 설치</b><span>바탕화면·홈 화면 아이콘으로 바로 시작하고 같은 계정으로 이어서 학습함</span></div>
+            <button className="account-setting-action" onClick={openPwaInstall}>설치</button>
+          </section>
+        )}
 
         <section className="account-setting-row">
           <Desktop />

@@ -10,6 +10,7 @@ import InterviewStudyScreen from './student/InterviewStudyScreen.jsx'
 import TeacherLearningPreview from './teacher/TeacherLearningPreview.jsx'
 import CourseListScreen from './student/CourseListScreen.jsx'
 import AccountDataScreen from './student/AccountDataScreen.jsx'
+import PwaInstallPrompt from '../components/PwaInstallPrompt.jsx'
 import { campusCourseTarget } from '../lib/studentCampusRoutes.js'
 import { rememberStudentLearningContext } from '../lib/studentLearningJourney.js'
 import { buildStudySummaryCards } from './student/StudySummary.jsx'
@@ -53,6 +54,7 @@ export default function DesignPreview() {
       </div>}
 
       <div className="design-preview-stage">
+        {mode === 'pwa-install' && <PwaInstallPrompt forceOpen />}
         {mode === 'student' && (
           <div className="preview-phone">
             <StudentCampusHome profile={STUDENT_PROFILE} demo

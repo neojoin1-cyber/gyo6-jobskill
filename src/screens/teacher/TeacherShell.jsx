@@ -14,6 +14,7 @@ import {
   ClipboardText,
   Compass,
   DeviceMobile,
+  DownloadSimple,
   House,
   Monitor,
   SignOut,
@@ -38,6 +39,7 @@ import { deleteOwnAccount, logoutSafely } from '../../lib/sessionLifecycle.js'
 import { syncDeviceState } from '../../lib/deviceSync.js'
 import { saveBeforeExit } from '../../lib/sessionLifecycle.js'
 import SaveExitDialog from '../../components/SaveExitDialog.jsx'
+import { canOfferPwaInstall, openPwaInstall } from '../../lib/pwaInstall.js'
 
 // 수업 모드와 메시지는 무겁고 대시보드에서만 열렸다. 가로 작업대의 왼쪽
 // 메뉴에서도 열 수 있어야 하므로 셸이 길을 갖는다.
@@ -320,6 +322,9 @@ export default function TeacherShell() {
                   {layout.choice === 'wide' ? <DeviceMobile /> : <Monitor />} {layout.choice === 'wide' ? '자동 맞춤 화면으로' : '넓게 보기 · 교사 작업대'}
                 </button>
                 <button onClick={async () => { await syncDeviceState(); setAccountOpen(false) }}><DeviceMobile /> PC·휴대폰 동기화</button>
+                {!isTrial && !Capacitor.isNativePlatform() && canOfferPwaInstall() && (
+                  <button onClick={() => { setAccountOpen(false); openPwaInstall() }}><DownloadSimple /> 이 기기에 JOB고 설치</button>
+                )}
                 <a className="teacher-policy-link" href="https://gyo6.kr/privacy.html" target="_blank" rel="noreferrer">개인정보처리방침</a>
                 {!isTrial && <button className="is-delete" onClick={() => { setAccountOpen(false); setDeletePhrase(''); setDeleteError(''); setDeleteOpen(true) }}><Trash /> 계정 및 데이터 삭제</button>}
                 <button className="is-logout" onClick={logout}><SignOut /> 로그아웃</button>

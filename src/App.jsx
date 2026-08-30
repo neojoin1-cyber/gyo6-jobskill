@@ -17,6 +17,7 @@ import {
 import { lazyChunk } from './lib/lazyChunk.js'
 import LoginScreen from './screens/LoginScreen.jsx'
 import ConnectionStatus from './components/ConnectionStatus.jsx'
+import PwaInstallPrompt from './components/PwaInstallPrompt.jsx'
 import { activateUserStorage, deactivateUserStorage, userLocalStorage } from './lib/userLocalStorage.js'
 import { markIdentityVerified } from './lib/identityVerification.js'
 import { logoutSafely } from './lib/sessionLifecycle.js'
@@ -510,6 +511,7 @@ function AppInner() {
 
   return (
     <AuthCtx.Provider value={{ session, profile, isTrial, trialExpiresAt, exitTrial }}>
+      <PwaInstallPrompt enabled={!isTrial} />
       {showSoftBanner && (
         <UpdateBanner version={updateInfo.version} onUpdate={triggerUpdate}
           onDismiss={() => setBannerDismissed(true)} />

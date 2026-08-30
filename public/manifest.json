@@ -2,10 +2,10 @@
   "name": "설탕과소금",
   "short_name": "설탕과소금",
   "description": "달콤한 취업 성공을 위한 짭짤한 실력 준비",
-  "start_url": "./",
+  "start_url": "./?entry=member",
   "scope": "./",
   "display": "standalone",
-  "orientation": "portrait",
+  "orientation": "any",
   "background_color": "#4F46E5",
   "theme_color": "#4F46E5",
   "lang": "ko",
@@ -39,7 +39,7 @@
   "shortcuts": [
     {
       "name": "학습하기",
-      "url": "./",
+      "url": "./?entry=member",
       "description": "오늘의 미션 학습 시작"
     }
   ]
