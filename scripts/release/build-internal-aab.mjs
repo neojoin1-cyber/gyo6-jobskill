@@ -22,14 +22,32 @@ run(command, args, { cwd: resolve(ROOT, 'android'), env: gradleEnv(), stdio: 'in
 const source = resolve(ROOT, 'android/app/build/outputs/bundle/release/app-release.aab')
 if (!existsSync(source)) throw new Error('서명된 내부 테스트 AAB를 찾지 못했습니다.')
 
+const packagedManifest = resolve(ROOT, 'android/app/build/intermediates/packaged_manifests/release/processReleaseManifestForPackage/AndroidManifest.xml')
+if (!existsSync(packagedManifest)) throw new Error('AAB의 실제 버전 정보를 담은 AndroidManifest.xml을 찾지 못했습니다.')
+const manifestSource = readFileSync(packagedManifest, 'utf8')
+const build = Number(manifestSource.match(/android:versionCode=["'](\d+)["']/)?.[1])
+const versionName = manifestSource.match(/android:versionName=["']([^"']+)["']/)?.[1]
+const packageName = manifestSource.match(/\bpackage=["']([^"']+)["']/)?.[1]
+if (!Number.isInteger(build) || build < 1 || !/^\d+\.\d+\.\d+$/.test(versionName || '') || packageName !== 'com.gyo6.jobskill') {
+  throw new Error('AAB 실제 버전 또는 패키지 정보를 확인하지 못했습니다.')
+}
+
 const outDir = resolve(ROOT, 'release/internal')
 mkdirSync(outDir, { recursive: true })
 const stamp = new Date().toISOString().replace(/[:.]/g, '-').replace('T', '_').replace('Z', '')
-const gradleSource = readFileSync(resolve(ROOT, 'android/app/build.gradle'), 'utf8')
-const versionName = gradleSource.match(/versionName\s+["']([^"']+)["']/)?.[1] || 'unknown'
 const target = resolve(outDir, `JOBGO-v${versionName}-internal-${stamp}.aab`)
 copyFileSync(source, target)
 const digest = createHash('sha256').update(readFileSync(target)).digest('hex')
 writeFileSync(`${target}.sha256`, `${digest}  ${target.split(/[\\/]/).pop()}\n`)
+writeFileSync(`${target}.release.json`, `${JSON.stringify({
+  packageName,
+  track: 'internal',
+  build,
+  version: versionName,
+  aab: target.split(/[\\/]/).pop(),
+  sha256: digest,
+  builtAt: new Date().toISOString(),
+  playPublished: false,
+}, null, 2)}\n`)
 
-logPass(`서명된 내부 테스트 AAB 생성 · ${target}`)
+logPass(`서명된 내부 테스트 AAB 생성 · build ${build} · v${versionName} · ${target}`)

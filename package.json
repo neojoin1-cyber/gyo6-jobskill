@@ -72,7 +72,8 @@
     "release:verify": "npm run release:migrations -- --apply && npm run release:sync && npm run release:android",
     "internal:aab": "node scripts/release/build-internal-aab.mjs",
     "internal:test": "npm run release:migrations && npm run release:sync && npm run release:android && npm run internal:aab -- --skip-sync",
-    "internal:publish-config": "node scripts/release/publish-app-config.mjs"
+    "internal:publish-config": "node scripts/release/publish-app-config.mjs",
+    "internal:finalize": "node scripts/release/finalize-internal-release.mjs"
   },
   "keywords": [],
   "author": "",

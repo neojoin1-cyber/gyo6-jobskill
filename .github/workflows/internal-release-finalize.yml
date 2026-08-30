@@ -1,0 +1,45 @@
+name: Finalize Internal Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      build:
+        description: Published Play versionCode
+        required: true
+        type: string
+      version:
+        description: Published versionName (for example 4.8.3)
+        required: true
+        type: string
+      play_published:
+        description: Confirm that this build is already available on the internal track
+        required: true
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  publish-update-notice:
+    if: ${{ inputs.play_published }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 2.110.0
+
+      - run: npm ci
+
+      - name: Publish the update notice after Play release
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_ID: ${{ secrets.SUPABASE_PROJECT_ID }}
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+        run: npm run internal:publish-config -- --build="${{ inputs.build }}" --version="${{ inputs.version }}"
