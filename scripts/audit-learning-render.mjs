@@ -212,6 +212,22 @@ function inspect(scope, summary, questions) {
     if ($('[data-engagement-phase="first-judgment"]').length !== 1) {
       failures.push(`${scope} 핵심 ${index + 1}: 설명 전 먼저 판단 단계 없음`)
     }
+    const teachesConceptFirst = !['cover-letter', 'interview', 'personality'].includes(summary.courseKind)
+      && !sample?.sourceQuestion?.audioText
+      && Boolean(point?.learn)
+    if (teachesConceptFirst && $('[data-learning-concept="before-practice"]').length !== 1) {
+      failures.push(`${scope} 핵심 ${index + 1}: 실제 출제형 전에 개념 설명이 보이지 않음`)
+    }
+    if (/(이번에 익힐 판단|먼저 내 판단|먼저 파악할 상황)/.test($.root().text())) {
+      failures.push(`${scope} 핵심 ${index + 1}: 역할이 불분명한 옛 학습 제목이 남아 있음`)
+    }
+    if (point?.situation && sample?.context && String(point.situation).replace(/\s+/g, '') === String(sample.context).replace(/\s+/g, '')) {
+      const compactSituation = String(point.situation).replace(/\s+/g, '')
+      const compactQuestionText = $('[data-learning-question]').text().replace(/\s+/g, '')
+      if (compactQuestionText.includes(compactSituation)) {
+        failures.push(`${scope} 핵심 ${index + 1}: 같은 현장 맥락이 학습 카드와 문제에 중복 표시됨 (${String(sample.stem).slice(0, 72)})`)
+      }
+    }
     if ($('[data-engagement-phase="evidence-reveal"]').length) {
       failures.push(`${scope} 핵심 ${index + 1}: 학생 응답 전 근거·설명 공개됨`)
     }

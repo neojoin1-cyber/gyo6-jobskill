@@ -150,8 +150,22 @@ export default function StudentCampusHome({
       <header className="campus-topbar">
         <div className="campus-brand">
           <Buildings weight="fill" aria-hidden="true" />
-          <span>설탕과소금 스킬캠퍼스</span>
+          <span className="campus-brand-full">설탕과소금 스킬캠퍼스</span>
+          <span className="campus-brand-short">스킬캠퍼스</span>
         </div>
+        <div className="campus-greeting">
+          <span className="campus-avatar" aria-hidden="true">{displayName.slice(0, 1)}</span>
+          <div>
+            <h1>{teacherPreview ? '학생 화면 체험 중' : `${displayName}아, 반가워!`}</h1>
+            <p><span className="live-dot" /> {teacherPreview ? '같은 학습 흐름' : '오늘도 이어서 학습'}</p>
+          </div>
+        </div>
+        <button className="route-status" onClick={() => onGoStudy?.(null)} aria-label="오늘의 학습 경로 2 / 6">
+          <MapPin weight="fill" />
+          <span>오늘</span>
+          <b>2/6</b>
+          <ArrowRight />
+        </button>
         <div className="campus-level" aria-label={`${level.name}, ${level.progress}% 진행`}>
           <span className="level-mark"><GraduationCap weight="fill" /></span>
           <span>Lv. {boot?.xp?.level ?? 1}</span>
@@ -162,20 +176,6 @@ export default function StudentCampusHome({
           {unread > 0 && <span className="campus-unread">{unread > 9 ? '9+' : unread}</span>}
         </button>
       </header>
-
-      <section className="campus-greeting">
-        <span className="campus-avatar" aria-hidden="true">{displayName.slice(0, 1)}</span>
-        <div>
-          <h1>{teacherPreview ? '학생 화면을 함께 살펴봐요' : `${displayName}아, 반가워!`}</h1>
-          <p><span className="live-dot" /> {teacherPreview ? '학생과 같은 학습 흐름을 체험 중' : '친구들과 함께 캠퍼스를 탐험 중'}</p>
-        </div>
-        <button className="route-status" onClick={() => onGoStudy?.(null)}>
-          <MapPin weight="fill" />
-          <span>오늘의 루트</span>
-          <b>2 / 6</b>
-          <ArrowRight />
-        </button>
-      </section>
 
       <section className="mission-dock campus-next-step" aria-labelledby="today-mission-title">
         <span className="mission-marker" aria-hidden="true"><Play weight="fill" /></span>

@@ -1683,6 +1683,14 @@ html.classroom-focus-mode .trial-session-bar { display: none; }
 .study-summary-point-grid { min-width: 0; }
 .study-summary-point-context,
 .study-summary-point-learning { min-width: 0; }
+.learning-concept-head { margin: 0 0 8px; padding: 8px 10px; border-left: 4px solid #4f46e5; background: #eef2ff; }
+.learning-concept-head p { margin: 0 0 2px; color: #4338ca; font-size: 10.5px; font-weight: 900; }
+.learning-concept-head strong { display: block; color: #1e1b4b; font-size: clamp(13px,3.8vw,15px); line-height: 1.45; }
+.learning-concept-head[data-concept-mode="memory"] { border-left-color: #e65100; background: #fff3e0; }
+.learning-concept-head[data-concept-mode="memory"] p { color: #c05300; }
+.learning-concept-head[data-concept-mode="memory"] strong { color: #7c2d12; }
+.learning-concept-lesson { margin: 0 0 8px; padding: 9px 10px; border: 1px solid #cbd5e1; border-left: 4px solid #0f8a78; background: #f8fafc; }
+.learning-concept-lesson .learning-block-label { margin-bottom: 4px; color: #0f766e; }
 .learning-first-judgment { margin: 0 0 10px; padding: 10px 12px; border-left: 4px solid #1769f6; background: #eef6ff; }
 .learning-first-judgment b { display: block; margin-bottom: 3px; color: #175cd3; font-size: 11px; }
 .learning-first-judgment p { margin: 0; color: #263a52; font-size: 12.5px; font-weight: 700; line-height: 1.6; }
@@ -2034,15 +2042,20 @@ html.classroom-focus-mode .trial-session-bar { display: none; }
 
 .learning-case-provenance {
   margin: 0 0 10px;
-  padding: 9px 10px;
   border: 1px solid #c7d2fe;
   border-left: 3px solid #4f46e5;
   border-radius: 7px;
   background: #eef2ff;
 }
-.learning-case-provenance b { display: block; color: #3730a3; font-size: 12px; }
-.learning-case-provenance p { margin: 4px 0 0; color: #334155; font-size: 12px; line-height: 1.55; }
-.learning-case-provenance small { display: block; margin-top: 4px; color: #64748b; font-size: 11px; line-height: 1.5; }
+.learning-case-provenance summary { min-height: 34px; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 7px 9px; cursor: pointer; list-style: none; }
+.learning-case-provenance summary::-webkit-details-marker { display: none; }
+.learning-case-provenance summary svg { width: 13px; height: 13px; flex: 0 0 auto; color: #4f46e5; }
+.learning-case-provenance[open] summary svg { transform: rotate(180deg); }
+.learning-case-provenance summary b { overflow: hidden; color: #3730a3; font-size: 11.5px; text-overflow: ellipsis; white-space: nowrap; }
+.learning-case-provenance summary span { margin-left: auto; color: #6366f1; font-size: 10px; font-weight: 800; white-space: nowrap; }
+.learning-case-provenance > div { padding: 0 9px 8px; border-top: 1px solid #c7d2fe; }
+.learning-case-provenance p { margin: 7px 0 0; color: #334155; font-size: 11.5px; line-height: 1.5; }
+.learning-case-provenance small { display: block; margin-top: 4px; color: #64748b; font-size: 10.5px; line-height: 1.45; }
 .learning-translation { margin: 9px 0 10px; }
 .learning-translation > button { min-height: 38px; display: inline-flex; align-items: center; gap: 6px; padding: 7px 10px; border: 1px solid #93c5fd; border-radius: 7px; background: #fff; color: #1d4ed8; font-size: 11.5px; font-weight: 900; cursor: pointer; }
 .learning-translation > button svg { width: 16px; height: 16px; flex: 0 0 auto; }

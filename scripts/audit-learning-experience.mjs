@@ -7,7 +7,9 @@ import {
   buildLearningPoints,
   buildQuestionDrivenSummary,
   buildReasoningLink,
+  learningVisualFor,
   learningPromptIntegrity,
+  splitQuestionStem,
 } from '../src/lib/learningExperience.js'
 import { buildJcOfficialAreas, jcLessonMatches, jcStudyQuestions } from '../src/lib/jobCommonAreas.js'
 import { buildNcs2026Areas, ncs2026Questions } from '../src/lib/ncs2026.js'
@@ -231,6 +233,15 @@ for (const program of [COVER_STUDY_PROGRAM, PERSONALITY_STUDY_PROGRAM]) {
 for (const name of ['documents', 'data', 'teamwork', 'interview', 'reflection']) {
   const path = `public/images/learning/workplace-${name}.webp`
   if (!existsSync(path) || statSync(path).size < 40_000) failures.push(`학습 삽화 누락 또는 저용량: ${path}`)
+}
+
+const mboSplit = splitQuestionStem('유통회사 기획팀 직원 강민지 씨는 기업 목표 설정 방법론을 정리하고 있다. 다음 중 MBO(목표관리법, Management by Objectives)에 대한 설명으로 가장 적절한 것은?')
+if (mboSplit.context !== '유통회사 기획팀 직원 강민지 씨는 기업 목표 설정 방법론을 정리하고 있다.' || !mboSplit.stem.startsWith('다음 중 MBO')) {
+  failures.push('한 줄 문항의 현장 맥락과 실제 발문 분리 실패')
+}
+const mboVisual = learningVisualFor('조직·인사·리더십·성과관리 MBO 목표 설정', 'recruitment')
+if (!mboVisual.src.endsWith('workplace-teamwork.webp')) {
+  failures.push('MBO의 목표 안 글자 표를 데이터 표로 오인하여 학습 삽화가 잘못 연결됨')
 }
 
 if (failures.length) {

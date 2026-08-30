@@ -13,12 +13,15 @@ import AccountDataScreen from './student/AccountDataScreen.jsx'
 import PwaInstallPrompt from '../components/PwaInstallPrompt.jsx'
 import { campusCourseTarget } from '../lib/studentCampusRoutes.js'
 import { rememberStudentLearningContext } from '../lib/studentLearningJourney.js'
-import { buildStudySummaryCards } from './student/StudySummary.jsx'
+import StudySummary, { buildStudySummaryCards } from './student/StudySummary.jsx'
 import { PERSONALITY_STUDY_PROGRAM } from '../lib/guidedLearningPrograms.js'
+import { buildQuestionDrivenSummary } from '../lib/learningExperience.js'
+import { generalKnowledgeQuestions } from '../lib/ncsBanks.js'
 import '../styles/campus.css'
 
 const STUDENT_PROFILE = { id: 'preview-student', display_name: '민준', role: 'student' }
 const TEACHER_PROFILE = { id: 'preview-teacher', display_name: '김선생', role: 'teacher' }
+const MBO_PREVIEW_QUESTION = generalKnowledgeQuestions.find(question => question.stem?.includes('MBO(목표관리법'))
 
 export default function DesignPreview() {
   const params = new URLSearchParams(window.location.search)
@@ -99,6 +102,18 @@ export default function DesignPreview() {
             initialArea="interview-foundation"
             initialLesson="A01"
             onBack={() => {}}
+          /></div>
+        )}
+        {mode === 'knowledge-mbo' && MBO_PREVIEW_QUESTION && (
+          <div className="preview-learning"><StudySummary
+            summary={buildQuestionDrivenSummary({
+              title: '조직·인사·리더십·성과관리',
+              questions: [MBO_PREVIEW_QUESTION],
+              courseKind: 'recruitment',
+            })}
+            questions={[MBO_PREVIEW_QUESTION]}
+            initialStep={1}
+            onStartQuiz={() => {}}
           /></div>
         )}
         {mode === 'teacher' && (

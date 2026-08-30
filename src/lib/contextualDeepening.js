@@ -436,7 +436,8 @@ export function contextualLearningFocus(sample = {}) {
   else if (/(빈칸|_{2,}|대화|영어|before|after|first|finally)/.test(text)) skill = '앞뒤 문맥과 응답·순서 표현으로 영어 근거를 찾는 연습'
   else if (/(문서|공지|이메일|기한|담당|요지|결론|근거)/.test(text)) skill = '문서의 대상·기한·요구·논리 근거를 실행 행동에 연결하는 연습'
   else if (/(원인|이유|결과|영향|초래)/.test(text)) skill = '원인에서 중간 변화와 결과까지의 연결을 검증하는 연습'
-  else if (/(순서|먼저|다음|절차|우선)/.test(text)) skill = '선행조건을 확인해 첫 행동과 다음 행동을 정하는 연습'
+  else if (/(에 대한 설명|개념|정의|특징|관리 방식|목표관리|mbo)/.test(text)) skill = '개념의 정의·운영 원리·효과를 구분하는 연습'
+  else if (/(순서|먼저 해야|다음 행동|절차|우선순위|우선 해야)/.test(text)) skill = '선행조건을 확인해 첫 행동과 다음 행동을 정하는 연습'
   else if (/(강점|역량|경험|성과|문제해결)/.test(text)) skill = '주장보다 본인 행동과 확인 가능한 결과로 증명하는 연습'
 
   // 출처 안내는 정답 공개 전에도 보이므로 정답·해설을 근거 문구로 사용하지 않는다.

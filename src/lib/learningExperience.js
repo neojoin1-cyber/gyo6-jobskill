@@ -37,6 +37,21 @@ function plain(value) {
   return String(value ?? '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim()
 }
 
+/** 문항 한 줄에 섞여 들어온 현장 맥락과 실제 발문을 분리한다. */
+export function splitQuestionStem(value) {
+  const text = plain(value)
+  if (!text) return { context: '', stem: '' }
+  const markers = [
+    /\s+(?=다음\s+(?:중|보기|설명|내용|자료|사례|상황|문장|대화|업무|조건))/,
+    /\s+(?=(?:위|이)\s*(?:상황|사례|내용|자료|문장|대화).{0,80}(?:것은|고르|적절|옳|틀린))/,
+  ]
+  for (const marker of markers) {
+    const index = text.search(marker)
+    if (index > 0) return { context: text.slice(0, index).trim(), stem: text.slice(index).trim() }
+  }
+  return { context: '', stem: text }
+}
+
 function clip(value, max = 220) {
   const text = plain(value)
   return [...text].length > max ? `${[...text].slice(0, max).join('').trim()}...` : text
@@ -225,9 +240,9 @@ export function buildEngagementCopy({ courseKind, point = {}, contextKind = '', 
     twist: `자료의 핵심 수치나 조건 하나가 달라지면 질문 ${quoted}의 판단도 바뀔까요?`,
   }
   else if (courseKind === 'recruitment' || courseKind === 'ncs') generated = {
-    first: `질문 ${quoted}에 답하기 전에 제시문에서 결정 조건 하나를 표시하세요.`,
-    reveal: `질문 ${quoted}의 정답 근거와 가장 그럴듯한 함정의 차이를 한 문장으로 설명하세요.`,
-    twist: `결정 조건 하나가 반대로 바뀐다면 질문 ${quoted}의 선택도 바뀌어야 할까요?`,
+    first: `위 상황에서 ${quoted} 개념으로 판단할 기준을 한 가지 말한 뒤 출제형 문제를 풀어 보세요.`,
+    reveal: `${quoted}의 핵심 기준과 가장 그럴듯한 오답의 차이를 한 문장으로 설명하세요.`,
+    twist: `${quoted}의 핵심 조건 하나가 반대로 바뀐다면 선택도 바뀌어야 할까요?`,
   }
   else generated = {
     first: `질문 ${quoted}에 맞는 행동을 먼저 고르고 상황 속 근거를 한 가지 짚으세요.`,
@@ -256,7 +271,11 @@ export function learningVisualFor(value, courseKind) {
   let best = VISUALS[0]
   let bestScore = -1
   for (const visual of VISUALS) {
-    const score = visual.words.reduce((sum, word) => sum + (text.includes(word) ? 1 : 0), 0)
+    const score = visual.words.reduce((sum, word) => {
+      if ([...word].length > 1) return sum + (text.includes(word) ? 1 : 0)
+      const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+      return sum + (new RegExp(`(^|[^가-힣A-Za-z0-9])${escaped}($|[^가-힣A-Za-z0-9])`).test(text) ? 1 : 0)
+    }, 0)
     if (score > bestScore) { best = visual; bestScore = score }
   }
   return best
@@ -410,6 +429,10 @@ function toSampleQuestion(question, point) {
     }
   }
   const isOx = question.type === 'ox' || question.questionMode === 'ox'
+  const suppliedContext = plain(question.context)
+  const separated = suppliedContext
+    ? { context: suppliedContext, stem: plain(question.stem) }
+    : splitQuestionStem(question.stem)
   const answer = Array.isArray(question.answer)
     ? question.answer.map(answerLetter)
     : answerLetter(question.answer)
@@ -419,8 +442,8 @@ function toSampleQuestion(question, point) {
     text: plain(typeof choice === 'object' ? (choice.text ?? choice.label ?? choice.value) : choice),
   }))
   return {
-    stem: plain(question.stem),
-    context: plain(question.context),
+    stem: separated.stem,
+    context: separated.context,
     choices,
     answer,
     type: question.type || question.questionMode || (isOx ? 'ox' : 'choice'),
@@ -486,9 +509,22 @@ export function buildLearningPoints(summary, questions = []) {
       : toSampleQuestion(picked, point)
     const visual = learningVisualFor(`${summary?.title ?? ''} ${point.topic ?? ''} ${point.learn ?? ''}`, summary?.courseKind)
     // 발문 자체를 별도의 '상황'으로 중복 표시하지 않음. 실제 맥락이 있을 때만 상황 영역을 만듦.
-    const situation = point.situation || sampleQuestion?.context || ''
+    const rawSituation = point.situation || sampleQuestion?.context || ''
+    const separatedSituation = splitQuestionStem(rawSituation)
+    const situation = separatedSituation.context || (
+      !/^(?:다음|위|이)\s/.test(separatedSituation.stem) && !/[?？]$/.test(separatedSituation.stem)
+        ? separatedSituation.stem
+        : ''
+    )
+    const sourceStem = plain(sampleQuestion?.stem || sampleQuestion?.sourceQuestion?.stem)
+    const genericTopic = /(?:보충|연습|예시|실전|확인)?\s*문항|핵심\s*판단|실제\s*출제형/.test(plain(point.topic))
+    const acronym = sourceStem.match(/([A-Za-z][A-Za-z0-9.-]{1,12}\s*\([^()]{2,72}\))에?\s*대한/)
+    const namedConcept = sourceStem.match(/([가-힣A-Za-z0-9·-]{2,24})에\s*대한\s*(?:설명|내용)/)
+    const topic = genericTopic
+      ? plain(acronym?.[1] || namedConcept?.[1] || point.topic)
+      : point.topic
     const example = point.example || (typeof point.sampleQuestion === 'string' ? point.sampleQuestion : '')
-    return { ...point, lessonTitle: summary?.title || point.lessonTitle || '', example, sampleQuestion, visual, situation }
+    return { ...point, topic, lessonTitle: summary?.title || point.lessonTitle || '', example, sampleQuestion, visual, situation }
   })
 }
 
@@ -516,9 +552,11 @@ function questionChoices(question) {
 }
 
 function questionTopic(question, fallbackTitle, index) {
-  const stem = plain(question.stem || question.question)
-    .replace(/^다음\s+/, '')
+  const stem = splitQuestionStem(question.stem || question.question).stem
+    .replace(/^다음\s+(?:중\s+)?/, '')
     .replace(/[?？]\s*$/, '')
+  const acronym = stem.match(/([A-Z][A-Z0-9.-]{1,12})\s*\(([^,()]{2,30})(?:,[^)]*)?\)/)
+  if (acronym) return `${acronym[1]}(${acronym[2]})`
   if (stem && [...stem].length <= 62) return stem
   const label = plain(question.subAbility || question.ncsAbility || question.lessonTitle || fallbackTitle)
   return label || `핵심 판단 ${index + 1}`
@@ -596,11 +634,27 @@ function conceptText(question) {
   const source = plain(question.teachingNote || question.explanation || question.modelAnswer)
   const lines = []
   const evidence = evidenceFrom(source)
-  lines.push(`핵심｜${evidence ? noteStyle(evidence) : '자료의 수치·조건을 판단 기준과 대조'}`)
+  const explanation = answerLeadRemoved(source)
+  const sentences = explanation
+    .split(/(?<=[.!?。])\s+/)
+    .map(sentence => noteStyle(sentence))
+    .filter(sentence => [...sentence].length >= 12 && [...sentence].length <= 150)
+    .filter(sentence => !/^(?:오답|①|②|③|④|⑤|[1-5]번)/.test(sentence))
+  const core = sentences[0] || (evidence ? noteStyle(evidence) : '자료의 수치·조건을 판단 기준과 대조')
+  lines.push(`핵심｜${core}`)
   const equation = equationFrom(source)
   if (equation) lines.push(`계산｜${equation}`)
-  const check = strategyFor(`${question.area ?? ''} ${question.lessonTitle ?? ''} ${question.stem ?? ''}`, question)[0]
-  lines.push(`확인｜${noteStyle(check)}`)
+  else if (sentences[1] && sentences[1] !== core) lines.push(`의미·효과｜${sentences[1]}`)
+
+  const choices = questionChoices(question)
+  const correct = answerIndexes(question).map(answerIndex => choices[answerIndex]).filter(Boolean).join(', ')
+  if (correct && !core.includes(correct) && !sentences.some(sentence => sentence === correct)) {
+    lines.push(`판단 기준｜${noteStyle(correct)}`)
+  }
+  if (lines.length < 3) {
+    const check = strategyFor(`${question.area ?? ''} ${question.lessonTitle ?? ''} ${question.stem ?? ''}`, question)[0]
+    lines.push(`확인｜${noteStyle(check)}`)
+  }
   return lines.join('\n')
 }
 
@@ -652,7 +706,7 @@ export function buildQuestionDrivenSummary({ title, questions = [], courseKind =
   const keyPoints = picked.map((question, index) => ({
     topic: questionTopic(question, title, index),
     mode: question.level === '심화' || question.isAGrade ? '암기' : '이해',
-    situation: plain(question.context || question.stem || question.question),
+    situation: plain(question.context || splitQuestionStem(question.stem || question.question).context),
     learn: conceptText(question),
   }))
   const mustRemember = picked.slice(0, 3).map((question, index) => {
