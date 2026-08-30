@@ -177,19 +177,6 @@ export default function StudentCampusHome({
         </button>
       </header>
 
-      <section className="mission-dock campus-next-step" aria-labelledby="today-mission-title">
-        <span className="mission-marker" aria-hidden="true"><Play weight="fill" /></span>
-        <div className="mission-copy">
-          <span className="mission-eyebrow">지금 할 일 · 1단계</span>
-          <h2 id="today-mission-title">{missionTitle}</h2>
-          <p>{mission ? `${mission.question_count ?? 5}개 활동 · ${missionMinutes}분` : '추천 순서로 한 과목씩 끝까지 학습해요'}</p>
-        </div>
-        <button className="mission-launch" onClick={launchMission}>
-          <Play weight="fill" />
-          <span>{mission ? '미션 시작' : firstRoute?.hasResume ? '이어가기' : '바로 시작'}</span>
-        </button>
-      </section>
-
       <section className="campus-map" aria-label="스킬캠퍼스 학습관 선택 지도">
         <img src={campusAsset('skill-campus-map.webp')} alt="학생들이 함께 배우고 쉬는 스킬캠퍼스 전경" />
         {CAMPUS_SPOTS.map(({ id, label, badge, authority, icon: Icon, className, tone }) => (
@@ -201,6 +188,19 @@ export default function StudentCampusHome({
         <button className="campus-active-spot" onClick={() => onGoStudy?.('interview')} aria-label={`${INTERVIEW_HALL.label} · ${INTERVIEW_HALL.authority}`}>
           <span className="campus-spot-icon is-interview" aria-hidden="true"><ChatCircleDots weight="duotone" /></span>
           <span className="campus-spot-copy"><small>{INTERVIEW_HALL.badge}</small><b>{INTERVIEW_HALL.label}</b></span>
+        </button>
+      </section>
+
+      <section className="mission-dock campus-next-step" aria-labelledby="today-mission-title">
+        <span className="mission-marker" aria-hidden="true"><Play weight="fill" /></span>
+        <div className="mission-copy">
+          <span className="mission-eyebrow">지금 할 일 · 1단계</span>
+          <h2 id="today-mission-title">{missionTitle}</h2>
+          <p>{mission ? `${mission.question_count ?? 5}개 활동 · ${missionMinutes}분` : '추천 순서로 한 과목씩 끝까지 학습해요'}</p>
+        </div>
+        <button className="mission-launch" onClick={launchMission}>
+          <Play weight="fill" />
+          <span>{mission ? '미션 시작' : firstRoute?.hasResume ? '이어가기' : '바로 시작'}</span>
         </button>
       </section>
 

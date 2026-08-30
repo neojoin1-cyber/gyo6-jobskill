@@ -11,6 +11,7 @@ const classroom = read('src/screens/teacher/ClassroomScreen.jsx')
 const teacherLearningPreview = read('src/screens/teacher/TeacherLearningPreview.jsx')
 const teacherLessonCoach = read('src/screens/teacher/TeacherLessonCoach.jsx')
 const courseList = read('src/screens/student/CourseListScreen.jsx')
+const studentHome = read('src/screens/student/StudentCampusHome.jsx')
 const studentShell = read('src/screens/student/StudentShell.jsx')
 const listening = read('src/screens/student/ListeningPrompt.jsx')
 const diagnostic = read('src/screens/student/DiagnosticScreen.jsx')
@@ -42,6 +43,12 @@ if (!studentShell.includes("mode: focus.mode || 'study'")) {
 }
 for (const hall of STUDENT_CAMPUS_HALLS) {
   if (!courseList.includes(`id: '${hall.id}'`)) errors.push(`Shared classroom course is missing: ${hall.id}`)
+}
+
+const campusMapPosition = studentHome.indexOf('className="campus-map"')
+const nextStepPosition = studentHome.indexOf('className="mission-dock campus-next-step"')
+if (campusMapPosition < 0 || nextStepPosition < 0 || campusMapPosition > nextStepPosition) {
+  errors.push('Student home must show the campus map before the recommended next-step card')
 }
 
 for (const label of ['교육부 · 대한상공회의소', '고용노동부']) {

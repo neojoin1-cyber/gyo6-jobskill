@@ -118,7 +118,7 @@
 }
 
 .mission-dock { position: relative; z-index: 2; margin: -22px 14px 0; min-height: 126px; display: grid; grid-template-columns: 70px minmax(0,1fr) auto; align-items: center; gap: 12px; padding: 13px; border: 1px solid var(--campus-line); border-radius: 8px; background: #fff; box-shadow: 0 10px 28px rgba(25,35,55,.11); }
-.mission-dock.campus-next-step { margin: 0 14px 12px; min-height: 104px; grid-template-columns: 54px minmax(0,1fr) auto; border-color: #a9c9ff; border-left: 5px solid var(--campus-blue); box-shadow: 0 7px 20px rgba(23,105,246,.12); }
+.mission-dock.campus-next-step { margin: 12px 14px; min-height: 104px; grid-template-columns: 54px minmax(0,1fr) auto; border-color: #a9c9ff; border-left: 5px solid var(--campus-blue); box-shadow: 0 7px 20px rgba(23,105,246,.12); }
 .campus-next-step .mission-copy h2 { display: -webkit-box; overflow: hidden; white-space: normal; line-height: 1.35; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
 .mission-marker { width: 52px; height: 52px; display: grid; place-items: center; border-radius: 8px; background: #eaf2ff; color: var(--campus-blue); }
 .mission-marker svg { width: 24px; height: 24px; }
@@ -135,11 +135,13 @@
 .mission-launch:hover { background: var(--campus-blue-dark); }
 .mission-launch svg { width: 16px; }
 @media (max-width: 430px) {
-  .mission-dock.campus-next-step { margin-inline: 10px; min-height: 96px; grid-template-columns: 42px minmax(0,1fr) auto; gap: 8px; padding: 10px; }
-  .mission-marker { width: 40px; height: 40px; }
-  .mission-copy h2 { font-size: 13px; }
-  .mission-copy > p { font-size: 9px; }
-  .mission-launch { width: 78px; min-height: 58px; }
+  .mission-dock.campus-next-step { min-height: 76px; margin: 10px 10px 12px; grid-template-columns: 36px minmax(0,1fr) auto; gap: 7px; padding: 8px; }
+  .campus-next-step .mission-marker { width: 36px; height: 36px; }
+  .campus-next-step .mission-marker svg { width: 18px; height: 18px; }
+  .campus-next-step .mission-eyebrow { padding: 2px 5px; font-size: 9px; }
+  .campus-next-step .mission-copy h2 { margin: 4px 0 0; font-size: 12.5px; line-height: 1.3; -webkit-line-clamp: 1; }
+  .campus-next-step .mission-copy > p { display: none; }
+  .campus-next-step .mission-launch { width: 72px; min-height: 48px; font-size: 10.5px; }
 }
 
 .campus-section { padding: 20px 18px 0; }
