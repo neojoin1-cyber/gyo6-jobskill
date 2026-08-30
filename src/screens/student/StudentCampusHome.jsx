@@ -126,18 +126,19 @@ export default function StudentCampusHome({
 
   const level = getLevelInfo(boot?.xp?.total_xp ?? 0)
   const displayName = profile?.display_name || '민준'
-  const missionTitle = mission?.title || '오늘 배울 과목 고르기'
   const missionMinutes = mission?.time_limit_min || 12
   const unread = boot?.unread_count ?? 0
   const continuing = useMemo(findContinueCourse, [])
   const learningRoutes = useMemo(() => buildStudentLearningRoutes(subjectProgress), [subjectProgress])
+  const firstRoute = learningRoutes.find(route => route.hasResume) || learningRoutes[0] || null
+  const missionTitle = mission?.title || (firstRoute ? `${firstRoute.label} · ${firstRoute.nextLabel}` : '첫 학습 시작하기')
   const hasRecordedProgress = (boot?.xp?.total_xp ?? 0) > 0
     || (boot?.streak?.current_streak ?? 0) > 0
     || (boot?.wrong_count ?? 0) > 0
 
   function launchMission() {
     if (mission) onOpenMission?.(mission)
-    else onGoStudy?.(null)
+    else onGoStudy?.(firstRoute?.target ?? null)
   }
 
   if (loading) {
@@ -176,7 +177,20 @@ export default function StudentCampusHome({
         </button>
       </section>
 
-      <section className="campus-map" aria-label="스킬캠퍼스 지도">
+      <section className="mission-dock campus-next-step" aria-labelledby="today-mission-title">
+        <span className="mission-marker" aria-hidden="true"><Play weight="fill" /></span>
+        <div className="mission-copy">
+          <span className="mission-eyebrow">지금 할 일 · 1단계</span>
+          <h2 id="today-mission-title">{missionTitle}</h2>
+          <p>{mission ? `${mission.question_count ?? 5}개 활동 · ${missionMinutes}분` : '추천 순서로 한 과목씩 끝까지 학습해요'}</p>
+        </div>
+        <button className="mission-launch" onClick={launchMission}>
+          <Play weight="fill" />
+          <span>{mission ? '미션 시작' : firstRoute?.hasResume ? '이어가기' : '바로 시작'}</span>
+        </button>
+      </section>
+
+      <section className="campus-map" aria-label="스킬캠퍼스 학습관 선택 지도">
         <img src={campusAsset('skill-campus-map.webp')} alt="학생들이 함께 배우고 쉬는 스킬캠퍼스 전경" />
         {CAMPUS_SPOTS.map(({ id, label, badge, authority, icon: Icon, className, tone }) => (
           <button key={id} className={`campus-spot ${className}`} onClick={() => onGoStudy?.(id)} aria-label={`${label} · ${authority}`}>
@@ -187,19 +201,6 @@ export default function StudentCampusHome({
         <button className="campus-active-spot" onClick={() => onGoStudy?.('interview')} aria-label={`${INTERVIEW_HALL.label} · ${INTERVIEW_HALL.authority}`}>
           <span className="campus-spot-icon is-interview" aria-hidden="true"><ChatCircleDots weight="duotone" /></span>
           <span className="campus-spot-copy"><small>{INTERVIEW_HALL.badge}</small><b>{INTERVIEW_HALL.label}</b></span>
-        </button>
-      </section>
-
-      <section className="mission-dock" aria-labelledby="today-mission-title">
-        <img src={campusAsset('skill-campus-map.webp')} alt="" />
-        <div className="mission-copy">
-          <span className="mission-eyebrow">오늘의 캠퍼스 미션</span>
-          <h2 id="today-mission-title">{missionTitle}</h2>
-          <p>{mission ? `${mission.question_count ?? 5}개 활동 · ${missionMinutes}분` : '6개 학습관에서 오늘의 목표를 선택하세요'}</p>
-        </div>
-        <button className="mission-launch" onClick={launchMission}>
-          <Play weight="fill" />
-          <span>미션 출발</span>
         </button>
       </section>
 

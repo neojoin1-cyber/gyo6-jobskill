@@ -12,6 +12,7 @@ import {
   Monitor,
   PresentationChart,
   StopCircle,
+  TextAa,
   UserCircle,
 } from '@phosphor-icons/react'
 import StudentCampusHome from '../student/StudentCampusHome.jsx'
@@ -98,6 +99,11 @@ export default function TeacherLearningPreview({
   const [coachOpen, setCoachOpen] = useState(false)
   const [fullscreen, setFullscreen] = useState(false)
   const [focusMode, setFocusMode] = useState(false)
+  const [largeText, setLargeText] = useState(() => {
+    if (!teachingMode || typeof window === 'undefined') return false
+    try { return window.localStorage.getItem('gyo6_classroom_text_size') !== 'standard' }
+    catch { return true }
+  })
   const [classes, setClasses] = useState([])
   const [classId, setClassId] = useState(initialClassId || '')
   const [session, setSession] = useState(null)
@@ -157,6 +163,12 @@ export default function TeacherLearningPreview({
       exitProjection()
     }
   }, [teachingMode])
+
+  useEffect(() => {
+    if (!teachingMode || typeof window === 'undefined') return
+    try { window.localStorage.setItem('gyo6_classroom_text_size', largeText ? 'large' : 'standard') }
+    catch { }
+  }, [largeText, teachingMode])
 
   useEffect(() => {
     if (!teachingMode || !focusMode) return undefined
@@ -311,7 +323,7 @@ export default function TeacherLearningPreview({
   ]
 
   return (
-    <div ref={rootRef} className={`screen teacher-learning-preview ${teachingMode ? 'is-teaching' : ''} ${focusMode ? 'is-focus' : ''}`}>
+    <div ref={rootRef} className={`screen teacher-learning-preview ${teachingMode ? 'is-teaching' : ''} ${focusMode ? 'is-focus' : ''} ${largeText ? 'is-large-text' : ''}`}>
       <header className="teacher-preview-context">
         <button type="button" className="teacher-preview-back" onClick={leavePreview}
           aria-label="교사 캠퍼스로 돌아가기" title="교사 캠퍼스로 돌아가기">
@@ -345,6 +357,13 @@ export default function TeacherLearningPreview({
             onClick={() => setCoachOpen(value => !value)} aria-expanded={coachOpen} aria-haspopup="dialog">
             <PresentationChart weight={coachOpen ? 'fill' : 'regular'} /><span>{contextReady ? '교사 지원' : '단원 선택 전'}</span>
           </button>
+          {teachingMode && (
+            <button type="button" className={`teacher-preview-scale ${largeText ? 'is-on' : ''}`}
+              onClick={() => setLargeText(value => !value)} aria-pressed={largeText}
+              title={largeText ? '기본 글자 크기로 보기' : '교실용 큰 글자로 보기'}>
+              <TextAa weight="bold" /><span>{largeText ? '큰 글자' : '글자 확대'}</span>
+            </button>
+          )}
           {teachingMode ? (
             <button type="button" className="teacher-preview-classroom is-focus-launch" onClick={toggleClassroomFocus}
               aria-label={focusMode ? '수업 집중 화면 종료' : '수업 집중 화면'} title={focusMode ? '수업 집중 화면 종료' : '수업 집중 화면'}>
@@ -368,6 +387,9 @@ export default function TeacherLearningPreview({
             <span><small>수업 집중</small><b>{learningContext.lessonLabel || learningContext.areaLabel || '학생 학습 화면'}</b></span>
           </div>
           <div className="classroom-focus-actions">
+            <button type="button" className={largeText ? 'is-on' : ''} onClick={() => setLargeText(value => !value)} aria-pressed={largeText}>
+              <TextAa weight="bold" /><span>{largeText ? '큰 글자' : '글자 확대'}</span>
+            </button>
             <button type="button" className={coachOpen ? 'is-on' : ''} disabled={!contextReady}
               onClick={() => setCoachOpen(value => !value)} aria-expanded={coachOpen} aria-haspopup="dialog">
               <PresentationChart weight={coachOpen ? 'fill' : 'regular'} /><span>교사 지원</span>
