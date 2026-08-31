@@ -37,6 +37,9 @@ function contextFor(point = {}, subject = '') {
       || point.learn,
   )
   const resolvedSubject = clip(subject || point.topic || stem || '현재 판단', 58)
+  const stemText = plain([point.topic, stem, source.area, source.subAbility, source.ncsAbility, source.lessonTitle, source.category].join(' ')).toLowerCase()
+  const situationText = plain([point.situation, situation].join(' ')).toLowerCase()
+  const detailText = plain([point.learn, explanation, answerText(sample)].join(' ')).toLowerCase()
   const text = plain([
     point.lessonTitle, point.topic, point.learn, point.situation, stem, situation, explanation,
     source.area, source.subAbility, source.ncsAbility, source.lessonTitle, source.category,
@@ -45,6 +48,9 @@ function contextFor(point = {}, subject = '') {
     subject: resolvedSubject,
     stem: clip(stem || resolvedSubject, 86),
     evidence: evidence || '지문과 해설에서 확인되는 핵심 근거',
+    stemText,
+    situationText,
+    detailText,
     text,
   }
 }
@@ -381,14 +387,41 @@ function rulesFor(profile) {
   return DOMAIN[profile] || DOMAIN.general
 }
 
-function selectScenario(profile, text) {
+function matches(rule, value) {
+  rule.match.lastIndex = 0
+  return rule.match.test(value)
+}
+
+function selectScenario(profile, context) {
   const rules = rulesFor(profile)
-  return rules.find(rule => rule.match.test(text)) || rules[rules.length - 1]
+  const fallback = rules[rules.length - 1]
+  const primary = `${context.stemText} ${context.situationText}`
+  if (profile === 'workplace') {
+    const directSafety = /(안전\s*사고|산업\s*안전|즉시\s*위험|보호구|작업\s*중지|대피|보안\s*사고)/.test(primary)
+    const customerResponse = /(?:고객|민원|불만).{0,36}(?:응대|처리|요청|행동|대응|조치|교환|환불)|(?:응대|처리|대응).{0,24}(?:고객|민원|불만)/.test(primary)
+    if (directSafety) return rules.find(rule => rule.id === 'safety') || fallback
+    if (customerResponse) return rules.find(rule => rule.id === 'customer') || fallback
+  }
+  let selected = fallback
+  let bestScore = 0
+  for (const rule of rules.slice(0, -1)) {
+    // 발문·주제와 실제 제시문을 해설보다 훨씬 무겁게 본다. 예를 들어
+    // 고객 불만 문항의 해설에 "안전합니다"가 한 번 등장했다고 안전
+    // 학습으로 보내거나, 공지 시각 때문에 수리 학습으로 보내면 안 된다.
+    const score = (matches(rule, context.stemText) ? 6 : 0)
+      + (matches(rule, context.situationText) ? 8 : 0)
+      + (matches(rule, context.detailText) ? 1 : 0)
+    if (score > bestScore) {
+      selected = rule
+      bestScore = score
+    }
+  }
+  return selected
 }
 
 export function buildContextualDeepening(profile, point = {}, subject = '') {
   const context = contextFor(point, subject)
-  const selected = selectScenario(profile, context.text)
+  const selected = selectScenario(profile, context)
   const material = interpolate(selected.material, context)
   const lesson = plain(point.lessonTitle)
   const withLesson = lesson && !material.includes(lesson) ? `단원: ${clip(lesson, 34)} · ${material}` : material

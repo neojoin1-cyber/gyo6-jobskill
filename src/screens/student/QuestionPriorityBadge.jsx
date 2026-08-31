@@ -53,7 +53,7 @@ export default function QuestionPriorityBadge({ q, subjectId, showReason = false
                 </a>
               ))}
             </div>
-            <p style={{ margin: '10px 0 0', color: 'var(--text-muted)', fontSize: 12, lineHeight: 1.55 }}>문항 원문이 기출이라는 뜻이 아니라, 현재 학습 주제의 공식 출제·중요도 근거를 표시합니다.</p>
+            <p style={{ margin: '10px 0 0', color: 'var(--text-muted)', fontSize: 12, lineHeight: 1.55 }}>이 배지는 문항 원문이 기출이라는 뜻이 아니라, 현재 학습 주제가 공개 평가틀·채용공고의 평가 범위와 연결된다는 뜻입니다.</p>
           </section>
         </div>
       )}

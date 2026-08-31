@@ -449,6 +449,7 @@ export default function InterviewStudyScreen({ initialArea = null, initialLesson
                 initialInteraction={initialInteraction}
                 onStepChange={setTheoryStep}
                 onInteractionChange={setTheoryInteraction}
+                embeddedHeader
                 introStartLabel="1단계 기준 익히기 시작 →"
                 startQuizLabel={hasQuiz ? `2단계 답변 고쳐 고르기 ${lessonQuizQuestions.length}문항 →` : `3단계 내 경험으로 답하기 ${practiceQuestions.length}질문 →`}
                 onStartQuiz={(hasQuiz || hasPractice) ? () => { setPhaseDone(current => ({ ...current, theory: true })); switchView(hasQuiz ? 'quiz' : 'practice') } : null}

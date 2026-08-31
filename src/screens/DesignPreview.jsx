@@ -8,6 +8,8 @@ import CoverLetterReviewScreen from './teacher/CoverLetterReviewScreen.jsx'
 import GuidedStudyScreen from './student/GuidedStudyScreen.jsx'
 import InterviewStudyScreen from './student/InterviewStudyScreen.jsx'
 import TeacherLearningPreview from './teacher/TeacherLearningPreview.jsx'
+import TeacherInterviewPracticeScreen from './teacher/TeacherInterviewPracticeScreen.jsx'
+import MissionCreateScreen from './teacher/MissionCreateScreen.jsx'
 import CourseListScreen from './student/CourseListScreen.jsx'
 import AccountDataScreen from './student/AccountDataScreen.jsx'
 import PwaInstallPrompt from '../components/PwaInstallPrompt.jsx'
@@ -56,6 +58,8 @@ export default function DesignPreview() {
           <button className={mode === 'teacher' ? 'is-on' : ''} onClick={() => setMode('teacher')}>교사 관리</button>
           <button className={mode === 'teacher-messages' ? 'is-on' : ''} onClick={() => setMode('teacher-messages')}>교사 메시지</button>
           <button className={mode === 'teacher-cover' ? 'is-on' : ''} onClick={() => setMode('teacher-cover')}>자소서 첨삭</button>
+          <button className={mode === 'teacher-interview' ? 'is-on' : ''} onClick={() => setMode('teacher-interview')}>면접 코칭</button>
+          <button className={mode === 'teacher-mission' ? 'is-on' : ''} onClick={() => setMode('teacher-mission')}>미션 만들기</button>
         </div>
       </div>}
 
@@ -130,9 +134,11 @@ export default function DesignPreview() {
         )}
         {mode === 'teacher' && (
           <TeacherWorkspace profile={TEACHER_PROFILE} demo tab="dashboard" pendingCount={3} missions={[]}
-            onTab={() => {}} onNavigate={() => {}} onOpenClassroom={context => { setClassroomContext(context); setMode('teacher-classroom') }}
+            onTab={() => {}} onNavigate={(target, context) => { if (target === 'create-mission') { setClassroomContext(context); setMode('teacher-mission') } }} onOpenClassroom={context => { setClassroomContext(context); setMode('teacher-classroom') }}
+            onOpenStudentCampus={() => { setClassroomContext(null); setMode('teacher-classroom') }}
             onOpenMessages={params => { setMessageTarget(params || {}); setMode('teacher-messages') }}
-            onOpenCoverReviews={() => setMode('teacher-cover')} />
+            onOpenCoverReviews={() => setMode('teacher-cover')}
+            onOpenInterviewCoach={classId => { setClassroomContext(current => ({ ...(current || {}), classId })); setMode('teacher-interview') }} />
         )}
         {mode === 'teacher-classroom' && <TeacherLearningPreview
           profile={TEACHER_PROFILE}
@@ -152,8 +158,12 @@ export default function DesignPreview() {
         )}
         {mode === 'teacher-messages' && <TeacherMessageScreen demo onBack={() => setMode('teacher')}
           initialScope={messageTarget.scope} initialTarget={messageTarget.target}
-          initialStudentName={messageTarget.studentName} />}
+          initialStudentName={messageTarget.studentName} initialTitle={messageTarget.title}
+          initialBody={messageTarget.body} />}
         {mode === 'teacher-cover' && <CoverLetterReviewScreen demo onBack={() => setMode('teacher')} />}
+        {mode === 'teacher-interview' && <TeacherInterviewPracticeScreen demo initialClassId={classroomContext?.classId} onBack={() => setMode('teacher')}
+          onMessage={params => { setMessageTarget(params || {}); setMode('teacher-messages') }} />}
+        {mode === 'teacher-mission' && <MissionCreateScreen demo classId={classroomContext?.classId} className={classroomContext?.className} onBack={() => setMode('teacher')} />}
       </div>
     </div>
   )

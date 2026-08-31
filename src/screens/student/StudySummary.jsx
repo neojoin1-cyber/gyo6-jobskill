@@ -527,7 +527,7 @@ function FormativeAssessmentCard({ assessment, answers, checked, onSelect, onChe
   )
 }
 
-export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, formativeAssessment = null, onStartQuiz, introStartLabel = '학습 시작 →', startQuizLabel = null, initialStep = 0, initialInteraction = null, cardExtension = null, onStepChange, onInteractionChange }) {
+export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, formativeAssessment = null, onStartQuiz, introStartLabel = '학습 시작 →', startQuizLabel = null, initialStep = 0, initialInteraction = null, cardExtension = null, onStepChange, onInteractionChange, embeddedHeader = false }) {
   const { title, intro, keyPoints = [], mustRemember = [], terms = [], tips = [] } = summary || {}
   const learningPoints = useMemo(() => buildLearningPoints(summary, questions), [summary, questions])
   const learningMistakes = useMemo(() => buildLearningMistakes(summary, questions), [summary, questions])
@@ -650,7 +650,7 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, for
   return (
     <div className="study-summary">
       {/* 지금 학습 중인 단원 제목 (항상 표시 — 무엇을 공부하는지 명확히) */}
-      {card.type !== 'intro' && (
+      {!embeddedHeader && card.type !== 'intro' && (
         <p className="study-summary-unit-title" style={{ fontSize: 13, fontWeight: 800, color: 'var(--primary)', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 6, lineHeight: 1.4 }}>
           <span style={{ flexShrink: 0 }}>📖</span>
           <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{title}</span>
@@ -658,11 +658,11 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, for
       )}
 
       {/* 진행바 */}
-      <div className="study-summary-progress" style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
+      <div className="study-summary-progress" style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: embeddedHeader ? 10 : 14 }}>
         <div style={{ flex: 1, height: 6, background: 'var(--border)', borderRadius: 999, overflow: 'hidden' }}>
           <div style={{ height: '100%', width: `${total > 1 ? (step + 1) / total * 100 : 100}%`, background: 'var(--primary)', borderRadius: 999, transition: 'width 0.25s' }} />
         </div>
-        <span style={{ fontSize: 12, color: 'var(--text-muted)', fontWeight: 700, flexShrink: 0 }}>{step + 1}/{total}</span>
+        {!embeddedHeader && <span style={{ fontSize: 12, color: 'var(--text-muted)', fontWeight: 700, flexShrink: 0 }}>{step + 1}/{total}</span>}
       </div>
 
       <div className="study-summary-content" style={{ flex: 1 }}>
@@ -873,7 +873,7 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, for
                         </section>
                       )}
                       <section className="learning-reconsider" data-deepening-kind={beat.deepen?.kind || 'general'}>
-                        <b>{beat.deepen?.label || '핵심 조건이 달라지면?'}</b>
+                        <b>조건을 바꿔 생각해 보기</b>
                         <p>{beat.twist}</p>
                         {beat.deepen?.material && (
                           <aside className="learning-reconsider-material">

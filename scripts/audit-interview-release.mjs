@@ -30,6 +30,9 @@ const quiz = readJson('data/interview-quiz.json').questions
 const mockData = readJson('data/mock-interview-pool.json')
 const mock = mockData.pool
 const studyText = JSON.stringify(study)
+const studySummaryText = fs.readFileSync(path.join(ROOT, 'data/study-summaries.json'), 'utf8')
+const interviewDeckText = fs.readFileSync(path.join(ROOT, 'data/decks/interview.json'), 'utf8')
+const interviewTextbookText = fs.readFileSync(path.join(ROOT, 'data/textbook-interview.json'), 'utf8')
 const quizText = JSON.stringify(quiz)
 const screen = fs.readFileSync(path.join(ROOT, 'src/screens/student/InterviewStudyScreen.jsx'), 'utf8')
 const careerScreen = fs.readFileSync(path.join(ROOT, 'src/screens/student/InterviewCareerLab.jsx'), 'utf8')
@@ -167,6 +170,16 @@ for (const question of quiz) {
 const fixedWeightQuestions = quiz.filter(question => /%|비중|가중치|합격권|몇 점/.test(question.stem))
 check(fixedWeightQuestions.length === 0, `기관 근거 없는 고정 배점 암기문항: ${fixedWeightQuestions.map(q => q.id).join(', ')}`)
 check(!/없으면 만들어서라도|7-38-55|황금비율|기본 합격권/.test(studyText), '면접 학습자료에 허위 수치·고정비율·합격선 표현 잔존')
+for (const [label, text] of [
+  ['학습 요약', studySummaryText],
+  ['교사용 덱', interviewDeckText],
+  ['면접 완전교재', interviewTextbookText],
+]) {
+  check(!/(?:인성(?:·|\s*및\s*)가치관\s*\(?40%|직무역량\s*\(?30%|의사소통능력\s*\(?20%|성장가능성\s*\(?10%)/.test(text), `${label}에 기관 근거 없는 공통 면접 배점 잔존`)
+  check(!/합격권|20↑합격|23↑안정/.test(text), `${label}에 앱 연습점수를 실제 합격선처럼 보이게 하는 표현 잔존`)
+  check(!/비중이 가장 큰\s*(?:<[^>]+>)*\s*인성/.test(text), `${label}에 기관 공통 고정 우선순위 표현 잔존`)
+  check(!/4대 평가영역|배점 지원 기관|비중이 큰 순서대로/.test(text), `${label}에 기관 공통 평가기준처럼 보이는 표현 잔존`)
+}
 check(studyText.includes('전국 공통 고정 배점 시험이 아님'), '면접 기관별 평가기준 안내 누락')
 check(studyText.includes('채용공고와 직무기술서'), '면접 직무기술서 기반 안내 누락')
 check(quizText.includes('메라비언의 제한된 연구 수치를 면접 평가비중으로 일반화하면 안 됩니다'), '7-38-55 오용 교정 문항 누락')
@@ -204,6 +217,7 @@ check(INTERVIEW_OBSERVATION_AREAS.length >= 6, `실전면접 공통 관찰 기�
 check(practicalScreen.includes('전 과정 리허설 시작') && practicalScreen.includes('상황별 먼저 연습'), '학생 실전면접 단계·전 과정 리허설 누락')
 check(teacherPracticalScreen.includes('학생 관찰표') && teacherPracticalScreen.includes('학생에게 피드백'), '교사 실전면접 관찰·피드백 연결 누락')
 check(teacherPracticalScreen.includes("rpc('rpc_save_interview_practice_review'") && teacherPracticalScreen.includes('서버 저장됨'), '교사 실전면접 관찰표 서버 저장 누락')
+check(teacherPracticalScreen.includes("demo && saved ? '체험 저장됨'") && teacherPracticalScreen.includes('setSynced(!demo)'), '교사 실전면접 체험 저장을 서버 저장으로 오표시함')
 check(coverMigration.includes('SECURITY DEFINER') && coverMigration.includes('teacher_classes'), '자기소개서 담당 학급 권한 검증 누락')
 check(coverMigration.includes('FROM PUBLIC, anon'), '자기소개서 RPC 익명 실행 차단 누락')
 check(evidenceMigration.includes('ENABLE ROW LEVEL SECURITY') && evidenceMigration.includes('student_id = auth.uid()'), '근거은행 학생 본인 권한 검증 누락')

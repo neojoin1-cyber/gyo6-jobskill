@@ -126,7 +126,7 @@ export default function TeacherInterviewPracticeScreen({ onBack, initialClassId,
     }
     setSaving(false)
     setSaved(true)
-    setSynced(true)
+    setSynced(!demo)
     return true
   }
 
@@ -160,7 +160,7 @@ export default function TeacherInterviewPracticeScreen({ onBack, initialClassId,
           <div>{INTERVIEW_OBSERVATION_AREAS.map(item => <article key={item.id}><div><b>{item.label}</b><small>{item.help}</small></div><button className={review[item.id] === 'good' ? 'is-good' : ''} onClick={() => setRating(item.id, 'good')} disabled={!studentId}><CheckCircle />잘됨</button><button className={review[item.id] === 'practice' ? 'is-practice' : ''} onClick={() => setRating(item.id, 'practice')} disabled={!studentId}><Eye />연습</button></article>)}</div>
           <label><span>관찰 메모</span><textarea rows={4} value={note} onChange={event => { setNote(event.target.value); setSaved(false) }} placeholder="예: 첫 답변 20초 동안 시선이 바닥에 4회 머묾. 다음 회차에는 첫 문장 전 호흡 1회 연습." /></label>
           {saveError && <p className="teacher-practical-save-error" role="alert">{saveError}</p>}
-          <footer><button onClick={saveReview} disabled={!studentId || saving}><ClipboardText />{saving ? '저장 중' : synced ? '서버 저장됨' : saved ? '기기 저장됨 · 동기화' : '관찰표 저장'}</button><button className="is-primary" onClick={sendFeedback} disabled={!studentId || saving}><ChatCircleDots weight="fill" />학생에게 피드백</button></footer>
+          <footer><button onClick={saveReview} disabled={!studentId || saving}><ClipboardText />{saving ? '저장 중' : demo && saved ? '체험 저장됨' : synced ? '서버 저장됨' : saved ? '기기 저장됨 · 동기화' : '관찰표 저장'}</button><button className="is-primary" onClick={sendFeedback} disabled={!studentId || saving}><ChatCircleDots weight="fill" />학생에게 피드백</button></footer>
         </section>
         <section className="teacher-practical-principle"><Student weight="fill" /><div><b>외모 채점 금지</b><p>표정·시선·자세는 전달을 방해하는 관찰 행동만 기록함. 학교·가족·외모 등 직무와 무관한 편견 요소는 평가하지 않음.</p></div></section>
       </section>

@@ -480,7 +480,7 @@ export default function LoginScreen() {
         </button>
         {!isNative && (
           <>
-            <a href="https://play.google.com/apps/internaltest/4701531516564569722"
+            <a href="https://play.google.com/apps/testing/com.gyo6.jobskill"
               style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, width: '100%', padding: '11px', background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.9)', border: '1px solid rgba(255,255,255,0.25)', borderRadius: 12, fontSize: 13, fontWeight: 600, textDecoration: 'none', boxSizing: 'border-box' }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                 <path d="M3.18 23.76a2 2 0 0 0 2.2-.23l12.3-7.1-3.35-3.35L3.18 23.76z" fill="#EA4335"/>

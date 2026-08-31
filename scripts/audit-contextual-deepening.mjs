@@ -64,8 +64,32 @@ function inspect(scope, summary, questions = []) {
     const id = `${scope} 핵심 ${index + 1}`
     const output = plain(JSON.stringify(deepen))
     const subject = engagementSubject(point)
+    const primaryText = plain([
+      point.topic, point.situation, sample.stem, sample.context,
+      sample.sourceQuestion?.area, sample.sourceQuestion?.subAbility,
+      sample.sourceQuestion?.ncsAbility, sample.sourceQuestion?.lessonTitle,
+    ].join(' ')).toLowerCase()
+    const profileSourceText = plain([
+      point.topic, point.learn, point.situation, sample.stem,
+      sample.sourceQuestion?.area, sample.sourceQuestion?.lessonTitle,
+    ].join(' ')).toLowerCase()
     const options = deepen.options || []
     records.push({ id, profile: deepen.kind, scenario: deepen.scenario, subject, deepen })
+
+    const hasMathTask = /(수리|계산|산출|비율|백분율|증가율|감소율|단위\s*(?:환산|변환)|통계|평균|중앙값|최빈값|표준편차|확률|속도|거리|작업률|(?:예산|금액).{0,12}(?:계산|합계|차이|비율))/.test(profileSourceText)
+    if (deepen.kind === 'math' && !hasMathTask) failures.push(`${id}: 날짜·시간·금액만으로 수리 학습에 오분류됨`)
+    const asksCustomerResponse = /(?:고객|민원|불만).{0,28}(?:응대|처리|요청|행동|대응|조치)|(?:응대|처리|대응).{0,20}(?:고객|민원|불만)/.test(primaryText)
+    if (deepen.kind === 'workplace'
+      && asksCustomerResponse
+      && !/(사고|위험|보호구|작업\s*중지|보안\s*사고)/.test(primaryText)
+      && deepen.scenario !== 'workplace:customer') {
+      failures.push(`${id}: 고객 상황이 ${deepen.scenario || '미분류'}로 오분류됨`)
+    }
+    if (/(공지사항|회사 게시판|업무 이메일|회의록)/.test(primaryText)
+      && !hasMathTask
+      && deepen.kind === 'math') {
+      failures.push(`${id}: 문서 읽기 상황이 수리 학습으로 오분류됨`)
+    }
 
     if (!deepen.scenario || !String(deepen.scenario).includes(':')) failures.push(`${id}: 세부 상황 분류 없음`)
     if (!plain(deepen.material).includes('현재 초점:')) failures.push(`${id}: 현재 문항 초점이 확인 자료에 없음`)
@@ -184,6 +208,14 @@ const adversarialCases = [
   ['ncs', '조직 내 역할과 책임 파악하기', '내 역할과 다른 팀원의 역할이 겹칠 때 공동목표와 업무분장표를 확인한다.', 'workplace:collaboration', {}],
   ['visual', '그래프 추세', '기간별 생산량의 증가와 감소를 판단하시오.', 'visual:trend', {}],
   ['general', '원인과 결과', '작업 지연의 원인과 그 결과를 고르시오.', 'general:cause-result', {}],
+  ['education-certification', '업무 지시 확인', '긴급 고객 불만을 확인한 신입사원의 첫 행동은?', 'workplace:customer', {
+    context: '고객 불만 접수일시 2024.03.15 14:30, 처리기한 당일 18:00',
+    explanation: '먼저 상급자에게 보고해 권한을 확인하는 것이 안전합니다.',
+  }],
+  ['education-certification', '의사소통능력 진단평가', '회사 게시판의 공지사항에서 핵심 내용은?', 'document:deadline-role', {
+    context: '정전 일시 3월 20일 13:00~17:00, 해당 시간 재택근무 또는 조기퇴근',
+    explanation: '핵심은 정전 시간 동안의 업무 조정입니다.',
+  }],
 ]
 for (const [courseKind, topic, stem, expected, sampleOverrides] of adversarialCases) {
   const actual = buildEngagementCopy({

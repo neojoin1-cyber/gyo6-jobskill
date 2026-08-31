@@ -56,6 +56,12 @@ for (const path of ['src/screens/student/StudyScreen.jsx', 'src/screens/student/
     fail(`${path}에서 지문 또는 문항을 간결 문구로 변환함`)
   }
 }
+const studyScreenSource = read('src/screens/student/StudyScreen.jsx')
+const embeddedContextBranch = studyScreenSource.indexOf("if (/^[📢📋【\\[]|^전 직원|^수신:|^제목:|^날짜:/.test(tail))")
+const genericHintBranch = studyScreenSource.indexOf("if (/^[📝📌💡🔔]|^[※]|^문제 해결")
+if (embeddedContextBranch < 0 || genericHintBranch < 0 || embeddedContextBranch > genericHintBranch) {
+  fail('공지·문서 원문보다 일반 힌트를 먼저 분류해 지문이 학습 포인트로 잘릴 수 있음')
+}
 const classroomSource = read('src/screens/teacher/ClassroomScreen.jsx')
 if (!classroomSource.includes('TeacherLearningPreview') || classroomSource.includes('DeckProjector')) {
   fail('교실 수업이 학생 앱 공통 학습 화면을 사용하지 않음')

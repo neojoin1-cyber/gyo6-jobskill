@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { ArrowLeft, BookOpen, CaretRight, CheckCircle, Compass, Target } from '@phosphor-icons/react'
 import { pushBack, popBack, triggerBack } from '../../lib/backButton.js'
 import StudySummary, { buildStudySummaryCards } from './StudySummary.jsx'
-import { StudyModeStrip } from './StudyModeToggle.jsx'
 import CompactText from '../../components/CompactText.jsx'
 import PersonalizedCareerExamplePanel from '../../components/PersonalizedCareerExamplePanel.jsx'
 import { getFirstClassFormative } from '../../lib/firstClassLessons.js'
@@ -124,7 +123,6 @@ export default function GuidedStudyScreen({ program, initialArea = null, initial
       <div><span>{program.authority}</span><b>{headerTitle}</b></div>
       {lesson && <span className="guided-study-position" aria-label={`현재 학습 장면 ${step + 1}/${Math.max(1, cards.length)}`}>{step + 1}/{Math.max(1, cards.length)}</span>}
     </header>
-    <StudyModeStrip mode="learn" right={lesson ? `${step + 1}/${Math.max(1, cards.length)}` : null} />
     <main className="screen-body guided-study-body">
       {!area && <>
         <section className="guided-study-intro">
@@ -171,6 +169,7 @@ export default function GuidedStudyScreen({ program, initialArea = null, initial
         onStepChange={handleSummaryStepChange}
         onStartQuiz={continueAfterLesson}
         startQuizLabel={nextLesson ? '다음 단원 학습 →' : `${program.challengeLabel} →`}
+        embeddedHeader
       />}
     </main>
     {!area && <button className="guided-study-challenge" onClick={onChallenge} disabled={!allDone}>

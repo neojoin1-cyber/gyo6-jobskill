@@ -19,8 +19,8 @@ export const QUESTION_PRIORITY = {
   },
   past: {
     key: 'past',
-    label: '기출',
-    description: '실제 시행된 평가의 공식 출제 범위에서 확인된 주제',
+    label: '평가연계',
+    description: '공식 평가틀이나 실제 채용의 평가 범위에서 확인된 학습 주제',
     color: '#166534',
     background: '#F0FDF4',
     border: '#86EFAC',
@@ -150,7 +150,7 @@ export function questionPriority(question = {}, subjectId = '') {
   const area = plain(question.area || question.officialArea)
 
   if (subject === 'job-common' && TEENUP_AREAS.has(plain(question.officialArea || question.area))) {
-    return result('past', '직업공통능력 인증에서 실제 시행되는 공식 평가영역에 속한 주제입니다.', sourceList('teenup'))
+    return result('past', '직업공통능력 인증의 공개 평가영역에 맞춰 만든 연습 주제입니다.', sourceList('teenup'))
   }
 
   if (subject === 'ncs-basic') {
@@ -165,7 +165,7 @@ export function questionPriority(question = {}, subjectId = '') {
     }
     if (NCS_PAST.has(area)) {
       const sources = area === '직업윤리' ? sourceList('alioEthics2025') : sourceList('alioDigital2026', 'alio2024')
-      return result('past', '공공기관의 실제 채용 전형에서 평가 범위로 확인된 영역입니다.', sources)
+      return result('past', '공공기관 채용공고의 평가 범위에서 확인된 영역을 바탕으로 만든 연습 주제입니다.', sources)
     }
     if (area) return result('important', '현행 NCS 직업기초능력 체계의 핵심 학습영역입니다.', sourceList('ncs26'), 'official-framework')
   }

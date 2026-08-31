@@ -871,9 +871,6 @@ export default function StudyScreen({ initialSubject, initialTrack, initialArea,
             장면 {learnCardStep + 1}/{Math.max(1, contextSummaryCards.length)}
           </span>
         </div>
-        {/* 요점정리 화면에도 같은 띠를 띄운다. 한쪽에만 있으면 "두 모드가
-            뭐가 다른지 모르겠다"는 말을 그대로 듣게 된다. */}
-        <StudyModeStrip mode={studyMode} />
         <div className="screen-body">
           <StudySummary
             summary={lessonSummary}
@@ -885,6 +882,7 @@ export default function StudyScreen({ initialSubject, initialTrack, initialArea,
             onInteractionChange={setSummaryInteraction}
             onStartQuiz={() => switchMode('game')}
             startQuizLabel="단원 도전 시작 →"
+            embeddedHeader
           />
         </div>
       </div>
@@ -908,9 +906,6 @@ export default function StudyScreen({ initialSubject, initialTrack, initialArea,
           {backTitle}
         </span>
         <StudyModeToggle mode={studyMode} onChange={switchMode} labels={{ game: '단원 도전' }} />
-        <span style={{ fontSize: 12, color: 'var(--text-muted)', fontWeight: 600, flexShrink: 0 }}>
-          {questionIdx + 1}/{total}
-        </span>
       </div>
 
       {/* 진행 바 */}
@@ -918,8 +913,7 @@ export default function StudyScreen({ initialSubject, initialTrack, initialArea,
         <div style={{ height: '100%', background: 'var(--primary)', width: `${((questionIdx + 1) / total) * 100}%`, transition: 'width 0.2s' }} />
       </div>
 
-      {/* 지금이 어떤 자리인지 알려 주는 띠. 익히기에도 띄운다 —
-          "기록이 남지 않는다"는 사실은 게임 모드 설명만큼 중요하다. */}
+      {/* 채점·기록이 시작된다는 사실만 짧게 고정하고, 진도는 오른쪽 한 곳에 둔다. */}
       <StudyModeStrip
         mode={studyMode}
         right={isLearn ? null : `${gameCorrect}개 맞힘 · ${answeredCount}/${total}`} />
@@ -1198,10 +1192,10 @@ function parseStem(stem) {
   if (lastQ > 0 && lastQ < s.length - 3) {
     const tail = s.slice(lastQ + 1).trim()
     if (tail.length > 0) {
-      if (/^[📝📌💡🔔]|^[※]|^문제 해결|^핵심 정보|^학습 포인트|^상황 파악|^풀이 전략|^\[학습/.test(tail))
-        return { question: s.slice(0, lastQ + 1).trim(), embCtx: null, hint: tail }
       if (/^[📢📋【\[]|^전 직원|^수신:|^제목:|^날짜:/.test(tail))
         return { question: s.slice(0, lastQ + 1).trim(), embCtx: tail, hint: null }
+      if (/^[📝📌💡🔔]|^[※]|^문제 해결|^핵심 정보|^학습 포인트|^상황 파악|^풀이 전략|^\[학습/.test(tail))
+        return { question: s.slice(0, lastQ + 1).trim(), embCtx: null, hint: tail }
     }
   }
   return { question: s, embCtx: null, hint: null }

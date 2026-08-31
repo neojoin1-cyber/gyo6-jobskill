@@ -1,6 +1,6 @@
 import fs from 'node:fs'
 import path from 'node:path'
-import { questionPriority, questionPrioritySources } from '../src/lib/questionPriority.js'
+import { QUESTION_PRIORITY, questionPriority, questionPrioritySources } from '../src/lib/questionPriority.js'
 import { jcStudyQuestions, buildJcAreaPaper, JC_AREAS_ORDER } from '../src/lib/jobCommonAreas.js'
 import { ncs2026Questions } from '../src/lib/ncs2026.js'
 import { recruitWrittenQuestions } from '../src/lib/recruitWritten.js'
@@ -62,6 +62,7 @@ if (!mockData.includes('questionPriorityWeight')) failures.push('진단·모의 
 if (/isAGrade\s*&&[^\n]*빈출/.test(study)) failures.push('난도·A등급을 빈출 근거로 오표시함')
 const badge = fs.readFileSync(path.join(repoRoot, 'src/screens/student/QuestionPriorityBadge.jsx'), 'utf8')
 if (!badge.includes('role="dialog"') || !badge.includes('priority.sources.map')) failures.push('배지를 눌러 판정 이유와 공식 근거를 확인할 수 없음')
+if (QUESTION_PRIORITY?.past?.label === '기출') failures.push('원문 출처가 없는 평가영역 연계 문항을 기출로 표시함')
 
 if (failures.length) {
   console.error(`[학습 중요도 배지] 실패 ${failures.length}건`)
@@ -69,5 +70,5 @@ if (failures.length) {
   process.exit(1)
 }
 
-console.log(`[학습 중요도 배지] 통과 - 최신 ${counts.latest} · 빈출 ${counts.frequent} · 기출 ${counts.past} · 중요 ${counts.important}`)
+console.log(`[학습 중요도 배지] 통과 - 최신 ${counts.latest} · 빈출 ${counts.frequent} · 평가연계 ${counts.past} · 중요 ${counts.important}`)
 console.log(`  화면 적용 - 자율학습 ${subjectCounts['job-common'] + subjectCounts['ncs-basic'] + subjectCounts['recruit-written']} · 진단 공통 · 모의고사 공통 · 면접 ${subjectCounts.interview}`)

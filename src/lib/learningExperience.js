@@ -154,7 +154,9 @@ function engagementProfile({ courseKind, point, contextKind, isListening, hasVis
   if (contextKind === 'misread') return 'misread'
   if (contextKind === 'mistake') return 'mistake'
   if (isEnglishLearningQuestion(source.id ? source : sample)) return 'english'
-  if (/(수리|계산|비율|단위|수량|시간|통계|예산|금액|확률|속도)/.test(text)) return 'math'
+  // 날짜·처리 시간·예산이 등장했다는 이유만으로 문서/업무 문항을 수리로
+  // 보내지 않는다. 실제 계산 행위나 수리 개념이 드러날 때만 수리 학습이다.
+  if (/(수리|계산|산출|비율|백분율|증가율|감소율|단위s*(?:환산|변환)|수량s*(?:계산|비교)|통계|평균|중앙값|최빈값|표준편차|확률|속도|거리|작업률|(?:예산|금액).{0,12}(?:계산|합계|차이|비율))/.test(text)) return 'math'
   if (/(안전|품질|협업|갈등|팀워크|공동 목표|역할|책임 경계|조율|고객|윤리|절차|우선순위|문제해결|자원)/.test(text)) return 'workplace'
   if (/(문서|독해|이메일|안내|공지|보고|회의록|요지|접속어|어휘|영어|지시어)/.test(text)) return 'document'
   if (hasVisual || /(그래프|도표|차트|자료 해석|(?:^|\s)표(?:\s|$|[·,:]))/.test(text)) return 'visual'
@@ -164,24 +166,6 @@ function engagementProfile({ courseKind, point, contextKind, isListening, hasVis
 
 function buildDeepening(profile, subject, point) {
   return buildContextualDeepening(profile, point, subject)
-}
-
-function profileTwist(profile, quoted) {
-  const prompts = {
-    listening: `빈칸 앞뒤에서 들린 요청이나 질문이 달라진다면 질문 ${quoted}의 응답도 바뀌어야 할까요?`,
-    english: `원문의 대상·순서·조건을 나타내는 영어 표현 하나가 바뀐다면 질문 ${quoted}의 판단도 달라질까요?`,
-    writing: `지원 직무나 문항의 필수 요구가 달라진다면 주제 ${quoted}에 사용할 경험 근거도 바뀌어야 할까요?`,
-    interview: `면접관이 질문 ${quoted}에 대해 본인 행동이나 결과를 다시 묻는다면 무엇을 보완해야 할까요?`,
-    reflection: `함께 있는 사람이나 장소가 달라져도 주제 ${quoted}의 행동 원칙을 같은 방식으로 적용할까요?`,
-    math: `문제의 핵심 수치나 단위 하나가 바뀐다면 질문 ${quoted}의 계산식과 결과 중 무엇이 달라질까요?`,
-    document: `문서의 담당자·기한·요청 행동 중 하나가 바뀐다면 질문 ${quoted}의 첫 행동도 달라질까요?`,
-    visual: `표·그래프의 축·단위·기준값 중 하나가 바뀐다면 질문 ${quoted}의 해석도 달라질까요?`,
-    workplace: `공동 목표·역할·절차·가용 자원 중 하나가 바뀐다면 질문 ${quoted}의 행동 순서도 달라질까요?`,
-    misread: `오해한 표현을 원문 뜻대로 바로잡으면 질문 ${quoted}의 행동 방향도 바뀌어야 할까요?`,
-    mistake: `실수 원인이 개인 행동이 아니라 절차나 시스템이라면 질문 ${quoted}의 수정 방법도 달라질까요?`,
-    general: `상황의 결정 조건 하나가 바뀐다면 질문 ${quoted}의 판단도 달라져야 할까요?`,
-  }
-  return prompts[profile] || prompts.general
 }
 
 /**
@@ -250,11 +234,12 @@ export function buildEngagementCopy({ courseKind, point = {}, contextKind = '', 
     twist: `현장 조건 하나가 달라져도 질문 ${quoted}에 같은 판단을 유지할 수 있을까요?`,
   }
 
+  const deepening = custom.deepen || point.deepening || buildDeepening(profile, subject, point)
   return {
     first: custom.first || generated.first,
     reveal: custom.reveal || generated.reveal,
-    twist: custom.twist || profileTwist(profile, quoted) || generated.twist,
-    deepen: custom.deepen || point.deepening || buildDeepening(profile, subject, point),
+    twist: custom.twist || deepening?.label || generated.twist,
+    deepen: deepening,
   }
 }
 
