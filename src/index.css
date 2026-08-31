@@ -1172,6 +1172,14 @@ html.teacher-mode[data-teacher-view='wide'] .bottom-tab > * { flex: 0 0 auto; mi
 }
 .class-session-bar .cs-follow:active { background: #bbf7d0; }
 
+.self-study-presence-bar {
+  flex: 0 0 auto; display: flex; align-items: center; gap: 7px;
+  padding: 6px 12px; border-bottom: 1px solid #cfe0ff;
+  background: #eef5ff; color: #35516f; font-size: 11px;
+}
+.self-study-presence-bar svg { width: 16px; flex: 0 0 auto; color: #1769f6; }
+.self-study-presence-bar b { color: #185cc5; }
+
 /* 학생 화면의 수업 중 띠 — 모르게 보지 않는다는 약속을 화면으로 지킨다. */
 .class-session-bar {
   flex: 0 0 auto; display: flex; align-items: center; gap: 8px;

@@ -10,10 +10,14 @@ const read = path => readFileSync(join(root, path), 'utf8')
 
 const classroom = read('src/screens/teacher/ClassroomScreen.jsx')
 const teacherLearningPreview = read('src/screens/teacher/TeacherLearningPreview.jsx')
+const teacherWorkspace = read('src/screens/teacher/TeacherWorkspace.jsx')
 const teacherLessonCoach = read('src/screens/teacher/TeacherLessonCoach.jsx')
 const courseList = read('src/screens/student/CourseListScreen.jsx')
 const studentHome = read('src/screens/student/StudentCampusHome.jsx')
 const studentShell = read('src/screens/student/StudentShell.jsx')
+const learningPresence = read('src/lib/learningPresence.js')
+const autonomousPresenceMigration = read('supabase/migrations/20260831090000_autonomous_learning_presence.sql')
+const supabaseClient = read('src/lib/supabase.js')
 const notifications = read('src/screens/student/NotificationsScreen.jsx')
 const listening = read('src/screens/student/ListeningPrompt.jsx')
 const diagnostic = read('src/screens/student/DiagnosticScreen.jsx')
@@ -34,6 +38,26 @@ if (!teacherLearningPreview.includes('StudentCampusHome') || !teacherLearningPre
 }
 if (!teacherLearningPreview.includes('onContextChange={setLearningContext}')) {
   errors.push('Shared classroom cannot derive teacher support from the active student lesson')
+}
+if (!teacherLearningPreview.includes('ClassroomConnectionPanel') ||
+    !teacherLearningPreview.includes('setPresence(data)') ||
+    !teacherLearningPreview.includes('학생 앱 위치 전달')) {
+  errors.push('교실 수업 화면의 학생 연결 현황 또는 학생 앱 위치 전달 표시가 빠졌습니다.')
+}
+if (!teacherWorkspace.includes('30_000') || !teacherWorkspace.includes('presence_state') ||
+    !teacherWorkspace.includes('지금 학습 중') || !teacherWorkspace.includes('현재 상태·위치')) {
+  errors.push('교사 자율학습 관리 화면이 실제 접속 상태를 자동 갱신하지 않습니다.')
+}
+if (!studentShell.includes('자율학습 연결') || !studentShell.includes('sharingSelfStudy') ||
+    !learningPresence.includes("ping('away'") || !learningPresence.includes('visibilitychange')) {
+  errors.push('학생 자율학습 연결이 공개 고지 또는 화면 이탈 상태를 빠뜨렸습니다.')
+}
+for (const marker of ['student_learning_presence', 'rpc_learning_presence_ping', 'presence_state', "interval '210 seconds'"]) {
+  if (!autonomousPresenceMigration.includes(marker)) errors.push(`자율학습 연결 데이터 계약 누락: ${marker}`)
+}
+const trialRpcBlock = supabaseClient.split('const TRIAL_READ_RPCS')[1]?.split('])')[0] || ''
+if (trialRpcBlock.includes('rpc_learning_presence_ping')) {
+  errors.push('공개 체험이 자율학습 연결 상태를 운영 서버에 기록할 수 있습니다.')
 }
 for (const phrase of ['개인 판단', '짝 비교', '재선택', '이유 듣기', '한 문장 정리']) {
   if (!teacherLessonCoach.includes(phrase)) errors.push(`Teacher lesson rhythm is missing: ${phrase}`)

@@ -6,6 +6,7 @@ import { App } from '@capacitor/app'
 import { Capacitor } from '@capacitor/core'
 import {
   Bell,
+  Broadcast,
   ChartLineUp,
   Compass,
   House,
@@ -15,6 +16,7 @@ import StudentCampusHome     from './StudentCampusHome.jsx'
 import { fetchMyClassSession, startPresence, stopPresence, setFocusListener } from '../../lib/presence.js'
 import { campusCourseTarget } from '../../lib/studentCampusRoutes.js'
 import { rememberStudentLearningContext } from '../../lib/studentLearningJourney.js'
+import { startLearningPresence, stopLearningPresence, updateLearningPresence } from '../../lib/learningPresence.js'
 import { lazyChunk } from '../../lib/lazyChunk.js'
 import { logoutSafely, saveBeforeExit } from '../../lib/sessionLifecycle.js'
 import { isSharedDevice } from '../../lib/deviceSettings.js'
@@ -122,10 +124,30 @@ export default function StudentShell() {
   const [following, setFollowing] = useState(false)
   const deepLink = followLink ?? urlLink
   const [tab,         setTab]         = useState(deepLink ? 'study' : 'home')
+  const [learningContext, setLearningContext] = useState(null)
   // 홈 위에 전체 화면(출석·스피드퀴즈·복습)이 떠 있는 동안엔 탭바를 감춘다.
   const [immersive,   setImmersive]   = useState(false)
   const [overlay,     setOverlay]     = useState(null)   // { screen, ...params }
   const [confirmExit, setConfirmExit] = useState(false)
+
+  const sharingSelfStudy = Boolean(profile?.id && !isTrial && tab === 'study' && !classSession?.session_id)
+  useEffect(() => {
+    if (!sharingSelfStudy) {
+      stopLearningPresence()
+      return undefined
+    }
+    startLearningPresence(learningContext)
+    return () => stopLearningPresence()
+  }, [sharingSelfStudy]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (sharingSelfStudy) updateLearningPresence(learningContext)
+  }, [learningContext, sharingSelfStudy])
+
+  function handleLearningContext(context) {
+    rememberStudentLearningContext(context)
+    setLearningContext(context)
+  }
 
   function openMission(mission) { setOverlay({ screen: 'mission', mission }) }
   function closeOverlay()       { setOverlay(null) }
@@ -219,6 +241,13 @@ export default function StudentShell() {
         </div>
       )}
 
+      {sharingSelfStudy && (
+        <div className="self-study-presence-bar" role="status">
+          <Broadcast weight="fill" />
+          <span><b>자율학습 연결</b> · 담당 선생님에게 현재 학습 영역과 접속 상태가 표시됩니다.</span>
+        </div>
+      )}
+
       <div style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
 
         {tab === 'home' && (
@@ -239,7 +268,7 @@ export default function StudentShell() {
           {tab === 'study' && <CourseListScreen
             key={`${deepLink ? [deepLink.subject, deepLink.mode ?? 'choose', deepLink.area, deepLink.lesson, deepLink.questionId, deepLink.index].join(':') : 'browse'}:${studyResetKey}`}
             deepLink={deepLink}
-            onContextChange={rememberStudentLearningContext}
+            onContextChange={handleLearningContext}
             onBack={() => { setFollowLink(null); setTab('home') }} />}
 
           {tab === 'wrong'         && <WrongAnswerScreen profile={profile} demo={Boolean(isTrial)} />}

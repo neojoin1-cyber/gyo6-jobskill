@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   ArrowRight,
   ArrowClockwise,
@@ -105,15 +105,29 @@ export default function TeacherWorkspace({
 
   const cls = useMemo(() => sourceClasses.find(item => item.id === classId) ?? null, [sourceClasses, classId])
 
-  async function loadLive() {
+  const loadLive = useCallback(async ({ quiet = false } = {}) => {
     if (!classId) return
     if (demo) { setLive(demoLive(classId)); return }
-    setLive('loading')
+    if (!quiet) setLive(current => current && current !== 'loading' ? current : 'loading')
     const { data } = await supabase.rpc('rpc_class_live', { p_class_id: classId })
     setLive(data?.error ? null : data)
-  }
+  }, [classId, demo])
 
-  useEffect(() => { loadLive() }, [classId, demo])
+  useEffect(() => {
+    loadLive()
+    if (demo || !classId) return undefined
+    const timer = window.setInterval(() => {
+      if (document.visibilityState === 'visible') loadLive({ quiet: true })
+    }, 30_000)
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') loadLive({ quiet: true })
+    }
+    document.addEventListener('visibilitychange', onVisible)
+    return () => {
+      window.clearInterval(timer)
+      document.removeEventListener('visibilitychange', onVisible)
+    }
+  }, [classId, demo, loadLive])
 
   useEffect(() => {
     if (!classId) return
@@ -298,7 +312,7 @@ export default function TeacherWorkspace({
                 <p>오늘 학생들의 흐름을 살피고 필요한 순간에 바로 도와주세요.</p>
               </div>
               <div className="teacher-campus-code">학급 코드 <b>{cls.class_code}</b></div>
-              <button className="teacher-refresh" onClick={loadLive} disabled={demo}><ArrowClockwise /> 새로고침</button>
+              <button className="teacher-refresh" onClick={() => loadLive()} disabled={demo}><ArrowClockwise /> 지금 갱신</button>
             </header>
 
             <ClassLessonJourney
@@ -311,15 +325,15 @@ export default function TeacherWorkspace({
 
             <section className="teacher-campus-summary teacher-campus-summary-compact">
               <div className="summary-copy">
-                <span className="summary-live"><i /> 오늘의 캠퍼스가 열렸어요</span>
-                <h2>{live && live !== 'loading' ? `${live.summary?.active ?? 0}명이 학습 중이에요` : '학생 현황을 준비하고 있어요'}</h2>
-                <p>학습 진도, 성취, 미해결 오답과 대화를 한 화면에서 이어갑니다.</p>
+                <span className="summary-live"><i /> 30초마다 실제 학습 연결 확인</span>
+                <h2>{live && live !== 'loading' ? `${live.summary?.active ?? 0}명이 지금 학습 중이에요` : '학생 현황을 준비하고 있어요'}</h2>
+                <p>학습 화면에 있는 학생만 현재 학습 중으로 표시합니다.</p>
               </div>
               <div className="teacher-summary-stats">
-                <TeacherStat value={live?.summary?.active ?? 0} label="오늘 참여" tone="blue" />
+                <TeacherStat value={live?.summary?.active ?? 0} label="현재 학습" tone="blue" />
+                <TeacherStat value={live?.summary?.participated ?? 0} label="오늘 참여" tone="yellow" />
                 <TeacherStat value={live?.summary?.solved ?? 0} label="푼 문항" tone="mint" />
                 <TeacherStat value={students.reduce((sum, item) => sum + (item.wrong_open ?? 0), 0)} label="미해결 오답" tone="coral" />
-                <TeacherStat value={live?.summary?.idle ?? 0} label="도움 필요" tone="yellow" />
               </div>
             </section>
 
@@ -335,7 +349,7 @@ export default function TeacherWorkspace({
                 <button onClick={() => setPane('progress')}>
                   <span className="is-mint"><TrendUp weight="fill" /></span>
                   <small>학습 참여</small>
-                  <b>{live && live !== 'loading' ? `${live.summary?.active ?? 0}/${live.summary?.total ?? students.length}명 진행 중` : '현황 불러오는 중'}</b>
+                  <b>{live && live !== 'loading' ? `현재 ${live.summary?.active ?? 0}명 · 오늘 ${live.summary?.participated ?? 0}명` : '현황 불러오는 중'}</b>
                   <ArrowRight />
                 </button>
                 <button onClick={() => onOpenMessages?.({ scope: 'class', target: classId })}>
@@ -433,6 +447,14 @@ function TeacherStat({ value, label, tone }) {
   return <div className={`teacher-stat is-${tone}`}><b>{value}</b><span>{label}</span></div>
 }
 
+const PRESENCE_STATE = {
+  active: ['지금 학습 중', 'is-active'],
+  away: ['잠시 벗어남', 'is-away'],
+  lost: ['연결 확인', 'is-lost'],
+  today: ['오늘 학습함', 'is-today'],
+  idle: ['시작 전', 'is-idle'],
+}
+
 function StudentGrowthTable({ students, query, setQuery, loading, onMessage, onWrong }) {
   return (
     <section className="student-growth">
@@ -441,16 +463,19 @@ function StudentGrowthTable({ students, query, setQuery, loading, onMessage, onW
         <label><MagnifyingGlass /><input value={query} onChange={event => setQuery(event.target.value)} placeholder="학생 이름 검색" /></label>
       </header>
       <div className="student-growth-table">
-        <div className="student-growth-row is-head"><span>학생</span><span>오늘 활동</span><span>오늘 오답</span><span>미해결 오답</span><span>최근 상태</span><span>코칭</span></div>
+        <div className="student-growth-row is-head"><span>학생</span><span>오늘 활동</span><span>오늘 오답</span><span>미해결 오답</span><span>현재 상태·위치</span><span>코칭</span></div>
         {loading && <div className="student-growth-loading">학생 성장 신호를 불러오는 중입니다.</div>}
         {!loading && students.length === 0 && <div className="student-growth-loading">표시할 학생이 없습니다.</div>}
         {!loading && students.map(student => (
           <div key={student.student_id} className="student-growth-row">
             <span className="student-name"><i>{student.display_name?.slice(0, 1)}</i><b>{student.display_name}</b></span>
-            <span><b>{student.solved ?? 0}</b>개</span>
-            <span className={student.wrong_today ? 'is-alert' : ''}><b>{student.wrong_today ?? 0}</b>개</span>
-            <button className={student.wrong_open ? 'wrong-pill is-alert' : 'wrong-pill'} onClick={onWrong}><WarningCircle weight="fill" /> {student.wrong_open ?? 0}개</button>
-            <span className={student.idle ? 'student-state is-idle' : 'student-state'}><i /> {student.idle ? '시작 전' : '학습 중'}</span>
+            <span data-label="오늘 활동"><b>{student.solved ?? 0}</b>개</span>
+            <span data-label="오늘 오답" className={student.wrong_today ? 'is-alert' : ''}><b>{student.wrong_today ?? 0}</b>개</span>
+            <button data-label="미해결" className={student.wrong_open ? 'wrong-pill is-alert' : 'wrong-pill'} onClick={onWrong}><WarningCircle weight="fill" /> {student.wrong_open ?? 0}개</button>
+            {(() => {
+              const [label, className] = PRESENCE_STATE[student.presence_state] || PRESENCE_STATE.idle
+              return <span data-label="현재 상태·위치" className={`student-presence-cell ${className}`}><span className="student-state"><i /> {label}</span><small>{student.presence_label || (student.presence_state === 'idle' ? '학습 기록 없음' : '최근 학습 위치 확인')}</small></span>
+            })()}
             <button className="student-message-button" onClick={() => onMessage(student)}><PaperPlaneTilt /> 메시지</button>
           </div>
         ))}
@@ -462,31 +487,31 @@ function StudentGrowthTable({ students, query, setQuery, loading, onMessage, onW
 function demoLive(classId = 'c1') {
   const presets = {
     c1: {
-      summary: { total: 28, active: 19, idle: 9, solved: 146, avg: 7.7 },
+      summary: { total: 28, active: 3, away: 2, lost: 1, participated: 19, idle: 9, solved: 146, avg: 7.7 },
       students: [
-        { student_id: 'c1-s1', display_name: '이수현', solved: 12, wrong_today: 1, wrong_open: 2, idle: false },
-        { student_id: 'c1-s2', display_name: '박민준', solved: 9, wrong_today: 3, wrong_open: 7, idle: false },
-        { student_id: 'c1-s3', display_name: '최유나', solved: 7, wrong_today: 0, wrong_open: 1, idle: false },
-        { student_id: 'c1-s4', display_name: '정도윤', solved: 0, wrong_today: 0, wrong_open: 5, idle: true },
-        { student_id: 'c1-s5', display_name: '김서연', solved: 5, wrong_today: 2, wrong_open: 4, idle: false },
+        { student_id: 'c1-s1', display_name: '이수현', solved: 12, wrong_today: 1, wrong_open: 2, presence_state: 'active', presence_label: '직업공통능력 · 의사소통 국어' },
+        { student_id: 'c1-s2', display_name: '박민준', solved: 9, wrong_today: 3, wrong_open: 7, presence_state: 'active', presence_label: 'NCS 직업기초능력 · 문제해결능력' },
+        { student_id: 'c1-s3', display_name: '최유나', solved: 7, wrong_today: 0, wrong_open: 1, presence_state: 'away', presence_label: '채용필기 · 자료해석' },
+        { student_id: 'c1-s4', display_name: '정도윤', solved: 0, wrong_today: 0, wrong_open: 5, presence_state: 'idle', presence_label: null },
+        { student_id: 'c1-s5', display_name: '김서연', solved: 5, wrong_today: 2, wrong_open: 4, presence_state: 'today', presence_label: '자기소개서 실전 작성' },
       ],
     },
     c2: {
-      summary: { total: 24, active: 11, idle: 13, solved: 78, avg: 7.1 },
+      summary: { total: 24, active: 2, away: 1, lost: 0, participated: 11, idle: 13, solved: 78, avg: 7.1 },
       students: [
-        { student_id: 'c2-s1', display_name: '윤지호', solved: 10, wrong_today: 2, wrong_open: 3, idle: false },
-        { student_id: 'c2-s2', display_name: '한예린', solved: 8, wrong_today: 1, wrong_open: 2, idle: false },
-        { student_id: 'c2-s3', display_name: '오승현', solved: 4, wrong_today: 2, wrong_open: 6, idle: false },
-        { student_id: 'c2-s4', display_name: '임다은', solved: 0, wrong_today: 0, wrong_open: 1, idle: true },
+        { student_id: 'c2-s1', display_name: '윤지호', solved: 10, wrong_today: 2, wrong_open: 3, presence_state: 'active', presence_label: '면접 실전 · 상황면접' },
+        { student_id: 'c2-s2', display_name: '한예린', solved: 8, wrong_today: 1, wrong_open: 2, presence_state: 'active', presence_label: '자기소개서 · 경험 근거' },
+        { student_id: 'c2-s3', display_name: '오승현', solved: 4, wrong_today: 2, wrong_open: 6, presence_state: 'away', presence_label: '채용필기 · 수리능력' },
+        { student_id: 'c2-s4', display_name: '임다은', solved: 0, wrong_today: 0, wrong_open: 1, presence_state: 'idle', presence_label: null },
       ],
     },
     c3: {
-      summary: { total: 26, active: 6, idle: 20, solved: 31, avg: 5.2 },
+      summary: { total: 26, active: 1, away: 1, lost: 1, participated: 6, idle: 20, solved: 31, avg: 5.2 },
       students: [
-        { student_id: 'c3-s1', display_name: '강민서', solved: 6, wrong_today: 1, wrong_open: 2, idle: false },
-        { student_id: 'c3-s2', display_name: '신도현', solved: 5, wrong_today: 0, wrong_open: 0, idle: false },
-        { student_id: 'c3-s3', display_name: '배서윤', solved: 0, wrong_today: 0, wrong_open: 3, idle: true },
-        { student_id: 'c3-s4', display_name: '조현우', solved: 0, wrong_today: 0, wrong_open: 1, idle: true },
+        { student_id: 'c3-s1', display_name: '강민서', solved: 6, wrong_today: 1, wrong_open: 2, presence_state: 'active', presence_label: '직업공통능력 · 조직이해능력' },
+        { student_id: 'c3-s2', display_name: '신도현', solved: 5, wrong_today: 0, wrong_open: 0, presence_state: 'lost', presence_label: 'NCS 직업기초능력 · 의사소통능력' },
+        { student_id: 'c3-s3', display_name: '배서윤', solved: 0, wrong_today: 0, wrong_open: 3, presence_state: 'idle', presence_label: null },
+        { student_id: 'c3-s4', display_name: '조현우', solved: 0, wrong_today: 0, wrong_open: 1, presence_state: 'idle', presence_label: null },
       ],
     },
   }

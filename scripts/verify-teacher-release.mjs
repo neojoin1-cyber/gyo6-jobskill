@@ -23,6 +23,8 @@ const teacherLayout = read('src/lib/teacherLayout.js')
 const app = read('src/App.jsx')
 const bootstrapMigration = read('supabase/migrations/20260825000000_bootstrap_mission_subject.sql')
 const classProgressMigration = read('supabase/migrations/20260826200000_class_lesson_progress.sql')
+const autonomousPresenceMigration = read('supabase/migrations/20260831090000_autonomous_learning_presence.sql')
+const learningPresence = read('src/lib/learningPresence.js')
 const css = read('src/index.css')
 const campusCss = read('src/styles/campus.css')
 const coverReviewCss = read('src/styles/cover-letter-review.css')
@@ -93,6 +95,15 @@ if (!classJourney.includes('STUDENT_CAMPUS_HALLS.map') || !classJourney.includes
 if (!classProgressMigration.includes('class_lesson_progress') || !classProgressMigration.includes('completed_at') || !classProgressMigration.includes('rpc_set_class_focus')) errors.push('Class lesson progress persistence is missing')
 if (!studentHome.includes('learning-compass') || !studentHome.includes('buildStudentLearningRoutes') || !studentJourney.includes('GOALS') || !studentJourney.includes('nextLabel')) errors.push('Student subject goals and next-learning route are missing')
 if (!studentShell.includes('rememberStudentLearningContext')) errors.push('Student resume position is not recorded from the shared learning context')
+if (!teacherLearningPreview.includes('ClassroomConnectionPanel') || !teacherLearningPreview.includes("rpc('rpc_class_presence'")) {
+  errors.push('Shared classroom cannot show student connection state')
+}
+if (!teacherWorkspace.includes('presence_label') || !teacherWorkspace.includes('participated') || !teacherWorkspace.includes('30_000')) {
+  errors.push('Teacher workspace still confuses today activity with current learning presence')
+}
+if (!learningPresence.includes('rpc_learning_presence_ping') || !autonomousPresenceMigration.includes('REVOKE ALL ON TABLE')) {
+  errors.push('Autonomous learning presence is missing its privacy boundary')
+}
 if (teacherWorkspace.includes('문항·훈화·수업 덱')) errors.push('Teacher workspace still advertises the retired classroom deck')
 if (teacherLearningPreview.includes('setCoachOpen(true)') &&
     (!teacherLearningPreview.includes('initialCoachOpen') ||

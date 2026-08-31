@@ -1,11 +1,14 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
+  ArrowClockwise,
   ArrowLeft,
   ArrowsInSimple,
   ArrowsOutSimple,
   Bell,
   Broadcast,
   Buildings,
+  CaretDown,
+  CaretUp,
   ChartLineUp,
   Compass,
   House,
@@ -16,6 +19,7 @@ import {
   StopCircle,
   TextAa,
   UserCircle,
+  UsersThree,
 } from '@phosphor-icons/react'
 import StudentCampusHome from '../student/StudentCampusHome.jsx'
 import CourseListScreen from '../student/CourseListScreen.jsx'
@@ -115,6 +119,85 @@ function initialCourseLink(initialSubject, initialContext) {
   }
 }
 
+const PRESENCE_COPY = {
+  active: ['연결됨', 'is-active'],
+  away: ['화면 벗어남', 'is-away'],
+  lost: ['연결 확인', 'is-lost'],
+  offline: ['미접속', 'is-offline'],
+}
+
+function presenceTime(value) {
+  if (!value) return '접속 기록 없음'
+  const seconds = Math.max(0, Math.round((Date.now() - new Date(value).getTime()) / 1000))
+  if (seconds < 60) return '방금 확인'
+  if (seconds < 3600) return `${Math.floor(seconds / 60)}분 전`
+  return `${Math.floor(seconds / 3600)}시간 전`
+}
+
+function demoClassPresence(session) {
+  if (!session) return { session: null, students: [], summary: { total: 28, active: 0, away: 0, lost: 0, offline: 28 } }
+  const now = new Date().toISOString()
+  return {
+    session,
+    students: [
+      { student_id: 'demo-p1', display_name: '이수현', shown: 'active', last_seen: now, away_count: 0 },
+      { student_id: 'demo-p2', display_name: '박민준', shown: 'active', last_seen: now, away_count: 1 },
+      { student_id: 'demo-p3', display_name: '최유나', shown: 'away', last_seen: now, away_count: 2 },
+      { student_id: 'demo-p4', display_name: '정도윤', shown: 'lost', last_seen: new Date(Date.now() - 260_000).toISOString(), away_count: 0 },
+      { student_id: 'demo-p5', display_name: '김서연', shown: 'offline', last_seen: null, away_count: 0 },
+    ],
+    summary: { total: 28, active: 18, away: 3, lost: 2, offline: 5 },
+    at: now,
+  }
+}
+
+function ClassroomConnectionPanel({ presence, open, busy, focusLabel, session, onToggle, onRefresh }) {
+  const summary = presence?.summary || {}
+  const students = presence?.students || []
+  return (
+    <section className={`classroom-connection-panel ${session ? 'is-live' : ''} ${open ? 'is-open' : ''}`} aria-label="학생 앱 연결 현황">
+      <header>
+        <button type="button" className="classroom-connection-toggle" onClick={onToggle} aria-expanded={open}>
+          <UsersThree weight="fill" />
+          <b>학생 연결</b>
+          {session
+            ? <><strong>{summary.active ?? 0}/{summary.total ?? 0}</strong><span>접속</span></>
+            : <span>연결을 시작하면 학생 상태가 표시됩니다</span>}
+          {open ? <CaretUp /> : <CaretDown />}
+        </button>
+        {session && (
+          <div className="classroom-connection-summary" aria-label="학생 연결 요약">
+            <span className="is-active">접속 <b>{summary.active ?? 0}</b></span>
+            <span className="is-away">벗어남 <b>{summary.away ?? 0}</b></span>
+            <span className="is-lost">확인 필요 <b>{summary.lost ?? 0}</b></span>
+            <span className="is-offline">미접속 <b>{summary.offline ?? 0}</b></span>
+          </div>
+        )}
+        <button type="button" className="classroom-connection-refresh" onClick={onRefresh} disabled={busy || !session}
+          aria-label="학생 연결 현황 새로고침" title="학생 연결 현황 새로고침">
+          <ArrowClockwise className={busy ? 'is-spinning' : ''} />
+        </button>
+      </header>
+      {open && session && (
+        <div className="classroom-connection-body">
+          <p className="classroom-focus-delivery"><Broadcast weight="fill" /><b>학생 앱 위치 전달</b><span>{focusLabel || '학습 화면을 열면 학생의 따라가기 버튼에 위치가 표시됩니다.'}</span></p>
+          <ul>
+            {students.map(student => {
+              const [label, className] = PRESENCE_COPY[student.shown] || PRESENCE_COPY.offline
+              return (
+                <li key={student.student_id} className={className}>
+                  <i /><b>{student.display_name}</b><span>{label}</span>
+                  <small>{presenceTime(student.last_seen)}{student.away_count ? ` · 이탈 ${student.away_count}회` : ''}</small>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+      )}
+    </section>
+  )
+}
+
 export default function TeacherLearningPreview({
   profile,
   demoMode = false,
@@ -146,6 +229,9 @@ export default function TeacherLearningPreview({
   const [classes, setClasses] = useState([])
   const [classId, setClassId] = useState(initialClassId || '')
   const [session, setSession] = useState(null)
+  const [presence, setPresence] = useState(null)
+  const [presenceOpen, setPresenceOpen] = useState(() => true)
+  const [presenceBusy, setPresenceBusy] = useState(false)
   const [sessionBusy, setSessionBusy] = useState(false)
   const [sessionMessage, setSessionMessage] = useState('')
   const contextReady = Boolean(
@@ -187,6 +273,12 @@ export default function TeacherLearningPreview({
     restoreCoachRef.current = false
     setCoachOpen(true)
   }, [contextReady])
+
+  useEffect(() => {
+    if (!sessionMessage) return undefined
+    const timer = window.setTimeout(() => setSessionMessage(''), 4_500)
+    return () => window.clearTimeout(timer)
+  }, [sessionMessage])
 
   useEffect(() => {
     if (!teachingMode) return undefined
@@ -289,18 +381,43 @@ export default function TeacherLearningPreview({
     return () => { active = false }
   }, [demoMode, initialClassId, initialClassName, profile?.id, teachingMode])
 
-  useEffect(() => {
+  const loadPresence = useCallback(async ({ quiet = false } = {}) => {
     if (!teachingMode || !classId) {
       setSession(null)
+      setPresence(null)
       return
     }
-    if (demoMode) return
-    let active = true
-    supabase.rpc('rpc_class_presence', { p_class_id: classId }).then(({ data }) => {
-      if (active) setSession(data?.session || null)
-    })
-    return () => { active = false }
-  }, [classId, demoMode, teachingMode])
+    if (!quiet) setPresenceBusy(true)
+    if (demoMode) {
+      setPresence(demoClassPresence(session))
+      setPresenceBusy(false)
+      return
+    }
+    const { data, error } = await supabase.rpc('rpc_class_presence', { p_class_id: classId })
+    if (!error && !data?.error) {
+      setSession(data?.session || null)
+      setPresence(data)
+    } else if (!quiet) {
+      setSessionMessage('학생 연결 현황을 불러오지 못했습니다. 잠시 후 다시 확인해 주세요.')
+    }
+    setPresenceBusy(false)
+  }, [classId, demoMode, session, teachingMode])
+
+  useEffect(() => {
+    loadPresence()
+    if (!teachingMode || !classId) return undefined
+    const timer = window.setInterval(() => {
+      if (document.visibilityState === 'visible') loadPresence({ quiet: true })
+    }, 20_000)
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') loadPresence({ quiet: true })
+    }
+    document.addEventListener('visibilitychange', onVisible)
+    return () => {
+      window.clearInterval(timer)
+      document.removeEventListener('visibilitychange', onVisible)
+    }
+  }, [classId, loadPresence, teachingMode])
 
   useEffect(() => {
     if (!teachingMode || !session || demoMode) return
@@ -394,6 +511,7 @@ export default function TeacherLearningPreview({
     if (!classId || sessionBusy) return
     if (demoMode) {
       setSession('demo-session')
+      setPresence(demoClassPresence('demo-session'))
       setSessionMessage('체험 연결이 시작되었습니다. 실제 계정에서는 학생 앱의 ‘따라가기’와 연결됩니다.')
       return
     }
@@ -408,6 +526,7 @@ export default function TeacherLearningPreview({
       setSessionMessage(error?.message || '학급 수업 연결을 시작하지 못했습니다.')
     } else {
       setSession(data.session_id)
+      await loadPresence({ quiet: true })
       focusRef.current = ''
     }
     setSessionBusy(false)
@@ -417,6 +536,7 @@ export default function TeacherLearningPreview({
     if (!classId || sessionBusy) return
     if (demoMode) {
       setSession(null)
+      setPresence(demoClassPresence(null))
       setSessionMessage('체험 연결을 종료했습니다.')
       return
     }
@@ -425,6 +545,7 @@ export default function TeacherLearningPreview({
     if (error) setSessionMessage(error.message)
     else {
       setSession(null)
+      setPresence(null)
       setSessionMessage('학생 기기 연결을 종료했습니다.')
       focusRef.current = ''
     }
@@ -531,6 +652,18 @@ export default function TeacherLearningPreview({
             </button>
           </div>
         </header>
+      )}
+
+      {teachingMode && (
+        <ClassroomConnectionPanel
+          presence={presence}
+          open={presenceOpen}
+          busy={presenceBusy}
+          session={session}
+          focusLabel={classFocus(learningContext)?.label}
+          onToggle={() => setPresenceOpen(value => !value)}
+          onRefresh={() => loadPresence()}
+        />
       )}
 
       <div ref={stageRef}
