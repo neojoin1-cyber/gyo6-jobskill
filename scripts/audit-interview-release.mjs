@@ -129,7 +129,8 @@ for (const item of INTERVIEW_ORGANIZATIONS) {
 }
 check(new Set(INTERVIEW_ORGANIZATIONS.map(item => item.fieldExamples.targetEvidence)).size === INTERVIEW_ORGANIZATIONS.length, '기관별 지원 근거 예시가 중복됨')
 check(new Set(INTERVIEW_ORGANIZATIONS.map(item => item.fieldExamples.motivation)).size === INTERVIEW_ORGANIZATIONS.length, '기관별 지원동기 예시가 중복됨')
-check(COVER_LETTER_STEPS.length === 7, `자기소개서 단계 오류: ${COVER_LETTER_STEPS.length}`)
+check(COVER_LETTER_STEPS.length === 6, `자기소개서 단계 오류: ${COVER_LETTER_STEPS.length}`)
+check(COVER_LETTER_STEPS.map(item => item.id).join(',') === 'target,questions,major,experience,motivation,audit', '자기소개서 6단계 순서가 문항 요구→근거→행동→첨삭 흐름과 다름')
 check(COVER_LETTER_FIELDS.length >= 11, `자기소개서 개인화 입력 부족: ${COVER_LETTER_FIELDS.length}`)
 check(COVER_LETTER_QUESTION_LIBRARY.length >= 30, `자기소개서 문항 라이브러리 부족: ${COVER_LETTER_QUESTION_LIBRARY.length}`)
 check(COVER_LETTER_QUESTION_LIBRARY.every(item => item.question?.length >= 25 && item.required?.length >= 2 && item.limit >= 200 && item.minLength >= 100 && item.minLength <= item.limit), '자기소개서 문항 메타데이터·권장 글자 수 부족')

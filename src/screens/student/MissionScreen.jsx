@@ -7,6 +7,7 @@ import jobQuestions         from '../../../data/questions.json'
 import { ncs2026Questions as ncsQuestions } from '../../lib/ncs2026.js'
 import { recruitWrittenQuestions } from '../../lib/recruitWritten.js'
 import { INTERVIEW_QUESTIONS, PERSONALITY_QUESTIONS } from '../../lib/guidedSubjectContent.js'
+import { COVER_DIAGNOSTIC_QUESTIONS } from '../../lib/coverAssessmentBank.js'
 import foodServiceQuestions from '../../lib/foodServiceBank.js'
 import { englishStudyQuestions, jobCommonMediaQuestions } from '../../lib/jobCommonAreas.js'
 import ListeningPrompt from './ListeningPrompt.jsx'
@@ -23,6 +24,7 @@ const QUESTION_POOLS = {
   'recruit-written': recruitWrittenQuestions,
   'interview':       INTERVIEW_QUESTIONS,
   'personality':     PERSONALITY_QUESTIONS,
+  'cover-letter':    COVER_DIAGNOSTIC_QUESTIONS,
   'food-service':  foodServiceQuestions,
 }
 

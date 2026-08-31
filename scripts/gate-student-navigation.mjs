@@ -2,8 +2,8 @@ import { STUDENT_CAMPUS_HALLS, campusCourseTarget } from '../src/lib/studentCamp
 
 const expected = new Map([
   ['교육부 직업공통능력관', 'job-common'],
-  ['NCS직업공통능력관', 'ncs-basic'],
-  ['NCS직업공통능력 심화관', 'recruit-written'],
+  ['NCS 직업기초능력관', 'ncs-basic'],
+  ['채용필기 심화관', 'recruit-written'],
   ['인성검사훈련관', 'personality'],
   ['면접 스킬관', 'interview'],
   ['자기소개서관', 'cover-letter'],

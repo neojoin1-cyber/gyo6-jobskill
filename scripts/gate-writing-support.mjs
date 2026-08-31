@@ -71,8 +71,8 @@ if (!careerSource.includes("initialWorkspace === 'practical' ? 'practical' : ini
     !careerSource.includes("initialWorkspace === 'evidence' ? 'evidence'")) {
   failures.push('실전자기소개서 첫 화면: 지원서 선택·이어하기 화면이 먼저 열리지 않음')
 }
-if (!careerSource.includes("step.id === 'experience'") || !careerSource.includes("setWorkspace('evidence')") || !careerSource.includes('내 경험 근거부터 꺼내기')) {
-  failures.push('실전자기소개서 순서: 근거은행이 경험 증명 단계 안에 배치되지 않음')
+if (!careerSource.includes("step.id === 'major'") || !careerSource.includes("setWorkspace('evidence')") || !careerSource.includes('문항에 맞는 경험 근거 고르기')) {
+  failures.push('실전자기소개서 순서: 문항 요구 다음 근거 고르기 단계에 근거은행이 배치되지 않음')
 }
 if (!careerSource.includes("disabled={index > stepIndex}") || !careerSource.includes("if (index <= stepIndex) setStepIndex(index)")) {
   failures.push('실전자기소개서 순서: 미래 작성 단계로 임의 이동을 막지 못함')

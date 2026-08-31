@@ -725,7 +725,7 @@ export default function MockAssessmentScreen({ subjectId, subjectName, onBack, o
 const configLabel = { display: 'block', fontSize: 12.5, fontWeight: 900, marginBottom: 7 }
 const configSegments = { display: 'flex', gap: 5, padding: 4, background: 'var(--bg)', borderRadius: 10 }
 const configSegment = { flex: 1, minHeight: 40, border: '1px solid transparent', borderRadius: 8, background: 'transparent', color: 'var(--text-muted)', fontWeight: 800, fontSize: 12.5, cursor: 'pointer' }
-const configSegmentActive = { background: 'var(--card)', color: 'var(--primary)', borderColor: 'var(--primary)' }
+const configSegmentActive = { background: 'var(--card)', color: 'var(--primary)', border: '1px solid var(--primary)' }
 const numberRow = { display: 'grid', gridTemplateColumns: '44px 1fr 44px', gap: 7, marginTop: 7 }
 const stepperBtn = { minHeight: 42, border: '1px solid var(--border)', borderRadius: 8, background: 'var(--card)', color: 'var(--text)', fontSize: 20, fontWeight: 800, cursor: 'pointer' }
 const numberInput = { width: '100%', minHeight: 42, boxSizing: 'border-box', border: '1px solid var(--border)', borderRadius: 8, background: 'var(--card)', color: 'var(--text)', textAlign: 'center', fontSize: 15, fontWeight: 900 }

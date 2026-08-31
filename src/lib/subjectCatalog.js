@@ -7,6 +7,7 @@ export const SUBJECT_CATALOG = [
   { id: 'recruit-written', name: '채용필기 심화·확장', icon: '📝' },
   { id: 'interview',    name: '고졸 공정채용 면접', icon: '🎤' },
   { id: 'personality',  name: '인성검사',          icon: '🧭' },
+  { id: 'cover-letter', name: '자기소개서',        icon: '✍️' },
 ]
 
 /**

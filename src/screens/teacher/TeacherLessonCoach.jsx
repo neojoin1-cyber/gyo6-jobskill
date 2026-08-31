@@ -4,6 +4,7 @@ import {
   ArrowsClockwise,
   ChatCircleDots,
   CheckCircle,
+  Clock,
   Lightbulb,
   PaperPlaneTilt,
   Pause,
@@ -12,7 +13,7 @@ import {
   UsersThree,
   X,
 } from '@phosphor-icons/react'
-import { getTeacherLessonGuide } from '../../lib/teacherLessonGuides.js'
+import { getTeacherLessonGuide, LESSON_DURATIONS, lessonTiming } from '../../lib/teacherLessonGuides.js'
 import { buildTeacherContextMaterials } from '../../lib/teacherContextMaterials.js'
 import { getFirstClassLesson, matchesFirstClassLesson } from '../../lib/firstClassLessons.js'
 
@@ -31,6 +32,7 @@ export default function TeacherLessonCoach({ subject, mode, context = {}, projec
   const [secondsLeft, setSecondsLeft] = useState(RHYTHM_STEPS[0].seconds)
   const [timerRunning, setTimerRunning] = useState(false)
   const [rhythmDone, setRhythmDone] = useState([])
+  const [lessonMinutes, setLessonMinutes] = useState(45)
   const guide = useMemo(() => getTeacherLessonGuide(subject, mode), [subject, mode])
   const firstClassPlan = useMemo(() => getFirstClassLesson(subject), [subject])
   const firstClassActive = useMemo(() => matchesFirstClassLesson(subject, context), [subject, context])
@@ -38,6 +40,7 @@ export default function TeacherLessonCoach({ subject, mode, context = {}, projec
   const support = useMemo(() => currentStageSupport(context, guide, materials), [context, guide, materials])
   const choiceBranch = useMemo(() => buildChoiceBranch(context, materials), [context, materials])
   const choiceBranchKey = choiceBranch?.key || ''
+  const selectedTiming = useMemo(() => lessonTiming(lessonMinutes), [lessonMinutes])
 
   useEffect(() => {
     setObserved([])
@@ -129,16 +132,31 @@ export default function TeacherLessonCoach({ subject, mode, context = {}, projec
         {section === 'flow' && firstClassPlan && (
           <section className="teacher-coach-first-flow">
             <header>
-              <small>FIRST CLASS · 45분</small>
+              <small>FIRST CLASS · {lessonMinutes}분</small>
               <h3>{firstClassPlan.title}</h3>
               <p>{firstClassPlan.objective}</p>
             </header>
+            <div className="teacher-coach-duration" aria-label="수업 시간 선택">
+              {LESSON_DURATIONS.map(minutes => (
+                <button key={minutes} type="button" className={lessonMinutes === minutes ? 'is-on' : ''} onClick={() => setLessonMinutes(minutes)} aria-pressed={lessonMinutes === minutes}>
+                  <Clock weight={lessonMinutes === minutes ? 'fill' : 'regular'} />{minutes}분
+                </button>
+              ))}
+            </div>
             <div className="teacher-coach-first-path">
               <b>메뉴 경로</b>
               <p>{firstClassPlan.path.join(' → ')}</p>
             </div>
-            <ol>
-              {firstClassPlan.flow.map((item, index) => (
+            <ol className={lessonMinutes === 45 ? '' : 'is-compact'}>
+              {(lessonMinutes === 45 ? firstClassPlan.flow : selectedTiming.map(([phase, studentAction, minutes]) => ({
+                minutes: `${minutes}분`,
+                phase,
+                menu: '현재 학생 화면',
+                button: '현재 카드의 판단·근거·적용 순서',
+                teacherTalk: studentAction,
+                material: context.lessonLabel || firstClassPlan.path.at(-1),
+                studentAction,
+              }))).map((item, index) => (
                 <li key={`${item.minutes}:${item.phase}`}>
                   <span>{index + 1}</span>
                   <article>
@@ -155,8 +173,8 @@ export default function TeacherLessonCoach({ subject, mode, context = {}, projec
               ))}
             </ol>
             <footer>
-              <b>마지막 9분</b>
-              <p>복습 2문항과 새 상황 변형 1문항을 개별로 풀고, 해설 뒤 틀린 이유와 다음 확인 행동을 남깁니다.</p>
+              <b>{lessonMinutes}분 수업 완료 기준</b>
+              <p>{lessonMinutes === 45 ? '복습 2문항과 새 상황 변형 1문항을 개별로 풀고, 해설 뒤 틀린 이유와 다음 확인 행동을 남깁니다.' : '선택한 흐름의 합계가 수업 시간과 정확히 맞습니다. 마지막 출구 답변에서 배운 기준과 다음 행동을 학생 말로 남깁니다.'}</p>
             </footer>
           </section>
         )}

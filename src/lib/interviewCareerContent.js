@@ -409,20 +409,19 @@ export const INTERVIEW_ORGANIZATIONS = [
 ]
 
 export const COVER_LETTER_STEPS = [
-  { id: 'target', title: '1. 지원처 선택', fields: ['targetName', 'targetEvidence'], check: '지원 분야를 고르고 공식 자료에서 확인한 지원처만의 근거를 적음.' },
-  { id: 'role', title: '2. 직무 맞춤', fields: ['role', 'roleNeed'], check: '채용공고·직무기술서의 요구를 자신의 말로 바꿈.' },
-  { id: 'major', title: '3. 전공 역량', fields: ['major', 'majorSkill'], check: '과목명이 아니라 수행한 작업·도구·기준을 적음.' },
-  { id: 'experience', title: '4. 경험 증명', fields: ['experience', 'action', 'result'], check: '상황은 짧게, 자신의 행동과 확인 가능한 결과를 길게 적음.' },
-  { id: 'motivation', title: '5. 동기와 기여', fields: ['motivation', 'contribution'], check: '개인 계기 → 지원처 선택 이유 → 입사 후 첫 기여로 연결함.' },
-  { id: 'questions', title: '6. 문항 구성', fields: [], check: '지원처 문항을 골라 순서를 바꾸고, 없는 문항은 직접 추가해 항목별 답변을 작성함.' },
-  { id: 'audit', title: '7. 완성·첨삭', fields: [], check: '완성본을 확인하고 PDF로 저장하거나 담당 선생님께 첨삭을 요청함.' },
+  { id: 'target', title: '1. 지원처·직무', fields: ['targetName', 'targetEvidence', 'role', 'roleNeed'], check: '공식 자료와 채용공고에서 지원처·직무의 정확한 요구를 확인함.' },
+  { id: 'questions', title: '2. 문항 요구', fields: [], check: '실제 문항의 요구와 글자 수를 먼저 표시하고 항목별 답변 틀을 준비함.' },
+  { id: 'major', title: '3. 근거 고르기', fields: ['major', 'majorSkill'], check: '전공 수행과 근거은행에서 문항에 가장 맞는 경험을 고름.' },
+  { id: 'experience', title: '4. 행동·결과', fields: ['experience', 'action', 'result'], check: '팀의 일과 자신의 행동을 나누고 확인 가능한 결과까지 적음.' },
+  { id: 'motivation', title: '5. 동기·기여', fields: ['motivation', 'contribution'], check: '개인 계기 → 지원처 선택 이유 → 입사 후 첫 기여로 연결함.' },
+  { id: 'audit', title: '6. 완성·첨삭', fields: [], check: '완성본을 확인하고 PDF로 저장하거나 담당 선생님께 첨삭을 요청함.' },
 ]
 
 export const COVER_LETTER_FIELDS = [
   { key: 'targetName', step: 'target', label: '지원 기관·기업', placeholder: '목록에서 고르거나 정확한 공식 명칭 입력', minLength: 2, required: ['공식 기관·기업명', '지원 분야와 일치 여부'], caution: '계열사·공사·은행 이름을 줄여 쓰지 않음.', showExample: false, examples: { finance: 'IBK기업은행', public: '한국전력공사', enterprise: '삼성전자' } },
   { key: 'targetEvidence', step: 'target', label: '공식 자료에서 찾은 지원 근거', placeholder: '공식 사업·고객·제품·공공 역할 중 나의 관심과 연결되는 사실', minLength: 35, required: ['공식 자료의 핵심 사실', '그 사실이 나와 연결되는 이유'], caution: '규모·연봉·복지만 칭찬하거나 출처 없는 최근 사업을 단정하지 않음.', examples: { finance: '지원 금융기관의 공식 자료에서 주요 고객과 핵심 금융 역할을 확인함. 거래 자료를 검산하고 이용자에게 기준을 설명한 경험과 연결점을 찾음.', public: '지원 기관의 공식 자료에서 국민에게 제공하는 공공서비스와 현장 직무를 확인함. 전공 실습에서 안전 절차와 점검표를 지킨 경험과 연결점을 찾음.', enterprise: '지원 기업의 공식 자료에서 주력 제품·서비스와 생산 현장의 품질·안전 기준을 확인함. 전공 실습에서 오차 원인을 기록한 경험과 연결점을 찾음.' } },
-  { key: 'role', step: 'role', label: '지원 직무', placeholder: '채용공고에 표시된 직무명', minLength: 2, required: ['공고의 정확한 직무명', '희망 업무 범위'], caution: '지원 직무를 회사 전체의 사업과 혼동하지 않음.', examples: { finance: '금융일반·고객상담', public: '전기·송배전', enterprise: '생산·설비보전' } },
-  { key: 'roleNeed', step: 'role', label: '직무의 핵심 요구', placeholder: '직무자료의 지식·기술·태도 중 가장 중요한 2~3개', minLength: 30, required: ['지식·기술·태도 중 2개 이상', '실제 업무에서 필요한 이유'], caution: '성실함·열정 같은 추상어만 나열하지 않음.', examples: { finance: '고객 요구를 정확히 듣고 규정에 맞게 안내하는 설명력과 개인정보 보호 태도', public: '도면·설비 상태를 확인하는 기술과 이상 발견 시 작업을 멈추고 보고하는 안전 태도', enterprise: '표준작업 준수, 설비 이상 징후 기록, 품질 기준에 따른 검사 능력' } },
+  { key: 'role', step: 'target', label: '지원 직무', placeholder: '채용공고에 표시된 직무명', minLength: 2, required: ['공고의 정확한 직무명', '희망 업무 범위'], caution: '지원 직무를 회사 전체의 사업과 혼동하지 않음.', examples: { finance: '금융일반·고객상담', public: '전기·송배전', enterprise: '생산·설비보전' } },
+  { key: 'roleNeed', step: 'target', label: '직무의 핵심 요구', placeholder: '직무자료의 지식·기술·태도 중 가장 중요한 2~3개', minLength: 30, required: ['지식·기술·태도 중 2개 이상', '실제 업무에서 필요한 이유'], caution: '성실함·열정 같은 추상어만 나열하지 않음.', examples: { finance: '고객 요구를 정확히 듣고 규정에 맞게 안내하는 설명력과 개인정보 보호 태도', public: '도면·설비 상태를 확인하는 기술과 이상 발견 시 작업을 멈추고 보고하는 안전 태도', enterprise: '표준작업 준수, 설비 이상 징후 기록, 품질 기준에 따른 검사 능력' } },
   { key: 'major', step: 'major', label: '전공', placeholder: '학과·전공명', minLength: 2, required: ['현재 전공명', '지원 직무와 연결할 전공 분야'], caution: '학교명·지역명 등 블라인드 정보를 함께 쓰지 않음.', examples: { finance: '상업정보과·회계정보 전공', public: '전기과·전기제어 전공', enterprise: '자동화기계과·스마트팩토리 전공' } },
   { key: 'majorSkill', step: 'major', label: '전공에서 실제로 한 일', placeholder: '실습명보다 내가 사용한 도구·수행한 작업·지킨 기준을 적기', minLength: 45, required: ['사용한 도구·기술', '내가 직접 한 작업', '품질·안전·정확성 기준'], caution: '자격증 이름만 쓰거나 팀이 한 일을 모두 자신의 일처럼 쓰지 않음.', examples: { finance: '스프레드시트로 거래 자료를 분류하고 함수로 오류를 찾은 뒤 검산표를 만들어 재확인함.', public: '배선 실습 전 전원 차단과 보호구를 확인하고 회로도에 따라 결선한 뒤 측정값을 기록함.', enterprise: 'PLC 실습에서 센서 입력 오류를 단계별로 점검하고 원인과 수정 결과를 작업일지에 기록함.' } },
   { key: 'experience', step: 'experience', label: '대표 경험의 상황과 목표', placeholder: '언제, 어떤 문제 또는 목표가 있었는지 2~3문장', minLength: 35, required: ['상황·기간', '내가 맡은 역할', '해결할 목표'], caution: '배경 설명이 전체 문장의 절반을 넘지 않게 함.', examples: { finance: '교내 판매 프로젝트에서 마감 전 재고와 매출 기록이 맞지 않아, 팀의 정산 오류를 찾아야 했음.', public: '전기 배선 실습 중 측정값이 기준과 다르게 나와, 안전을 확보한 뒤 원인을 찾아야 했음.', enterprise: '자동화 실습에서 센서가 간헐적으로 작동하지 않아 정해진 시간 안에 공정을 정상화해야 했음.' } },

@@ -33,11 +33,11 @@ export const FIRST_CLASS_LESSONS = {
     subject: 'ncs-basic',
     title: 'NCS 문서소통능력 첫 수업',
     lessonTitle: '문서소통능력',
-    path: ['NCS직업공통능력관', '자율학습', '의사소통능력', '문서소통능력'],
+    path: ['NCS 직업기초능력관', '자율학습', '의사소통능력', '문서소통능력'],
     match: { areaId: '의사소통능력', lessonId: '문서소통능력' },
     objective: '업무 문서의 요구사항·사실과 의견·출처를 구분하고 목적에 맞는 행동을 결정함.',
     flow: [
-      { minutes: '0~4분', phase: '수업 열기', menu: '교사 앱 수업 → 학생 앱 수업 준비', button: 'NCS직업공통능력관 → 자율학습', teacherTalk: 'NCS 문서 문제는 처음부터 모두 읽기보다, 발문에서 구할 것을 먼저 정합니다.', material: 'NCS 직업기초능력 26v1 의사소통능력·문서소통능력 구조', studentAction: '발문 → 필요한 정보 → 판단 → 검산 순서를 확인함.' },
+      { minutes: '0~4분', phase: '수업 열기', menu: '교사 앱 수업 → 학생 앱 수업 준비', button: 'NCS 직업기초능력관 → 자율학습', teacherTalk: 'NCS 문서 문제는 처음부터 모두 읽기보다, 발문에서 구할 것을 먼저 정합니다.', material: 'NCS 직업기초능력 26v1 의사소통능력·문서소통능력 구조', studentAction: '발문 → 필요한 정보 → 판단 → 검산 순서를 확인함.' },
       { minutes: '4~10분', phase: '요구 찾기', menu: '의사소통능력 → 문서소통능력', button: '학습 시작 → 먼저 판단', teacherTalk: '원자재 가격 이야기를 잠시 걷어내면 상대가 우리에게 실제로 요구한 행동은 무엇인가요?', material: '개정 단가표 서명·회신 요청 문서', studentAction: '행동 요구 표현과 금요일이라는 마감을 표시함.' },
       { minutes: '10~18분', phase: '사실·의견 구분', menu: '다음 핵심 카드', button: '다음 → 핵심 보기', teacherTalk: '“1,200개로 집계”와 “감소한 것으로 보인다”는 확인 방법이 어떻게 다른가요?', material: '수치·날짜와 추측 표현 비교', studentAction: '사실 문장과 의견 문장을 두 칸으로 분류함.' },
       { minutes: '18~28분', phase: '신뢰성 확인', menu: '문서 신뢰성 카드', button: '판단 선택 → 근거 공개', teacherTalk: '표와 숫자가 많다는 이유만으로 믿을 수 있을까요? 인용 전에 세 가지를 확인해 봅시다.', material: '작성자·작성일·원출처가 빠진 통계 문서', studentAction: '작성 주체·시점·원출처를 찾아 검증 순서를 말함.' },

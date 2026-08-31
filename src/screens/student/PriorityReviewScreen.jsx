@@ -34,7 +34,7 @@ const SOURCES = {
  * 정답 3연속이면 서버가 자동 '정복(resolved)' 처리 → 큐에서 사라짐.
  * props: onBack, onDone?()
  */
-export default function PriorityReviewScreen({ onBack, onDone, source = 'wrong' }) {
+export default function PriorityReviewScreen({ onBack, onDone, source = 'wrong', demoRows = null }) {
   const spec = SOURCES[source] ?? SOURCES.wrong
   const [queue, setQueue] = useState(null)   // 랭킹된 [{q, wrong_count, score}]
   const [i, setI]         = useState(0)
@@ -51,7 +51,7 @@ export default function PriorityReviewScreen({ onBack, onDone, source = 'wrong' 
       ? getDueItems(20).then(rows => rows
           .map(r => ({ q: findQuestion(r.itemId), subject: r.subject, unitId: r.unitId }))
           .filter(x => usable(x.q)))
-      : fetchOpenWrongAnswers().then(rows => rows
+      : Promise.resolve(Array.isArray(demoRows) ? demoRows : fetchOpenWrongAnswers()).then(rowsOrPromise => rowsOrPromise).then(rows => rows
           .map(r => ({ q: findQuestion(r.question_id), wrong_count: r.wrong_count || 1,
             streak: r.review_streak || 0 }))
           .filter(x => usable(x.q))
@@ -65,7 +65,7 @@ export default function PriorityReviewScreen({ onBack, onDone, source = 'wrong' 
       setPhase(items.length ? 'intro' : 'empty')
     })
     return () => { alive = false }
-  }, [source])
+  }, [source, demoRows])
 
   const cur = queue?.[i]
 
@@ -81,6 +81,10 @@ export default function PriorityReviewScreen({ onBack, onDone, source = 'wrong' 
       // 풀어도 계속 '오늘 복습할 문항'에 남아 학생이 같은 것을 무한히 만난다.
       recordReview({ subject: cur.subject, unitId: cur.unitId, itemId: cur.q.id,
         demand: learningModeOf(cur.q).id }, ok ? 4 : 1)
+      return
+    }
+    if (Array.isArray(demoRows)) {
+      if (!ok) setQueue(items => items.map((item, index) => index === i ? { ...item, wrong_count: item.wrong_count + 1, streak: 0 } : item))
       return
     }
     reviewWrongAnswer(cur.q.id, ok).then(status => {
@@ -184,7 +188,7 @@ export default function PriorityReviewScreen({ onBack, onDone, source = 'wrong' 
           })}
         </div>
         {answered && (
-          <div style={{ marginTop: 14, borderRadius: 12, padding: '12px 14px', border: '1px solid', borderColor: correct ? '#10B981' : '#EF4444', background: correct ? '#ECFDF5' : '#FEF2F2' }}>
+          <div style={{ marginTop: 14, borderRadius: 12, padding: '12px 14px', border: `1px solid ${correct ? '#10B981' : '#EF4444'}`, background: correct ? '#ECFDF5' : '#FEF2F2' }}>
             <p style={{ fontWeight: 800, color: correct ? '#047857' : '#B91C1C', marginBottom: 6 }}>
               {correct ? '정답! 잘했어요' : `정답은 ${correctIdx + 1}번`}
             </p>

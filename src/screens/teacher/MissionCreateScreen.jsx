@@ -4,6 +4,7 @@ import { supabase } from '../../lib/supabase.js'
 import { buildJcMissionAreas } from '../../lib/jobCommonAreas.js'
 import { buildNcs2026Areas } from '../../lib/ncs2026.js'
 import { RECRUIT_WRITTEN_TRACKS, buildRecruitWrittenAreas } from '../../lib/recruitWritten.js'
+import { COVER_ASSESSMENT_AREAS, COVER_DIAGNOSTIC_QUESTIONS } from '../../lib/coverAssessmentBank.js'
 import {
   INTERVIEW_AREAS,
   PERSONALITY_AREAS,
@@ -14,10 +15,17 @@ const MISSION_TYPES = ['이번시간', '오늘', '이번주', '중간고사', '�
 
 const DEMO_SUBJECTS = [
   { id: 'job-common', name: '교육부 직업공통능력', description: '교육부·대한상공회의소 평가 체계 연계' },
-  { id: 'ncs-basic', name: 'NCS 직업공통능력', description: '고용노동부·한국산업인력공단 NCS 직업기초능력' },
+  { id: 'ncs-basic', name: 'NCS 직업기초능력', description: '고용노동부·한국산업인력공단 NCS 직업기초능력' },
   { id: 'recruit-written', name: '채용필기 심화', description: '공공기관·금융권·대기업 추가 출제영역' },
   { id: 'interview', name: '면접 스킬', description: '공정채용 면접 상황·답변 연습' },
   { id: 'personality', name: '인성검사', description: '응답 경향과 일관성 확인' },
+  { id: 'cover-letter', name: '자기소개서', description: '문항 요구·경험 근거·사실성 점검' },
+]
+
+const COVER_SUBJECT = DEMO_SUBJECTS.find(subject => subject.id === 'cover-letter')
+const withCoverSubject = subjects => [
+  ...(subjects ?? []).filter(subject => subject.id !== 'cover-letter'),
+  COVER_SUBJECT,
 ]
 
 // 교육부·대한상의 직업공통능력 인증 5영역 — 자율학습·모의평가와 동일 소스
@@ -31,6 +39,10 @@ const RECRUIT_AREAS = RECRUIT_WRITTEN_TRACKS.flatMap(track =>
     displayName: `${track.label} · ${area.displayName}`,
   }))
 )
+const COVER_AREAS = Object.entries(COVER_ASSESSMENT_AREAS).map(([id, displayName]) => {
+  const questions = COVER_DIAGNOSTIC_QUESTIONS.filter(question => question.area === id)
+  return { id, displayName, totalQuestions: questions.length, questionIds: questions.map(question => question.id) }
+})
 
 export default function MissionCreateScreen({ classId, className, onBack, demo = false }) {
   const [availableSubjects, setAvailableSubjects] = useState([])
@@ -49,7 +61,7 @@ export default function MissionCreateScreen({ classId, className, onBack, demo =
 
   useEffect(() => {
     if (demo) {
-      setAvailableSubjects(DEMO_SUBJECTS)
+      setAvailableSubjects(withCoverSubject(DEMO_SUBJECTS))
       setSubjectId(DEMO_SUBJECTS[0].id)
       return
     }
@@ -59,13 +71,13 @@ export default function MissionCreateScreen({ classId, className, onBack, demo =
         const subs = (data ?? []).map(r => r.subjects).filter(Boolean)
         if (subs.length > 0) {
           const active = filterActiveSubjects(subs)
-          setAvailableSubjects(active)
+          setAvailableSubjects(withCoverSubject(active))
           setSubjectId(active[0]?.id ?? 'job-common')
         } else {
           // 배정 없으면 전체 subjects 표시
           supabase.from('subjects').select('id, name, description').then(({ data: all }) => {
             const active = filterActiveSubjects(all)
-            setAvailableSubjects(active)
+            setAvailableSubjects(withCoverSubject(active))
             setSubjectId(active[0]?.id ?? 'job-common')
           })
         }
@@ -122,6 +134,8 @@ export default function MissionCreateScreen({ classId, className, onBack, demo =
     } else if (subjectId === 'interview' || subjectId === 'personality') {
       questionIds = [...new Set(guidedQuestionIds(subjectId, selectedAreas, selectedLessons))]
       areaIds = selectedAreas.length > 0 ? selectedAreas : selectedLessons
+    } else if (subjectId === 'cover-letter') {
+      questionIds = COVER_AREAS.filter(area => selectedAreas.includes(area.id)).flatMap(area => area.questionIds)
     } else {
       // NCS: area 이름 기반
       questionIds = selectedAreas.map(a => `area:${a}`)
@@ -164,10 +178,12 @@ export default function MissionCreateScreen({ classId, className, onBack, demo =
   const isRecruit     = subjectId === 'recruit-written'
   const isInterview   = subjectId === 'interview'
   const isPersonality = subjectId === 'personality'
+  const isCover       = subjectId === 'cover-letter'
   const visibleAreas  = isNCS ? NCS_AREAS
     : isRecruit ? RECRUIT_AREAS
       : isInterview ? INTERVIEW_AREAS
         : isPersonality ? PERSONALITY_AREAS
+          : isCover ? COVER_AREAS
           : JOB_AREAS
 
   return (

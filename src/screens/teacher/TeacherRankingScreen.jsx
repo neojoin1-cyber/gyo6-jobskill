@@ -36,7 +36,7 @@ export default function TeacherRankingScreen({ demo = false }) {
       setClasses(DEMO_CLASSES)
       setSubjects([
         { id: 'job-common', name: '교육부 직업공통능력' },
-        { id: 'ncs-basic', name: 'NCS 직업공통능력' },
+        { id: 'ncs-basic', name: 'NCS 직업기초능력' },
         { id: 'interview', name: '면접 스킬' },
       ])
       setSelectedClass(DEMO_CLASSES[0].id)
@@ -88,11 +88,10 @@ export default function TeacherRankingScreen({ demo = false }) {
         {[{ id: null, name: '전체' }, ...subjects].map(s => (
           <button key={s.id ?? 'all'}
             style={{
-              padding: '6px 14px', borderRadius: 20, border: '1.5px solid',
+              padding: '6px 14px', borderRadius: 20, border: `1.5px solid ${subjectId === s.id ? 'var(--primary)' : 'var(--border)'}`,
               fontSize: 12, fontWeight: 700, whiteSpace: 'nowrap', cursor: 'pointer', minHeight: 44,
               background: subjectId === s.id ? 'var(--primary)' : 'transparent',
               color: subjectId === s.id ? '#fff' : 'var(--text-muted)',
-              borderColor: subjectId === s.id ? 'var(--primary)' : 'var(--border)',
             }}
             onClick={() => setSubjectId(s.id)}>
             {s.name}
@@ -106,11 +105,10 @@ export default function TeacherRankingScreen({ demo = false }) {
           {classes.map(c => (
             <button key={c.id}
               style={{
-                padding: '7px 14px', minHeight: 44, borderRadius: 8, border: '1.5px solid', fontSize: 13,
+                padding: '7px 14px', minHeight: 44, borderRadius: 8, border: `1.5px solid ${selectedClass === c.id ? 'var(--primary)' : 'var(--border)'}`, fontSize: 13,
                 whiteSpace: 'nowrap', cursor: 'pointer', fontWeight: 700,
                 background: selectedClass === c.id ? 'var(--primary)' : 'var(--card)',
                 color: selectedClass === c.id ? '#fff' : 'var(--text)',
-                borderColor: selectedClass === c.id ? 'var(--primary)' : 'var(--border)',
               }}
               onClick={() => setSelectedClass(c.id)}>
               {c.name}

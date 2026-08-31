@@ -1156,8 +1156,7 @@ function InterviewQuizView({ questions, lessonId, onMarkProgress, onQuestionChan
                 <button key={v} onClick={() => handleSelect(v)}
                   style={{
                     flex: 1, padding: '16px 0', fontSize: 24, fontWeight: 900,
-                    borderRadius: 12, border: '2px solid',
-                    borderColor: isRight ? 'var(--success)' : isWrong ? 'var(--danger)' : isSel ? 'var(--primary)' : 'var(--border)',
+                    borderRadius: 12, border: `2px solid ${isRight ? 'var(--success)' : isWrong ? 'var(--danger)' : isSel ? 'var(--primary)' : 'var(--border)'}`,
                     background: isRight ? '#dcfce7' : isWrong ? '#fee2e2' : isSel ? 'var(--primary-light)' : 'var(--bg)',
                     color: isRight ? 'var(--success)' : isWrong ? 'var(--danger)' : isSel ? 'var(--primary)' : 'var(--text)',
                     cursor: checked ? 'default' : 'pointer',
@@ -1179,8 +1178,7 @@ function InterviewQuizView({ questions, lessonId, onMarkProgress, onQuestionChan
             <button key={ci} onClick={() => handleSelect(letter)}
               style={{
                 width: '100%', textAlign: 'left', padding: '10px 13px',
-                borderRadius: 10, border: '1.5px solid',
-                borderColor: isRight ? 'var(--success)' : isWrong ? 'var(--danger)' : isSel ? 'var(--primary)' : 'var(--border)',
+                borderRadius: 10, border: `1.5px solid ${isRight ? 'var(--success)' : isWrong ? 'var(--danger)' : isSel ? 'var(--primary)' : 'var(--border)'}`,
                 background: isRight ? '#dcfce7' : isWrong ? '#fee2e2' : isSel ? 'var(--primary-light)' : 'var(--card)',
                 color: isRight ? 'var(--success)' : isWrong ? 'var(--danger)' : isSel ? 'var(--primary)' : 'var(--text)',
                 marginBottom: 8, cursor: checked ? 'default' : 'pointer',

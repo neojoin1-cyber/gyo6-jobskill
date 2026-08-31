@@ -1,11 +1,9 @@
 import { clearUserStorageMatching, userLocalStorage } from './userLocalStorage.js'
 
 export const LEARNING_DATA_GROUPS = [
-  { id: 'job-common', label: '직업공통능력', detail: '자율학습·진단 기록' },
+  { id: 'job-common', label: '교육부 직업공통능력 인증', detail: '학습·진단·인증 모의 기록' },
   { id: 'ncs-basic', label: 'NCS 직업기초능력', detail: '문항·단원 진행' },
-  { id: 'recruit-written', label: '고졸 공채 필기', detail: '추가 필기 진행' },
-  { id: 'quality', label: '인증평가', detail: '단원 별·점수' },
-  { id: 'food-service', label: '식음료 서비스', detail: '단원·문항 진행' },
+  { id: 'recruit-written', label: '채용필기 심화·확장', detail: '지원처별 추가 필기 진행' },
   { id: 'personality', label: '인성검사', detail: '진단·연습 기록' },
   { id: 'interview', label: '면접', detail: '학습 진행·답변 초안' },
   { id: 'cover-letter', label: '자기소개서', detail: '지원서·근거 보관함' },

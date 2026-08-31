@@ -50,6 +50,27 @@ const GLOBAL_Q_INDEX = (() => {
 // saveWrongAnswer course_id 폴백 매핑(id 미발견 시 라벨용)
 const COURSE_SUBJECT = { 1: 'job-common', 2: 'quality', 3: 'food-service', 4: 'interview' }
 
+const DEMO_WRONG_ROWS = [
+  ['job-common', jobQuestions.find(question => Array.isArray(question.choices) && question.choices.length >= 4 && /^[A-E]$/.test(question.answer || ''))],
+  ['ncs-basic', ncsQuestions.find(question => Array.isArray(question.choices) && question.choices.length >= 4 && /^[A-E]$/.test(question.answer || ''))],
+  ['recruit-written', recruitWrittenQuestions.find(question => Array.isArray(question.choices) && question.choices.length >= 4 && /^[A-E]$/.test(question.answer || ''))],
+].filter(([, question]) => question).map(([subjectId, question], index) => {
+  const correctIndex = answerIdx(question.answer)
+  const userIndex = (correctIndex + 1) % question.choices.length
+  return {
+    question_id: question.id,
+    course_id: subjectId,
+    question_text: question.stem,
+    correct_answer: question.answer,
+    user_answer: String.fromCharCode(65 + userIndex),
+    status: 'open',
+    created_at: new Date(Date.now() - index * 86400000).toISOString(),
+    area: question.area,
+    wrong_count: index + 1,
+    review_streak: 0,
+  }
+})
+
 /** 저장된 area 값을 화면에 쓸 이름으로 바꾼다. 못 바꾸면 null(집계에서 뺀다).
  *
  * 저장된 값이 세 종류로 섞여 있다.
@@ -127,10 +148,10 @@ function extractWrongAnswers(sub, subjectId) {
   return wrong
 }
 
-export default function WrongAnswerScreen({ profile }) {
+export default function WrongAnswerScreen({ profile, demo = false }) {
   const [subs,    setSubs]    = useState([])
-  const [selfWrong, setSelfWrong] = useState([])  // 자율학습 오답(wrong_answers, 크로스기기)
-  const [loading, setLoading] = useState(true)
+  const [selfWrong, setSelfWrong] = useState(() => demo ? DEMO_WRONG_ROWS : [])  // 자율학습 오답(wrong_answers, 크로스기기)
+  const [loading, setLoading] = useState(!demo)
   const [filter,  setFilter]  = useState('all')   // all | job-common | ncs-basic | recruit-written
   // 이 화면에서 방금 정복한 문항. 서버에는 반영했지만 목록은 제출 기록에서
   // 다시 만들어지므로, 새로 고치기 전까지는 여기서 걸러 준다.
@@ -140,9 +161,14 @@ export default function WrongAnswerScreen({ profile }) {
   const [showReview, setShowReview] = useState(false) // 우선 복습 큐
   const [loadError, setLoadError]   = useState(false)
 
-  useEffect(() => { load() }, [])
+  useEffect(() => { if (!demo) load() }, [demo, profile?.id])
 
   async function load() {
+    if (!profile?.id) {
+      setLoadError(true)
+      setLoading(false)
+      return
+    }
     setLoading(true)
     const [subRes, waRes] = await Promise.all([
       supabase
@@ -282,7 +308,10 @@ export default function WrongAnswerScreen({ profile }) {
 
   if (showReview) {
     return (
-      <PriorityReviewScreen onBack={() => { setShowReview(false); load() }} />
+      <PriorityReviewScreen demoRows={demo ? selfWrong : null} onBack={() => {
+        setShowReview(false)
+        if (!demo) load()
+      }} />
     )
   }
 

@@ -38,11 +38,10 @@ export default function SchoolRankingScreen() {
         {[{ id: null, name: '전체' }, ...subjects].map(s => (
           <button key={s.id ?? 'all'}
             style={{
-              padding: '6px 14px', borderRadius: 20, border: '1.5px solid',
+              padding: '6px 14px', borderRadius: 20, border: `1.5px solid ${subjectId === s.id ? 'var(--primary)' : 'var(--border)'}`,
               fontSize: 12, fontWeight: 700, whiteSpace: 'nowrap', cursor: 'pointer',
               background: subjectId === s.id ? 'var(--primary)' : 'transparent',
               color: subjectId === s.id ? '#fff' : 'var(--text-muted)',
-              borderColor: subjectId === s.id ? 'var(--primary)' : 'var(--border)',
             }}
             onClick={() => setSubjectId(s.id)}>
             {s.name}

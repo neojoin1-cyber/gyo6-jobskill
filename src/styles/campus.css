@@ -1096,6 +1096,10 @@ html.teacher-mode[data-teacher-view='wide'] .learning-link-chain > div { grid-te
 .teacher-coach-duration button { min-height: 34px; display: flex; align-items: center; justify-content: center; gap: 4px; border: 1px solid #d8e0e9; border-radius: 7px; background: #fff; color: #64748b; font-size: 9px; font-weight: 900; cursor: pointer; }
 .teacher-coach-duration button.is-on { border-color: #1769f6; background: #1769f6; color: #fff; }
 .teacher-coach-duration svg { width: 14px; }
+.teacher-coach-first-flow > .teacher-coach-duration { margin: 10px 12px 0; }
+.teacher-coach-first-flow > ol.is-compact > li { padding-block: 9px; }
+.teacher-coach-first-flow > ol.is-compact dl > div:nth-child(1),
+.teacher-coach-first-flow > ol.is-compact dl > div:nth-child(2) { display: none; }
 .teacher-coach-scroll > blockquote { margin: 0 0 10px; padding: 10px 11px; border-left: 4px solid #0f8a78; background: #eaf8f4; }
 .teacher-coach-scroll > blockquote b { color: #0f766e; font-size: 9px; }
 .teacher-coach-scroll > blockquote p { margin: 3px 0 0; font-size: 10px; font-weight: 700; line-height: 1.55; }

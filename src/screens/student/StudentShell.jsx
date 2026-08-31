@@ -242,7 +242,7 @@ export default function StudentShell() {
             onContextChange={rememberStudentLearningContext}
             onBack={() => { setFollowLink(null); setTab('home') }} />}
 
-          {tab === 'wrong'         && <WrongAnswerScreen profile={profile} />}
+          {tab === 'wrong'         && <WrongAnswerScreen profile={profile} demo={Boolean(isTrial)} />}
           {tab === 'ranking'       && <AccountDataScreen onOpenCareer={(options = {}) => {
             setFollowLink({ subject: 'cover-letter', area: null, lesson: null, mode: options.workspace === 'evidence' ? 'cover-evidence' : 'cover-practical', evidenceSeed: options.evidenceSeed, careerProfile: options.careerProfile })
             setTab('study')
