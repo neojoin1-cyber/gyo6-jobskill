@@ -1,0 +1,13 @@
+미션 영역 5 · 교사가 고를 수 있는 문항 id 총합 724
+미션 풀에 없는 id(조용히 사라짐): 361
+보기 없이 뜨는 id: 60
+영향 단원 수 8
+   의사소통 국어 | 다양한 유형 보충 문항 (OX·복수선택·연결형·단답형) | 6/26 JC-COM-MT001,JC-COM-MT002,JC-COM-TX001,JC-COM-TX002
+   수리활용 | 다양한 유형 보충 문항 (OX·복수선택·연결형·단답형) | 5/26 JC-NUM-TX001,JC-NUM-TX002,JC-NUM-TX003,JC-NUM-TX004
+   문제해결 | 자원관리 — 시간·예산·인력·물자를 조건에 맞게 나누기 | 7/62 JC-RSM-MT001,JC-RSM-MT002,JC-RSM-TX001,JC-RSM-TX002
+   문제해결 | 정보활용 — 필요한 정보를 찾고 믿을 만한지 가리기 | 7/72 JC-INF-MT001,JC-INF-MT002,JC-INF-TX001,JC-INF-TX002
+   문제해결 | 기술활용 — 도구와 절차를 골라 업무에 적용하기 | 7/92 JC-TEC-MT001,JC-TEC-MT002,JC-TEC-TX001,JC-TEC-TX002
+   문제해결 | 시스템적 사고 — 얽힌 문제의 원인과 파급을 함께 보기 | 14/156 JC-PSV-MT001,JC-PSV-MT002,JC-PSV-TX001,JC-PSV-TX002
+   직무적응 | 자기개발 — 목표를 세우고 스스로 관리하기 | 7/60 JC-SDE-MT001,JC-SDE-MT002,JC-SDE-TX001,JC-SDE-TX002
+   직무적응 | 직업윤리 — 규정과 책임을 지키기 | 7/77 JC-ETH-MT001,JC-ETH-MT002,JC-ETH-TX001,JC-ETH-TX002
+단원 전체가 보기없음: 0 []

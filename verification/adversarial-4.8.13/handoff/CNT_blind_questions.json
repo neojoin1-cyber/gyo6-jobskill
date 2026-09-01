@@ -2,7 +2,7 @@
  "_meta": {
   "purpose": "앱 정답을 모르는 독립 검증자가 각 문항의 정답을 스스로 산출하기 위한 블라인드 세트",
   "baseline": {
-   "sourceCommit": "2b0edcbe86993aa506986bd79e6e3f11ca76cc2a",
+   "sourceCommit": "e8068e0a5c4a7bec07b04c3cb7f06dbd9de4b6ca",
    "builtFrom": "앱 런타임 모듈(src/lib/*) 산출물",
    "generatedFor": "적대적 검증 4.8.13 · CNT 45건 중 정답 독립 판정"
   },
@@ -27,8 +27,8 @@
    "interview": "전수"
   },
   "excludedSubjects": {
-   "food-service": "식음료서비스 — 앱 데이터 비활성(런타임 문항 0개). src/lib/foodServiceBank.js 주석에 2026-08-20 과목 제외 결정 기록됨. 의뢰서 층화 기준의 \"식음료서비스 단원별 10문항\"은 현재 트리에서 충족 불가.",
-   "quality": "품질경영 — 앱 데이터 비활성(단원 0개, data/quality-mgmt-practice.json meta._note에 동일 결정 기록)."
+   "food-service": "식음료서비스 — 소유자 결정으로 검증 범위에서 완전 제외(2026-09-01). 앱 데이터도 비활성 상태(런타임 문항 0개, src/lib/foodServiceBank.js 주석의 2026-08-20 과목 제외 결정). 의뢰서 층화 기준의 \"식음료서비스 단원별 10문항\"은 이 결정에 따라 적용하지 않는다 — 결함이 아니다.",
+   "quality": "품질경영 — 소유자 결정으로 검증 범위에서 완전 제외(2026-09-01). 앱 데이터도 비활성(단원 0개, data/quality-mgmt-practice.json meta._note)."
   },
   "excludedAssessment": {
    "직무적응(likert)": "교육부 직업공통 직무적응 영역은 정오가 없는 성향형(likert)이라 정답 독립 판정 대상이 아니다."
@@ -38,8 +38,8 @@
   },
   "counts": {
    "poolTotal": 2413,
-   "selectedTotal": 1107,
-   "tierA": 1053,
+   "selectedTotal": 1112,
+   "tierA": 1058,
    "tierB": 54,
    "unusable": 68,
    "duplicateIdsDropped": 13
@@ -402,8 +402,8 @@
    "group": "대기업형",
    "assessmentType": "objective",
    "pool": 89,
-   "selected": 38,
-   "highRisk": 38
+   "selected": 43,
+   "highRisk": 43
   }
  ],
  "writingPrompts": [
@@ -29241,6 +29241,176 @@
     {
      "no": 5,
      "text": "4단락: 앞서 분석한 원인에 대응하는 해결 방안 제시"
+    }
+   ],
+   "tier": "A_고위험_전수"
+  },
+  {
+   "questionId": "RW-enterprise-NCS-C206-basic-1",
+   "subject": "recruit-written",
+   "subjectLabel": "채용필기 심화·확장",
+   "group": "대기업형",
+   "lessonId": "C206",
+   "lessonTitle": "백분율과 증감률 계산",
+   "questionMode": "mcq",
+   "context": "카페 월간 실적\nB카페 2분기 고객 수\n–4월: 1,200명\n–5월: 1,440명\n–6월: 1,296명",
+   "stem": "4월 대비 5월 고객 증가율은?",
+   "choices": [
+    {
+     "no": 1,
+     "text": "+16.7%"
+    },
+    {
+     "no": 2,
+     "text": "+200.0%"
+    },
+    {
+     "no": 3,
+     "text": "+20.0%"
+    },
+    {
+     "no": 4,
+     "text": "+240.0%"
+    },
+    {
+     "no": 5,
+     "text": "+24.0%"
+    }
+   ],
+   "tier": "A_고위험_전수"
+  },
+  {
+   "questionId": "RW-enterprise-NCS-C206-basic-2",
+   "subject": "recruit-written",
+   "subjectLabel": "채용필기 심화·확장",
+   "group": "대기업형",
+   "lessonId": "C206",
+   "lessonTitle": "백분율과 증감률 계산",
+   "questionMode": "mcq",
+   "context": "생산량 변화 분석\nC공장 주간 생산 현황\n–지난주: 500개\n–이번주: 425개\n–내주 목표: 이번주 대비 +15%",
+   "stem": "지난주 대비 이번주 생산량 증감률은?",
+   "choices": [
+    {
+     "no": 1,
+     "text": "+17.6%"
+    },
+    {
+     "no": 2,
+     "text": "-17.6%"
+    },
+    {
+     "no": 3,
+     "text": "+15.0%"
+    },
+    {
+     "no": 4,
+     "text": "-75.0%"
+    },
+    {
+     "no": 5,
+     "text": "-15.0%"
+    }
+   ],
+   "tier": "A_고위험_전수"
+  },
+  {
+   "questionId": "RW-enterprise-NCS-C206-standard-1",
+   "subject": "recruit-written",
+   "subjectLabel": "채용필기 심화·확장",
+   "group": "대기업형",
+   "lessonId": "C206",
+   "lessonTitle": "백분율과 증감률 계산",
+   "questionMode": "mcq",
+   "context": "D매장 분기별 매출 변화",
+   "stem": "3분기 실제 매출액은?",
+   "choices": [
+    {
+     "no": 1,
+     "text": "2,700만원"
+    },
+    {
+     "no": 2,
+     "text": "3,300만원"
+    },
+    {
+     "no": 3,
+     "text": "3,600만원"
+    },
+    {
+     "no": 4,
+     "text": "2,970만원"
+    },
+    {
+     "no": 5,
+     "text": "3,240만원"
+    }
+   ],
+   "tier": "A_고위험_전수"
+  },
+  {
+   "questionId": "RW-enterprise-NCS-C206-standard-2",
+   "subject": "recruit-written",
+   "subjectLabel": "채용필기 심화·확장",
+   "group": "대기업형",
+   "lessonId": "C206",
+   "lessonTitle": "백분율과 증감률 계산",
+   "questionMode": "mcq",
+   "context": "E팀 영업 성과 분석",
+   "stem": "상반기 목표 달성률은?",
+   "choices": [
+    {
+     "no": 1,
+     "text": "45.0%"
+    },
+    {
+     "no": 2,
+     "text": "81.8%"
+    },
+    {
+     "no": 3,
+     "text": "122.2%"
+    },
+    {
+     "no": 4,
+     "text": "55.0%"
+    },
+    {
+     "no": 5,
+     "text": "50.0%"
+    }
+   ],
+   "tier": "A_고위험_전수"
+  },
+  {
+   "questionId": "RW-enterprise-NCS-C209-diagnosis",
+   "subject": "recruit-written",
+   "subjectLabel": "채용필기 심화·확장",
+   "group": "대기업형",
+   "lessonId": "C209",
+   "lessonTitle": "명제와 논리기호 기초",
+   "questionMode": "mcq",
+   "context": "[상황] 신입사원 김현수는 사무용품 구매 규정을 확인하고 있다.\n\n구매 규정:\n–5만원 이상 구매 시 팀장 승인 필요\n–긴급구매가 아니면 3일 전 사전신청 필수\n–팀장 부재 시 차상급자가 승인 권한 행사\n현재 상황: 프린터 토너 구매(7만원), 팀장 출장 중, 내일까지 필요",
+   "stem": "위 상황에서 올바른 구매 절차는?",
+   "choices": [
+    {
+     "no": 1,
+     "text": "차상급자 승인받아 즉시 구매 진행"
+    },
+    {
+     "no": 2,
+     "text": "팀장 복귀 후 승인받아 구매 진행"
+    },
+    {
+     "no": 3,
+     "text": "3일 전 사전신청이 불가하므로 구매 불가"
+    },
+    {
+     "no": 4,
+     "text": "5만원 미만으로 분할 구매하여 승인 생략"
+    },
+    {
+     "no": 5,
+     "text": "긴급상황이므로 승인 없이 구매 후 보고"
     }
    ],
    "tier": "A_고위험_전수"

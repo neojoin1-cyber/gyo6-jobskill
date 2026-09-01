@@ -1,0 +1,1723 @@
+{
+ "_meta": {
+  "baseline": "ee6aee89abf8",
+  "scope": "앱 런타임 산출물 전수 (직업공통·NCS 26v1·채용필기·자기소개서 진단·면접)",
+  "inspected": 2481,
+  "checks": [
+   "M1 해설번호정합",
+   "M2 채점불능",
+   "M3 중복문항",
+   "M4 정답위치분포",
+   "M5 보기이상",
+   "M6 포매터잔재",
+   "M7 결손"
+  ]
+ },
+ "summary": {
+  "bySeverity": {
+   "P1": 73,
+   "P3": 4,
+   "INFO": 71
+  },
+  "byCode": {
+   "M2-보기없음": 68,
+   "M6-연속공백": 4,
+   "M1-해설번호불일치": 5,
+   "M3-중복문항_층간(관찰)": 71
+  }
+ },
+ "distribution": [
+  {
+   "bucket": "job-common|4지선다",
+   "total": 233,
+   "counts": [
+    52,
+    62,
+    56,
+    63
+   ],
+   "maxNo": 4,
+   "maxShare": 0.27,
+   "expected": 0.25,
+   "chiSquare": 1.39
+  },
+  {
+   "bucket": "job-common|5지선다",
+   "total": 302,
+   "counts": [
+    55,
+    69,
+    69,
+    47,
+    62
+   ],
+   "maxNo": 2,
+   "maxShare": 0.228,
+   "expected": 0.2,
+   "chiSquare": 5.95
+  },
+  {
+   "bucket": "ncs-basic|4지선다",
+   "total": 329,
+   "counts": [
+    99,
+    78,
+    76,
+    76
+   ],
+   "maxNo": 1,
+   "maxShare": 0.301,
+   "expected": 0.25,
+   "chiSquare": 4.58
+  },
+  {
+   "bucket": "ncs-basic|5지선다",
+   "total": 779,
+   "counts": [
+    138,
+    167,
+    173,
+    154,
+    147
+   ],
+   "maxNo": 3,
+   "maxShare": 0.222,
+   "expected": 0.2,
+   "chiSquare": 5.26
+  },
+  {
+   "bucket": "recruit-written|4지선다",
+   "total": 211,
+   "counts": [
+    68,
+    55,
+    37,
+    51
+   ],
+   "maxNo": 1,
+   "maxShare": 0.322,
+   "expected": 0.25,
+   "chiSquare": 9.27
+  },
+  {
+   "bucket": "recruit-written|5지선다",
+   "total": 133,
+   "counts": [
+    26,
+    26,
+    25,
+    30,
+    26
+   ],
+   "maxNo": 4,
+   "maxShare": 0.226,
+   "expected": 0.2,
+   "chiSquare": 0.57
+  },
+  {
+   "bucket": "cover-letter|4지선다",
+   "total": 12,
+   "counts": [
+    3,
+    3,
+    3,
+    3
+   ],
+   "maxNo": 1,
+   "maxShare": 0.25,
+   "expected": 0.25,
+   "chiSquare": 0
+  },
+  {
+   "bucket": "interview|4지선다",
+   "total": 114,
+   "counts": [
+    28,
+    27,
+    33,
+    26
+   ],
+   "maxNo": 3,
+   "maxShare": 0.289,
+   "expected": 0.25,
+   "chiSquare": 1.02
+  },
+  {
+   "bucket": "interview|5지선다",
+   "total": 2,
+   "counts": [
+    0,
+    1,
+    1,
+    0,
+    0
+   ],
+   "maxNo": 2,
+   "maxShare": 0.5,
+   "expected": 0.2,
+   "chiSquare": 3
+  }
+ ],
+ "findings": [
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-TEC-MT001",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "다음 기술능력 핵심 개념과 그 정의를 올바르게 연결하시오.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-TEC-MT002",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "4차 산업혁명 핵심기술과 그 특징을 올바르게 연결하시오.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-TEC-TX001",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "기술능력 핵심 원칙에 따르면, 기술 문제에서는 '빨리'보다 '( )하게, 절차대로, 보고하며'가 정답에 가깝다. 괄호 안에 알맞은 말은?",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-TEC-TX002",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "오류 대응 4단계에서 두 번째 단계는 오류 내용, 발생 시간, 상황을 남기는 '( )' 단계이다. 괄호 안에 알맞은 말은?",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-TEC-TX003",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "교재에서 자동화 도구 선택 기준의 하나로 제시된 '사용자 ( ) 최소화 원칙'에서 괄호에 들어갈 말은?",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-TEC-TX004",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "교재에서 정보처리 4단계의 순서를 순서대로 서술하면 '수집 → ( ) → 가공 → 활용'이다. 괄호에 들어갈 단계는?",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-TEC-TX005",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "사물인터넷(IoT)은 '기기 간 연결을 통한 실시간 ( ) 및 제어'를 뜻한다. 괄호에 들어갈 말은?",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-SDE-MT001",
+   "subject": "job-common",
+   "group": "직무적응",
+   "stem": "자기개발 전략의 5단계와 각 단계의 영어 명칭을 올바르게 연결하시오.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-SDE-MT002",
+   "subject": "job-common",
+   "group": "직무적응",
+   "stem": "자기개발능력의 5가지 핵심 요소와 각 요소의 핵심 내용을 올바르게 연결하시오.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-SDE-TX001",
+   "subject": "job-common",
+   "group": "직무적응",
+   "stem": "자기개발 전략의 첫 번째 단계로, 강점·약점·목표·피드백을 바탕으로 현재 자신의 상태를 점검하는 단계를 영어로 ___이라 한다.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-SDE-TX002",
+   "subject": "job-common",
+   "group": "직무적응",
+   "stem": "SMART 목표 설정에서 '6개월 내 컴활 1급 취득'이 올바른 예시인 이유는 목표에 구체성(Specific)과 ( )가 포함되어 있기 때문이다. 이 괄호에 들어",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-SDE-TX003",
+   "subject": "job-common",
+   "group": "직무적응",
+   "stem": "교재에서 자기개발능력의 5가지 핵심 요소 중 '개인의 가치관, 흥미, 성격 파악'과 'SWOT 분석을 통한 객관적 자기 이해'를 핵심 내용으로 하는 요소를 한국어",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-SDE-TX004",
+   "subject": "job-common",
+   "group": "직무적응",
+   "stem": "교재에서 자기개발 계획의 효과적인 실행을 위한 가장 중요한 관리 요소로, '정기적 점검과 상황 변화에 따른 ___한 조정'이 제시된다. 빈칸에 들어갈 단어를 쓰시",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-SDE-TX005",
+   "subject": "job-common",
+   "group": "직무적응",
+   "stem": "교재에서 체계적인 자기개발의 순환 과정을 '자기분석 → 목표설정 → 실행 → 평가 → ___'로 제시한다. 빈칸에 들어갈 단어를 쓰시오.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-INF-MT001",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "다음 정보능력 핵심 용어와 그 정의를 올바르게 연결하시오.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-INF-MT002",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "다음 AI 기반 정보처리 5단계와 각 단계의 핵심 내용을 올바르게 연결하시오.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-INF-TX001",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "교재에서 '출처 신뢰도'는 '( ) 기관, 담당 부서 자료인가?'라고 정의된다. 괄호 안에 알맞은 말을 쓰시오.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-INF-TX002",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "교재에서 자료 분류 기준 4가지(목적 적합성, 최신성, 출처 신뢰도, 형식 적합성) 중 '업무에 활용 가능한 파일 형식인가?'에 해당하는 기준을 쓰시오.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-INF-TX003",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "교재에서 AI 정보 검증 5요소 중 '( ) 검증'은 2개 이상 독립적 출처에서 동일 정보를 확인하는 것을 말한다. 괄호 안에 알맞은 말을 쓰시오.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-INF-TX004",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "교재 20차시에서 AI 기반 정보처리 5단계 중 비교에는 막대그래프, 변화에는 선그래프, 비율에는 원그래프나 누적 막대가 쓰인다고 설명하는 단계의 명칭을 쓰시오.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-INF-TX005",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "교재에서 정보능력은 '빠른 검색보다 정확한 요구 파악과 신뢰할 수 있는 ( ) 선택이 핵심이다'라고 정리하고 있다. 괄호 안에 알맞은 말을 쓰시오.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-ETH-MT001",
+   "subject": "job-common",
+   "group": "직무적응",
+   "stem": "다음 직업윤리 핵심 개념과 그 정의를 올바르게 연결하시오.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-ETH-MT002",
+   "subject": "job-common",
+   "group": "직무적응",
+   "stem": "다음 개인정보 보호 5원칙과 그 의미를 올바르게 연결하시오.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-ETH-TX001",
+   "subject": "job-common",
+   "group": "직무적응",
+   "stem": "교재에서 직업윤리 시험 직전 암기 문장으로 제시된 내용의 빈칸을 완성하시오: '직업윤리는 정직, 공정, 책임, 안전, ( )를 지키는 답이 정답에 가깝다.'",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-ETH-TX002",
+   "subject": "job-common",
+   "group": "직무적응",
+   "stem": "교재에서 설명하는 책임 있는 보고의 4원칙을 순서대로 나열하시오. (즉시성, ( ), 완전성, 적절성)",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-ETH-TX003",
+   "subject": "job-common",
+   "group": "직무적응",
+   "stem": "교재에서 설명하는 이해충돌 판단 4단계의 마지막 단계는 '( ) 확보'이다.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-ETH-TX004",
+   "subject": "job-common",
+   "group": "직무적응",
+   "stem": "교재에서 지속가능경영의 트리플 바텀라인은 경제적 성과(Profit), 환경적 성과(Planet), ( ) 성과(People)의 세 가지이다.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-ETH-TX005",
+   "subject": "job-common",
+   "group": "직무적응",
+   "stem": "교재에서 설명하는 개인정보 보호 5원칙 중 '최소 수집의 원칙'은 ( ) 달성에 필요한 최소한만 수집하는 것을 의미한다.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-RSM-MT001",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "다음 자원관리 핵심 용어와 그 정의를 올바르게 연결하시오.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-RSM-MT002",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "복수 자원 최적화 5단계 프로세스의 각 단계와 그 내용을 올바르게 연결하시오.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-RSM-TX001",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "교재에서 시험 직전 암기 문장으로 제시된 우선순위 판단 순서를 빈칸에 채우시오. '( ), 선행조건, 중요도, ( ) 순서로 본다. 모두 하겠다는 답보다 제한 안",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-RSM-TX002",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "교재에서 복수 자원 최적화의 3줄 요약 두 번째 항목을 빈칸에 채우시오. '각 대안별로 모든 자원 소요량을 계산하여 ( )를 벗어나는 조합을 먼저 제거한다.'",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-RSM-TX003",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "교재에서 자원관리 6요소 중 '( )'은 '예산, 인력, 장비 한계는 무엇인가?'를 뜻한다.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-RSM-TX004",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "교재에서 복수 자원 최적화 5단계 프로세스 중 '( ) 자원 식별'은 가장 제한적인 자원이 무엇인지 판단하는 3단계이다.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-RSM-TX005",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "교재 3줄 요약에서 '자원 배분은 총 ( )을 먼저 확인하고, 우선순위 높은 업무에 먼저 배분한다'고 제시한다. 빈칸에 알맞은 말을 쓰시오.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-NUM-TX001",
+   "subject": "job-common",
+   "group": "수리활용",
+   "stem": "사칙연산의 우선순위를 순서대로 쓰시오. (빈칸 채우기: '( ) → 곱셈·나눗셈 → ( )')",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-NUM-TX002",
+   "subject": "job-common",
+   "group": "수리활용",
+   "stem": "비율(구성비)의 공식을 완성하시오. (빈칸: '( ) ÷ ( ) × 100')",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-NUM-TX003",
+   "subject": "job-common",
+   "group": "수리활용",
+   "stem": "어떤 부서의 일일 처리 건수가 80, 90, 100, 110, 120건일 때, 이 자료의 중앙값은 몇 건인가?",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-NUM-TX004",
+   "subject": "job-common",
+   "group": "수리활용",
+   "stem": "작년 매출 8,000만원, 올해 매출 9,200만원일 때 올해의 증가율을 구하는 올바른 계산식을 쓰시오.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-NUM-TX005",
+   "subject": "job-common",
+   "group": "수리활용",
+   "stem": "수리능력의 5대 핵심 요소 중 '표, 그래프에서 정보를 추출하는' 역량을 무엇이라고 하는가?",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-PSV-MT001",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "문제해결 4단계 각 단계의 핵심 정의를 올바르게 연결하시오.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-PSV-MT002",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "우선순위 판단 5요소 매트릭스의 각 요소와 그 의미를 올바르게 연결하시오.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-PSV-TX001",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "문제해결능력의 특징은 논리적 사고, 창의적 접근, 체계적 분석이 결합된 __________(이)라고 교재에서 정의한다.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-PSV-TX002",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "대안 비교 3줄 요약에 따르면, 대안 비교는 필수 조건을 먼저 정리하고 하나라도 미충족하면 __________해야 한다.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-PSV-TX003",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "우선순위 5요소 매트릭스에서 '중요성(Importance)'은 __________에 미치는 영향도를 의미한다.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-PSV-TX004",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "창의적 문제해결 프로세스 3줄 요약에 따르면, 시스템적 사고란 복합 문제를 개별 요소가 아닌 전체적 __________을(를) 고려하여 접근하는 것이다.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-PSV-TX005",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "문제해결능력 기초 이해 3줄 요약에 따르면, 문제해결능력은 현재와 목표 상태의 차이를 __________으로(로) 해결하는 종합적 사고능력이다.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-ORG-MT001",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "다음 조직이해능력 핵심 용어와 그 정의를 올바르게 연결하시오.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-ORG-MT002",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "조직 변화 관리 5단계를 순서에 맞게 연결하시오.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-ORG-TX001",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "교재에서 '협업'의 정의를 빈칸에 완성하시오. '협업은 ( )과(와) 정보를 나누고 함께 처리하는 과정이다.'",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-ORG-TX002",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "교재에서 보고체계와 협업 대상 구분의 3줄 요약에 따르면, '보고는 ( )에게, 협업은 동등한 부서나 담당자와 한다.' 빈칸에 들어갈 말을 쓰시오.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-ORG-TX003",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "교재에서 조직 목표 연결의 4단계를 순서대로 서술하시오. '조직 비전/미션 파악 → ( ) 확인 → 개인 업무 역할 정의 → 성과지표 연동'",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-ORG-TX004",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "교재에서 설명하는 조직 변화 관리 5단계 중 마지막 단계의 명칭을 쓰시오.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-ORG-TX005",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "교재에서 조직이해능력 종합 복습의 국제감각 섹션에 포함된 세 가지 개념(글로벌 매너, 국제 표준, ___)을 완성하시오.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-COM-MT001",
+   "subject": "job-common",
+   "group": "의사소통 국어",
+   "stem": "다음 문서 분석 4요소(결론·근거·반론·보완점)와 그 설명을 올바르게 연결하시오.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-COM-MT002",
+   "subject": "job-common",
+   "group": "의사소통 국어",
+   "stem": "다음 전략적 협상 커뮤니케이션 5요소와 핵심 내용을 올바르게 연결하시오.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-COM-TX001",
+   "subject": "job-common",
+   "group": "의사소통 국어",
+   "stem": "문서나 말 속에서 반드시 행동과 판단에 필요한 정보를 골라내는 능력으로, 누가 무엇을 언제까지 어떻게 해야 하는지를 먼저 찾는 기법을 '( )' 파악이라고 한다.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-COM-TX002",
+   "subject": "job-common",
+   "group": "의사소통 국어",
+   "stem": "업무 공지문과 이메일에서 핵심 정보를 찾을 때 활용하는 5요소 중, 기본 대상이나 기본 규칙에서 빠지는 조건을 나타내며 '단', '제외', '불가', '다만' 같",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-COM-TX003",
+   "subject": "job-common",
+   "group": "의사소통 국어",
+   "stem": "보고서와 회의록 분석에서, 결론을 더 강화하기 위한 추가 방안이나 조건을 가리키는 문서 분석 4요소 중 하나는 무엇인가?",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-COM-TX004",
+   "subject": "job-common",
+   "group": "의사소통 국어",
+   "stem": "전략적 협상에서 상대방이 협상 결렬 시 선택할 수 있는 최선의 대안을 가리키는 영어 약어는?",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-PD-M01",
+   "subject": "job-common",
+   "group": "수리활용",
+   "stem": "아래 월별 매출 표의 빈칸(?)을 채워 표를 완성하시오.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-PD-M02",
+   "subject": "job-common",
+   "group": "수리활용",
+   "stem": "부서별 예산 집행 현황표의 빈칸을 채우시오. 집행률은 소수점 첫째 자리에서 반올림한다.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-PD-M03",
+   "subject": "job-common",
+   "group": "수리활용",
+   "stem": "급여 명세서의 빈칸을 채우시오. 실지급액은 지급 합계에서 공제 합계를 뺀 금액이다.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-PD-M04",
+   "subject": "job-common",
+   "group": "수리활용",
+   "stem": "창고 재고 관리표의 빈칸을 채우시오. 기말 재고 = 기초 재고 + 입고 − 출고.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-PD-P01",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "출장 신청서를 조건에 맞게 작성하시오.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-PD-P02",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "회의실 예약 신청서를 조건에 맞게 작성하시오.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-PD-P03",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "수집한 자료를 사용 가능 여부에 따라 분류하시오.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M2-보기없음",
+   "severity": "P1",
+   "questionId": "JC-PD-P04",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "장비 오류 대응 절차서의 빈칸을 채우시오.",
+   "detail": "보기가 없어 화면에서 고를 수 없다"
+  },
+  {
+   "code": "M6-연속공백",
+   "severity": "P3",
+   "questionId": "JC-SET-MA01-1",
+   "subject": "job-common",
+   "group": "수리활용",
+   "stem": "강남점의 2분기 매출은 1분기 대비 몇 % 증가했는가?",
+   "field": "context"
+  },
+  {
+   "code": "M6-연속공백",
+   "severity": "P3",
+   "questionId": "JC-SET-MA01-2",
+   "subject": "job-common",
+   "group": "수리활용",
+   "stem": "연간 목표 500백만원을 달성한 지점을 모두 고르면?",
+   "field": "context"
+  },
+  {
+   "code": "M6-연속공백",
+   "severity": "P3",
+   "questionId": "JC-SET-MA01-3",
+   "subject": "job-common",
+   "group": "수리활용",
+   "stem": "세 지점의 분기별 추세를 바르게 설명한 것은?",
+   "field": "context"
+  },
+  {
+   "code": "M6-연속공백",
+   "severity": "P3",
+   "questionId": "JC-SET-PS01-3",
+   "subject": "job-common",
+   "group": "문제해결",
+   "stem": "교육을 개발 기간과 겹쳐 진행하려고 한다. 가능 여부와 이유로 옳은 것은?",
+   "field": "context"
+  },
+  {
+   "code": "M1-해설번호불일치",
+   "severity": "P1",
+   "questionId": "RW-enterprise-NCS-C209-diagnosis",
+   "subject": "recruit-written",
+   "group": "대기업형",
+   "stem": "위 상황에서 올바른 구매 절차는?",
+   "answerNo": 1,
+   "explanationNo": 3,
+   "answerText": "차상급자 승인받아 즉시 구매 진행",
+   "explanation": "정답 3번은 팀장 부재 시 긴급 구매 절차를 의미합니다. 구매 규정에서 긴급 상황(내일 필요)일 때 대리 결재나 예외 절차를 따르도록 정하고 있을 것으로 추론됩니다."
+  },
+  {
+   "code": "M1-해설번호불일치",
+   "severity": "P1",
+   "questionId": "RW-enterprise-NCS-C206-basic-1",
+   "subject": "recruit-written",
+   "group": "대기업형",
+   "stem": "4월 대비 5월 고객 증가율은?",
+   "answerNo": 3,
+   "explanationNo": 1,
+   "answerText": "+20.0%",
+   "explanation": "4월 대비 5월 고객 증가율을 구하는 문항입니다. 정답 1번은 지문의 B카페 2분기 고객 수 데이터를 이용하여 올바르게 계산한 결과입니다. 나머지 선택지들은 계산 오류나 월별 데이터를 잘못 해석한 것입니다."
+  },
+  {
+   "code": "M1-해설번호불일치",
+   "severity": "P1",
+   "questionId": "RW-enterprise-NCS-C206-basic-2",
+   "subject": "recruit-written",
+   "group": "대기업형",
+   "stem": "지난주 대비 이번주 생산량 증감률은?",
+   "answerNo": 5,
+   "explanationNo": 3,
+   "answerText": "-15.0%",
+   "explanation": "지난주 대비 이번주 생산량 증감률을 산출하는 문제입니다. 정답 3번은 C공장 주간 생산 현황에서 두 주간 데이터의 변화를 정확히 계산했습니다. 다른 선택지는 증감률 계산 공식을 잘못 적용한 오류입니다."
+  },
+  {
+   "code": "M1-해설번호불일치",
+   "severity": "P1",
+   "questionId": "RW-enterprise-NCS-C206-standard-1",
+   "subject": "recruit-written",
+   "group": "대기업형",
+   "stem": "3분기 실제 매출액은?",
+   "answerNo": 5,
+   "explanationNo": 2,
+   "answerText": "3,240만원",
+   "explanation": "3분기 실제 매출액을 구하는 표준 난도 문항입니다. 정답 2번은 D매장 분기별 매출 변화 자료에서 3분기 값을 올바르게 도출했습니다. 나머지 선택지는 데이터 읽기 오류 또는 계산 착오입니다."
+  },
+  {
+   "code": "M1-해설번호불일치",
+   "severity": "P1",
+   "questionId": "RW-enterprise-NCS-C206-standard-2",
+   "subject": "recruit-written",
+   "group": "대기업형",
+   "stem": "상반기 목표 달성률은?",
+   "answerNo": 4,
+   "explanationNo": 2,
+   "answerText": "55.0%",
+   "explanation": "상반기 목표 달성률을 계산하는 문제입니다. 정답 2번은 E팀 영업 성과 분석에서 실제 달성치를 목표치로 나눈 올바른 계산입니다. 다른 보기는 분자와 분모를 역순으로 계산하거나 데이터 오독한 것입니다."
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-C113-diagnosis / RW-finance-NCS-C113-diagnosis",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 금융권형",
+   "stem": "박과장의 확정 결정사항으로 옳은 것은?|상담인력 2명 충원하여 총 7명으로 팀 규모 확대|시스템 도입으로 응답시간 30초 달성 목표 설정|신규 상담시스템에 800",
+   "count": 2,
+   "answerNos": [
+    3
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-C113-basic-1 / RW-finance-NCS-C113-basic-1",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 금융권형",
+   "stem": "확정된 자원배분 내용은?|총 공사예산 5,000만원으로 2주 내 완료|임시사무실로 2층 회의실 A,B,C 모두 사용|자재비와 인건비를 각각 2,500만원씩 동등배",
+   "count": 2,
+   "answerNos": [
+    4
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-C113-basic-2 / RW-finance-NCS-C113-basic-2",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 금융권형",
+   "stem": "완료된 자원재배치 내용으로 옳은 것은?|마케팅 예산을 두 팀에 총 1,000만원 균등배분|4분기 예산을 실적 연동방식으로 확정 배정|A팀 6명 증원, B팀 3명으",
+   "count": 2,
+   "answerNos": [
+    3
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-C113-retry-1 / RW-finance-NCS-C113-retry-1",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 금융권형",
+   "stem": "김연구실장의 확정 실행사항은?|전체 3단계 프로젝트에 총 7억원 예산 배정 완료|기술이전 수익 연동방식으로 3단계 예산 확정 배치|1단계 성과 활용하여 특허출원 ",
+   "count": 2,
+   "answerNos": [
+    4
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-C113-retry-2 / RW-finance-NCS-C113-retry-2",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 금융권형",
+   "stem": "총지배인의 최종 확정사항으로 옳은 것은?|성수기 대비 전 부서 운영시간 연장 및 인력 50% 증원|스파시설까지 포함한 부대시설 전면 확대 재개장|월 8,000만원",
+   "count": 2,
+   "answerNos": [
+    4
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-C114-diagnosis / RW-finance-NCS-C114-diagnosis",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 금융권형",
+   "stem": "김 부장의 최종 결정에 따른 인력 배치는?|A프로젝트 4명, B프로젝트 2명, C프로젝트 연기|A프로젝트 3명, B프로젝트 연기, C프로젝트 3명|A프로젝트 3명",
+   "count": 2,
+   "answerNos": [
+    4
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-C114-basic-1 / RW-finance-NCS-C114-basic-1",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 금융권형",
+   "stem": "최 과장의 지시에 따른 최적 장비 구성은?|음향장비 + 영상장비만 구매|음향장비 + 조명장비 + 무대장치|음향장비 + 영상장비 + 무대장치|음향장비 + 조명장비만",
+   "count": 2,
+   "answerNos": [
+    1
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-C114-basic-2 / RW-finance-NCS-C114-basic-2",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 금융권형",
+   "stem": "윤 팀장의 결정에 따른 교육 구성은?|CS교육 + 제품교육 + 시스템교육|CS교육 + 제품교육 + 리더십교육|CS교육 + 제품교육 + 시스템교육 + 리더십교육|C",
+   "count": 2,
+   "answerNos": [
+    2
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-C114-standard-3 / RW-finance-NCS-C114-standard-3",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 금융권형",
+   "stem": "장 부장의 배정 방식에 따른 D부서 최종 예산은?|600만원|660만원|700만원|800만원",
+   "count": 2,
+   "answerNos": [
+    2
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-C115-diagnosis / RW-finance-NCS-C115-diagnosis",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 금융권형",
+   "stem": "가장 적절한 인력 배정은?|기획(A,C), 개발(B,E), 마케팅(D)|기획(A,E), 개발(B,C), 마케팅(D)|기획(A,D), 개발(B,E), 마케팅(C)|",
+   "count": 2,
+   "answerNos": [
+    3
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-C115-basic-1 / RW-finance-NCS-C115-basic-1",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 금융권형",
+   "stem": "적절한 근무조 편성은?|오전(김대리,신입A), 오후(정사원,최사원), 야간(이사원,신입B)|오전(김대리,신입A), 오후(최사원,신입B), 야간(이사원,정사원)|오",
+   "count": 2,
+   "answerNos": [
+    2
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-C115-basic-2 / RW-finance-NCS-C115-basic-2",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 금융권형",
+   "stem": "최적의 업무 배정은?|접수(민사원), 안내(강과장,신사원), 정리(홍사원)|접수(강과장), 안내(홍사원,신사원), 정리(민사원)|접수(신사원), 안내(민사원,홍사",
+   "count": 2,
+   "answerNos": [
+    4
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-C115-standard-3 / RW-finance-NCS-C115-standard-3",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 금융권형",
+   "stem": "가장 효율적인 프로젝트 배정은?|웹(김선임,이대리), 앱(박선임,윤사원), DB(조사원,한사원)|웹(박선임,조사원), 앱(김선임,윤사원), DB(이대리,한사원)|",
+   "count": 2,
+   "answerNos": [
+    4
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-C115-standard-4 / RW-finance-NCS-C115-standard-4",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 금융권형",
+   "stem": "회의 결정에 따른 최종 배치안은?|수도권3(김팀장,박대리,이사원), 영남2(정대리,한사원), 호남2(서팀장,조대리), 충청2(최팀장,문대리)|수도권3(김팀장,박대",
+   "count": 2,
+   "answerNos": [
+    4
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-C115-retry-1 / RW-finance-NCS-C115-retry-1",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 금융권형",
+   "stem": "지시사항을 반영한 최적 TF 구성은?|기획(A차장,D사원), 디자인(B대리,E사원), 운영(C대리,F사원,G사원)|기획(A차장,G사원), 디자인(B대리,D사원),",
+   "count": 2,
+   "answerNos": [
+    1
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-C115-retry-2 / RW-finance-NCS-C115-retry-2",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 금융권형",
+   "stem": "지시사항에 부합하는 교대조 편성은?|1조(김팀장,최대리,신사원), 2조(정대리,박대리,조사원), 3조(이팀장,한사원,문사원)|1조(김팀장,한사원,신사원), 2조(",
+   "count": 2,
+   "answerNos": [
+    3
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-C116-diagnosis / RW-finance-NCS-C116-diagnosis",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 금융권형",
+   "stem": "이 상황에서 각 부서별 최종 배정 예산은?|영업 400만원, 마케팅 350만원, 연구 270만원, 인사 225만원|영업 360만원, 마케팅 315만원, 연구 27",
+   "count": 2,
+   "answerNos": [
+    1
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-C116-basic-1 / RW-finance-NCS-C116-basic-1",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 금융권형",
+   "stem": "개발팀이 받게 될 노트북 대수는?|9대|10대|8대|12대",
+   "count": 2,
+   "answerNos": [
+    3
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-C116-basic-2 / RW-finance-NCS-C116-basic-2",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 금융권형",
+   "stem": "영업팀의 총 교육비 배정액은?|162.5만원|187.5만원|200만원|212.5만원",
+   "count": 2,
+   "answerNos": [
+    1
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-C116-standard-1 / RW-finance-NCS-C116-standard-1",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 금융권형",
+   "stem": "재배분 후 온라인 광고 예산은?|600만원|800만원|700만원|900만원",
+   "count": 2,
+   "answerNos": [
+    2
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-C116-standard-2 / RW-finance-NCS-C116-standard-2",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 금융권형",
+   "stem": "이 결정에 따른 잔여 예산은?|800만원|600만원|700만원|900만원",
+   "count": 2,
+   "answerNos": [
+    1
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-C116-retry-1 / RW-finance-NCS-C116-retry-1",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 금융권형",
+   "stem": "최종적으로 프로젝트 A가 사용 가능한 총 예산은?|1,200만원|1,260만원|1,360만원|1,300만원",
+   "count": 2,
+   "answerNos": [
+    4
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-C116-retry-2 / RW-finance-NCS-C116-retry-2",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 금융권형",
+   "stem": "최종적으로 A부서에 배정되는 장비 대수는?|5대|4대|6대|7대",
+   "count": 2,
+   "answerNos": [
+    2
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-C137-diagnosis / RW-finance-NCS-C137-diagnosis / RW-enterprise-NCS-C137-diagnosis",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 금융권형 / 대기업형",
+   "stem": "김○○씨의 첫 번째 대응으로 가장 적절한 것은?|배송업체 사정으로 지연된 것이므로 저희 책임이 아니라고 설명드린다|내일 오전 배송 예정이니 조금만 더 기다려달라고",
+   "count": 3,
+   "answerNos": [
+    4
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-C138-diagnosis / RW-finance-NCS-C138-diagnosis / RW-enterprise-NCS-C138-diagnosis",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 금융권형 / 대기업형",
+   "stem": "신입사원 김민수는 고객센터에서 근무 중이다. 화가 난 고객이 전화를 걸어와 \"지난주에 주문한 상품이 아직도 안 왔어요! 약속 시간도 어겼고, 연락도 없고... 이",
+   "count": 3,
+   "answerNos": [
+    2
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-C145-diagnosis / RW-enterprise-NCS-C145-diagnosis",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 대기업형",
+   "stem": "이 작업에 가장 적합한 도구와 그 이유는?|핸드드릴 - 수동 조작으로 섬세한 작업이 가능함|천공기 - 두꺼운 철판 가공에 특화되어 있음|절단기 - 구멍 형태로 절",
+   "count": 2,
+   "answerNos": [
+    4
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-C146-diagnosis / RW-enterprise-NCS-C146-diagnosis",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 대기업형",
+   "stem": "김대리가 모든 조건을 만족하는 펌프로 선택해야 할 것은?|B형 펌프만 가능하다|A형과 C형이 가능하다|A형 펌프만 가능하다|A형과 B형이 가능하다",
+   "count": 2,
+   "answerNos": [
+    3
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-C146-basic-1 / RW-enterprise-NCS-C146-basic-1",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 대기업형",
+   "stem": "기존 벨트와 호환 가능한 제품은?|제품 X만 가능|제품 X, Y 가능|제품 Y, Z 가능|제품 Y만 가능",
+   "count": 2,
+   "answerNos": [
+    4
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-C146-basic-2 / RW-enterprise-NCS-C146-basic-2",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 대기업형",
+   "stem": "정비가 필요한 모터는?|모터 B, C|모터 B만|모터 A, C|모든 모터",
+   "count": 2,
+   "answerNos": [
+    1
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-C146-standard-1 / RW-enterprise-NCS-C146-standard-1",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 대기업형",
+   "stem": "모든 설계 요구사항을 만족하는 것은?|기어셋 Q만|기어셋 P, Q|기어셋 Q, R|기어셋 P만",
+   "count": 2,
+   "answerNos": [
+    4
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-C146-standard-2 / RW-enterprise-NCS-C146-standard-2",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 대기업형",
+   "stem": "목표 처리량 달성을 위한 최적안은?|안 A|안 B|안 A, B 모두 가능|안 B, C 모두 가능",
+   "count": 2,
+   "answerNos": [
+    2
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-C146-retry-1 / RW-enterprise-NCS-C146-retry-1",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 대기업형",
+   "stem": "모든 조건을 종합한 최적 선택은?|제품 Alpha가 최적|제품 Gamma가 최적|Alpha와 Beta 모두 적합|제품 Beta가 최적",
+   "count": 2,
+   "answerNos": [
+    4
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-C146-retry-2 / RW-enterprise-NCS-C146-retry-2",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 대기업형",
+   "stem": "설계 조건을 완전히 만족하는 펌프는?|P-100만 적합|적합한 펌프 없음|P-100, P-300 적합|P-200, P-300 적합",
+   "count": 2,
+   "answerNos": [
+    2
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-C147-diagnosis / RW-enterprise-NCS-C147-diagnosis",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 대기업형",
+   "stem": "이 상황에서 각 LED 조명의 소비전력을 계산한 결과는?|22W|11W|110W|220W",
+   "count": 2,
+   "answerNos": [
+    2
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-C148-diagnosis / RW-enterprise-NCS-C148-diagnosis",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 대기업형",
+   "stem": "설계 요구사항에 가장 적합한 재료와 그 이유는?|B재료 - 가격 대비 성능이 균형적이어서 경제적|C재료 - 인장강도가 가장 높아 안전성 확보 가능|추가 표면처리를",
+   "count": 2,
+   "answerNos": [
+    4
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-NEW-자원관리-055 / RW-finance-NCS-NEW-자원관리-055",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 금융권형",
+   "stem": "다음 중 예산 자원을 올바르게 관리하는 방법을 모두 고르시오.|업무 시작 전 필요한 예산을 사전에 파악하고 계획한다.|영수증과 지출 내역을 매번 기록하지 않아도 ",
+   "count": 2,
+   "answerNos": [
+    0
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-NEW-자원관리-056 / RW-finance-NCS-NEW-자원관리-056",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 금융권형",
+   "stem": "다음 중 인적 자원을 효율적으로 활용하는 방법으로 올바른 것을 모두 고르시오.|팀원의 역량과 전문성을 파악하여 적합한 업무를 배분한다.|특정 팀원에게만 업무를 집",
+   "count": 2,
+   "answerNos": [
+    0
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-NEW-자원관리-057 / RW-finance-NCS-NEW-자원관리-057",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 금융권형",
+   "stem": "다음 중 물적 자원(장비·소모품)을 올바르게 관리하는 방법을 모두 고르시오.|사용 후 제자리에 반납하고 사용 기록을 남긴다.|소모품이 부족해진 후에야 주문하여 재",
+   "count": 2,
+   "answerNos": [
+    0
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-NEW-자원관리-058 / RW-finance-NCS-NEW-자원관리-058",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 금융권형",
+   "stem": "다음 중 신입사원이 자원관리 역량을 향상시키기 위해 실천할 수 있는 방법으로 올바른 것을 모두 고르시오.|매일 업무 일지를 작성하여 시간 사용 패턴을 파악한다.|",
+   "count": 2,
+   "answerNos": [
+    0
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-INT-025 / RW-finance-NCS-INT-025 / RW-enterprise-NCS-INT-025",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 금융권형 / 대기업형",
+   "stem": "고객 불만 처리의 기본 절차로 올바른 것은?|해명→사과→해결책 제시|경청→공감→해결책 제시→사후 관리|거절→대안 제시→설득|전가→문서화→처리",
+   "count": 3,
+   "answerNos": [
+    0
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-INT-026 / RW-finance-NCS-INT-026 / RW-enterprise-NCS-INT-026",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 금융권형 / 대기업형",
+   "stem": "협상에서 BATNA(최선의 대안)를 알아야 하는 이유는?|상대방을 압박하기 위해|협상 결렬 시 취할 최선의 행동을 파악하기 위해|협상을 빨리 끝내기 위해|상대방 ",
+   "count": 3,
+   "answerNos": [
+    0
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-INT-031 / RW-finance-NCS-INT-031 / RW-enterprise-NCS-INT-031",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 금융권형 / 대기업형",
+   "stem": "고객 서비스의 품질을 높이기 위한 방법으로 옳은 것을 모두 고른 것은? ①고객 요구사항 파악 ②신속한 응대 ③개인화된 서비스 ④불만 무시|①②③|①②④|②③④|①",
+   "count": 3,
+   "answerNos": [
+    1
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-INT-033 / RW-finance-NCS-INT-033 / RW-enterprise-NCS-INT-033",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 금융권형 / 대기업형",
+   "stem": "협상의 기본 원칙으로 옳은 것을 모두 고른 것은? ①상호 이익 추구 ②사람과 문제 분리 ③객관적 기준 사용 ④일방적 강요|①②③|①②④|②③④|①②③④",
+   "count": 3,
+   "answerNos": [
+    1
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-TECH-018 / RW-enterprise-NCS-TECH-018",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 대기업형",
+   "stem": "기술 능력의 구성 요소가 아닌 것은?|기술 이해 능력|기술 선택 능력|기술 적용 능력|기술 판매 능력",
+   "count": 2,
+   "answerNos": [
+    0
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-TECH-020 / RW-enterprise-NCS-TECH-020",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 대기업형",
+   "stem": "기술 매뉴얼을 효과적으로 활용하기 위한 방법으로 가장 적절한 것은?|한 번 읽고 기억에 의존한다|목차를 활용하여 필요한 부분을 찾는다|매뉴얼 없이 직접 장비를 조",
+   "count": 2,
+   "answerNos": [
+    0
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-TECH-021 / RW-enterprise-NCS-TECH-021",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 대기업형",
+   "stem": "지식재산권의 종류 중 산업재산권에 해당하지 않는 것은?|특허권|실용신안권|저작권|상표권",
+   "count": 2,
+   "answerNos": [
+    0
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-TECH-022 / RW-enterprise-NCS-TECH-022",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 대기업형",
+   "stem": "기술 시스템의 유지보수 방법 중 고장이 발생하기 전에 예방하는 방식은?|사후 보전|예방 보전|긴급 보전|임시 보전",
+   "count": 2,
+   "answerNos": [
+    0
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-TECH-023 / RW-enterprise-NCS-TECH-023",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 대기업형",
+   "stem": "친환경 기술의 목표로 가장 적합한 것은?|최대 생산량 달성|환경 부하 최소화|에너지 소비 극대화|자원의 무한 사용",
+   "count": 2,
+   "answerNos": [
+    0
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-TECH-025 / RW-enterprise-NCS-TECH-025",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 대기업형",
+   "stem": "제조 현장에서 5S 활동 중 '정리'의 의미는?|필요한 것과 불필요한 것을 구분하여 불필요한 것을 제거|필요한 것을 사용하기 쉽게 배치|작업장을 깨끗하게 청소|정",
+   "count": 2,
+   "answerNos": [
+    0
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-TECH-028 / RW-enterprise-NCS-TECH-028",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 대기업형",
+   "stem": "기술 선택 시 고려해야 할 요소로 옳은 것을 모두 고른 것은? ①비용 대비 효과 ②기술의 신뢰성 ③적용 용이성 ④기술의 복잡성만 추구|①②③|①②④|②③④|①②③",
+   "count": 2,
+   "answerNos": [
+    1
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-TECH-029 / RW-enterprise-NCS-TECH-029",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 대기업형",
+   "stem": "스마트 팩토리(Smart Factory)의 특징으로 옳은 것을 모두 고른 것은? ①자동화 생산 시스템 ②실시간 데이터 분석 ③IoT 기반 연결 ④완전 수작업 생산",
+   "count": 2,
+   "answerNos": [
+    1
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-TECH-030 / RW-enterprise-NCS-TECH-030",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 대기업형",
+   "stem": "기술 개발의 단계를 올바르게 나열한 것은? ①기초연구 ②응용연구 ③개발연구 ④상업화|①②③④|②①③④|③①②④|④③②①",
+   "count": 2,
+   "answerNos": [
+    1
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-TECH-031 / RW-enterprise-NCS-TECH-031",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 대기업형",
+   "stem": "지속가능한 기술 개발의 원칙으로 옳은 것을 모두 고른 것은? ①자원 절약 ②환경 보호 ③사회적 책임 ④단기 이익만 추구|①②③|①②④|②③④|①②③④",
+   "count": 2,
+   "answerNos": [
+    1
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-TECH-033 / RW-enterprise-NCS-TECH-033",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 대기업형",
+   "stem": "기술 혁신의 유형으로 옳은 것을 모두 고른 것은? ①제품 혁신 ②프로세스 혁신 ③조직 혁신 ④현상 유지|①②③|①②④|②③④|①②③④",
+   "count": 2,
+   "answerNos": [
+    1
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-TECH-034 / RW-enterprise-NCS-TECH-034",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 대기업형",
+   "stem": "직업 현장에서 신기술 도입 시 고려 사항으로 옳은 것을 모두 고른 것은? ①직원 교육 및 훈련 ②기존 시스템과의 호환성 ③도입 비용과 편익 분석 ④무조건 최신 기",
+   "count": 2,
+   "answerNos": [
+    1
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-TECH-035 / RW-enterprise-NCS-TECH-035",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 대기업형",
+   "stem": "에너지 효율 향상 방법으로 옳은 것을 모두 고른 것은? ①LED 조명 사용 ②불필요한 장비 전원 차단 ③에너지 효율 등급 높은 제품 구매 ④노후 장비 계속 사용|",
+   "count": 2,
+   "answerNos": [
+    1
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-TECH-036 / RW-enterprise-NCS-TECH-036",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 대기업형",
+   "stem": "품질관리 도구 중 7가지 기본 도구로 옳은 것을 모두 고른 것은? ①체크시트 ②히스토그램 ③파레토도 ④간트차트|①②③|①②④|②③④|①②③④",
+   "count": 2,
+   "answerNos": [
+    1
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-TECH-037 / RW-enterprise-NCS-TECH-037",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 대기업형",
+   "stem": "기술 문서의 종류로 옳은 것을 모두 고른 것은? ①작업 지시서 ②제품 매뉴얼 ③기술 규격서 ④일반 소설|①②③|①②④|②③④|①②③④",
+   "count": 2,
+   "answerNos": [
+    1
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-TECH-038 / RW-enterprise-NCS-TECH-038",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 대기업형",
+   "stem": "로봇 공학의 3원칙(아시모프의 로봇 법칙)에 대한 설명으로 옳은 것은?|로봇은 항상 사람보다 우선시된다|로봇은 인간을 해치지 않아야 한다|로봇은 자율적으로 전쟁에",
+   "count": 2,
+   "answerNos": [
+    2
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-TECH-039 / RW-enterprise-NCS-TECH-039",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 대기업형",
+   "stem": "혁신 기술의 수명 주기를 순서대로 나열한 것은? ①도입기 ②성장기 ③성숙기 ④쇠퇴기|①②③④|②①③④|③①②④|④①②③",
+   "count": 2,
+   "answerNos": [
+    1
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-NCS-TECH-042 / RW-enterprise-NCS-TECH-042",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 대기업형",
+   "stem": "3D 프린팅 기술의 장점으로 옳은 것을 모두 고른 것은? ①맞춤형 제품 제작 가능 ②복잡한 형상 구현 ③소량 생산에 경제적 ④대량 생산 시 가장 저렴|①②③|①②",
+   "count": 2,
+   "answerNos": [
+    1
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-RW-SUP-TOOL-01 / RW-enterprise-RW-SUP-TOOL-01",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 대기업형",
+   "stem": "볼트를 정해진 조임값으로 체결해야 할 때 가장 적절한 공구는?|토크 렌치|니퍼|쇠톱|줄자",
+   "count": 2,
+   "answerNos": [
+    1
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-RW-SUP-TOOL-02 / RW-enterprise-RW-SUP-TOOL-02",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 대기업형",
+   "stem": "부품의 바깥지름을 일반 자보다 정밀하게 측정할 때 적절한 도구는?|버니어 캘리퍼스|십자드라이버|망치|몽키스패너",
+   "count": 2,
+   "answerNos": [
+    1
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-RW-SUP-ELEC-01 / RW-enterprise-RW-SUP-ELEC-01",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 대기업형",
+   "stem": "전압이 12V이고 저항이 6Ω인 회로의 전류는?|0.5A|2A|6A|72A",
+   "count": 2,
+   "answerNos": [
+    2
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-RW-SUP-ELEC-02 / RW-enterprise-RW-SUP-ELEC-02",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 대기업형",
+   "stem": "전기 설비를 점검하기 전 가장 먼저 해야 할 안전 조치는?|전원을 차단하고 무전압 상태를 확인함|젖은 장갑을 착용함|보호장비 없이 빠르게 점검함|회로를 임의로 단",
+   "count": 2,
+   "answerNos": [
+    1
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-RW-SUP-MAT-01 / RW-enterprise-RW-SUP-MAT-01",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 대기업형",
+   "stem": "전선의 도체 재료로 구리가 널리 쓰이는 주된 이유는?|전기전도성이 높음|빛을 완전히 차단함|물에 반드시 뜸|자석에 매우 강하게 붙음",
+   "count": 2,
+   "answerNos": [
+    1
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-RW-SUP-MAT-02 / RW-enterprise-RW-SUP-MAT-02",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 대기업형",
+   "stem": "습기가 많은 작업환경에서 재료를 고를 때 우선 확인할 특성은?|내식성|투명도|향기|종이의 평량",
+   "count": 2,
+   "answerNos": [
+    1
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-RW-SUP-CS-01 / RW-finance-RW-SUP-CS-01 / RW-enterprise-RW-SUP-CS-01",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 금융권형 / 대기업형",
+   "stem": "배송 지연으로 화가 난 고객의 전화를 받은 직후 가장 먼저 할 일은?|책임 부서를 추측해 탓함|불편을 확인하고 주문번호와 지연 사실을 정확히 파악함|규정 설명만 ",
+   "count": 3,
+   "answerNos": [
+    2
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-RW-SUP-CS-02 / RW-finance-RW-SUP-CS-02 / RW-enterprise-RW-SUP-CS-02",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 금융권형 / 대기업형",
+   "stem": "현장에서 바로 해결할 권한이 없는 고객 불만을 처리하는 방법으로 가장 적절한 것은?|가능 여부를 확인하지 않고 환불을 확약함|고객에게 다시 알아보라고 함|처리 절",
+   "count": 3,
+   "answerNos": [
+    3
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-RW-SUP-EMPATHY-01 / RW-finance-RW-SUP-EMPATHY-01 / RW-enterprise-RW-SUP-EMPATHY-01",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 금융권형 / 대기업형",
+   "stem": "동료가 '일정이 자꾸 바뀌어 준비가 어렵다'고 말했을 때 가장 적절한 경청 반응은?|다들 힘드니 참으라고 함|일정 변경 때문에 준비 시간을 확보하기 어렵다는 뜻인",
+   "count": 3,
+   "answerNos": [
+    2
+   ]
+  },
+  {
+   "code": "M3-중복문항_층간(관찰)",
+   "severity": "INFO",
+   "questionId": "RW-public-RW-SUP-EMPATHY-02 / RW-finance-RW-SUP-EMPATHY-02 / RW-enterprise-RW-SUP-EMPATHY-02",
+   "subject": "recruit-written",
+   "group": "공공기관형 / 금융권형 / 대기업형",
+   "stem": "업무 분담 갈등을 조정하는 대화 순서로 가장 적절한 것은?|상대 비난→결론 통보→기록 삭제|각자 입장 확인→공통 목표 정리→가능한 대안 비교|직급 순으로 의견 무",
+   "count": 3,
+   "answerNos": [
+    2
+   ]
+  }
+ ]
+}

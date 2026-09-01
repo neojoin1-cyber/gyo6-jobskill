@@ -1,0 +1,9 @@
+{
+  "name": "jobgo-adversarial-e2e",
+  "private": true,
+  "type": "module",
+  "description": "4.8.13 적대적 검증 전용 — 앱 저장소 package.json을 오염시키지 않으려고 분리했다.",
+  "devDependencies": {
+    "@playwright/test": "^1.62.1"
+  }
+}

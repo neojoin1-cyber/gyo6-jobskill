@@ -166,6 +166,17 @@ for (const e of entries) {
   }
 }
 
+// 기계 감사(audit-cnt-machine.mjs)가 짚은 문항은 표본 운에 맡기지 않고 반드시 넘긴다.
+// 해설 번호와 정답이 어긋난 문항은 "정답이 틀렸는가, 해설이 틀렸는가"를
+// 독립 채점 결과로만 가릴 수 있다. 라벨은 다른 문항과 같게 두어 힌트가 되지 않게 한다.
+const MACHINE_FLAGGED = new Set([
+  'RW-enterprise-NCS-C206-basic-1',
+  'RW-enterprise-NCS-C206-basic-2',
+  'RW-enterprise-NCS-C206-standard-1',
+  'RW-enterprise-NCS-C206-standard-2',
+  'RW-enterprise-NCS-C209-diagnosis',
+])
+
 // ---- 선정 ----------------------------------------------------------------
 const QUOTA = { 'job-common': 30, 'ncs-basic': 10, 'recruit-written': 30, 'cover-letter': Infinity, interview: Infinity }
 const chosen = new Map()
@@ -173,7 +184,9 @@ const chosen = new Map()
 // A층: 고위험 전수 (직무적응 likert 제외 — 정답이 존재하지 않는 성향 문항)
 for (const it of items) {
   if (it.assessmentType === 'likert') continue
-  if (it.risk.length) chosen.set(it.blind.questionId, { ...it, tier: 'A_고위험_전수' })
+  if (it.risk.length || MACHINE_FLAGGED.has(it.blind.questionId)) {
+    chosen.set(it.blind.questionId, { ...it, tier: 'A_고위험_전수' })
+  }
 }
 // B층: 층화 표본 — 층별 최소 정원을 A층 포함으로 채운다
 const byGroup = {}
@@ -219,9 +232,9 @@ const meta = {
     'B_층화_표본': '층별 최소 정원을 채우는 결정적 표본(시드 고정, 재현 가능)',
   },
   quota: { 'job-common': '공식영역별 30', 'ncs-basic': '하위능력별 10', 'recruit-written': '지원처 유형별 30', 'cover-letter': '전수', interview: '전수' },
-  excludedSubjects: {
-    'food-service': `식음료서비스 — 앱 데이터 비활성(런타임 문항 ${foodServiceBank.length}개). src/lib/foodServiceBank.js 주석에 2026-08-20 과목 제외 결정 기록됨. 의뢰서 층화 기준의 "식음료서비스 단원별 10문항"은 현재 트리에서 충족 불가.`,
-    quality: `품질경영 — 앱 데이터 비활성(단원 ${qualityPractice.units.length}개, data/quality-mgmt-practice.json meta._note에 동일 결정 기록).`,
+  excludedSubjects: {  // 소유자 결정: 두 과목은 검증 대상이 아니다
+    'food-service': `식음료서비스 — 소유자 결정으로 검증 범위에서 완전 제외(2026-09-01). 앱 데이터도 비활성 상태(런타임 문항 ${foodServiceBank.length}개, src/lib/foodServiceBank.js 주석의 2026-08-20 과목 제외 결정). 의뢰서 층화 기준의 "식음료서비스 단원별 10문항"은 이 결정에 따라 적용하지 않는다 — 결함이 아니다.`,
+    quality: `품질경영 — 소유자 결정으로 검증 범위에서 완전 제외(2026-09-01). 앱 데이터도 비활성(단원 ${qualityPractice.units.length}개, data/quality-mgmt-practice.json meta._note).`,
   },
   excludedAssessment: {
     '직무적응(likert)': '교육부 직업공통 직무적응 영역은 정오가 없는 성향형(likert)이라 정답 독립 판정 대상이 아니다.',

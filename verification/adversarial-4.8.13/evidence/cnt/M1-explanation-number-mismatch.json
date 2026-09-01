@@ -1,0 +1,62 @@
+[
+ {
+  "code": "M1-해설번호불일치",
+  "severity": "P1",
+  "questionId": "RW-enterprise-NCS-C209-diagnosis",
+  "subject": "recruit-written",
+  "group": "대기업형",
+  "stem": "위 상황에서 올바른 구매 절차는?",
+  "answerNo": 1,
+  "explanationNo": 3,
+  "answerText": "차상급자 승인받아 즉시 구매 진행",
+  "explanation": "정답 3번은 팀장 부재 시 긴급 구매 절차를 의미합니다. 구매 규정에서 긴급 상황(내일 필요)일 때 대리 결재나 예외 절차를 따르도록 정하고 있을 것으로 추론됩니다."
+ },
+ {
+  "code": "M1-해설번호불일치",
+  "severity": "P1",
+  "questionId": "RW-enterprise-NCS-C206-basic-1",
+  "subject": "recruit-written",
+  "group": "대기업형",
+  "stem": "4월 대비 5월 고객 증가율은?",
+  "answerNo": 3,
+  "explanationNo": 1,
+  "answerText": "+20.0%",
+  "explanation": "4월 대비 5월 고객 증가율을 구하는 문항입니다. 정답 1번은 지문의 B카페 2분기 고객 수 데이터를 이용하여 올바르게 계산한 결과입니다. 나머지 선택지들은 계산 오류나 월별 데이터를 잘못 해석한 것입니다."
+ },
+ {
+  "code": "M1-해설번호불일치",
+  "severity": "P1",
+  "questionId": "RW-enterprise-NCS-C206-basic-2",
+  "subject": "recruit-written",
+  "group": "대기업형",
+  "stem": "지난주 대비 이번주 생산량 증감률은?",
+  "answerNo": 5,
+  "explanationNo": 3,
+  "answerText": "-15.0%",
+  "explanation": "지난주 대비 이번주 생산량 증감률을 산출하는 문제입니다. 정답 3번은 C공장 주간 생산 현황에서 두 주간 데이터의 변화를 정확히 계산했습니다. 다른 선택지는 증감률 계산 공식을 잘못 적용한 오류입니다."
+ },
+ {
+  "code": "M1-해설번호불일치",
+  "severity": "P1",
+  "questionId": "RW-enterprise-NCS-C206-standard-1",
+  "subject": "recruit-written",
+  "group": "대기업형",
+  "stem": "3분기 실제 매출액은?",
+  "answerNo": 5,
+  "explanationNo": 2,
+  "answerText": "3,240만원",
+  "explanation": "3분기 실제 매출액을 구하는 표준 난도 문항입니다. 정답 2번은 D매장 분기별 매출 변화 자료에서 3분기 값을 올바르게 도출했습니다. 나머지 선택지는 데이터 읽기 오류 또는 계산 착오입니다."
+ },
+ {
+  "code": "M1-해설번호불일치",
+  "severity": "P1",
+  "questionId": "RW-enterprise-NCS-C206-standard-2",
+  "subject": "recruit-written",
+  "group": "대기업형",
+  "stem": "상반기 목표 달성률은?",
+  "answerNo": 4,
+  "explanationNo": 2,
+  "answerText": "55.0%",
+  "explanation": "상반기 목표 달성률을 계산하는 문제입니다. 정답 2번은 E팀 영업 성과 분석에서 실제 달성치를 목표치로 나눈 올바른 계산입니다. 다른 보기는 분자와 분모를 역순으로 계산하거나 데이터 오독한 것입니다."
+ }
+]
