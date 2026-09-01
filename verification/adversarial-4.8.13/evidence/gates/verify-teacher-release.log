@@ -1,0 +1,5 @@
+
+> gyo6-jobskill-game@1.0.0 verify:teacher-release
+> node scripts/verify-teacher-release.mjs
+
+PASS: Teacher release verification (6 shared classroom halls, 90 talks, 168 interview questions, 1030 personality items)

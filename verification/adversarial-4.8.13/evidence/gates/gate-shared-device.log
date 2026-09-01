@@ -1,0 +1,5 @@
+
+> gyo6-jobskill-game@1.0.0 gate:shared-device
+> node scripts/gate-shared-device.mjs
+
+[공용 PC 격리] 통과 - 사용자별 저장·선택 삭제·저장 후 종료·증분 콘텐츠·분산 수업 확인·진행률 중복 방지·RLS 확인

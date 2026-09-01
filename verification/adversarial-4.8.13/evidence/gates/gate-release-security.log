@@ -1,0 +1,5 @@
+
+> gyo6-jobskill-game@1.0.0 gate:release-security
+> node scripts/gate-release-security.mjs --source
+
+[출시 보안] 통과 - 소스·배포 청크에 체험 계정 자격 증명 없음

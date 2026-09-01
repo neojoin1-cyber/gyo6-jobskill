@@ -1,0 +1,5 @@
+
+> gyo6-jobskill-game@1.0.0 gate:notification-consent
+> node scripts/gate-notification-consent.mjs
+
+[notification-consent] PASS - app boot and account entry are notification-plugin-free

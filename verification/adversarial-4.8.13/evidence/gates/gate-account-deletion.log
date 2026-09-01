@@ -1,0 +1,5 @@
+
+> gyo6-jobskill-game@1.0.0 gate:account-deletion
+> node scripts/gate-account-deletion.mjs
+
+[계정 삭제] 통과 - 학생·교사 앱 내 삭제, 서버 계정·연결 데이터 삭제, 기기 사본 정리

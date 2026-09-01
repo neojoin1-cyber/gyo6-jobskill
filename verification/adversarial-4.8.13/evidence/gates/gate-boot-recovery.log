@@ -1,0 +1,5 @@
+
+> gyo6-jobskill-game@1.0.0 gate:boot-recovery
+> node scripts/gate-boot-recovery.mjs
+
+[boot-recovery] PASS - web static fallback, native pre-WebView cleanup, timeout UI, back recovery

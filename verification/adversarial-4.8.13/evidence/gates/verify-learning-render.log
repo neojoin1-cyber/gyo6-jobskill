@@ -1,0 +1,5 @@
+
+> gyo6-jobskill-game@1.0.0 verify:learning-render
+> npx esbuild scripts/audit-learning-render.mjs --bundle --platform=node --format=esm --packages=external --jsx=automatic --loader:.json=json --outfile=.cache/audit-learning-render.mjs --log-level=error && node .cache/audit-learning-render.mjs
+
+[학습화면 렌더링] 통과 — 172단원 · 원문항 1977개 · 981개 핵심 카드 · 근거 3단 연결 496개 · 능동 마무리 172개 · 3문항 형성평가 172개 · 영어 해석 31개 · 듣기 8개 · 표·그래프 7개 · 먼저 판단·정답 숨김 DOM 확인

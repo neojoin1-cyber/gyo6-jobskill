@@ -1,0 +1,5 @@
+
+> gyo6-jobskill-game@1.0.0 test
+> node scripts/gate-campus-release.mjs
+
+PASS: Skill Campus release gate (10 visual assets, 51 listening files, strict official-system boundaries)

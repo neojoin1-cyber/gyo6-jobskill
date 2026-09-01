@@ -1,0 +1,5 @@
+
+> gyo6-jobskill-game@1.0.0 gate:pwa-entry
+> node scripts/gate-pwa-entry.mjs
+
+[통과] 체험·정식 진입 분리 및 PWA 설치 흐름

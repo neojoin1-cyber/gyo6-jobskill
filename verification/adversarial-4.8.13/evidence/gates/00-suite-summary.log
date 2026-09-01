@@ -1,0 +1,30 @@
+===== npm run test =====
+exit=0 test
+===== npm run prebuild =====
+exit=0 prebuild
+===== npm run verify:explanation-consistency =====
+exit=0 verify:explanation-consistency
+===== npm run gate:questions =====
+exit=0 gate:questions
+===== npm run verify:teacher-release =====
+exit=0 verify:teacher-release
+===== npm run verify:learning-render =====
+exit=0 verify:learning-render
+===== npm run gate:promotion-promises =====
+exit=0 gate:promotion-promises
+===== npm run gate:shared-device =====
+exit=0 gate:shared-device
+===== npm run gate:trial-isolation =====
+exit=0 gate:trial-isolation
+===== npm run gate:release-security =====
+exit=0 gate:release-security
+===== npm run gate:account-deletion =====
+exit=0 gate:account-deletion
+===== npm run gate:boot-recovery =====
+exit=0 gate:boot-recovery
+===== npm run gate:notification-consent =====
+exit=0 gate:notification-consent
+===== npm run gate:pwa-entry =====
+exit=0 gate:pwa-entry
+
+[exited with code 0]
