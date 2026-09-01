@@ -53,6 +53,7 @@ const lessonCoachSource = await readFile(new URL('../src/screens/teacher/Teacher
 const teacherLearningSource = await readFile(new URL('../src/screens/teacher/TeacherLearningPreview.jsx', import.meta.url), 'utf8')
 const teacherWorkspaceSource = await readFile(new URL('../src/screens/teacher/TeacherWorkspace.jsx', import.meta.url), 'utf8')
 const learningPresenceSource = await readFile(new URL('../src/lib/learningPresence.js', import.meta.url), 'utf8')
+const learningPresenceContextSource = await readFile(new URL('../src/lib/learningPresenceContext.js', import.meta.url), 'utf8')
 check(studentShellSource.includes('<WrongAnswerScreen profile={profile} demo={Boolean(isTrial)} />'), '학생 체험 성장 화면에 체험 상태 전달 누락')
 check(wrongScreenSource.includes('demo ? DEMO_WRONG_ROWS : []') && wrongScreenSource.includes('if (!profile?.id)'), '체험 오답 예시 또는 프로필 없는 상태 보호 누락')
 check(missionCreateSource.includes("id: 'cover-letter'") && missionCreateSource.includes('COVER_DIAGNOSTIC_QUESTIONS'), '교사 자기소개서 미션 출제 누락')
@@ -63,7 +64,8 @@ for (const label of ['접속', '벗어남', '확인 필요', '미접속']) check
 check(teacherWorkspaceSource.includes('rpc_class_live') && teacherWorkspaceSource.includes('30_000'), '자율학습 현재 상태 30초 자동 갱신 누락')
 for (const label of ['지금 학습 중', '잠시 벗어남', '오늘 학습함', '시작 전']) check(teacherWorkspaceSource.includes(label), `자율학습 상태 ${label} 표시 누락`)
 check(studentShellSource.includes('자율학습 연결') && studentShellSource.includes('현재 학습 영역과 접속 상태'), '학생에게 자율학습 연결 범위를 알리는 고지 누락')
-check(['subject:', 'mode:', 'area:', 'lesson:', 'label:'].every(key => learningPresenceSource.includes(key)) && !learningPresenceSource.includes('answer:') && !learningPresenceSource.includes('keyInput'), '자율학습 연결이 공개 학습 맥락 외 답안·키 입력까지 전송할 위험')
+const learningPresenceContract = `${learningPresenceSource}\n${learningPresenceContextSource}`
+check(['subject:', 'mode:', 'area:', 'lesson:', 'label:'].every(key => learningPresenceContract.includes(key)) && !learningPresenceContract.includes('answer:') && !learningPresenceContract.includes('keyInput'), '자율학습 연결이 공개 학습 맥락 외 답안·키 입력까지 전송할 위험')
 
 if (failures.length) {
   console.error(`[홍보 약속 계약] 실패 ${failures.length}건`)

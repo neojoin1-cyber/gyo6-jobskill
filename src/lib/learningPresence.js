@@ -1,4 +1,5 @@
 import { supabase } from './supabase.js'
+import { normalizeLearningPresenceContext } from './learningPresenceContext.js'
 
 const PING_MS = 150_000
 const jitter = () => PING_MS * (0.85 + Math.random() * 0.3)
@@ -8,23 +9,6 @@ let timer = null
 let context = {}
 let lastKey = ''
 let bound = false
-
-function publicContext(value = {}) {
-  const label = [
-    value.subjectLabel,
-    value.modeLabel,
-    value.areaLabel,
-    value.lessonLabel,
-  ].filter(Boolean).join(' · ')
-
-  return {
-    subject: value.subject || null,
-    mode: value.mode || null,
-    area: value.area || value.areaId || null,
-    lesson: value.lesson || value.lessonId || null,
-    label: label || '학습관 탐색',
-  }
-}
 
 function stateNow() {
   return document.visibilityState === 'visible' ? 'active' : 'away'
@@ -61,7 +45,7 @@ function bindLifecycle() {
 }
 
 export function startLearningPresence(value) {
-  context = publicContext(value)
+  context = normalizeLearningPresenceContext(value)
   enabled = true
   bindLifecycle()
   ping(stateNow(), true)
@@ -69,7 +53,7 @@ export function startLearningPresence(value) {
 }
 
 export function updateLearningPresence(value) {
-  const next = publicContext(value)
+  const next = normalizeLearningPresenceContext(value)
   if (JSON.stringify(next) === JSON.stringify(context)) return
   context = next
   if (enabled) ping(stateNow(), true)
