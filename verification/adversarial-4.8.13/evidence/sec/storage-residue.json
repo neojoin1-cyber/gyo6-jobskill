@@ -1,0 +1,198 @@
+{
+ "_meta": {
+  "baseline": "ee6aee89abf8",
+  "대상": "https://gyo6.kr/apps/sugar-salt/"
+ },
+ "1_체험중_저장소": {
+  "localStorage": {
+   "gyo6.theme": {
+    "길이": 5,
+    "포함": []
+   },
+   "sst.user.00864a76-da0f-430e-968a-ab7dd326e246.__device_meta__": {
+    "길이": 264,
+    "포함": []
+   },
+   "sst.user.00864a76-da0f-430e-968a-ab7dd326e246.sst.student.learning.routes.v1": {
+    "길이": 189,
+    "포함": []
+   },
+   "sst.user.00864a76-da0f-430e-968a-ab7dd326e246.sst.cached-profile": {
+    "길이": 218,
+    "포함": [
+     "UUID",
+     "이름형태"
+    ]
+   },
+   "sst.legacy-owner": {
+    "길이": 36,
+    "포함": [
+     "UUID"
+    ]
+   },
+   "sst.user.00864a76-da0f-430e-968a-ab7dd326e246.sst.identity.last-verified": {
+    "길이": 24,
+    "포함": []
+   }
+  },
+  "sessionStorage": {
+   "sst.auth.tab-id": {
+    "길이": 36,
+    "포함": [
+     "UUID"
+    ]
+   },
+   "sugar-salt-auth-dcdcaaf7-67c6-4d26-99c2-42727acfe61d": {
+    "길이": 600,
+    "포함": [
+     "인증토큰"
+    ]
+   },
+   "sst.local-user-id": {
+    "길이": 36,
+    "포함": [
+     "UUID"
+    ]
+   },
+   "sst.public-trial.session": {
+    "길이": 58,
+    "포함": []
+   }
+  },
+  "indexedDB": [
+   "workbox-expiration"
+  ],
+  "caches": [
+   "workbox-precache-v2-https://gyo6.kr/apps/sugar-salt/",
+   "gyo6-content"
+  ],
+  "쿠키유무": true
+ },
+ "2_체험종료후_저장소": {
+  "종료버튼눌림": true,
+  "localStorage": {
+   "gyo6.theme": {
+    "길이": 5,
+    "포함": []
+   },
+   "sst.user.00864a76-da0f-430e-968a-ab7dd326e246.sst.student.learning.routes.v1": {
+    "길이": 189,
+    "포함": []
+   },
+   "sst.user.00864a76-da0f-430e-968a-ab7dd326e246.__device_meta__": {
+    "길이": 100,
+    "포함": []
+   },
+   "sst.legacy-owner": {
+    "길이": 36,
+    "포함": [
+     "UUID"
+    ]
+   }
+  },
+  "sessionStorage": {
+   "sst.auth.tab-id": {
+    "길이": 36,
+    "포함": [
+     "UUID"
+    ]
+   }
+  },
+  "indexedDB": [
+   "workbox-expiration"
+  ],
+  "caches": [
+   "workbox-precache-v2-https://gyo6.kr/apps/sugar-salt/",
+   "gyo6-content"
+  ],
+  "쿠키유무": true,
+  "남은키": [
+   "gyo6.theme",
+   "sst.user.00864a76-da0f-430e-968a-ab7dd326e246.sst.student.learning.routes.v1",
+   "sst.user.00864a76-da0f-430e-968a-ab7dd326e246.__device_meta__",
+   "sst.legacy-owner"
+  ],
+  "사라진키": [
+   "sst.user.00864a76-da0f-430e-968a-ab7dd326e246.sst.cached-profile",
+   "sst.user.00864a76-da0f-430e-968a-ab7dd326e246.sst.identity.last-verified"
+  ]
+ },
+ "3_종료후_앱직접진입": {
+  "로그인화면인가": true,
+  "학습화면인가": true,
+  "본문": "설탕과소금\n특성화고 · 마이스터고 취업 학습 플랫폼\n제작·검수 기간 무제한\n계정 입력 없이 바로 체험\n학\n학생 체험\n학습·문제·오답 흐름\n교\n교사 체험\n수업·학급·지도 흐름\n체험 기록 저장 안 됨 · 실제 학교 데이터와 분리\n🎒\n학생이에요\n오늘 학습하고 XP 쌓기\n›\n🏫\n선생님이에요\n학급 관리 · 수업자료 · 미션 배정\n›\n학교관리자·운영자도 선생님으로 들어오시면 됩니다",
+  "저장소": {
+   "gyo6.theme": {
+    "길이": 5,
+    "포함": []
+   },
+   "sst.user.00864a76-da0f-430e-968a-ab7dd326e246.sst.student.learning.routes.v1": {
+    "길이": 189,
+    "포함": []
+   },
+   "sst.user.00864a76-da0f-430e-968a-ab7dd326e246.__device_meta__": {
+    "길이": 100,
+    "포함": []
+   },
+   "sst.legacy-owner": {
+    "길이": 36,
+    "포함": [
+     "UUID"
+    ]
+   }
+  }
+ },
+ "4_계정전환후": {
+  "현재화면": "교사 화면",
+  "이전학생흔적_남은키": [
+   "sst.user.00864a76-da0f-430e-968a-ab7dd326e246.__device_meta__",
+   "sst.legacy-owner",
+   "gyo6.theme",
+   "sst.user.00864a76-da0f-430e-968a-ab7dd326e246.sst.student.learning.routes.v1"
+  ],
+  "저장소": {
+   "sst.user.00864a76-da0f-430e-968a-ab7dd326e246.__device_meta__": {
+    "길이": 100,
+    "포함": []
+   },
+   "sst.user.9c48abf8-6962-4b45-948c-1cf153ca81b1.sst.cached-profile": {
+    "길이": 217,
+    "포함": [
+     "UUID",
+     "이름형태"
+    ]
+   },
+   "sst.legacy-owner": {
+    "길이": 36,
+    "포함": [
+     "UUID"
+    ]
+   },
+   "gyo6.theme": {
+    "길이": 5,
+    "포함": []
+   },
+   "sst.user.00864a76-da0f-430e-968a-ab7dd326e246.sst.student.learning.routes.v1": {
+    "길이": 189,
+    "포함": []
+   },
+   "sst.user.9c48abf8-6962-4b45-948c-1cf153ca81b1.sst.identity.last-verified": {
+    "길이": 24,
+    "포함": []
+   },
+   "sst.user.9c48abf8-6962-4b45-948c-1cf153ca81b1.__device_meta__": {
+    "길이": 174,
+    "포함": []
+   }
+  }
+ },
+ "5_네트워크_민감정보": {
+  "의심응답수": 0,
+  "목록": []
+ },
+ "6_콘솔": {
+  "오류": [],
+  "경고": [],
+  "페이지오류": []
+ }
+}
