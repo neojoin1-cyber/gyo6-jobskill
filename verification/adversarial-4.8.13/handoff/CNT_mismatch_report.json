@@ -1,0 +1,1862 @@
+{
+ "summary": {
+  "agree": 2009,
+  "mismatch": 110,
+  "unresolved": 38
+ },
+ "mismatch": [
+  {
+   "id": "IV-A02-2",
+   "subject": "interview",
+   "mine": [
+    2
+   ],
+   "app": [
+    1
+   ],
+   "conf": "medium",
+   "flags": [
+    "commonsense_dispute"
+   ],
+   "why": "복합·상황 질문도 통상 1~2분 내로 답하도록 권장되므로 3분은 과도해 거짓이다."
+  },
+  {
+   "id": "IV-A28-1",
+   "subject": "interview",
+   "mine": [
+    4
+   ],
+   "app": [
+    2
+   ],
+   "conf": "high",
+   "flags": [
+    "choices_not_parallel",
+    "truncated"
+   ],
+   "why": "메라비언의 7-38-55 법칙에서 비언어적 요소는 55%다."
+  },
+  {
+   "id": "IV-A32-3",
+   "subject": "interview",
+   "mine": [
+    1
+   ],
+   "app": [
+    2
+   ],
+   "conf": "medium",
+   "flags": [],
+   "why": "갈등 조정은 먼저 양측 의견을 경청한 뒤 상황을 파악하고 공통점·대안·합의로 나아간다."
+  },
+  {
+   "id": "IV-A41-3",
+   "subject": "interview",
+   "mine": [
+    3
+   ],
+   "app": [
+    4
+   ],
+   "conf": "medium",
+   "flags": [
+    "ambiguous_stem"
+   ],
+   "why": "마무리는 감사 표현으로 열고 역질문으로 관심을 보인 뒤 입사 의지를 재확인하고 인사로 닫는 흐름이 자연스럽다."
+  },
+  {
+   "id": "IV-A22-2",
+   "subject": "interview",
+   "mine": [
+    4
+   ],
+   "app": [
+    3
+   ],
+   "conf": "medium",
+   "flags": [
+    "choices_not_parallel",
+    "multiple_correct"
+   ],
+   "why": "학업 성취도는 상황판단 면접의 평가 포인트가 아니다."
+  },
+  {
+   "id": "IV-A23-2",
+   "subject": "interview",
+   "mine": [
+    1
+   ],
+   "app": [
+    2
+   ],
+   "conf": "medium",
+   "flags": [
+    "commonsense_dispute"
+   ],
+   "why": "이 과정의 우선순위 원칙은 안전·고객을 조직 내부 목표보다 앞에 두므로 O로 판단된다."
+  },
+  {
+   "id": "C11-10-Q02-LEARN-V1",
+   "subject": "job-common",
+   "mine": [
+    3
+   ],
+   "app": [
+    2
+   ],
+   "conf": "medium",
+   "flags": [
+    "ambiguous_stem",
+    "multiple_correct"
+   ],
+   "why": "A는 최소주문 300장, B는 납기 4일, C는 단가 55원으로 탈락해 E업체만 남지만 D업체(납기2일·48원·최소1000장)도 문자 그대로는 조건을 충족한다."
+  },
+  {
+   "id": "C19-18-Q02-LEARN-V1",
+   "subject": "job-common",
+   "mine": [
+    5
+   ],
+   "app": [
+    2
+   ],
+   "conf": "medium",
+   "flags": [
+    "commonsense_dispute"
+   ],
+   "why": "핵심 모집 활동인 과제2가 최우선이고 선착순이라 놓치면 되돌릴 수 없는 과제3, 이어 연례 반복 업무인 과제1, 수시 업무인 과제4 순이나 마감이 내일인 과제1의 순서는 논쟁적이다."
+  },
+  {
+   "id": "C21-20-Q07",
+   "subject": "job-common",
+   "mine": [
+    1
+   ],
+   "app": [
+    4
+   ],
+   "conf": "medium",
+   "flags": [
+    "commonsense_dispute",
+    "multiple_correct"
+   ],
+   "why": "실제 거래 가능한 견적을 받아 비교하는 것이 가격 검증의 1차 자료 확보 방법이나 가격비교 사이트 활용안도 타당해 경합한다."
+  },
+  {
+   "id": "C21-20-Q07-LEARN-V1",
+   "subject": "job-common",
+   "mine": [
+    1
+   ],
+   "app": [
+    2
+   ],
+   "conf": "medium",
+   "flags": [
+    "commonsense_dispute",
+    "multiple_correct"
+   ],
+   "why": "기존 거래처와 신규 업체의 실제 견적을 비교하는 것이 가장 신뢰도 높은 1차 검증이나 가격비교 사이트 절차와 경합한다."
+  },
+  {
+   "id": "C23-22-Q02-LEARN-V1",
+   "subject": "job-common",
+   "mine": [
+    5
+   ],
+   "app": [
+    1
+   ],
+   "conf": "low",
+   "flags": [
+    "multiple_correct",
+    "ambiguous_stem"
+   ],
+   "why": "프런트 업무의 성패를 직접 좌우하고 관심도도 높은 투숙객이 핵심 이해관계자로 보이지만 평가·지시 권한을 가진 프런트 팀장도 동일 사분면에 해당해 판단이 갈린다."
+  },
+  {
+   "id": "C37-36-Q04-LEARN-V1",
+   "subject": "job-common",
+   "mine": [
+    4
+   ],
+   "app": [
+    3
+   ],
+   "conf": "medium",
+   "flags": [
+    "commonsense_dispute"
+   ],
+   "why": "신규 사업 검토는 시장 규모로 기회를 확인한 뒤 경쟁, 내부 역량, 정책 순으로 좁혀 가는 것이 일반적이다."
+  },
+  {
+   "id": "NCSX-v2-C135-Q01",
+   "subject": "ncs-basic",
+   "mine": [
+    3
+   ],
+   "app": [
+    2
+   ],
+   "conf": "medium",
+   "flags": [
+    "multiple_correct",
+    "commonsense_dispute"
+   ],
+   "why": "박팀장은 두 의견 모두 타당하다고 인정한 뒤 예산·효과 검토로 함께 갈 길을 찾자고 했으므로 양측 의견을 종합한 절충안 모색에 해당한다."
+  },
+  {
+   "id": "NCSX-v2-C151-Q01",
+   "subject": "ncs-basic",
+   "mine": [
+    4
+   ],
+   "app": [
+    2
+   ],
+   "conf": "low",
+   "flags": [
+    "multiple_correct"
+   ],
+   "why": "숫자·분석 선호와 안정적 환경, 개인 집중 업무 선호를 모두 충족하는 것은 회계사무원이지만, IT 데이터 분석가(보기 2)도 분석 성향에 부합해 정답이 둘로 성립한다."
+  },
+  {
+   "id": "NCSX-v2-C125-Q06",
+   "subject": "ncs-basic",
+   "mine": [
+    2
+   ],
+   "app": [
+    3
+   ],
+   "conf": "low",
+   "flags": [
+    "multiple_correct"
+   ],
+   "why": "자율 판단 사항이므로 개인 사정을 팀장에게 설명하고 대체 기여 방안을 제안하는 것이 적절하나, 평일 시간 활용을 명시한 보기 3도 동일하게 성립한다."
+  },
+  {
+   "id": "NCSX-v1-C065-Q01",
+   "subject": "ncs-basic",
+   "mine": [
+    1
+   ],
+   "app": [
+    5
+   ],
+   "conf": "medium",
+   "flags": [
+    "multiple_correct"
+   ],
+   "why": "분기별 영업이익은 10.2/10.8/16.38/13.6억원으로 3분기가 최대이나, 4분기 이익률이 9.1→6.8로 2.3%p 하락한 보기 5도 참이다."
+  },
+  {
+   "id": "NCSX-v1-C065-Q02",
+   "subject": "ncs-basic",
+   "mine": [
+    1
+   ],
+   "app": [
+    4
+   ],
+   "conf": "high",
+   "flags": [],
+   "why": "2월 대비 3월 클릭수 감소율은 140/920 = 15.2%로 15%를 초과하고 나머지 보기는 계산상 모두 거짓이다."
+  },
+  {
+   "id": "NCSX-v1-C065-Q03",
+   "subject": "ncs-basic",
+   "mine": [
+    2
+   ],
+   "app": [
+    3
+   ],
+   "conf": "high",
+   "flags": [],
+   "why": "50명 이상인 영업(75.0%)과 기술(88.5%)의 평균은 81.75%로 80%를 넘는다."
+  },
+  {
+   "id": "NCSX-v1-C068-Q01",
+   "subject": "ncs-basic",
+   "mine": [
+    3
+   ],
+   "app": [
+    5
+   ],
+   "conf": "medium",
+   "flags": [
+    "multiple_correct"
+   ],
+   "why": "건수/시간 효율은 2분기 146.7에서 3분기 151.3으로 개선되었으나, 3분기 건수·시간이 모두 감소했다는 보기 5도 참이다."
+  },
+  {
+   "id": "NCSX-v1-C068-Q02",
+   "subject": "ncs-basic",
+   "mine": [
+    3
+   ],
+   "app": [
+    2
+   ],
+   "conf": "medium",
+   "flags": [
+    "multiple_correct",
+    "truncated"
+   ],
+   "why": "5월은 매출 52→48백만원, 방문 16→14천명으로 둘 다 감소했으며 '항상 같은 방향'이라는 보기 1은 과잉 일반화다."
+  },
+  {
+   "id": "NCSX-v1-C068-Q03",
+   "subject": "ncs-basic",
+   "mine": [
+    5
+   ],
+   "app": [
+    3
+   ],
+   "conf": "high",
+   "flags": [],
+   "why": "총 인건비 215,400만원 ÷ 55명 = 3,916만원으로 3,800만원을 초과한다."
+  },
+  {
+   "id": "NCSX-v1-C068-Q04",
+   "subject": "ncs-basic",
+   "mine": [
+    5
+   ],
+   "app": [
+    3
+   ],
+   "conf": "low",
+   "flags": [
+    "truncated",
+    "commonsense_dispute"
+   ],
+   "why": "MW당 수익이 3개년 모두 100만원으로 동일해 보기 1~4가 모두 거짓이고, 생산량과 생산단가가 매년 반대 방향으로 움직인 보기 5만 남는다."
+  },
+  {
+   "id": "NCSX-v1-C068-Q05",
+   "subject": "ncs-basic",
+   "mine": [
+    1
+   ],
+   "app": [
+    4
+   ],
+   "conf": "medium",
+   "flags": [
+    "multiple_correct",
+    "truncated"
+   ],
+   "why": "오메가3 총 판매량 4,000개로 비타민C 3,600개, 프로바이오틱스 3,500개보다 많으나 도표 배열이 뒤섞여 보기 4·5도 참이 될 수 있다."
+  },
+  {
+   "id": "NCSX-v1-C070-Q03",
+   "subject": "ncs-basic",
+   "mine": [
+    1
+   ],
+   "app": [
+    5
+   ],
+   "conf": "low",
+   "flags": [
+    "multiple_correct"
+   ],
+   "why": "목요일 음료 380잔이 최다로 참이지만 화요일 디저트 최저(보기2), 수요일 이후 증가(보기3), 객단가 700원 차이(보기5)도 모두 참이다."
+  },
+  {
+   "id": "NCSX-v1-C072-Q07",
+   "subject": "ncs-basic",
+   "mine": [
+    1
+   ],
+   "app": [
+    5
+   ],
+   "conf": "high",
+   "flags": [],
+   "why": "조건을 만족하는 월·화·수·목의 방문자 평균은 7,625명, 모바일 비중 평균은 66.25%다."
+  },
+  {
+   "id": "NCSX-v2-C141-Q06",
+   "subject": "ncs-basic",
+   "mine": [
+    1
+   ],
+   "app": [
+    3
+   ],
+   "conf": "low",
+   "flags": [
+    "ambiguous_stem",
+    "commonsense_dispute",
+    "multiple_correct"
+   ],
+   "why": "CTO가 클라이언트 운영체제 표준화를 요구했으므로 이원화(2번)는 배제되고 사무직 다수의 호환성을 고려한 Windows 11 Pro 통일이 남지만, 예산 제약과는 충돌해 확정하기 어렵다."
+  },
+  {
+   "id": "NCSX-v2-C147-Q01",
+   "subject": "ncs-basic",
+   "mine": [
+    2
+   ],
+   "app": [
+    5
+   ],
+   "conf": "high",
+   "flags": [],
+   "why": "병렬이므로 각 조명에 220V가 걸리고 P=220V×0.5A=110W다."
+  },
+  {
+   "id": "NCSX-v1-C008-Q03",
+   "subject": "ncs-basic",
+   "mine": [
+    5
+   ],
+   "app": [
+    3
+   ],
+   "conf": "medium",
+   "flags": [
+    "multiple_correct"
+   ],
+   "why": "최사원이 택배함 배송이나 재배송 신청이라는 대안을 안내했고 고객이 재배송을 선택했다."
+  },
+  {
+   "id": "NCSX-v1-C015-Q05",
+   "subject": "ncs-basic",
+   "mine": [
+    2
+   ],
+   "app": [
+    5
+   ],
+   "conf": "medium",
+   "flags": [
+    "multiple_correct",
+    "choice_overlap"
+   ],
+   "why": "(가) 매출 부진이라는 문제, (나) 구조조정이라는 해결책, (다) 장기 경쟁력 훼손이라는 부작용 지적으로 이어진다."
+  },
+  {
+   "id": "NCSX-v1-C021-Q04",
+   "subject": "ncs-basic",
+   "mine": [
+    2
+   ],
+   "app": [
+    5
+   ],
+   "conf": "high",
+   "flags": [
+    "truncated",
+    "ambiguous_stem"
+   ],
+   "why": "'준비해두었읍니다'의 '-읍니다'가 맞춤법에 어긋난다."
+  },
+  {
+   "id": "NCSX-v1-C021-Q05",
+   "subject": "ncs-basic",
+   "mine": [
+    1
+   ],
+   "app": [
+    4
+   ],
+   "conf": "high",
+   "flags": [
+    "truncated"
+   ],
+   "why": "'잘 안 되었습니다'처럼 부사 '안'과 의존명사를 띄어 쓴 1번만 바르고 나머지는 '작성할 것, 참석할 수, 마친 뒤에' 등이 붙어 있다."
+  },
+  {
+   "id": "NCSX-v1-C021-Q07",
+   "subject": "ncs-basic",
+   "mine": [
+    5
+   ],
+   "app": [
+    2
+   ],
+   "conf": "high",
+   "flags": [
+    "truncated"
+   ],
+   "why": "설거지·차근차근·슬기롭게·다정히가 바른 표기이므로 오류가 없는 문장은 5번뿐이다."
+  },
+  {
+   "id": "NCSX-v1-C022-Q02",
+   "subject": "ncs-basic",
+   "mine": [
+    1
+   ],
+   "app": [
+    4
+   ],
+   "conf": "medium",
+   "flags": [],
+   "why": "'점심시간'은 한 단어이고 다른 오류가 없어 1번이 바르며, 2·3번은 '수 있어서·할 수', 4번은 '회의 자료', 5번은 '하루 종일'로 띄어야 한다."
+  },
+  {
+   "id": "NCSX-v1-C023-Q03",
+   "subject": "ncs-basic",
+   "mine": [
+    1
+   ],
+   "app": [
+    3
+   ],
+   "conf": "medium",
+   "flags": [],
+   "why": "특정 어구를 드러낼 때는 작은따옴표를 쓰고 조사 '을'을 붙여 쓰며 '점심시간'은 한 단어이므로 1번이 적절하다."
+  },
+  {
+   "id": "NCSX-v1-C024-Q06",
+   "subject": "ncs-basic",
+   "mine": [
+    2
+   ],
+   "app": [
+    4
+   ],
+   "conf": "medium",
+   "flags": [
+    "multiple_correct",
+    "choices_not_parallel"
+   ],
+   "why": "'프리젠테이션'은 '프레젠테이션'으로 고쳐야 하나, 행정구역 단위 앞에 붙임표를 넣는 규정상 4번의 'Busan-gwangyeoksi'도 옳은 수정이어서 정답이 둘로 성립한다."
+  },
+  {
+   "id": "NCSX-v1-C024-Q07",
+   "subject": "ncs-basic",
+   "mine": [
+    2
+   ],
+   "app": [
+    5
+   ],
+   "conf": "low",
+   "flags": [
+    "commonsense_dispute"
+   ],
+   "why": "A는 '비지니스'(→비즈니스), C는 '플래폼'(→플랫폼)이 틀려 B만 남지만, 'Bak Ji-hun'처럼 관용 표기(Park)와 어긋나는 인명 표기의 인정 여부가 논쟁적이다."
+  },
+  {
+   "id": "NCSX-v1-C042-Q02",
+   "subject": "ncs-basic",
+   "mine": [
+    2
+   ],
+   "app": [
+    3
+   ],
+   "conf": "medium",
+   "flags": [
+    "multiple_correct"
+   ],
+   "why": "전략 지속을 위해 '예산 확보도 검토해야겠다'고 한 것은 그 전략에 추가 비용이 든다는 함축이다."
+  },
+  {
+   "id": "NCSX-v2-C078-Q05",
+   "subject": "ncs-basic",
+   "mine": [
+    1
+   ],
+   "app": [
+    3
+   ],
+   "conf": "medium",
+   "flags": [],
+   "why": "2시간 시한인 A(90분)를 9시에 바로 시작해야 하고 이어 냉장 C, 그다음 당일 처리 B, 마지막 내일까지 가능한 D 순이 된다."
+  },
+  {
+   "id": "NCSX-v2-C078-Q06",
+   "subject": "ncs-basic",
+   "mine": [
+    5
+   ],
+   "app": [
+    4
+   ],
+   "conf": "high",
+   "flags": [],
+   "why": "UI설계를 기획 30% 시점부터 병행하고 A팀원이 필요 없는 백엔드개발 기간에 출장을 배치해야 전체 일정 손실이 없다."
+  },
+  {
+   "id": "NCSX-v2-C078-Q07",
+   "subject": "ncs-basic",
+   "mine": [
+    1
+   ],
+   "app": [
+    5
+   ],
+   "conf": "medium",
+   "flags": [],
+   "why": "인력 4명·장비 3세트로는 A(3명·2세트)와 B(2명·1세트)를 동시에 준비할 수 없어 A를 먼저 끝내고 B, C 순으로 가야 한다."
+  },
+  {
+   "id": "NCSX-v2-C080-Q01",
+   "subject": "ncs-basic",
+   "mine": [
+    1
+   ],
+   "app": [
+    3
+   ],
+   "conf": "medium",
+   "flags": [
+    "ambiguous_stem"
+   ],
+   "why": "3일 과정·외부강사 2명은 확정, 강사료 조정과 온라인 방식은 검토, 30명 초과 시 온라인 병행은 조건부다."
+  },
+  {
+   "id": "NCSX-v2-C080-Q02",
+   "subject": "ncs-basic",
+   "mine": [
+    3
+   ],
+   "app": [
+    1
+   ],
+   "conf": "medium",
+   "flags": [
+    "multiple_correct"
+   ],
+   "why": "예산 확보 조건의 B안과 인력충원 후 검토인 C안이 조건부로 2개여서 확정(1개)·즉시(1개)보다 많다."
+  },
+  {
+   "id": "NCSX-v2-C080-Q06",
+   "subject": "ncs-basic",
+   "mine": [
+    1
+   ],
+   "app": [
+    2
+   ],
+   "conf": "low",
+   "flags": [
+    "ambiguous_stem"
+   ],
+   "why": "IT장비 이설(방안 검토 중)과 통신회선(개통일 조정 필요)만 추가 검토·조정이 명시되어 2개다."
+  },
+  {
+   "id": "NCSX-v2-C080-Q07",
+   "subject": "ncs-basic",
+   "mine": [
+    2
+   ],
+   "app": [
+    1
+   ],
+   "conf": "low",
+   "flags": [
+    "ambiguous_stem"
+   ],
+   "why": "24시간 내 1차 응답 원칙과 야간 접수·익일 처리 방침이 확정 2건, 3개월 후 평가를 전제로 우선 시행하는 등급별 차등 처리시간이 조건부 1건이다."
+  },
+  {
+   "id": "NCSX-v2-C081-Q05",
+   "subject": "ncs-basic",
+   "mine": [
+    1
+   ],
+   "app": [
+    3
+   ],
+   "conf": "medium",
+   "flags": [
+    "stem_mismatch"
+   ],
+   "why": "직급이 과장이라 임원 건강검진 대상이 아니고 근속 7년이므로 기본 지원 2종에 자녀 학자금과 해외 연수가 더해진다."
+  },
+  {
+   "id": "NCSX-v2-C081-Q07",
+   "subject": "ncs-basic",
+   "mine": [
+    2
+   ],
+   "app": [
+    5
+   ],
+   "conf": "medium",
+   "flags": [
+    "ambiguous_stem"
+   ],
+   "why": "4년차 기본 연차 13일에 개근상 3일을 더한 16일 중 8일을 써 미사용 8일이고 그 50%인 4일이 이월된다."
+  },
+  {
+   "id": "NCSX-v2-C082-Q05",
+   "subject": "ncs-basic",
+   "mine": [
+    1
+   ],
+   "app": [
+    3
+   ],
+   "conf": "medium",
+   "flags": [
+    "commonsense_dispute"
+   ],
+   "why": "김대리만 S등급+팀 기여도 우수로 선정 요건을 채웠고 이과장은 징계 이력, 박사원은 혁신 제안 1건으로 요건 미달이다."
+  },
+  {
+   "id": "NCSX-v2-C082-Q06",
+   "subject": "ncs-basic",
+   "mine": [
+    1
+   ],
+   "app": [
+    2
+   ],
+   "conf": "medium",
+   "flags": [
+    "ambiguous_stem"
+   ],
+   "why": "B는 기술 우수+최저가로 1차 선정, C는 기술 상향 후에도 요건 미달로 선정 대상이 아니어서 이 조합이 가장 근접한다."
+  },
+  {
+   "id": "NCSX-v2-C083-Q02",
+   "subject": "ncs-basic",
+   "mine": [
+    1
+   ],
+   "app": [
+    2
+   ],
+   "conf": "high",
+   "flags": [],
+   "why": "A→B→C→D→E는 B가 A 바로 다음, A가 C보다 앞, C가 D보다 앞, E가 마지막이라는 조건을 모두 만족한다."
+  },
+  {
+   "id": "NCSX-v2-C083-Q06",
+   "subject": "ncs-basic",
+   "mine": [
+    4
+   ],
+   "app": [
+    3
+   ],
+   "conf": "medium",
+   "flags": [
+    "multiple_correct"
+   ],
+   "why": "일정표 작성은 면접관 배정 완료의 결과이므로 일정표가 작성되지 않았다면 면접관 배정이 완료되지 않은 것이다."
+  },
+  {
+   "id": "NCSX-v2-C083-Q07",
+   "subject": "ncs-basic",
+   "mine": [
+    3
+   ],
+   "app": [
+    4
+   ],
+   "conf": "medium",
+   "flags": [
+    "multiple_correct"
+   ],
+   "why": "발주서 작성은 구매팀 검토 통과의 결과이므로 발주서가 없다면 검토를 통과하지 못한 것이다."
+  },
+  {
+   "id": "NCSX-v2-C084-Q05",
+   "subject": "ncs-basic",
+   "mine": [
+    4
+   ],
+   "app": [
+    2
+   ],
+   "conf": "high",
+   "flags": [],
+   "why": "VIP라 기본 배송비는 무료이지만 당일 배송 3,000원과 제주도 2,000원이 추가되어 5,000원이다."
+  },
+  {
+   "id": "NCSX-v2-C093-Q01",
+   "subject": "ncs-basic",
+   "mine": [
+    4
+   ],
+   "app": [
+    5
+   ],
+   "conf": "medium",
+   "flags": [
+    "multiple_correct"
+   ],
+   "why": "시장조사 완료로 출시 검토는 시작됐지만 예산 승인이 남아 D조건이 미충족이므로 아직 검토 단계다."
+  },
+  {
+   "id": "NCSX-v2-C093-Q04",
+   "subject": "ncs-basic",
+   "mine": [
+    3
+   ],
+   "app": [
+    2
+   ],
+   "conf": "medium",
+   "flags": [],
+   "why": "내부 승인은 팀장→부서장→임원 순인데 부서장까지 끝났으므로 다음은 임원 승인이고 이사회 승인은 그 이후다."
+  },
+  {
+   "id": "NCSX-v2-C095-Q04",
+   "subject": "ncs-basic",
+   "mine": [
+    1
+   ],
+   "app": [
+    2
+   ],
+   "conf": "medium",
+   "flags": [],
+   "why": "대기 건수가 3→2→1로 매시간 1건씩 줄어드는 추세이므로 다음 시간대는 0건이다."
+  },
+  {
+   "id": "NCSX-v2-C096-Q02",
+   "subject": "ncs-basic",
+   "mine": [
+    4
+   ],
+   "app": [
+    2
+   ],
+   "conf": "high",
+   "flags": [],
+   "why": "VIP 20% 할인(A)과 10만원 이상 무료배송(B)이 동시에 성립하는 유일한 무모순 상황이다."
+  },
+  {
+   "id": "NCSX-v2-C096-Q03",
+   "subject": "ncs-basic",
+   "mine": [
+    4
+   ],
+   "app": [
+    3
+   ],
+   "conf": "high",
+   "flags": [
+    "choice_overlap"
+   ],
+   "why": "대리급은 일반 직원이므로 조건 B의 3일 전 예약 규정을 어긴 2일 전 예약이 유일한 위반이다."
+  },
+  {
+   "id": "NCSX-v2-C106-Q04",
+   "subject": "ncs-basic",
+   "mine": [
+    2
+   ],
+   "app": [
+    3
+   ],
+   "conf": "medium",
+   "flags": [
+    "choice_overlap"
+   ],
+   "why": "매출전표 3시간, 매입현황 2시간, 재고실사 1시간으로 남은 6시간에 정확히 맞고 세무서류는 금요일까지 여유가 있다."
+  },
+  {
+   "id": "NCSX-v2-C107-Q03",
+   "subject": "ncs-basic",
+   "mine": [
+    1
+   ],
+   "app": [
+    2
+   ],
+   "conf": "high",
+   "flags": [],
+   "why": "마감이 12시로 가장 이른 월말정산(3시간)을 먼저 하고 14시 회의 준비(1시간), 17시 마감인 일일보고서(0.5시간) 순이 유일하게 모든 마감을 충족한다."
+  },
+  {
+   "id": "NCSX-v2-C107-Q05",
+   "subject": "ncs-basic",
+   "mine": [
+    5
+   ],
+   "app": [
+    4
+   ],
+   "conf": "low",
+   "flags": [
+    "ambiguous_stem",
+    "choices_not_parallel",
+    "no_correct"
+   ],
+   "why": "업무 3개에 인원 3명이므로 각자 가장 빠른 업무(X→이대리, Y→박과장, Z→김사원)를 맡으면 1일에 끝나는데, 보기 1~4는 모두 한 사람에게 중복 배정하는 무의미한 안이어서 일반 원칙을 제시한 5만 남는다."
+  },
+  {
+   "id": "NCSX-v1-C046-Q06",
+   "subject": "ncs-basic",
+   "mine": [
+    1
+   ],
+   "app": [
+    5
+   ],
+   "conf": "low",
+   "flags": [
+    "stem_mismatch",
+    "ambiguous_stem",
+    "multiple_correct"
+   ],
+   "why": "현금(1/4)의 2/3이면 1/6이지만, 카드 5/8·현금 1/4의 나머지는 1/8이어서 지문 자체가 모순되며 '실제' 상품권 비율로는 1/6이 산출된다."
+  },
+  {
+   "id": "NCSX-v1-C047-Q05",
+   "subject": "ncs-basic",
+   "mine": [
+    3
+   ],
+   "app": [
+    1
+   ],
+   "conf": "medium",
+   "flags": [
+    "ambiguous_stem"
+   ],
+   "why": "3,456,780×1.125=3,888,877.5원이므로 천원 미만을 올림하면 3,889천원이다."
+  },
+  {
+   "id": "NCSX-v1-C047-Q07",
+   "subject": "ncs-basic",
+   "mine": [
+    2
+   ],
+   "app": [
+    4
+   ],
+   "conf": "high",
+   "flags": [],
+   "why": "건당 비용이 A 17,504.48원, B 18,580.30원이므로 차이는 1,075.82원이고 원 단위 반올림하면 1,076원이다."
+  },
+  {
+   "id": "NCSX-v1-C048-Q07",
+   "subject": "ncs-basic",
+   "mine": [
+    1
+   ],
+   "app": [
+    3
+   ],
+   "conf": "high",
+   "flags": [],
+   "why": "샐러드 비중이 봄 480/1,200=40%에서 여름 750/1,500=50%로 10%p 증가했다."
+  },
+  {
+   "id": "NCSX-v1-C063-Q04",
+   "subject": "ncs-basic",
+   "mine": [
+    3
+   ],
+   "app": [
+    1
+   ],
+   "conf": "high",
+   "flags": [],
+   "why": "손익분기점이 1,600만÷8,000=2,000개에서 할인 후 1,600만÷5,000=3,200개로 1,200개 증가한다."
+  },
+  {
+   "id": "NCSX-v1-C063-Q05",
+   "subject": "ncs-basic",
+   "mine": [
+    1
+   ],
+   "app": [
+    5
+   ],
+   "conf": "high",
+   "flags": [],
+   "why": "공헌이익 10,000원으로 (1,200만+800만)÷10,000=2,000세트이고 이익률은 800만÷3,600만=22.2%이다."
+  },
+  {
+   "id": "NCSX-v1-C064-Q01",
+   "subject": "ncs-basic",
+   "mine": [
+    5
+   ],
+   "app": [
+    4
+   ],
+   "conf": "high",
+   "flags": [],
+   "why": "6+2.55+4.2+3=15.75kg이다."
+  },
+  {
+   "id": "NCSX-v1-C064-Q04",
+   "subject": "ncs-basic",
+   "mine": [
+    3
+   ],
+   "app": [
+    4
+   ],
+   "conf": "high",
+   "flags": [],
+   "why": "6.912+2.88+1.2=10.992㎥이다."
+  },
+  {
+   "id": "NCSX-v1-C064-Q06",
+   "subject": "ncs-basic",
+   "mine": [
+    1
+   ],
+   "app": [
+    2
+   ],
+   "conf": "high",
+   "flags": [],
+   "why": "259.14+262.584+397.656+320.544=1,239.924kg으로 약 1.240t이다."
+  },
+  {
+   "id": "NCSX-v3-C222-Q01",
+   "subject": "ncs-basic",
+   "mine": [
+    2
+   ],
+   "app": [
+    1
+   ],
+   "conf": "low",
+   "flags": [
+    "stem_mismatch",
+    "no_correct"
+   ],
+   "why": "A도시락 24명, 나머지 16명의 0.6은 9.6명으로 정수가 나오지 않아 문항 수치가 어긋나며 반올림하면 10명에 해당한다."
+  },
+  {
+   "id": "NCSX-v2-C089-Q04",
+   "subject": "ncs-basic",
+   "mine": [
+    5
+   ],
+   "app": [
+    1
+   ],
+   "conf": "high",
+   "flags": [],
+   "why": "내일 오전 제출인 시설점검 보고서가 가장 급하고 금요일 오후 F기업 답변, 월요일까지인 G기업 자료, 월 내인 안전교육 순이다."
+  },
+  {
+   "id": "NCSX-v2-C091-Q02",
+   "subject": "ncs-basic",
+   "mine": [
+    1
+   ],
+   "app": [
+    5
+   ],
+   "conf": "medium",
+   "flags": [
+    "commonsense_dispute"
+   ],
+   "why": "신규 고객 확보가 절실하다는 지시에 따라 SNS 광고를 전액 배정하고 남은 예산으로 이벤트를 유지하는 배분이 지시에 가장 부합한다."
+  },
+  {
+   "id": "NCSX-v2-C091-Q03",
+   "subject": "ncs-basic",
+   "mine": [
+    1
+   ],
+   "app": [
+    4
+   ],
+   "conf": "high",
+   "flags": [],
+   "why": "2,000만원으로 안전 문제인 수영장 800만원과 예약 취소를 막을 에어컨 1,200만원을 모두 전액 충족하는 유일한 안이다."
+  },
+  {
+   "id": "NCSX-v2-C091-Q06",
+   "subject": "ncs-basic",
+   "mine": [
+    5
+   ],
+   "app": [
+    4
+   ],
+   "conf": "medium",
+   "flags": [],
+   "why": "1인당 50만원 하한(개발 3,000·영업 2,000·관리 1,000)과 보안 2,000만원 이상을 지키면서 총액 12,000만원을 넘지 않고 개발부를 최대로 배정한 안이다."
+  },
+  {
+   "id": "NCSX-v2-C092-Q01",
+   "subject": "ncs-basic",
+   "mine": [
+    2
+   ],
+   "app": [
+    3
+   ],
+   "conf": "medium",
+   "flags": [
+    "ambiguous_stem"
+   ],
+   "why": "팀장이 인력 충원 없이는 불가능하다고 못 박았고 대출 이자(월 300만원)보다 수익(월 1,500만원)이 크므로 인력을 충원해 진행하는 안이 가장 유력하다."
+  },
+  {
+   "id": "NCSX-v2-C092-Q03",
+   "subject": "ncs-basic",
+   "mine": [
+    4
+   ],
+   "app": [
+    2
+   ],
+   "conf": "medium",
+   "flags": [
+    "ambiguous_stem",
+    "commonsense_dispute"
+   ],
+   "why": "가용자금 3,000만원으로는 보증금 5,000만원이 부족하지만 수익성과 상권 전망은 좋으므로 임대 조건 협상 후 결정하는 것이 현실적이다."
+  },
+  {
+   "id": "NCSX-v2-C097-Q05",
+   "subject": "ncs-basic",
+   "mine": [
+    1
+   ],
+   "app": [
+    5
+   ],
+   "conf": "low",
+   "flags": [
+    "choice_overlap",
+    "multiple_correct"
+   ],
+   "why": "모델 재계약 2,000만원은 남은 예산 1,500만원을 초과해 불가하므로 패키지 재제작과 온라인 입점에 집중해야 하나, 5번이 사실상 같은 내용이어서 정답이 배타적이지 않다."
+  },
+  {
+   "id": "NCSX-v2-C099-Q01",
+   "subject": "ncs-basic",
+   "mine": [
+    4
+   ],
+   "app": [
+    2
+   ],
+   "conf": "low",
+   "flags": [
+    "commonsense_dispute",
+    "multiple_correct"
+   ],
+   "why": "규정과 팀장 지시가 충돌하는 상황에서 신입사원은 사실관계를 고객·팀장과 재확인하고 절충안을 찾는 것이 적절하나, 규정 안내(3번)나 상위 보고(2번)도 성립할 수 있다."
+  },
+  {
+   "id": "NCSX-v2-C109-Q01",
+   "subject": "ncs-basic",
+   "mine": [
+    1
+   ],
+   "app": [
+    5
+   ],
+   "conf": "high",
+   "flags": [
+    "ambiguous_stem"
+   ],
+   "why": "확정·결정·승인된 광고비 3,500 + 인건비 2,200 + 운영비 300 = 6,000만원이고 이벤트비는 검토 단계라 제외된다."
+  },
+  {
+   "id": "NCSX-v2-C109-Q06",
+   "subject": "ncs-basic",
+   "mine": [
+    3
+   ],
+   "app": [
+    4
+   ],
+   "conf": "medium",
+   "flags": [],
+   "why": "4분기 기존 7,000만원에 검토 중인 1,500만원을 더한 8,500만원이 최대이며, 확정분 합계(7,200+8,200+5,500=20,900)와 더해도 승인된 연간 29,500만원 이내다."
+  },
+  {
+   "id": "NCSX-v2-C112-Q06",
+   "subject": "ncs-basic",
+   "mine": [
+    1
+   ],
+   "app": [
+    4
+   ],
+   "conf": "medium",
+   "flags": [],
+   "why": "상반기 매출 48억(예산 50억) 부진을 하반기 매출 예산을 52억으로 상향해 연간 100억 목표를 맞추려는 조정안이므로 1번이 사실에 부합한다."
+  },
+  {
+   "id": "NCSX-v2-C112-Q07",
+   "subject": "ncs-basic",
+   "mine": [
+    1
+   ],
+   "app": [
+    3
+   ],
+   "conf": "low",
+   "flags": [
+    "truncated",
+    "multiple_correct"
+   ],
+   "why": "4팀의 효율성지수 2.50이 가장 높아 벤치마킹 대상이라는 진술이 수치상 정확하나, 2번·3번 진술도 자료와 어긋나지 않아 배타적이지 않다."
+  },
+  {
+   "id": "NCSX-v2-C113-Q05",
+   "subject": "ncs-basic",
+   "mine": [
+    1
+   ],
+   "app": [
+    3
+   ],
+   "conf": "medium",
+   "flags": [
+    "choice_overlap"
+   ],
+   "why": "즉시 실행 결정은 고객응대 15명, 계산대 8개, 월 300만원 추가 인건비 감수이며 야간 충원과 표지판은 조건부라, 다만 3번이 같은 내용을 다르게 표현해 배타적이지 않다."
+  },
+  {
+   "id": "NCSX-v2-C114-Q03",
+   "subject": "ncs-basic",
+   "mine": [
+    1
+   ],
+   "app": [
+    5
+   ],
+   "conf": "medium",
+   "flags": [
+    "multiple_correct"
+   ],
+   "why": "필수인 CS 15시간과 제품 12시간을 배정하면 잔여 13시간이라 시스템교육 10시간만 추가 가능하나, 리더십 8시간을 넣는 5번도 시간상 가능해 배타적이지 않다."
+  },
+  {
+   "id": "NCSX-v2-C114-Q06",
+   "subject": "ncs-basic",
+   "mine": [
+    1
+   ],
+   "app": [
+    5
+   ],
+   "conf": "high",
+   "flags": [],
+   "why": "차출 가능 기존인력은 B 3명, C 3명, D 2명으로 8명이므로 부족한 2명만 신입사원으로 보완해 A사업부 10명을 채운다."
+  },
+  {
+   "id": "NCSX-v2-C114-Q07",
+   "subject": "ncs-basic",
+   "mine": [
+    5
+   ],
+   "app": [
+    4
+   ],
+   "conf": "high",
+   "flags": [],
+   "why": "연구개발 6억(25% 삭감)과 마케팅 6억을 제외한 잔여 8억을 1.5:1로 나누면 설비 4.8억, 인력개발 3.2억이다."
+  },
+  {
+   "id": "NCSX-v2-C115-Q02",
+   "subject": "ncs-basic",
+   "mine": [
+    1
+   ],
+   "app": [
+    5
+   ],
+   "conf": "medium",
+   "flags": [
+    "multiple_correct"
+   ],
+   "why": "가능 시간대·신입 분리·조별 경력자 조건을 모두 충족하면서 정사원의 오후 선호까지 반영한 편성이나, 3번·5번도 필수 제약은 위배하지 않는다."
+  },
+  {
+   "id": "NCSX-v3-C218-Q02",
+   "subject": "ncs-basic",
+   "mine": [
+    3
+   ],
+   "app": [
+    2
+   ],
+   "conf": "low",
+   "flags": [
+    "commonsense_dispute"
+   ],
+   "why": "납기 준수가 우선이라 처리시간이 20% 늘어나는 검사 강화는 어렵고, 공정 개선은 시간이 걸리지만 납기 영향 없이 목표 불량률(2.5%)을 충족하므로 가장 현실적인 개선안이다."
+  },
+  {
+   "id": "NCSX-v3-C218-Q03",
+   "subject": "ncs-basic",
+   "mine": [
+    3
+   ],
+   "app": [
+    1
+   ],
+   "conf": "low",
+   "flags": [
+    "commonsense_dispute"
+   ],
+   "why": "이사가 집중 전략을 요구했으므로 요청 그대로의 60:40이나 균등 배분이 아닌 온라인 70:오프라인 30의 집중 배분이 가장 부합하나 수치 근거는 지문에 없다."
+  },
+  {
+   "id": "NCSX-v3-C220-Q01",
+   "subject": "ncs-basic",
+   "mine": [
+    3
+   ],
+   "app": [
+    1
+   ],
+   "conf": "low",
+   "flags": [
+    "ambiguous_stem",
+    "commonsense_dispute"
+   ],
+   "why": "내년 상반기 다른 프로젝트 자금이 필요한 상황에서 '먼저 시장 진입 후 확대'라는 방침에 맞는 것은 투자비 10억·6개월인 C안이나, 자금 여건상 B안(30억)도 가능해 논쟁의 여지가 있다."
+  },
+  {
+   "id": "NCSX-v3-C220-Q06",
+   "subject": "ncs-basic",
+   "mine": [
+    4
+   ],
+   "app": [
+    2
+   ],
+   "conf": "high",
+   "flags": [],
+   "why": "대규모 공사가 어려운 제약 아래 3안으로 시작해 조건이 갖춰지면 2안을 추진하자는 결론이 제시되었다."
+  },
+  {
+   "id": "NCS-C129-basic-2",
+   "subject": "ncs-basic",
+   "mine": [
+    4
+   ],
+   "app": [
+    3
+   ],
+   "conf": "medium",
+   "flags": [
+    "commonsense_dispute"
+   ],
+   "why": "불편해도 거부하지 못하는 동료가 있는 강요 상황에서는 회피나 우회보다 문제를 제기해 강요를 멈추는 것이 공동체 윤리에 부합한다."
+  },
+  {
+   "id": "NCSX-v2-C129-Q03",
+   "subject": "ncs-basic",
+   "mine": [
+    4
+   ],
+   "app": [
+    3
+   ],
+   "conf": "medium",
+   "flags": [
+    "commonsense_dispute"
+   ],
+   "why": "동료들이 거부하지 못하는 강요 상황에서는 회피·우회보다 대변해 문제를 제기하는 것이 공동체 윤리에 부합한다."
+  },
+  {
+   "id": "NCSX-v2-C131-Q03",
+   "subject": "ncs-basic",
+   "mine": [
+    2
+   ],
+   "app": [
+    4
+   ],
+   "conf": "low",
+   "flags": [
+    "commonsense_dispute",
+    "multiple_correct",
+    "truncated"
+   ],
+   "why": "공동체 윤리 관점을 묻고 있어 동료와 고객을 위한 연장 근무 자청을 답으로 보았으나, 관리자 보고(4)나 상황 설명(3)도 정당한 대응이어서 확정하기 어렵다."
+  },
+  {
+   "id": "NCSX-v2-C131-Q06",
+   "subject": "ncs-basic",
+   "mine": [
+    4
+   ],
+   "app": [
+    2
+   ],
+   "conf": "low",
+   "flags": [
+    "multiple_correct",
+    "commonsense_dispute",
+    "truncated"
+   ],
+   "why": "여러 이해관계자를 고려하라는 단서상 생산팀·품질팀 협의로 부분 재작업 범위를 정하는 안을 골랐으나, 품질 기준 준수(3)나 상급자 보고(2)도 정당해 정답이 하나로 좁혀지지 않는다."
+  },
+  {
+   "id": "NCSX-v1-C055-Q01",
+   "subject": "ncs-basic",
+   "mine": [
+    2
+   ],
+   "app": [
+    4
+   ],
+   "conf": "medium",
+   "flags": [
+    "commonsense_dispute"
+   ],
+   "why": "매출 편차가 커 극단값 영향을 덜 받는 중앙값 150만원이 평소 수준을 가장 잘 나타낸다."
+  },
+  {
+   "id": "NCSX-v1-C067-Q03",
+   "subject": "ncs-basic",
+   "mine": [
+    5
+   ],
+   "app": [
+    1
+   ],
+   "conf": "medium",
+   "flags": [
+    "ambiguous_stem"
+   ],
+   "why": "2021→2022와 2023→2024가 각각 증가했을 뿐 두 해 이상 연속으로 증가한 구간은 없다."
+  },
+  {
+   "id": "RW-enterprise-NCS-C147-diagnosis",
+   "subject": "recruit-written",
+   "mine": [
+    3
+   ],
+   "app": [
+    2
+   ],
+   "conf": "high",
+   "flags": [],
+   "why": "병렬이므로 각 조명에 220V가 걸리고 P=220×0.5=110W다."
+  },
+  {
+   "id": "RW-enterprise-NCS-C204-basic-2",
+   "subject": "recruit-written",
+   "mine": [
+    3
+   ],
+   "app": [
+    2
+   ],
+   "conf": "medium",
+   "flags": [
+    "ambiguous_stem"
+   ],
+   "why": "둘째 단락은 처리 속도·인터페이스·연동이라는 현재 시스템의 문제 원인을 구체적으로 열거해 셋째 단락의 해결책을 준비한다."
+  },
+  {
+   "id": "RW-enterprise-NCS-C211-diagnosis",
+   "subject": "recruit-written",
+   "mine": [
+    3
+   ],
+   "app": [
+    2
+   ],
+   "conf": "low",
+   "flags": [
+    "no_correct"
+   ],
+   "why": "3번만 다솜 3번째와 마준-라온 인접 조건을 만족하지만 다섯 보기 모두 나훈이 마지막이라 '나훈이는 마지막에 발표하지 않는다'를 어겨 완전한 정답이 없다."
+  },
+  {
+   "id": "RW-enterprise-NCS-C212-diagnosis",
+   "subject": "recruit-written",
+   "mine": [
+    1
+   ],
+   "app": [
+    4
+   ],
+   "conf": "medium",
+   "flags": [
+    "multiple_correct"
+   ],
+   "why": "C에 의해 김민수는 고객응대가 아니고 B의 대우로 박영희는 서류정리가 아니므로 A에 의해 김민수가 서류정리를 맡는다."
+  },
+  {
+   "id": "RW-finance-NCS-C114-basic-2",
+   "subject": "recruit-written",
+   "mine": [
+    1
+   ],
+   "app": [
+    2
+   ],
+   "conf": "medium",
+   "flags": [
+    "multiple_correct",
+    "ambiguous_stem"
+   ],
+   "why": "필수인 CS 15시간+제품 12시간=27시간을 배정하면 잔여 13시간으로 시스템교육 10시간을 넣는 1번이 잔여시간을 가장 충실히 활용한다."
+  },
+  {
+   "id": "RW-finance-NCS-C167-basic-2",
+   "subject": "recruit-written",
+   "mine": [
+    2
+   ],
+   "app": [
+    5
+   ],
+   "conf": "medium",
+   "flags": [
+    "multiple_correct"
+   ],
+   "why": "액면 1억원에 표면금리 3.5%를 반기 지급하므로 1억×3.5%÷2 = 175만원이 6개월마다 발생한다."
+  },
+  {
+   "id": "RW-finance-NCS-C173-diagnosis",
+   "subject": "recruit-written",
+   "mine": [
+    1
+   ],
+   "app": [
+    3
+   ],
+   "conf": "medium",
+   "flags": [
+    "commonsense_dispute",
+    "ambiguous_stem"
+   ],
+   "why": "고객 회신과 서류 접수에 시간이 걸리는 박○○ 건을 먼저 착수해야 당일 심사 완료가 가능하다."
+  },
+  {
+   "id": "RW-finance-NCS-C181-retry-1",
+   "subject": "recruit-written",
+   "mine": [
+    1
+   ],
+   "app": [
+    5
+   ],
+   "conf": "medium",
+   "flags": [],
+   "why": "실질 성장률 약 2.1%에 GDP 디플레이터 상승률 2.5%를 더하면 명목 GDP 증가율은 약 4.6%로 추정된다."
+  },
+  {
+   "id": "RW-finance-NCS-C181-standard-1",
+   "subject": "recruit-written",
+   "mine": [
+    2
+   ],
+   "app": [
+    1
+   ],
+   "conf": "medium",
+   "flags": [
+    "ambiguous_stem"
+   ],
+   "why": "성장 기여도는 증가율이 아니라 비중×증가율이므로 GDP 비중이 가장 큰 민간소비가 최대 기여 부문이다."
+  },
+  {
+   "id": "RW-finance-NCS-C183-diagnosis",
+   "subject": "recruit-written",
+   "mine": [
+    1
+   ],
+   "app": [
+    3
+   ],
+   "conf": "medium",
+   "flags": [
+    "multiple_correct",
+    "stem_mismatch"
+   ],
+   "why": "경제활동참가율이 265/419=63.2%에서 273/420=65.0%로 올라 상승했다는 진술이 성립한다."
+  },
+  {
+   "id": "RW-finance-NCS-C186-basic-2",
+   "subject": "recruit-written",
+   "mine": [
+    2
+   ],
+   "app": [
+    1
+   ],
+   "conf": "high",
+   "flags": [
+    "no_context_needed"
+   ],
+   "why": "인플레이션 억제를 위한 긴축적 재정정책은 증세와 정부지출 축소의 조합이다."
+  },
+  {
+   "id": "RW-public-NCS-C114-basic-2",
+   "subject": "recruit-written",
+   "mine": [
+    1
+   ],
+   "app": [
+    2
+   ],
+   "conf": "medium",
+   "flags": [
+    "multiple_correct",
+    "ambiguous_stem"
+   ],
+   "why": "필수인 CS(15)+제품(12)=27시간 후 잔여 13시간으로는 시스템교육 10시간이 가능하지만, 리더십 8시간을 택한 2번도 시간 제약을 만족해 선택 기준이 명시되지 않았다."
+  },
+  {
+   "id": "RW-public-NCS-C119-diagnosis",
+   "subject": "recruit-written",
+   "mine": [
+    3
+   ],
+   "app": [
+    4
+   ],
+   "conf": "low",
+   "flags": [
+    "multiple_correct",
+    "ambiguous_stem"
+   ],
+   "why": "4분기 추가 전략 제출 지시와 10월 출시 확정은 미래 방향을 정하는 계획 기능에 가깝지만, 첫 발언의 목표 대비 실적 진단과 시정조치는 통제 기능으로도 읽혀 정답이 갈린다."
+  }
+ ],
+ "unresolved": [
+  "JC-SYN-PS-02",
+  "C18-17-Q08-LEARN-V1",
+  "JC26-MATH-VIS-STUDY-01",
+  "JC26-KO-LISTEN-02",
+  "ENG-dialog-D01",
+  "ENG-dialog-D03",
+  "ENG-dialog-std-01",
+  "ENG-dialog-std-05",
+  "ENG-dialog-std-06",
+  "ENG-dialog-std-07",
+  "ENG-dialog-std-10",
+  "NCSX-v1-C050-Q06",
+  "NCSX-v1-C051-Q01",
+  "NCSX-v1-C066-Q06",
+  "NCSX-v2-C147-Q07",
+  "NCSX-v3-C223-Q07",
+  "NCSX-v1-C067-Q01",
+  "NCSX-v1-C067-Q05",
+  "RW-enterprise-NCS-C148-diagnosis",
+  "RW-enterprise-NCS-C206-standard-1",
+  "RW-enterprise-NCS-C206-standard-2",
+  "RW-enterprise-NCS-C207-basic-2",
+  "RW-finance-NCS-C115-basic-1",
+  "RW-finance-NCS-C115-basic-2",
+  "RW-finance-NCS-C115-diagnosis",
+  "RW-finance-NCS-C115-retry-1",
+  "RW-finance-NCS-C115-retry-2",
+  "RW-finance-NCS-C115-standard-3",
+  "RW-finance-NCS-C115-standard-4",
+  "RW-finance-NCS-C177-standard-1",
+  "RW-public-NCS-C115-basic-1",
+  "RW-public-NCS-C115-basic-2",
+  "RW-public-NCS-C115-diagnosis",
+  "RW-public-NCS-C115-retry-1",
+  "RW-public-NCS-C115-retry-2",
+  "RW-public-NCS-C115-standard-3",
+  "RW-public-NCS-C115-standard-4",
+  "RW-public-NCS-C148-diagnosis"
+ ],
+ "skipped": [
+  "JC-INF-MC001",
+  "JC-INF-MC002",
+  "JC-INF-MC003",
+  "JC-INF-MC004",
+  "JC-INF-MC005",
+  "JC-INF-MC006",
+  "JC-INF-MC007",
+  "JC-INF-MC008",
+  "JC-ORG-MC001",
+  "JC-ORG-MC002",
+  "JC-ORG-MC003",
+  "JC-ORG-MC004",
+  "JC-ORG-MC005",
+  "JC-ORG-MC006",
+  "JC-ORG-MC007",
+  "JC-ORG-MC008",
+  "JC-PSV-MC001",
+  "JC-PSV-MC002",
+  "JC-PSV-MC003",
+  "JC-PSV-MC004",
+  "JC-PSV-MC005",
+  "JC-PSV-MC006",
+  "JC-PSV-MC007",
+  "JC-PSV-MC008",
+  "JC-RSM-MC001",
+  "JC-RSM-MC002",
+  "JC-RSM-MC003",
+  "JC-RSM-MC004",
+  "JC-RSM-MC005",
+  "JC-RSM-MC006",
+  "JC-RSM-MC007",
+  "JC-RSM-MC008",
+  "JC-TEC-MC001",
+  "JC-TEC-MC002",
+  "JC-TEC-MC003",
+  "JC-TEC-MC004",
+  "JC-TEC-MC005",
+  "JC-TEC-MC006",
+  "JC-TEC-MC007",
+  "JC-TEC-MC008",
+  "JC-NUM-MC001",
+  "JC-NUM-MC002",
+  "JC-NUM-MC003",
+  "JC-NUM-MC004",
+  "JC-NUM-MC005",
+  "JC-NUM-MC006",
+  "JC-NUM-MC007",
+  "JC-NUM-MC008",
+  "JC-COM-MC001",
+  "JC-COM-MC002",
+  "JC-COM-MC003",
+  "JC-COM-MC004",
+  "JC-COM-MC005",
+  "JC-COM-MC006",
+  "JC-COM-MC007",
+  "JC-COM-MC008",
+  "NCS-NEW-직업윤리-037",
+  "NCS-NEW-직업윤리-038",
+  "NCS-NEW-직업윤리-039",
+  "NCS-NEW-직업윤리-040",
+  "NCS-NEW-직업윤리-041",
+  "NCS-INFO-025",
+  "NCS-INFO-022",
+  "NCS-INFO-023",
+  "NCS-INFO-024",
+  "NCS-INFO-026",
+  "NCS-INFO-027",
+  "NCS-INFO-028",
+  "NCS-TECH-019",
+  "NCS-TECH-024",
+  "RW-enterprise-NCS-INT-025",
+  "RW-enterprise-NCS-INT-026",
+  "RW-enterprise-NCS-NEW-인적성-051",
+  "RW-enterprise-NCS-NEW-인적성-052",
+  "RW-enterprise-NCS-NEW-인적성-053",
+  "RW-enterprise-NCS-NEW-인적성-054",
+  "RW-enterprise-NCS-NEW-인적성-055",
+  "RW-enterprise-NCS-TECH-018",
+  "RW-enterprise-NCS-TECH-020",
+  "RW-enterprise-NCS-TECH-021",
+  "RW-enterprise-NCS-TECH-022",
+  "RW-enterprise-NCS-TECH-023",
+  "RW-enterprise-NCS-TECH-025",
+  "RW-finance-NCS-INT-025",
+  "RW-finance-NCS-INT-026",
+  "RW-finance-NCS-NEW-경영상식-019",
+  "RW-finance-NCS-NEW-경영상식-020",
+  "RW-finance-NCS-NEW-경영상식-021",
+  "RW-finance-NCS-NEW-경제상식-039",
+  "RW-finance-NCS-NEW-경제상식-040",
+  "RW-finance-NCS-NEW-경제상식-041",
+  "RW-finance-NCS-NEW-경제상식-042",
+  "RW-finance-NCS-NEW-경제상식-043",
+  "RW-finance-NCS-NEW-금융상식-049",
+  "RW-finance-NCS-NEW-금융상식-050",
+  "RW-finance-NCS-NEW-금융상식-051",
+  "RW-finance-NCS-NEW-금융상식-052",
+  "RW-finance-NCS-NEW-금융상식-053",
+  "RW-finance-NCS-NEW-일반상식-020",
+  "RW-finance-NCS-NEW-일반상식-021",
+  "RW-finance-NCS-NEW-일반상식-022",
+  "RW-finance-NCS-NEW-자원관리-055",
+  "RW-finance-NCS-NEW-자원관리-056",
+  "RW-finance-NCS-NEW-자원관리-057",
+  "RW-finance-NCS-NEW-자원관리-058",
+  "RW-public-NCS-INT-025",
+  "RW-public-NCS-INT-026",
+  "RW-public-NCS-NEW-자원관리-055",
+  "RW-public-NCS-NEW-자원관리-056",
+  "RW-public-NCS-NEW-자원관리-057",
+  "RW-public-NCS-NEW-자원관리-058",
+  "RW-public-NCS-ORG-036",
+  "RW-public-NCS-ORG-037",
+  "RW-public-NCS-ORG-038",
+  "RW-public-NCS-ORG-039",
+  "RW-public-NCS-ORG-041",
+  "RW-public-NCS-ORG-042",
+  "RW-public-NCS-ORG-043",
+  "RW-public-NCS-ORG-044",
+  "RW-public-NCS-TECH-018",
+  "RW-public-NCS-TECH-020",
+  "RW-public-NCS-TECH-021",
+  "RW-public-NCS-TECH-022",
+  "RW-public-NCS-TECH-023",
+  "RW-public-NCS-TECH-025"
+ ],
+ "noAppAnswer": [
+  "JC-TEC-MT001",
+  "JC-TEC-MT002",
+  "JC-TEC-TX001",
+  "JC-TEC-TX002",
+  "JC-TEC-TX003",
+  "JC-TEC-TX004",
+  "JC-TEC-TX005",
+  "JC-SDE-MT001",
+  "JC-SDE-MT002",
+  "JC-SDE-TX001",
+  "JC-SDE-TX002",
+  "JC-SDE-TX003",
+  "JC-SDE-TX004",
+  "JC-SDE-TX005",
+  "JC-INF-MT001",
+  "JC-INF-MT002",
+  "JC-INF-TX001",
+  "JC-INF-TX002",
+  "JC-INF-TX003",
+  "JC-INF-TX004",
+  "JC-INF-TX005",
+  "JC-ETH-MT001",
+  "JC-ETH-MT002",
+  "JC-ETH-TX001",
+  "JC-ETH-TX002",
+  "JC-ETH-TX003",
+  "JC-ETH-TX004",
+  "JC-ETH-TX005",
+  "JC-RSM-MT001",
+  "JC-RSM-MT002",
+  "JC-RSM-TX001",
+  "JC-RSM-TX002",
+  "JC-RSM-TX003",
+  "JC-RSM-TX004",
+  "JC-RSM-TX005",
+  "JC-NUM-TX001",
+  "JC-NUM-TX002",
+  "JC-NUM-TX003",
+  "JC-NUM-TX004",
+  "JC-NUM-TX005",
+  "JC-PSV-MT001",
+  "JC-PSV-MT002",
+  "JC-PSV-TX001",
+  "JC-PSV-TX002",
+  "JC-PSV-TX003",
+  "JC-PSV-TX004",
+  "JC-PSV-TX005",
+  "JC-ORG-MT001",
+  "JC-ORG-MT002",
+  "JC-ORG-TX001",
+  "JC-ORG-TX002",
+  "JC-ORG-TX003",
+  "JC-ORG-TX004",
+  "JC-ORG-TX005",
+  "JC-COM-MT001",
+  "JC-COM-MT002",
+  "JC-COM-TX001",
+  "JC-COM-TX002",
+  "JC-COM-TX003",
+  "JC-COM-TX004",
+  "JC-PD-M01",
+  "JC-PD-M02",
+  "JC-PD-M03",
+  "JC-PD-M04",
+  "JC-PD-P01",
+  "JC-PD-P02",
+  "JC-PD-P03",
+  "JC-PD-P04"
+ ]
+}
