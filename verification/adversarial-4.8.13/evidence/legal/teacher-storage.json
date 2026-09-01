@@ -1,0 +1,26 @@
+{
+ "localStorage": {
+  "sst.user.<UUID-MASKED>.sst.cached-profile": "{\"id\":\"<UUID-MASKED>\",\"role\":\"teacher\",\"display_name\":\"체험 선생님\",\"nickname\":null,\"school_id\":\"<UUID-MASKED>\",\"created_at\":\"2026-08-23T10:10:44.999298+00:00\",\"approved\":true}",
+  "sst.legacy-owner": "<UUID-MASKED>",
+  "gyo6.theme": "light",
+  "sst.user.<UUID-MASKED>.sst.device-sync.last": "2026-09-01T14:17:45.625Z",
+  "sst.user.<UUID-MASKED>.sst.identity.last-verified": "2026-09-01T14:17:20.699Z",
+  "sst.user.<UUID-MASKED>.sst.device-sync.id": "<UUID-MASKED>",
+  "sst.user.<UUID-MASKED>.__device_meta__": "{\"keys\":{\"sst.cached-profile\":{\"updatedAt\":\"2026-09-01T14:17:20.699Z\",\"deleted\":false},\"sst.identity.last-verified\":{\"updatedAt\":\"2026-09-01T14:17:20.699Z\",\"deleted\":false},\"sst.device-sync.id\":{\"updatedAt\":\"2026-09-01T14:17:45.624Z\",\"deleted\":false},\"sst.device-sync.last\":{\"updatedAt\":\"2026-09-01T14:17:45.625Z\",\"deleted\":false}}}"
+ },
+ "sessionStorage": {
+  "sst.auth.tab-id": "<UUID-MASKED>",
+  "sst.teacher.active-class.<UUID-MASKED>": "c1",
+  "sst.local-user-id": "<UUID-MASKED>",
+  "sugar-salt-auth-<UUID-MASKED>": "{\"access_token\":\"eyJhbGciOiJFUzI1NiIsImtpZCI6IjY0OGQ2ZmJjLTg5YzYtNDI4MC1hOTcwLTkzMGJlZTRlOTQxNyIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2VuaXlqZG10YnVudml6cnNvbXJwLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiI5YzQ4YWJmOC02OTYyLTRiNDUtOTQ4Yy0xY2YxNTNjYTgxYjEiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzg4Mjc1ODM3LCJpYXQiOjE3ODgyNzIyMzcsImVtYWlsIjoiZGVtby50ZWFjaGVyQHN1Z2Fyc2FsdC5rciIsInBob25lIjoiIiwiYXBwX21ldGFkYXRhIjp7InByb3ZpZGVyIjoiZW1haWwiLCJwcm92aWRlcnMiOltdfSwidXNlcl9tZXRhZGF0YSI6eyJlbWFpbCI6ImRlbW8udGVhY2hlckBzdWdhcnNhbHQua3IiLCJpc19wdWJsaWNfdHJpYWwiOnRydWUsInRyaWFsX3JvbGUiOiJ0ZWFjaGVyIn0sInJvbGUiOi",
+  "sst.public-trial.session": "{\"role\":\"teacher\",\"startedAt\":1788272237280,\"expiresAt\":0}"
+ },
+ "indexedDB": [
+  "workbox-expiration"
+ ],
+ "caches": [
+  "workbox-precache-v2-https://gyo6.kr/apps/sugar-salt/",
+  "gyo6-content"
+ ],
+ "cookies": "sst_trial_device=<UUID-MASKED>"
+}
