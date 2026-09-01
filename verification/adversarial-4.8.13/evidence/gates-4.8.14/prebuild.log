@@ -1,0 +1,303 @@
+
+> gyo6-jobskill-game@1.0.0 prebuild
+> node scripts/gate-campus-release.mjs && node scripts/gate-student-navigation.mjs && npm run gate:korean-copy && npm run gate:compact-copy && npm run gate:writing-support && npm run gate:navigation-flow && npm run gate:learning-presence && npm run gate:trial-isolation && npm run gate:shared-device && npm run gate:account-deletion && npm run gate:boot-recovery && npm run gate:notification-consent && npm run gate:native-startup && npm run gate:pwa-entry && npm run gate:account-career && npm run gate:career-continuity && npm run gate:release-security && npm run gate:paid-api && npm run gate:release-automation && npm run gate:promotion-promises && npm run verify:content-rights && npm run verify:question-priority && npm run verify:quality-food && npm run verify:official && npm run verify:teacher-release && npm run verify:guidance-routes && npm run verify:first-class && npm run verify:autonomous-close && npm run verify:wrong-repeat && npm run verify:practical-choices && npm run verify:learning-experience && npm run verify:explanation-consistency && npm run verify:contextual-deepening && npm run verify:learning-render && npm run verify:context-materials && npm run verify:learning-capacity && npm run verify:assessment-separation && npm run verify:assessment-identity && npm run verify:personalized-career && npm run verify:employer-intelligence && python scripts/gate-question-quality.py && python scripts/gate-hook-order.py && npm run gate:exam
+
+PASS: Skill Campus release gate (10 visual assets, 51 listening files, strict official-system boundaries)
+[학생내비게이션] 통과 — 6개 학습관 목적지 독립
+
+> gyo6-jobskill-game@1.0.0 gate:korean-copy
+> node scripts/gate-korean-copy.mjs
+
+[한국어 문구] 통과 — 화면·생성 문장 28246개 검사 · 면접 6개 과정/48개 단원 연결 확인
+
+> gyo6-jobskill-game@1.0.0 gate:compact-copy
+> node scripts/gate-compact-copy.mjs
+
+[간결 학습문구] 통과 — 학생 해설·개념·오답과 공통 교실 화면을 목록형 문구로 통일
+
+> gyo6-jobskill-game@1.0.0 gate:writing-support
+> node scripts/gate-writing-support.mjs
+
+PASS 자기소개서 30개 항목 순차 학습
+PASS 근거은행 선택·작성 지원
+PASS 빈칸 작성 지원
+PASS 자기소개서 글자 수 지원
+PASS 자기소개서관 독립 학습 흐름
+PASS 과목 공통 자율학습 구조
+PASS 인성검사 공통 자율학습 연결
+PASS 자기소개서 공통 자율학습 연결
+PASS 실전자기소개서 독립 모드
+PASS 실전자기소개서 다중 지원 동선
+PASS 자기소개서 진단·실전 작성 모의
+PASS 자기소개서 실전 보기 균형
+PASS 자기소개서 실전 고쳐쓰기
+PASS 자기소개서 입력문 기반 점검 화면
+PASS 자기소개서 입력문 기반 점검 판정
+PASS 면접 실전 상황 판단
+PASS 실전 과목 전용 학습 언어
+PASS 자기소개서·면접 답변 연결
+PASS 면접 세 답변 연결
+PASS 면접 다중 답변 세트
+PASS 실전면접 답변 작성 직결
+PASS 지원처별 답변 독립 작성
+PASS 면접 답변 구조 지원
+PASS 학생 실전면접 리허설
+PASS 실전면접 직선 준비 순서
+PASS 교사 실전면접 코칭
+PASS 학생 학습 순서 전달
+PASS 학생앱 수업 맥락 지도
+PASS 교실 화면 학생앱 공통 사용
+PASS 학생 답장 빠른 선택
+PASS 교사 메시지 빠른 시작
+PASS 교사 첨삭 빠른 평가
+PASS 공통 학습 차시별 교사 지도
+PASS 웹 체험 준비 완료 신호
+PASS 오래된 청크 복구 화면
+PASS 첫 화면 공용 UI 경량 분리
+PASS 자기소개서 상·하위 메뉴 중복 방지
+PASS 교사 맥락 지도 6과목 · 학생앱 공통 교실 화면 연결
+PASS 자기소개서 입력문 기반 점검 · 무관/추상/부분/구체 문장 경계
+Writing support gate: 36/36 passed
+
+> gyo6-jobskill-game@1.0.0 gate:navigation-flow
+> node scripts/gate-navigation-flow.mjs
+
+PASS PC·Android 공통 뒤로가기
+PASS 교사 수업 직전 화면 복귀
+PASS 단원 학습 후 도전
+PASS 학습 화면 화살표 공통 동작
+PASS 자기소개서·인성 직선 학습 흐름
+PASS 실전면접 단계별 직전 화면 복귀
+PASS 시험 문항별 직전 화면 복귀
+PASS 직업공통 진단 경로 복귀
+PASS 교실 진단 넓은 화면
+PASS 학습 내비게이션·평가 위치·교실 폭 계약
+
+> gyo6-jobskill-game@1.0.0 gate:learning-presence
+> node scripts/gate-learning-presence.mjs
+
+[학습연결] 통과 — 최초 메뉴 진입 null과 정상 학습 위치를 모두 안전하게 처리
+
+> gyo6-jobskill-game@1.0.0 gate:trial-isolation
+> node scripts/gate-trial-isolation.mjs
+
+[웹 체험 격리] 통과 - 제작 중 무제한·출시 시 15분 전환·탭별 인증·저장 차단·교사 반응형 확인
+
+> gyo6-jobskill-game@1.0.0 gate:shared-device
+> node scripts/gate-shared-device.mjs
+
+[공용 PC 격리] 통과 - 사용자별 저장·선택 삭제·저장 후 종료·증분 콘텐츠·분산 수업 확인·진행률 중복 방지·RLS 확인
+
+> gyo6-jobskill-game@1.0.0 gate:account-deletion
+> node scripts/gate-account-deletion.mjs
+
+[계정 삭제] 통과 - 학생·교사 앱 내 삭제, 서버 계정·연결 데이터 삭제, 기기 사본 정리
+
+> gyo6-jobskill-game@1.0.0 gate:boot-recovery
+> node scripts/gate-boot-recovery.mjs
+
+[boot-recovery] PASS - web static fallback, native pre-WebView cleanup, timeout UI, back recovery
+
+> gyo6-jobskill-game@1.0.0 gate:notification-consent
+> node scripts/gate-notification-consent.mjs
+
+[notification-consent] PASS - app boot and account entry are notification-plugin-free
+
+> gyo6-jobskill-game@1.0.0 gate:native-startup
+> node scripts/gate-native-startup-surface.mjs
+
+[native-startup] PASS - boot path has no Play Core, notification, or unused direct native dependency
+
+> gyo6-jobskill-game@1.0.0 gate:pwa-entry
+> node scripts/gate-pwa-entry.mjs
+
+[통과] 체험·정식 진입 분리 및 PWA 설치 흐름
+
+> gyo6-jobskill-game@1.0.0 gate:account-career
+> node scripts/gate-account-career.mjs && npm run gate:career-profile
+
+[account-career] PASS - safe account entry, shared career context, evidence management, service verification
+
+> gyo6-jobskill-game@1.0.0 gate:career-profile
+> npx esbuild scripts/gate-career-profile.mjs --bundle --platform=node --format=esm --loader:.json=json --outfile=.cache/gate-career-profile.mjs --log-level=error && node .cache/gate-career-profile.mjs
+
+[career-profile] PASS - 학과 1271개 가나다·포함검색 · 자격 73개 · 복수 활동/기존 데이터/맞춤 엔진 연결
+
+> gyo6-jobskill-game@1.0.0 gate:career-continuity
+> npx esbuild scripts/gate-career-continuity.mjs --bundle --platform=node --format=esm --loader:.json=json --outfile=.cache/gate-career-continuity.mjs --log-level=error && node .cache/gate-career-continuity.mjs
+
+[career-continuity] PASS - 3개 학년 로드맵 · 복수 기록 선별 · 근거 품질 · 학생/교사/첨삭/동기화 연결
+
+> gyo6-jobskill-game@1.0.0 gate:release-security
+> node scripts/gate-release-security.mjs --source
+
+[출시 보안] 통과 - 소스·배포 청크에 체험 계정 자격 증명 없음
+
+> gyo6-jobskill-game@1.0.0 gate:paid-api
+> node scripts/gate-paid-api-boundary.mjs
+
+Paid API boundary gate PASS: 앱 런타임 0개 · ElevenLabs는 수동 정적 음원 제작 전용
+
+> gyo6-jobskill-game@1.0.0 gate:release-automation
+> node scripts/gate-release-automation.mjs
+
+[출시 자동화] 통과 - 운영 마이그레이션·PC↔휴대폰·Android 종료복구·CI 차단 연결
+
+> gyo6-jobskill-game@1.0.0 gate:promotion-promises
+> npx esbuild scripts/gate-promotion-promises.mjs --bundle --platform=node --format=esm --loader:.json=json --outfile=.cache/gate-promotion-promises.mjs --log-level=error && node .cache/gate-promotion-promises.mjs
+
+[홍보 약속 계약] 통과 - 6개 학습관 정식 명칭 · 120개 지원기관 · 자기소개서 6단계 · 면접 6과정/9단계 · 10/25/45분 수업 · 3개 학년 포트폴리오 · 수업 연결/학습 위치 · 자율학습 현재 상태 · 메시지 보존
+
+> gyo6-jobskill-game@1.0.0 verify:content-rights
+> node scripts/gate-official-content-rights.mjs
+
+[공식 문항 권리 게이트] 통과 - 공식 문항 후보 0개, 미승인 원문 탑재 0개
+
+> gyo6-jobskill-game@1.0.0 verify:question-priority
+> npx esbuild scripts/audit-question-priority.mjs --bundle --platform=node --format=esm --loader:.json=json --outfile=.cache/audit-question-priority.mjs --log-level=error && node .cache/audit-question-priority.mjs
+
+[학습 중요도 배지] 통과 - 최신 274 · 빈출 830 · 평가연계 1103 · 중요 482
+  화면 적용 - 자율학습 2521 · 진단 공통 · 모의고사 공통 · 면접 168
+
+> gyo6-jobskill-game@1.0.0 verify:quality-food
+> node scripts/audit-quality-food-gate.mjs
+
+폐지 과목 유령 방지 게이트 통과: 학생·교사 공통 카탈로그 6개, 오답 필터 5개
+
+> gyo6-jobskill-game@1.0.0 verify:official
+> node scripts/audit-official-alignment.mjs && node scripts/audit-interview-release.mjs && node scripts/audit-launch-content.mjs
+
+
+Official alignment audit: 1334/1334 passed
+Interview release audit PASS: 기초 48단원 · 기본 168문항 · 심화 790문항 · 기관 120곳 · 자기소개서 6단계/30유형
+Launch content gate PASS: 해설 753건 · 계산과정 13/13 · U+FFFD 0건
+
+> gyo6-jobskill-game@1.0.0 verify:teacher-release
+> node scripts/verify-teacher-release.mjs
+
+PASS: Teacher release verification (6 shared classroom halls, 90 talks, 168 interview questions, 1030 personality items)
+
+> gyo6-jobskill-game@1.0.0 verify:guidance-routes
+> npx esbuild scripts/audit-guidance-routes.mjs --bundle --platform=node --format=esm --loader:.json=json --outfile=.cache/audit-guidance-routes.mjs --log-level=error && node .cache/audit-guidance-routes.mjs
+
+PASS guidance routes: 3개 학급 전환 · 단원별 완료/진행/다음 차시 · 학생 6과목 목표/이어하기
+
+> gyo6-jobskill-game@1.0.0 verify:first-class
+> npx esbuild scripts/audit-first-class-lessons.mjs --bundle --platform=node --format=esm --loader:.json=json --outfile=.cache/audit-first-class-lessons.mjs --log-level=error && node .cache/audit-first-class-lessons.mjs
+
+[첫 수업 지도안] 통과 - 6과목 · 각 45분/6단계 · 형성평가 3문항(변형 1문항) · 실제 첫 단원 경로 일치
+
+> gyo6-jobskill-game@1.0.0 verify:autonomous-close
+> npx esbuild scripts/audit-autonomous-formative.mjs --bundle --platform=node --format=esm --loader:.json=json --outfile=.cache/audit-autonomous-formative.mjs --log-level=error && node .cache/audit-autonomous-formative.mjs
+
+PASS autonomous formative/context audit: 28 lesson assessments
+
+> gyo6-jobskill-game@1.0.0 verify:wrong-repeat
+> node scripts/verify-wrong-repeat.mjs
+
+Repeated wrong-answer checks: 5/5 passed
+
+> gyo6-jobskill-game@1.0.0 verify:practical-choices
+> node scripts/audit-practical-choice-quality.mjs
+
+[실전 선다형 품질] 통과 — 자기소개서 12문항 · 면접 240상황 · 정답 위치 60/60/60/60 · 최장 정답 1.7%
+
+> gyo6-jobskill-game@1.0.0 verify:learning-experience
+> npx esbuild scripts/audit-learning-experience.mjs --bundle --platform=node --format=esm --loader:.json=json --outfile=.cache/audit-learning-experience.mjs --log-level=error && node .cache/audit-learning-experience.mjs
+
+[학습경험] 통과 — 172학습단원 + 특수진단 1개 · 핵심 981개 · 장면별 판단 문구 813개 · 심화 유형 9개 · 확인 자료 932종 · 영어 해석 31개 · 화면 근거 연결 496개(원인·결과 53개) · 원문항 연결 검사 1564개(원인·결과 162개) · 실제 오답 369개 · 상황 삽화 981개
+  직업공통 28학습+진단 1 · NCS 21 · 채용필기 심화 53 · 고졸면접 48
+
+> gyo6-jobskill-game@1.0.0 verify:explanation-consistency
+> node scripts/audit-explanation-consistency.mjs
+
+PASS explanation consistency audit: 1329 questions
+
+> gyo6-jobskill-game@1.0.0 verify:contextual-deepening
+> npx esbuild scripts/audit-contextual-deepening.mjs --bundle --platform=node --format=esm --loader:.json=json --outfile=.cache/audit-contextual-deepening.mjs --log-level=error && node .cache/audit-contextual-deepening.mjs
+
+[상황별 심화] 통과 — 981개 카드 · 세부 상황 41종 · 완전 고유 묶음 932종(95.0%) · 출처 안내 798종
+  workplace 7종 · document 3종 · general 3종 · english 4종 · math 4종 · listening 3종 · interview 11종 · writing 3종 · reflection 3종
+
+> gyo6-jobskill-game@1.0.0 verify:learning-render
+> npx esbuild scripts/audit-learning-render.mjs --bundle --platform=node --format=esm --packages=external --jsx=automatic --loader:.json=json --outfile=.cache/audit-learning-render.mjs --log-level=error && node .cache/audit-learning-render.mjs
+
+[학습화면 렌더링] 통과 — 172단원 · 원문항 1977개 · 981개 핵심 카드 · 근거 3단 연결 496개 · 능동 마무리 172개 · 3문항 형성평가 172개 · 영어 해석 31개 · 듣기 8개 · 표·그래프 7개 · 먼저 판단·정답 숨김 DOM 확인
+
+> gyo6-jobskill-game@1.0.0 verify:context-materials
+> npx esbuild scripts/audit-contextual-materials.mjs --bundle --platform=node --format=esm --packages=external --jsx=automatic --loader:.json=json --outfile=.cache/audit-contextual-materials.mjs --log-level=error && node .cache/audit-contextual-materials.mjs
+
+[학생 사례·교사 지원] 통과 — 172단원 · 핵심 981개 · 학생 사례+해설 981개 · 교사 페이지 자료 2214개
+  job-common: 28단원 · 140사례 · 교사자료 416페이지
+  ncs-basic: 21단원 · 154사례 · 교사자료 395페이지
+  recruit-written: 53단원 · 177사례 · 교사자료 583페이지
+  interview: 48단원 · 450사례 · 교사자료 642페이지
+  cover-letter: 12단원 · 30사례 · 교사자료 78페이지
+  personality: 10단원 · 30사례 · 교사자료 100페이지
+  자료 성격: 공식 공개 문항 0개 · 공식 기준 연계/유형 연습 981개
+
+> gyo6-jobskill-game@1.0.0 verify:learning-capacity
+> npx esbuild scripts/audit-learning-capacity.mjs --bundle --platform=node --format=esm --loader:.json=json --outfile=.cache/audit-learning-capacity.mjs --log-level=error && node .cache/audit-learning-capacity.mjs
+
+교육부 직업공통능력: 28단원 · 학습 최소 3/평균 25.9 · 평가 최소 69/평균 110.3
+NCS 직업기초능력: 21단원 · 학습 최소 4/평균 26.1 · 평가 최소 9/평균 28.3
+채용필기 심화: 53단원 · 학습 최소 2/평균 4.8
+고졸면접: 48단원 · 학습 최소 6/평균 10.3 · 평가 최소 1/평균 1.8
+고졸면접 평가 풀: 기초 85 + 지원처·기관·자기소개서 심화 790 = 875문항
+[학습용량] 통과 — 150개 단원의 자율학습·평가 최소 용량과 30문항 모의고사 확인
+
+> gyo6-jobskill-game@1.0.0 verify:assessment-separation
+> npx esbuild scripts/audit-assessment-separation.mjs --bundle --platform=node --format=esm --loader:.json=json --outfile=.cache/audit-assessment-separation.mjs --log-level=error && node .cache/audit-assessment-separation.mjs
+
+[학습-평가 분리] 통과 — 교육부 직업공통능력 학습 718 · 평가 335 · 중복 0 / NCS 직업기초능력 학습 548 · 평가 554 · 중복 0 / 채용필기 심화 학습 261 · 평가 177 · 중복 0 / 고졸면접 학습 83 · 평가 651 · 중복 0
+
+> gyo6-jobskill-game@1.0.0 verify:assessment-identity
+> npx esbuild scripts/audit-assessment-identity.mjs --bundle --platform=node --format=esm --loader:.json=json --outfile=.cache/audit-assessment-identity.mjs --log-level=error && node .cache/audit-assessment-identity.mjs
+
+ncs-basic: 범위 구성 확인 중 — 전체 29
+  진단: all/전체 영역 (576)
+  진단: area/직업윤리 (62)
+  진단: unit/근로윤리 (18)
+  모의: 의사소통능력
+  모의: 수리능력
+ncs-basic: 진단 전체 1 · 영역 7 · 소단원 21 · 모의 범위 7
+recruit-written: 범위 구성 확인 중 — 전체 14
+  진단: all/전체 영역 (163)
+  진단: area/공공기관형 (43)
+  진단: unit/조직이해능력 (9)
+  모의: 공공기관형
+  모의: 금융권형
+recruit-written: 진단 전체 1 · 영역 3 · 소단원 10 · 모의 범위 3
+interview: 범위 구성 확인 중 — 전체 147
+  진단: all/전체 영역 (875)
+  진단: area/면접 이해와 전형 준비 (35)
+  진단: unit/자기소개 (5)
+  모의: 면접 이해와 전형 준비
+  모의: 자기소개와 지원동기
+interview: 진단 전체 1 · 영역 10 · 소단원 136 · 모의 범위 10
+[평가 정체성] 통과 — 범위별 진단 격리·표본 최소량·맞춤 모의 문항 수·시험지 중복 확인
+
+> gyo6-jobskill-game@1.0.0 verify:personalized-career
+> node scripts/audit-personalized-career-examples.mjs
+
+Personalized career example audit PASS: HIFIVE 573개교 · 우선 학과 300개(세부 전공 296개) · 자기소개서 129,600개 · 면접 12,960개
+
+> gyo6-jobskill-game@1.0.0 verify:employer-intelligence
+> node scripts/audit-employer-intelligence.mjs
+
+[employer-intelligence] 통과: 120곳 (금융 30 · 공공 40 · 대기업 50)
+[employer-intelligence] 상세자료·5단계 학습·자기소개서·600개 평가문항·맞춤 조합 1200건 검증 완료
+[employer-intelligence] 정답 위치 분포 A 150 · B 151 · C 151 · D 148
+[문항게이트] 파일 40개 · 5765문항 검사 · 위반 0건
+           빈 단원 0개
+  ⓘ ncs-extracted-bank.json: 204건 — 미검수 은행이라 이 지적은 빌드를 막지 않음
+     원본 교재에서 기계로 뽑은 미검수 은행. 이 중 발문이 온전한 것만 ncs2026.js 가 출제 풀에 올리고, 나머지는 걸러진다. 복습 id 조회는 isRenderable 이 한 번 더 막는다.
+     출제 풀 유입 0건 (풀에 오른 것 780개는 모두 지적 없음)
+[문항게이트] 통과
+[훅순서] 파일 93개 검사 · 지적 0건
+
+> gyo6-jobskill-game@1.0.0 gate:exam
+> npx esbuild scripts/gate-exam-fidelity.mjs --bundle --platform=node --format=esm --loader:.json=json --outfile=.cache/gate-exam.mjs --log-level=error && node .cache/gate-exam.mjs
+
+[시험재현] 인증진단 342문항 · 240분 규격 대조 · 지적 0건
+  [시험재현] 통과 — 문항 수·시간·듣기 비율·4지선다 모두 공식 평가틀과 일치

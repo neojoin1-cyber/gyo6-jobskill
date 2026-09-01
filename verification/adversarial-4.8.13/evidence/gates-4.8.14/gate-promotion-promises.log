@@ -1,0 +1,5 @@
+
+> gyo6-jobskill-game@1.0.0 gate:promotion-promises
+> npx esbuild scripts/gate-promotion-promises.mjs --bundle --platform=node --format=esm --loader:.json=json --outfile=.cache/gate-promotion-promises.mjs --log-level=error && node .cache/gate-promotion-promises.mjs
+
+[홍보 약속 계약] 통과 - 6개 학습관 정식 명칭 · 120개 지원기관 · 자기소개서 6단계 · 면접 6과정/9단계 · 10/25/45분 수업 · 3개 학년 포트폴리오 · 수업 연결/학습 위치 · 자율학습 현재 상태 · 메시지 보존

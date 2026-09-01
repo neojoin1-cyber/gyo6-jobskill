@@ -1,0 +1,952 @@
+{
+ "_meta": {
+  "baseline": "9797477fe73a (4.8.14 / b7c1b26)",
+  "목적": "코워크 CNT-114 주장의 독립 재검증. 판정 규칙을 따로 세워 직접 셌다",
+  "규칙": {
+   "E1": "보기 수를 넘는 번호 인용",
+   "E2": "해설이 정답이라 한 번호 ≠ 저장 정답",
+   "E3": "오답 분석이 정답 번호를 가리킴"
+  },
+  "전체문항": 2481,
+  "번호를인용한문항": 1137
+ },
+ "summary": {
+  "byCode": {
+   "E2-정답표시불일치": 53,
+   "E3-정답을오답으로": 44
+  },
+  "bySubject": {
+   "job-common": 1,
+   "ncs-basic": 96
+  },
+  "고유문항수": 97
+ },
+ "findings": [
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "C31-30-Q02-LEARN-V1",
+   "subject": "job-common",
+   "group": "문제해결",
+   "answerNo": 5,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 4,
+   "해설조각": " 4번이 가장 적절합니다."
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCS-C143-diagnosis",
+   "subject": "ncs-basic",
+   "group": "디지털활용능력",
+   "answerNo": 3,
+   "choiceCount": 4,
+   "해설조각": " 3번은 클라우드 전환이 즉각적 속도 문제 해결책이 아니며,"
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCS26-SUP-AI-05",
+   "subject": "ncs-basic",
+   "group": "인공지능(AI)활용능력",
+   "answerNo": 2,
+   "choiceCount": 4,
+   "해설조각": "(2번)은 같은 잘못된 입력이면 같은 오류를 반복합니다."
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCS26-SUP-STA-09",
+   "subject": "ncs-basic",
+   "group": "통계활용능력",
+   "answerNo": 4,
+   "choiceCount": 4,
+   "해설조각": "(4번)도 옳지 않고, 원본 대조가 먼저입니다."
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCS26-SUP-COL-12",
+   "subject": "ncs-basic",
+   "group": "협업능력",
+   "answerNo": 4,
+   "choiceCount": 4,
+   "해설조각": "(4번)는 협업 역량이 아니라 그 반대를 드러냅니다."
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCS26-SUP-CFL-20",
+   "subject": "ncs-basic",
+   "group": "갈등관리능력",
+   "answerNo": 2,
+   "choiceCount": 4,
+   "해설조각": "(2번)는 갈등 관리가 아니며, 경험 없음"
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v1-C001-Q01",
+   "subject": "ncs-basic",
+   "group": "문서소통능력",
+   "answerNo": 4,
+   "choiceCount": 5,
+   "해설조각": " 4번 정답 근거: \"지금 당장 부장님이 찾으시는 지난달 매출보고서를 가져다 드려\"에서 '지금 당장'이라는 즉시성 표현과 부장님이 찾고 있다는 긴급 상황이 명시됨"
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v1-C017-Q03",
+   "subject": "ncs-basic",
+   "group": "문서소통능력",
+   "answerNo": 3,
+   "choiceCount": 5,
+   "해설조각": "③ 이사원 A4 5매 → 잘못됨 (PPT 15페이지가 정답) –"
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v1-C024-Q02",
+   "subject": "ncs-basic",
+   "group": "문서소통능력",
+   "answerNo": 5,
+   "choiceCount": 5,
+   "해설조각": "⑤ 업그레이드 → 업그래이드 (잘못된 수정, 원래가 맞음)"
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v1-C024-Q07",
+   "subject": "ncs-basic",
+   "group": "문서소통능력",
+   "answerNo": 5,
+   "choiceCount": 5,
+   "해설조각": " 5번 모두 틀렸음 해설: –A: 비지니스 → 비즈니스 (틀림) –B: Bak Ji-hun (틀림, 'ㅏ'는 'a'로 표기하므로 'Park'이어야 함), 스캐너 "
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v1-C027-Q01",
+   "subject": "ncs-basic",
+   "group": "구두소통능력",
+   "answerNo": 1,
+   "choiceCount": 5,
+   "해설조각": "①(팔짱): 방어적이고 거리감 있는 자세로 부적절 –"
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v1-C027-Q02",
+   "subject": "ncs-basic",
+   "group": "구두소통능력",
+   "answerNo": 4,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 1,
+   "해설조각": "①(메모+고개 끄덤임): 중요한 내용을 기록하면서 경청 의사를 보이는 가장 적절한 태도 –"
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v1-C027-Q04",
+   "subject": "ncs-basic",
+   "group": "구두소통능력",
+   "answerNo": 1,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 2,
+   "해설조각": "②(진지한 표정+고개 끄덤임+집중): 고객의 질문을 진지하게 받아들이고 도와주려는 의지를 보이는 가장 적절한 태도 –"
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v1-C027-Q05",
+   "subject": "ncs-basic",
+   "group": "구두소통능력",
+   "answerNo": 5,
+   "choiceCount": 5,
+   "해설조각": "⑤(웃음+가벼운 표정): 진지한 지적을 가볍게 여기는 부적절한 태도"
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v1-C027-Q06",
+   "subject": "ncs-basic",
+   "group": "구두소통능력",
+   "answerNo": 3,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 2,
+   "해설조각": "②(메모+중립적 표정+집중): 자신의 역할(회의록 작성)에 충실하면서 전문적으로 경청하는 가장 적절한 태도 –"
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v1-C031-Q02",
+   "subject": "ncs-basic",
+   "group": "구두소통능력",
+   "answerNo": 3,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 1,
+   "해설조각": " 1번 정답 및 해설 문항 1 정답:"
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v1-C031-Q03",
+   "subject": "ncs-basic",
+   "group": "구두소통능력",
+   "answerNo": 4,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 2,
+   "해설조각": " 2번 정답 및 해설 문항 2 정답:"
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v1-C031-Q04",
+   "subject": "ncs-basic",
+   "group": "구두소통능력",
+   "answerNo": 2,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 3,
+   "해설조각": " 3번 정답 및 해설 문항 3 정답:"
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v1-C031-Q05",
+   "subject": "ncs-basic",
+   "group": "구두소통능력",
+   "answerNo": 3,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 4,
+   "해설조각": " 4번 정답 및 해설 문항 4 정답:"
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v1-C031-Q06",
+   "subject": "ncs-basic",
+   "group": "구두소통능력",
+   "answerNo": 2,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 5,
+   "해설조각": " 5번 정답 및 해설 문항 5 정답:"
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v1-C031-Q08",
+   "subject": "ncs-basic",
+   "group": "구두소통능력",
+   "answerNo": 3,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 1,
+   "해설조각": " 1번 정답 및 해설 속도 문항 1 정답:"
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v1-C031-Q09",
+   "subject": "ncs-basic",
+   "group": "구두소통능력",
+   "answerNo": 3,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 2,
+   "해설조각": " 2번 정답 및 해설 속도 문항 2 정답:"
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v1-C033-Q03",
+   "subject": "ncs-basic",
+   "group": "문서소통능력",
+   "answerNo": 5,
+   "choiceCount": 5,
+   "해설조각": " 5번 해설: –\"이에 따라\"로 이어지는 개선 방안이 글의 핵심 –실무 중심 교육과정 전면 개편과 교육 기간 확대를 종합적으로 추진 –문제 분석보다는 해결 방안에"
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v1-C033-Q05",
+   "subject": "ncs-basic",
+   "group": "문서소통능력",
+   "answerNo": 3,
+   "choiceCount": 5,
+   "해설조각": "③이 전체적인 개선 계획을 포괄 오답 분석: –"
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v1-C033-Q06",
+   "subject": "ncs-basic",
+   "group": "문서소통능력",
+   "answerNo": 5,
+   "choiceCount": 5,
+   "해설조각": " 5번 해설: –손팀장이 최종적으로 제시한 해결 방안이 핵심 –\"핵심 기능은 예정대로 출시하고, 부가 기능은 1차 출시 후 업데이트로 제공하겠습니다\" –지연 상황"
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v1-C033-Q07",
+   "subject": "ncs-basic",
+   "group": "문서소통능력",
+   "answerNo": 1,
+   "choiceCount": 5,
+   "해설조각": " 1번 해설: –김부장이 최고 직급자로서 최종 의사결정 제시 –\"A사와 가격 재협상을 진행하되, 협상이 결렬되면 B사의 품질 개선 방안을 검토하겠습니다\" –평가 "
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v1-C034-Q03",
+   "subject": "ncs-basic",
+   "group": "문서소통능력",
+   "answerNo": 1,
+   "choiceCount": 5,
+   "해설조각": "① \"가능성이 높다\"는 표현이지 확정은 아니다 "
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v1-C039-Q02",
+   "subject": "ncs-basic",
+   "group": "문서소통능력",
+   "answerNo": 3,
+   "choiceCount": 5,
+   "해설조각": " 3번 해설 –조건: \"월별 상담 건수가 1,000건을 초과하는 경우\" –결과: 오후 8시까지 연장 운영 –현재 상황: 2월 1,200건, 3월도 비슷한 수준 예"
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v1-C039-Q03",
+   "subject": "ncs-basic",
+   "group": "문서소통능력",
+   "answerNo": 4,
+   "choiceCount": 5,
+   "해설조각": " 4번 해설 –예산 증액 조건: 사전 예약자 100명 초과 –현재 상황: 85명 –따라서 현재로서는 조건 미충족 오답 분석 "
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v1-C039-Q04",
+   "subject": "ncs-basic",
+   "group": "문서소통능력",
+   "answerNo": 5,
+   "choiceCount": 5,
+   "해설조각": " 5번 해설 –정규직: 식대 15만원 확정 –계약직: \"근무성과 평가 결과에 따라 차등 적용\" –따라서 계약직 식대는 성과 평가에 따라 결정됨 오답 분석 "
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v1-C039-Q05",
+   "subject": "ncs-basic",
+   "group": "문서소통능력",
+   "answerNo": 1,
+   "choiceCount": 5,
+   "해설조각": " 1번 해설 –\"만약 단가 인상이 불가피할 경우, 판매량 감소를 고려하여 2분기 목표를 11억원으로 하향 조정할 필요가 있습니다\" –원자재 가격 상승으로 인한 조"
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v1-C040-Q01",
+   "subject": "ncs-basic",
+   "group": "문서소통능력",
+   "answerNo": 4,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 5,
+   "해설조각": "⑤ 정답: \"전분기 대비 15% 성장\" → 지문과 정확히 일치 핵심 포인트: 수치와 연결된 조건(전년/전분기), 비교 표현(증가/감소/동일)을 정확히 구분해야 합"
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v1-C040-Q02",
+   "subject": "ncs-basic",
+   "group": "문서소통능력",
+   "answerNo": 5,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 4,
+   "해설조각": "④ 정답: 온라인몰 1,920개 → 1,900개를 넘음 –"
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v1-C040-Q03",
+   "subject": "ncs-basic",
+   "group": "문서소통능력",
+   "answerNo": 1,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 3,
+   "해설조각": "③ 정답: '매우 만족' 40% + '만족' 45% = 85% → 정확함 –"
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v1-C040-Q04",
+   "subject": "ncs-basic",
+   "group": "문서소통능력",
+   "answerNo": 4,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 2,
+   "해설조각": "② 정답: 계좌이체 480건, 포인트결제 240건 → 정확히 2배임 –"
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v1-C040-Q05",
+   "subject": "ncs-basic",
+   "group": "문서소통능력",
+   "answerNo": 5,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 4,
+   "해설조각": "④ 정답: 평균 통화시간 - 주문문의 3분, 배송문의 4분, 교환/환불 7분 → 교환/환불이 가장 김 –"
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v1-C040-Q06",
+   "subject": "ncs-basic",
+   "group": "문서소통능력",
+   "answerNo": 5,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 1,
+   "해설조각": " 1번 정답:"
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v1-C040-Q07",
+   "subject": "ncs-basic",
+   "group": "문서소통능력",
+   "answerNo": 1,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 2,
+   "해설조각": " 2번 정답:"
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v1-C044-Q02",
+   "subject": "ncs-basic",
+   "group": "문서소통능력",
+   "answerNo": 5,
+   "choiceCount": 5,
+   "해설조각": " 5번 해설: –현재 상황: 체크인 대기시간 평균 15분, 프런트 데스크 2개 부족 –결정사항: 셀프 체크인 키오스크 3대 설치 –논리적 예측: 체크인 처리 창구"
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v1-C044-Q03",
+   "subject": "ncs-basic",
+   "group": "문서소통능력",
+   "answerNo": 1,
+   "choiceCount": 5,
+   "해설조각": " 1번 해설: –현재 상황: 배송 지연 하루 50건, 차량 10대로 물량 감당 어려움 –결정사항: 배송 차량 5대 추가 + 배송 기사 3명 충원 –논리적 예측: "
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v1-C044-Q05",
+   "subject": "ncs-basic",
+   "group": "문서소통능력",
+   "answerNo": 3,
+   "choiceCount": 5,
+   "해설조각": " 3번 해설: –현재 상황: 환자 대기시간 평균 40분, 진료실 부족 –결정사항: 예약 시스템 개선 + 사전 상담 코너 설치 –논리적 예측: 예약 조정 + 사전 "
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v1-C047-Q02",
+   "subject": "ncs-basic",
+   "group": "연산능력",
+   "answerNo": 1,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 2,
+   "해설조각": "② 70,125원이 정답입니다."
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v1-C047-Q06",
+   "subject": "ncs-basic",
+   "group": "연산능력",
+   "answerNo": 5,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 2,
+   "해설조각": "②가 정답입니다."
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v1-C052-Q04",
+   "subject": "ncs-basic",
+   "group": "통계활용능력",
+   "answerNo": 3,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 1,
+   "해설조각": "①이 정답입니다."
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v1-C052-Q06",
+   "subject": "ncs-basic",
+   "group": "통계활용능력",
+   "answerNo": 5,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 4,
+   "해설조각": "④가 정답입니다."
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v1-C052-Q07",
+   "subject": "ncs-basic",
+   "group": "통계활용능력",
+   "answerNo": 4,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 2,
+   "해설조각": "②가 정답입니다."
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v1-C059-Q01",
+   "subject": "ncs-basic",
+   "group": "연산능력",
+   "answerNo": 5,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 2,
+   "해설조각": "②가 정답입니다."
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v1-C064-Q03",
+   "subject": "ncs-basic",
+   "group": "연산능력",
+   "answerNo": 2,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 1,
+   "해설조각": "①이 정답입니다."
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v1-C067-Q02",
+   "subject": "ncs-basic",
+   "group": "통계활용능력",
+   "answerNo": 2,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 1,
+   "해설조각": " 1번 정답:"
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v1-C067-Q03",
+   "subject": "ncs-basic",
+   "group": "통계활용능력",
+   "answerNo": 1,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 2,
+   "해설조각": " 2번 정답:"
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v1-C067-Q04",
+   "subject": "ncs-basic",
+   "group": "통계활용능력",
+   "answerNo": 2,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 3,
+   "해설조각": " 3번 정답:"
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v1-C067-Q05",
+   "subject": "ncs-basic",
+   "group": "통계활용능력",
+   "answerNo": 3,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 4,
+   "해설조각": " 4번 정답:"
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v1-C069-Q01",
+   "subject": "ncs-basic",
+   "group": "도표활용능력",
+   "answerNo": 3,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 2,
+   "해설조각": "②가 정답입니다."
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v1-C069-Q02",
+   "subject": "ncs-basic",
+   "group": "도표활용능력",
+   "answerNo": 2,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 4,
+   "해설조각": "④가 정답입니다."
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v1-C070-Q06",
+   "subject": "ncs-basic",
+   "group": "도표활용능력",
+   "answerNo": 5,
+   "choiceCount": 5,
+   "해설조각": "⑤가 옳지 않습니다."
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v1-C072-Q01",
+   "subject": "ncs-basic",
+   "group": "도표활용능력",
+   "answerNo": 1,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 4,
+   "해설조각": "④가 정답입니다."
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v1-C074-Q01",
+   "subject": "ncs-basic",
+   "group": "도표활용능력",
+   "answerNo": 2,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 1,
+   "해설조각": " 1번 - 정답:"
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v1-C074-Q02",
+   "subject": "ncs-basic",
+   "group": "도표활용능력",
+   "answerNo": 3,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 2,
+   "해설조각": " 2번 - 정답:"
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v1-C074-Q04",
+   "subject": "ncs-basic",
+   "group": "도표활용능력",
+   "answerNo": 3,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 4,
+   "해설조각": " 4번 - 정답:"
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v1-C074-Q05",
+   "subject": "ncs-basic",
+   "group": "도표활용능력",
+   "answerNo": 3,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 5,
+   "해설조각": " 5번 【60초 도전】 정답:"
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v2-C082-Q02",
+   "subject": "ncs-basic",
+   "group": "문제분석능력",
+   "answerNo": 2,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 1,
+   "해설조각": " 1번 기초 정답:"
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v2-C082-Q03",
+   "subject": "ncs-basic",
+   "group": "문제분석능력",
+   "answerNo": 3,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 2,
+   "해설조각": " 2번 기초 정답:"
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v2-C084-Q05",
+   "subject": "ncs-basic",
+   "group": "문제분석능력",
+   "answerNo": 2,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 4,
+   "해설조각": " 4번 정답:"
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v2-C085-Q01",
+   "subject": "ncs-basic",
+   "group": "대안발굴능력",
+   "answerNo": 1,
+   "choiceCount": 5,
+   "해설조각": " 1번 해설: 이 갈등의 핵심은 '신입-선배 간 업무 방식 차이'가 아니라 '의견 소통 구조의 부재'입니다."
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v2-C086-Q01",
+   "subject": "ncs-basic",
+   "group": "대안발굴능력",
+   "answerNo": 3,
+   "choiceCount": 5,
+   "해설조각": "③ (○) 착용 흔적 발생 경위 확인이 핵심 - 정말 잘못 제공된 것인지 객관적 판단 후 결정 "
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v2-C086-Q04",
+   "subject": "ncs-basic",
+   "group": "대안발굴능력",
+   "answerNo": 5,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 2,
+   "해설조각": "② (○) 긴급상황에 맞는 특별 대응 - 직영매장 활용한 즉시 해결 "
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v2-C088-Q03",
+   "subject": "ncs-basic",
+   "group": "대안발굴능력",
+   "answerNo": 3,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 2,
+   "해설조각": "②: 한쪽 의견만 옳다고 본 것이 아님 –"
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v2-C091-Q01",
+   "subject": "ncs-basic",
+   "group": "의사결정능력",
+   "answerNo": 1,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 4,
+   "해설조각": "④가 정답입니다."
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v2-C105-Q05",
+   "subject": "ncs-basic",
+   "group": "시간관리능력",
+   "answerNo": 3,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 4,
+   "해설조각": " 4번 문항 표준 정답:"
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v2-C110-Q06",
+   "subject": "ncs-basic",
+   "group": "의사결정능력",
+   "answerNo": 1,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 3,
+   "해설조각": "③이 정답입니다."
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v2-C113-Q03",
+   "subject": "ncs-basic",
+   "group": "의사결정능력",
+   "answerNo": 1,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 2,
+   "해설조각": " 2번 기초 정답:"
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v2-C116-Q02",
+   "subject": "ncs-basic",
+   "group": "의사결정능력",
+   "answerNo": 4,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 1,
+   "해설조각": "①이 정답입니다."
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v2-C116-Q03",
+   "subject": "ncs-basic",
+   "group": "의사결정능력",
+   "answerNo": 3,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 1,
+   "해설조각": "①이 정답입니다."
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v2-C125-Q06",
+   "subject": "ncs-basic",
+   "group": "근로윤리",
+   "answerNo": 3,
+   "choiceCount": 5,
+   "해설조각": " 3번 해설: 팀장이 \"강제사항이 아니며 개인 상황을 고려하여 자율적으로 판단하라\"고 했으므로, 가족 행사라는 중요한 개인 일정을 지키면서도 평일 시간을 최대한 "
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v2-C127-Q01",
+   "subject": "ncs-basic",
+   "group": "근로윤리",
+   "answerNo": 2,
+   "choiceCount": 5,
+   "해설조각": "② 갈등을 회피한 것이 아니라 적극적으로 해결방안 제시 –"
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v2-C127-Q02",
+   "subject": "ncs-basic",
+   "group": "근로윤리",
+   "answerNo": 5,
+   "choiceCount": 5,
+   "해설조각": " 5번 문제를 개인화하지 않고 시스템 개선에 집중했다 해설: –최주임이 \"개인 문제가 아니라 시스템 문제\"라고 명확히 구분 –김신입이 자책하는 상황에서 개인 책임"
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v2-C128-Q03",
+   "subject": "ncs-basic",
+   "group": "근로윤리",
+   "answerNo": 4,
+   "choiceCount": 5,
+   "해설조각": "④(상사에게 위임)는 윤리적 판단을 회피하는 것으로 부적절 –"
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v2-C130-Q06",
+   "subject": "ncs-basic",
+   "group": "직장공동체의식",
+   "answerNo": 5,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 1,
+   "해설조각": "① (O) 자신의 수준에 맞는 데이터 입력 업무를 맡되, 단계별 확인으로 실수 방지."
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v2-C131-Q03",
+   "subject": "ncs-basic",
+   "group": "직장공동체의식",
+   "answerNo": 4,
+   "choiceCount": 5,
+   "해설조각": "④ (X) 고객에게 내부 사정을 전가하는 것은 부적절 –"
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v2-C133-Q07",
+   "subject": "ncs-basic",
+   "group": "협업능력",
+   "answerNo": 4,
+   "choiceCount": 5,
+   "해설조각": " 4번 두 접근법의 장점을 결합한 단계적 진출 전략을 수립한다 ·해설: –김대리의 국내 경험과 이과장의 글로벌 전문성은 서로 배척할 요소가 아니라 결합할 수 있는"
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v2-C135-Q01",
+   "subject": "ncs-basic",
+   "group": "갈등관리능력",
+   "answerNo": 2,
+   "choiceCount": 5,
+   "해설조각": "② 절충안 모색: 두 방법을 섞는 것이 아니라 객관적 기준으로 판단하려 함 –"
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v2-C136-Q04",
+   "subject": "ncs-basic",
+   "group": "리더십",
+   "answerNo": 5,
+   "choiceCount": 5,
+   "해설조각": "⑤ 팀장 결정에 대한 재검토 요구는 부적절"
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v2-C137-Q01",
+   "subject": "ncs-basic",
+   "group": "협업능력",
+   "answerNo": 4,
+   "choiceCount": 5,
+   "해설조각": "④ (오답) 고객이 환불을 원한다고 즉시 처리하는 것은 성급한 대응 –"
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v2-C137-Q02",
+   "subject": "ncs-basic",
+   "group": "협업능력",
+   "answerNo": 1,
+   "choiceCount": 5,
+   "해설조각": "① (오답) 신입직원 탓으로 변명하는 것은 부적절 –"
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v2-C137-Q03",
+   "subject": "ncs-basic",
+   "group": "협업능력",
+   "answerNo": 2,
+   "choiceCount": 5,
+   "해설조각": " 2번 잘못 제조해드린 점 사과하고 우선적으로 다시 만들어드린다 해설: 명확한 제조 실수 상황이므로 사과와 함께 즉시 해결책을 제시하는 것이 적절하다."
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v2-C140-Q01",
+   "subject": "ncs-basic",
+   "group": "갈등관리능력",
+   "answerNo": 5,
+   "choiceCount": 5,
+   "해설조각": " 5번 해설: 김팀장은 단순히 업무를 재분담하는 것이 아니라 \"상호 파견\"이라는 혁신적 방식을 제안했습니다."
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v2-C143-Q02",
+   "subject": "ncs-basic",
+   "group": "디지털활용능력",
+   "answerNo": 4,
+   "choiceCount": 5,
+   "해설조각": " 4번 해설: –접속 환경: 사내 + 재택 → 다양한 환경 대응 필요 –보안 정책: 외부 접속 시 암호화 필수 –IMAP: 여러 기기에서 동기화 가능, SMTP:"
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v2-C143-Q03",
+   "subject": "ncs-basic",
+   "group": "디지털활용능력",
+   "answerNo": 3,
+   "choiceCount": 5,
+   "해설조각": " 3번 해설: –요구사항: 동시 상담 20명, 파일 공유, 고객정보 보호, 예산 500만원, 웹브라우저 선호 –클라우드 기반 솔루션: 초기비용 적음, 확장성 좋음"
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v2-C143-Q04",
+   "subject": "ncs-basic",
+   "group": "디지털활용능력",
+   "answerNo": 2,
+   "choiceCount": 5,
+   "해설조각": " 2번 해설: –핵심 요구: 실시간 공유, 다양한 기기 지원, 외부 접속, 권한 관리 –클라우드 스토리지 실시간 동기화: 모든 조건 충족, 파일크기 제한 해결 오"
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v2-C143-Q05",
+   "subject": "ncs-basic",
+   "group": "디지털책임의식",
+   "answerNo": 1,
+   "choiceCount": 5,
+   "해설조각": " 1번 해설: –보안 위협: 외부에서 내부 시스템 접근 가능 –재택근무 30% → 외부 접속 필요성 –방화벽 + VPN: 외부 차단 + 안전한 원격 접속 동시 해"
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v2-C144-Q06",
+   "subject": "ncs-basic",
+   "group": "디지털책임의식",
+   "answerNo": 2,
+   "choiceCount": 5,
+   "해설조각": "② (X) 개인식별정보 제거 후에도 위탁계약 없는 외부 제공은 부적절 –"
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v2-C147-Q02",
+   "subject": "ncs-basic",
+   "group": "디지털활용능력",
+   "answerNo": 2,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 1,
+   "해설조각": " 1번 정답:"
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v2-C147-Q03",
+   "subject": "ncs-basic",
+   "group": "디지털활용능력",
+   "answerNo": 4,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 2,
+   "해설조각": " 2번 정답:"
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v2-C147-Q05",
+   "subject": "ncs-basic",
+   "group": "디지털활용능력",
+   "answerNo": 2,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 4,
+   "해설조각": " 4번 정답:"
+  },
+  {
+   "code": "E3-정답을오답으로",
+   "questionId": "NCSX-v3-C219-Q01",
+   "subject": "ncs-basic",
+   "group": "의사결정능력",
+   "answerNo": 4,
+   "choiceCount": 5,
+   "해설조각": "④ 단순 중간안이 아니라 추가 투자가 동반된 적극적 해결책 –"
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v3-C222-Q07",
+   "subject": "ncs-basic",
+   "group": "연산능력",
+   "answerNo": 4,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 2,
+   "해설조각": "② 117만원이 정답입니다."
+  },
+  {
+   "code": "E2-정답표시불일치",
+   "questionId": "NCSX-v3-C224-Q06",
+   "subject": "ncs-basic",
+   "group": "연산능력",
+   "answerNo": 5,
+   "choiceCount": 5,
+   "해설이정답이라한번호": 2,
+   "해설조각": "②가 정답입니다."
+  }
+ ]
+}

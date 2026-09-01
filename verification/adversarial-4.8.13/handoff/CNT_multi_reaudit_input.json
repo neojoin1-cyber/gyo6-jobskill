@@ -1,0 +1,5984 @@
+[
+ {
+  "questionId": "JC-TEC-MC001",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "기술능력 문제에서 '오답 신호'에 해당하는 행동을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "임의 조작"
+   },
+   {
+    "no": 2,
+    "text": "매뉴얼을 따라 점검"
+   },
+   {
+    "no": 3,
+    "text": "대충 처리"
+   },
+   {
+    "no": 4,
+    "text": "담당자에게 보고"
+   },
+   {
+    "no": 5,
+    "text": "숨기기"
+   }
+  ],
+  "appAnswer": [
+   1,
+   3,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 차시 21 '풀이 순서'에서 '임의 조작, 대충 처리, 숨기기는 오답 신호다'라고 명시합니다. 반면 매뉴얼을 따르는 것(B)과 담당자에게 보고하는 것(D)은 올바른 절차입니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   3,
+   5
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "C",
+   "E"
+  ]
+ },
+ {
+  "questionId": "JC-TEC-MC002",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "업무 도구 선택 시 고려해야 할 올바른 기준을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "업무 목적에 필요한 핵심 기능이 있는 도구를 선택한다."
+   },
+   {
+    "no": 2,
+    "text": "가장 비싼 도구를 선택하면 항상 적절하다."
+   },
+   {
+    "no": 3,
+    "text": "도구 사용 중 안전 수칙을 지킨다."
+   },
+   {
+    "no": 4,
+    "text": "오류 메시지를 보고 원인과 대응 방법을 찾을 수 있다."
+   },
+   {
+    "no": 5,
+    "text": "도구가 익숙하면 점검 순서를 건너뛰어도 된다."
+   }
+  ],
+  "appAnswer": [
+   1,
+   3,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 차시 22 '이 페이지에서 꼭 잡을 것'에서 업무 목적에 맞는 도구 선택(A), 안전 수칙 준수(C), 오류 메시지를 통한 원인 파악(D)이 명시됩니다. 비용이 비싸다고 항상 적절한 것은 아니며(B), 익숙해도 점검을 건너뛰면 안 된다고 교재에서 반복 강조합니다(E).",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   3,
+   4
+  ],
+  "independentConfidence": "medium",
+  "independentFlags": [
+   "choices_not_parallel"
+  ],
+  "appAnswerRaw": [
+   "A",
+   "C",
+   "D"
+  ]
+ },
+ {
+  "questionId": "JC-TEC-MC003",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "오류 대응 절차에서 적절한 행동을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "오류를 무시하고 업무를 계속 진행한다."
+   },
+   {
+    "no": 2,
+    "text": "오류 메시지, 발생 시간, 제출 시도 문서명을 기록한다."
+   },
+   {
+    "no": 3,
+    "text": "마감이 있는 상황에서 오류를 빠르게 보고한다."
+   },
+   {
+    "no": 4,
+    "text": "계정이 잠기면 비밀번호를 계속 시도한다."
+   },
+   {
+    "no": 5,
+    "text": "IT팀 또는 팀장에게 즉시 보고한다."
+   }
+  ],
+  "appAnswer": [
+   2,
+   3,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 차시 22 '함께 풀어보기'에서 오류 발생 시 '기록: 오류 메시지, 발생 시간, 제출 시도 문서명 기록(B)', '마감 전 보고하여 불이익 방지(C)', 'IT팀 또는 팀장에게 즉시 보고(E)'가 올바른 절차로 제시됩니다. 오류 무시(A)와 계정 잠금 시 계속 시도(D)는 부적절한 대응입니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   2,
+   3,
+   5
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "B",
+   "C",
+   "E"
+  ]
+ },
+ {
+  "questionId": "JC-TEC-MC004",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "업무 자동화 도구 도입 시 우선적으로 확인해야 할 사항을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "자동화 도구의 출처와 신뢰성"
+   },
+   {
+    "no": 2,
+    "text": "무료 여부(무료이면 안전하다고 판단)"
+   },
+   {
+    "no": 3,
+    "text": "필요 최소한의 권한만 부여"
+   },
+   {
+    "no": 4,
+    "text": "자동화 실행 전 적절한 백업 준비"
+   },
+   {
+    "no": 5,
+    "text": "실제 데이터 적용 전 충분한 테스트"
+   }
+  ],
+  "appAnswer": [
+   1,
+   3,
+   4,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 차시 23 '오답을 줄이는 5가지 질문'에서 보안 수준(A), 권한 최소화(C), 백업 준비(D), 테스트 검증(E)을 모두 확인해야 한다고 명시합니다. 무료 여부는 안전성 판단 기준이 아니며(B), 차시 23 '함께 풀어보기'에서도 '무료 프로그램이므로 안전하다고 판단하고 바로 사용한다'가 오답으로 제시됩니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   3,
+   4,
+   5
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "C",
+   "D",
+   "E"
+  ]
+ },
+ {
+  "questionId": "JC-TEC-MC005",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "데이터 접근 제어 원칙으로 올바른 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "필요 최소한의 권한만 부여한다."
+   },
+   {
+    "no": 2,
+    "text": "중요 데이터는 별도로 보관한다."
+   },
+   {
+    "no": 3,
+    "text": "모든 직원에게 동일한 권한을 부여한다."
+   },
+   {
+    "no": 4,
+    "text": "접근 로그를 기록하여 유지한다."
+   },
+   {
+    "no": 5,
+    "text": "외부 개발자에게 실제 데이터베이스 접근 권한을 제공한다."
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 차시 23 핵심 개념 '데이터 접근 제어'에서 '필요 최소한의 권한만 부여(A); 중요 데이터 별도 보관(B); 접근 로그 기록 유지(D)'가 명시됩니다. 모든 직원에게 동일한 권한을 부여하는 것(C)과 외부 개발자에게 실제 DB 접근 권한 제공(E)은 보안 위험입니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   4
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "D"
+  ]
+ },
+ {
+  "questionId": "JC-TEC-MC006",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "클라우드 서비스의 주요 장점에 해당하는 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "초기 투자비용 절감"
+   },
+   {
+    "no": 2,
+    "text": "데이터 접근성 향상"
+   },
+   {
+    "no": 3,
+    "text": "인터넷 연결 불필요"
+   },
+   {
+    "no": 4,
+    "text": "시스템 유지보수 부담 감소"
+   },
+   {
+    "no": 5,
+    "text": "확장성 및 유연성 제공"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   4,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 차시 39 직접 연습문항 표준 1번에서 클라우드 서비스의 주요 장점이 아닌 것이 '인터넷 연결 불필요(C)'라고 정답으로 제시됩니다. 나머지 초기 투자비용 절감(A), 데이터 접근성 향상(B), 유지보수 부담 감소(D), 확장성 및 유연성(E)은 모두 클라우드 서비스의 장점입니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   4,
+   5
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "D",
+   "E"
+  ]
+ },
+ {
+  "questionId": "JC-TEC-MC007",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "기술능력 종합 복습의 핵심 체크리스트에서 올바른 판단 기준을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "기술 용어를 정확히 이해한다."
+   },
+   {
+    "no": 2,
+    "text": "보안과 개인정보보호를 최우선으로 고려한다."
+   },
+   {
+    "no": 3,
+    "text": "극단적 표현이 포함된 선지를 우선 선택한다."
+   },
+   {
+    "no": 4,
+    "text": "효율성과 경제성을 함께 고려한다."
+   },
+   {
+    "no": 5,
+    "text": "함정 선지(일부만 맞는 선지)를 충분히 배제한다."
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   4,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 차시 39 '오답을 줄이는 5가지 질문'에서 기술 용어 정확한 이해(A), 보안과 개인정보보호 우선 고려(B), 효율성과 경제성 동시 고려(D), 함정 선지 배제(E)가 올바른 판단 기준으로 제시됩니다. 극단적 표현이 포함된 선지를 경계해야 하므로(C)는 틀립니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   4,
+   5
+  ],
+  "independentConfidence": "medium",
+  "independentFlags": [
+   "education_weak",
+   "choices_not_parallel"
+  ],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "D",
+   "E"
+  ]
+ },
+ {
+  "questionId": "JC-TEC-MC008",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "기술 융합 사고력의 5요소에 해당하는 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "기술 이해력"
+   },
+   {
+    "no": 2,
+    "text": "상황 분석력"
+   },
+   {
+    "no": 3,
+    "text": "기술 선택력"
+   },
+   {
+    "no": 4,
+    "text": "융합 사고력"
+   },
+   {
+    "no": 5,
+    "text": "실행 완성력"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   3,
+   4,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 차시 38 '기술능력 융합 5요소' 핵심 개념 정리에서 기술 이해력(기술의 원리와 작동 방식을 정확히 파악), 상황 분석력(문제 상황과 요구사항을 체계적으로 분석), 기술 선택력(다양한 기술 중 최적의 솔루션 선별), 융합 사고력(여러 기술을 조합하여 시너지 창출), 실행 완성력(선택한 기술을 실제 업무에 완전히 적용) 5가지가 모두 명시됩니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   3,
+   4,
+   5
+  ],
+  "independentConfidence": "medium",
+  "independentFlags": [
+   "education_weak"
+  ],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "C",
+   "D",
+   "E"
+  ]
+ },
+ {
+  "questionId": "JC-INF-MC001",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "자료 분류 시 '즉시 사용 가능'으로 분류할 수 있는 조건을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "업무 목적과 직접 관련이 있다"
+   },
+   {
+    "no": 2,
+    "text": "검색 결과 첫 페이지에 나온 자료이다"
+   },
+   {
+    "no": 3,
+    "text": "공식 기관 또는 담당 부서에서 작성한 자료이다"
+   },
+   {
+    "no": 4,
+    "text": "충분히 최신 자료이다"
+   },
+   {
+    "no": 5,
+    "text": "분량이 많고 내용이 상세하다"
+   }
+  ],
+  "appAnswer": [
+   1,
+   3,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 18차시에서 즉시 사용 가능한 자료의 조건은 목적 일치(A) + 공식 출처(C) + 최신성(D)입니다. 검색 순위나 자료의 분량은 신뢰도 판단 기준이 아닙니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   3,
+   4
+  ],
+  "independentConfidence": "medium",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "C",
+   "D"
+  ]
+ },
+ {
+  "questionId": "JC-INF-MC002",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "AI 정보 검증 5요소에 해당하는 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "출처 확인(1차 출처, 공식 기관, 전문 기관 여부)"
+   },
+   {
+    "no": 2,
+    "text": "검색 결과 개수 확인"
+   },
+   {
+    "no": 3,
+    "text": "교차 검증(2개 이상 독립적 출처에서 동일 정보 확인)"
+   },
+   {
+    "no": 4,
+    "text": "최신성 검토(정보 생성·업데이트 날짜 확인)"
+   },
+   {
+    "no": 5,
+    "text": "전문성 평가(해당 분야 전문가 또는 공신력 있는 기관 여부)"
+   }
+  ],
+  "appAnswer": [
+   1,
+   3,
+   4,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 19차시에서 AI 정보 검증 5요소는 출처 확인, 교차 검증, 최신성 검토, 전문성 평가, 일관성 점검입니다. 검색 결과 개수는 검증 요소에 해당하지 않습니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   3,
+   4,
+   5
+  ],
+  "independentConfidence": "medium",
+  "independentFlags": [
+   "stem_mismatch"
+  ],
+  "appAnswerRaw": [
+   "A",
+   "C",
+   "D",
+   "E"
+  ]
+ },
+ {
+  "questionId": "JC-INF-MC003",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "정보능력 시험에서 오답을 줄이기 위한 5가지 질문에 해당하는 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "자료가 업무 목적과 직접 관련 있나요?"
+   },
+   {
+    "no": 2,
+    "text": "자료의 분량이 충분히 많은가요?"
+   },
+   {
+    "no": 3,
+    "text": "자료의 갱신일이 충분히 최신인가요?"
+   },
+   {
+    "no": 4,
+    "text": "출처가 공식 기관이나 담당 부서인가요?"
+   },
+   {
+    "no": 5,
+    "text": "파일 형식이 업무에 활용 가능한가요?"
+   }
+  ],
+  "appAnswer": [
+   1,
+   3,
+   4,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 18차시 '오답을 줄이는 5가지 질문'에서 목적 관련성(A), 최신성(C), 공식 출처(D), 파일 형식(E), 그리고 '가장 신뢰도 높은 것을 골랐나요?'가 제시됩니다. 자료의 분량은 오답 줄이기 기준에 해당하지 않습니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   3,
+   4,
+   5
+  ],
+  "independentConfidence": "medium",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "C",
+   "D",
+   "E"
+  ]
+ },
+ {
+  "questionId": "JC-INF-MC004",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "AI 기반 의사결정 지원 시 선택지를 비교할 때 함께 확인해야 할 항목을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "선택지의 기대 효과"
+   },
+   {
+    "no": 2,
+    "text": "선택지와 관련된 비용"
+   },
+   {
+    "no": 3,
+    "text": "선택지의 글자 수와 설명 분량"
+   },
+   {
+    "no": 4,
+    "text": "선택지와 관련된 위험"
+   },
+   {
+    "no": 5,
+    "text": "규정 위반 가능성"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   4,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 20차시에서 '선택지는 효과뿐 아니라 비용, 기간, 위험, 규정 위반 가능성을 함께 비교합니다'라고 명시되어 있습니다. 글자 수나 설명 분량은 비교 항목에 해당하지 않습니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   4,
+   5
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "D",
+   "E"
+  ]
+ },
+ {
+  "questionId": "JC-INF-MC005",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "정보능력 활용 단계 중 '정보 요구 파악' 단계에서 해야 할 일로 적절한 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "업무 목적에 맞는 정보 요구사항을 명확화한다"
+   },
+   {
+    "no": 2,
+    "text": "자료를 만든 기관과 작성자를 확인한다"
+   },
+   {
+    "no": 3,
+    "text": "현재 해결해야 할 질문이 무엇인지 분명히 한다"
+   },
+   {
+    "no": 4,
+    "text": "지금 필요한 정보가 무엇인지 한 문장으로 정리한다"
+   },
+   {
+    "no": 5,
+    "text": "수집된 정보를 가공하고 분류한다"
+   }
+  ],
+  "appAnswer": [
+   1,
+   3,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 17차시와 37차시를 종합하면, 정보 요구 파악 단계는 업무 목적에 맞는 요구사항 명확화(A), 해결해야 할 질문 분명히 하기(C), 필요한 정보를 한 문장으로 정리하기(D)가 해당합니다. 2번는 출처 확인 단계, 5번는 정보 분석 단계입니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   3,
+   4
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "C",
+   "D"
+  ]
+ },
+ {
+  "questionId": "JC-INF-MC006",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "AI 기반 정보처리에서 실무 적용 시 반드시 검토해야 할 사항을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "목적 적합성"
+   },
+   {
+    "no": 2,
+    "text": "AI 시스템의 브랜드와 제조사"
+   },
+   {
+    "no": 3,
+    "text": "데이터 충분성"
+   },
+   {
+    "no": 4,
+    "text": "윤리적 고려사항"
+   },
+   {
+    "no": 5,
+    "text": "실시간 피드백 체계와 지속적 모델 개선"
+   }
+  ],
+  "appAnswer": [
+   1,
+   3,
+   4,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 20차시 3줄 요약에서 '실무 적용 시에는 목적 적합성, 데이터 충분성, 윤리적 고려사항을 반드시 검토해야 한다', 그리고 '효과 극대화를 위해서는 실시간 피드백 체계와 지속적인 모델 개선이 필수적이다'라고 명시되어 있습니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   3,
+   4
+  ],
+  "independentConfidence": "medium",
+  "independentFlags": [
+   "commonsense_dispute"
+  ],
+  "appAnswerRaw": [
+   "A",
+   "C",
+   "D",
+   "E"
+  ]
+ },
+ {
+  "questionId": "JC-INF-MC007",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "정보능력 오답을 줄이는 질문 중 AI 검색 검증과 관련된 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "출처가 공식적인가? - 정부기관, 공식 홈페이지, 전문 기관인가?"
+   },
+   {
+    "no": 2,
+    "text": "정보가 최신인가? - 언제 작성되거나 업데이트된 정보인가?"
+   },
+   {
+    "no": 3,
+    "text": "검색어가 정확한가? - 검색어가 완전한 문장 형태인가?"
+   },
+   {
+    "no": 4,
+    "text": "교차 검증했는가? - 독립적인 2개 이상 출처에서 확인했는가?"
+   },
+   {
+    "no": 5,
+    "text": "전문성이 있는가? - 해당 분야의 전문가나 권위 있는 기관인가?"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   4,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 19차시 '오답을 줄이는 5가지 질문'에서 출처 공식성(A), 정보 최신성(B), 교차 검증 여부(D), 전문성(E)이 명시되어 있습니다. 검색어 형태는 오답을 줄이는 기준이 아닙니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   4,
+   5
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "D",
+   "E"
+  ]
+ },
+ {
+  "questionId": "JC-INF-MC008",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "정보능력 오답 방지를 위해 정보의 신뢰도를 판단할 때 확인해야 할 항목을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "자료를 만든 기관(작성 기관)이 공식 기관인지 확인"
+   },
+   {
+    "no": 2,
+    "text": "자료의 작성일 또는 갱신일 확인"
+   },
+   {
+    "no": 3,
+    "text": "자료 파일의 용량과 크기 확인"
+   },
+   {
+    "no": 4,
+    "text": "원문 위치(URL, 공고 번호 등) 확인"
+   },
+   {
+    "no": 5,
+    "text": "자료에 이해관계가 있는 출처인지 확인"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   4,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 전반에서 자료 신뢰도 판단 시 작성 기관(A), 작성일/갱신일(B), 원문 위치(D)를 확인하도록 반복 강조하며, 이해관계 여부 확인도 중요한 신뢰도 판단 기준으로 제시됩니다. 파일 용량은 신뢰도와 무관합니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   4,
+   5
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "D",
+   "E"
+  ]
+ },
+ {
+  "questionId": "JC-RSM-MC001",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "다음 중 교재에서 제시한 자원관리능력의 핵심 판단 기준으로 옳은 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "긴급도 — 언제까지 처리해야 하는지에 따라 우선순위를 판단하는 기준"
+   },
+   {
+    "no": 2,
+    "text": "중요도 — 고객, 안전, 비용, 조직 목표에 미치는 영향을 판단하는 기준"
+   },
+   {
+    "no": 3,
+    "text": "소요시간 — 업무를 끝내는 데 필요한 시간과 투입량을 예상하는 기준"
+   },
+   {
+    "no": 4,
+    "text": "선행조건 — 다른 일을 시작하기 전에 먼저 해결해야 하는 조건"
+   },
+   {
+    "no": 5,
+    "text": "병목비용 — 추가 인력 투입 시 발생하는 비용"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 '자원관리능력 핵심 판단 기준'에서 긴급도·중요도·소요시간·선행조건 네 가지를 명시합니다. 5번의 '병목비용'은 교재에 없는 개념입니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "C",
+   "D"
+  ]
+ },
+ {
+  "questionId": "JC-RSM-MC002",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "교재에서 제시한 자원관리 6요소에 해당하는 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "목표 — 달성해야 할 업무 목표는 무엇인가"
+   },
+   {
+    "no": 2,
+    "text": "마감 — 언제까지 완료해야 하는가"
+   },
+   {
+    "no": 3,
+    "text": "우선순위 — 어떤 업무를 먼저 처리해야 하는가"
+   },
+   {
+    "no": 4,
+    "text": "배분안 — 자원을 어떻게 나눌 것인가"
+   },
+   {
+    "no": 5,
+    "text": "위험도 — 업무 실패 시 예상되는 피해 규모"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 자원관리 6요소는 목표·마감·소요시간·제약조건·우선순위·배분안입니다. 5번의 '위험도'는 교재에 포함되지 않는 요소입니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "independentConfidence": "medium",
+  "independentFlags": [
+   "stem_mismatch"
+  ],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "C",
+   "D"
+  ]
+ },
+ {
+  "questionId": "JC-RSM-MC003",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "교재에서 제시한 업무 처리 '풀이 순서'에 포함된 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "마감이 가장 빠른 일을 표시한다"
+   },
+   {
+    "no": 2,
+    "text": "선행조건이 있는 일을 먼저 찾는다"
+   },
+   {
+    "no": 3,
+    "text": "오래 걸리는 일은 쪼개서 배치한다"
+   },
+   {
+    "no": 4,
+    "text": "안전, 고객, 비용 관련 일은 뒤로 미루지 않는다"
+   },
+   {
+    "no": 5,
+    "text": "예산이 가장 적게 드는 일을 먼저 처리한다"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 풀이 순서에서 4가지 단계(마감 표시, 선행조건 찾기, 오래 걸리는 일 쪼개기, 안전·고객·비용 관련 우선)가 명시됩니다. 5번는 교재에 없는 내용입니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "C",
+   "D"
+  ]
+ },
+ {
+  "questionId": "JC-RSM-MC004",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "교재에서 인력 배분 '오답을 줄이는 5가지 질문'에 포함된 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "총 가용 자원(예산/인력)을 먼저 확인했나요"
+   },
+   {
+    "no": 2,
+    "text": "이미 사용된 자원을 뺀 나머지를 계산했나요"
+   },
+   {
+    "no": 3,
+    "text": "우선순위가 높은 업무에 먼저 배분했나요"
+   },
+   {
+    "no": 4,
+    "text": "합계가 제한을 초과하지 않는지 확인했나요"
+   },
+   {
+    "no": 5,
+    "text": "팀원의 개인 역량을 고려해서 배분했나요"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 '오답을 줄이는 5가지 질문'에서 총 가용 자원 확인, 사용된 자원 차감 계산, 우선순위 배분, 합계 초과 여부 확인, 마감 급한 업무 우선 5가지를 명시합니다. 5번의 '팀원 개인 역량'은 교재에 포함되지 않습니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "C",
+   "D"
+  ]
+ },
+ {
+  "questionId": "JC-RSM-MC005",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "교재에서 복수 자원 최적화의 '오답을 줄이는 5가지 질문'에 포함된 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "모든 제약조건을 확인했는가"
+   },
+   {
+    "no": 2,
+    "text": "계산 실수는 없는가"
+   },
+   {
+    "no": 3,
+    "text": "동시 진행과 순차 진행을 구분했는가"
+   },
+   {
+    "no": 4,
+    "text": "최적화 기준이 무엇인가(수익 최대화 vs 비용 최소화)"
+   },
+   {
+    "no": 5,
+    "text": "업무 담당자의 경력을 고려했는가"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 복수 자원 최적화 '오답을 줄이는 5가지 질문'은 제약조건 확인, 계산 실수, 동시·순차 진행 구분, 최적화 기준 명확화, 함정 선지 경계입니다. 5번는 교재에 없는 내용입니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "C",
+   "D"
+  ]
+ },
+ {
+  "questionId": "JC-RSM-MC006",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "교재에서 '이 페이지에서 꼭 잡을 것(인력과 예산 배분하기)'에 명시된 학습 목표를 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "주어진 인력과 예산을 업무 우선순위에 맞게 배분할 수 있다"
+   },
+   {
+    "no": 2,
+    "text": "예산 초과 없이 업무를 처리하는 방법을 고를 수 있다"
+   },
+   {
+    "no": 3,
+    "text": "인력 부족 상황에서 우선순위를 판단할 수 있다"
+   },
+   {
+    "no": 4,
+    "text": "자원 배분표를 보고 문제를 찾을 수 있다"
+   },
+   {
+    "no": 5,
+    "text": "외부 인력 조달 계획을 수립할 수 있다"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 '이 페이지에서 꼭 잡을 것' 섹션에서 A, B, C, D 네 가지 학습 목표를 명시합니다. 5번는 교재에 포함되지 않는 목표입니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "independentConfidence": "medium",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "C",
+   "D"
+  ]
+ },
+ {
+  "questionId": "JC-RSM-MC007",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "교재에서 복수 자원 최적화 '이 페이지에서 꼭 잡을 것'에 명시된 학습 목표를 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "시간, 인력, 예산 등 복수 자원의 제약 조건을 파악(분석)한다"
+   },
+   {
+    "no": 2,
+    "text": "각 자원별 최적 배분량을 정확히 산출(계산)한다"
+   },
+   {
+    "no": 3,
+    "text": "여러 대안 중 모든 제약을 만족하는 최선책을 선별(비교)한다"
+   },
+   {
+    "no": 4,
+    "text": "실무 상황에서 복합적 자원 관리 전략을 수립(적용)한다"
+   },
+   {
+    "no": 5,
+    "text": "국제 표준 자원 배분 모델을 암기한다"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 '이 페이지에서 꼭 잡을 것(복수 자원과 복수 제약 조건 최적화)'에서 분석·계산·비교·적용 4가지 학습 목표를 명시합니다. 5번는 교재에 없는 내용입니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "C",
+   "D"
+  ]
+ },
+ {
+  "questionId": "JC-RSM-MC008",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "교재에서 자원이 제한되어 있을 때 사용하는 자원 종류로 옳게 제시된 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "시간"
+   },
+   {
+    "no": 2,
+    "text": "예산"
+   },
+   {
+    "no": 3,
+    "text": "인력"
+   },
+   {
+    "no": 4,
+    "text": "물자"
+   },
+   {
+    "no": 5,
+    "text": "명성"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "교재에서 '시간, 예산, 인력, 물자처럼 쓸 수 있는 자원이 제한되어 있을 때 쓰는 개념입니다'라고 여러 개념 카드에서 반복 명시합니다. '명성'은 교재에 포함되지 않습니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "C",
+   "D"
+  ]
+ },
+ {
+  "questionId": "JC-NUM-MC001",
+  "subject": "job-common",
+  "group": "수리활용",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "다음 중 유리수에 해당하는 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "-5"
+   },
+   {
+    "no": 2,
+    "text": "0.7"
+   },
+   {
+    "no": 3,
+    "text": "√2"
+   },
+   {
+    "no": 4,
+    "text": "3/4"
+   },
+   {
+    "no": 5,
+    "text": "-1/3"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   4,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "유리수는 분수로 나타낼 수 있는 수입니다. -5, 0.7, 3/4, -1/3은 모두 분수로 표현할 수 있으나, √2는 순환하지 않는 무리수로 유리수가 아닙니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   4,
+   5
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "D",
+   "E"
+  ]
+ },
+ {
+  "questionId": "JC-NUM-MC002",
+  "subject": "job-common",
+  "group": "수리활용",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "사칙연산 우선순위에 관한 설명으로 옳은 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "괄호 안을 가장 먼저 계산한다"
+   },
+   {
+    "no": 2,
+    "text": "곱셈과 나눗셈은 덧셈과 뺄셈보다 먼저 계산한다"
+   },
+   {
+    "no": 3,
+    "text": "덧셈과 뺄셈이 곱셈과 나눗셈보다 먼저 계산된다"
+   },
+   {
+    "no": 4,
+    "text": "2 + 3 × 4에서 먼저 3 × 4를 계산하면 14이다"
+   },
+   {
+    "no": 5,
+    "text": "(2 + 3) × 4에서 괄호 안 2 + 3을 먼저 계산하면 20이다"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   4,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "교재에서 사칙연산 우선순위는 '괄호 → 곱셈·나눗셈 → 덧셈·뺄셈'이라고 명시합니다. 3번는 틀린 설명입니다. 2+3×4=14, (2+3)×4=20은 교재 활용 사례에 직접 제시된 예입니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   4,
+   5
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "D",
+   "E"
+  ]
+ },
+ {
+  "questionId": "JC-NUM-MC003",
+  "subject": "job-common",
+  "group": "수리활용",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "비율(구성비)과 증감률에 대한 설명으로 옳은 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "구성비는 (해당 값 ÷ 전체 합계) × 100으로 계산한다"
+   },
+   {
+    "no": 2,
+    "text": "증감률은 (변화량 ÷ 기준값) × 100으로 계산한다"
+   },
+   {
+    "no": 3,
+    "text": "구성비와 증감률 모두 기준값은 항상 전체 합계이다"
+   },
+   {
+    "no": 4,
+    "text": "증감률이 감소를 나타낼 때는 음수(-)로 표현한다"
+   },
+   {
+    "no": 5,
+    "text": "증가량과 증감률은 단위가 같아 혼용 가능하다"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "교재에서 구성비는 전체 합계 기준, 증감률은 이전 시점 기준으로 각각 다른 공식을 사용합니다. 3번는 틀리고(증감률의 기준값은 이전 시점), 5번도 틀립니다(증가량은 실제 수치·증감률은 비율). 감소 시 음수 표현은 교재에 명시되어 있습니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   4
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "D"
+  ]
+ },
+ {
+  "questionId": "JC-NUM-MC004",
+  "subject": "job-common",
+  "group": "수리활용",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "도표와 그래프에서 데이터를 비교 분석하는 5요소를 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "기준점 설정"
+   },
+   {
+    "no": 2,
+    "text": "증감 파악"
+   },
+   {
+    "no": 3,
+    "text": "최댓값·최솟값"
+   },
+   {
+    "no": 4,
+    "text": "변화율 계산"
+   },
+   {
+    "no": 5,
+    "text": "추세 예측"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   3,
+   4,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 '도표와 그래프에서 데이터 비교하기' 단원에서 '데이터 비교 분석 5요소'를 기준점 설정, 증감 파악, 최댓값·최솟값, 변화율 계산, 추세 예측으로 명시합니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   3,
+   4,
+   5
+  ],
+  "independentConfidence": "medium",
+  "independentFlags": [
+   "education_weak"
+  ],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "C",
+   "D",
+   "E"
+  ]
+ },
+ {
+  "questionId": "JC-NUM-MC005",
+  "subject": "job-common",
+  "group": "수리활용",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "수리능력 문제를 풀 때 오답을 줄이기 위해 확인해야 할 사항으로 교재에서 제시한 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "단위가 %인지, 원/명/건인지 확인한다"
+   },
+   {
+    "no": 2,
+    "text": "기준값이 전월인지, 전년인지 확인한다"
+   },
+   {
+    "no": 3,
+    "text": "항상 가장 큰 숫자를 정답으로 선택한다"
+   },
+   {
+    "no": 4,
+    "text": "수의 분류를 정확히 구분한다"
+   },
+   {
+    "no": 5,
+    "text": "계산 결과 감소일 때 음수로 표현했는지 확인한다"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   4,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 각 단원의 '오답을 줄이는 5가지 질문'에서 단위 확인, 기준값 확인, 수의 분류, 음수 표현 등이 명시됩니다. C(항상 가장 큰 숫자를 선택)는 교재에서 오히려 금지하는 함정 패턴입니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   4,
+   5
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "D",
+   "E"
+  ]
+ },
+ {
+  "questionId": "JC-NUM-MC006",
+  "subject": "job-common",
+  "group": "수리활용",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "수리능력 5대 핵심 요소에 해당하는 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "기초연산 (사칙연산, 백분율, 비율 계산)"
+   },
+   {
+    "no": 2,
+    "text": "기초통계 (평균, 최빈값, 중앙값, 표준편차)"
+   },
+   {
+    "no": 3,
+    "text": "도표분석 (표, 그래프에서 정보 추출)"
+   },
+   {
+    "no": 4,
+    "text": "도표작성 (데이터를 적절한 형태로 시각화)"
+   },
+   {
+    "no": 5,
+    "text": "외국어 활용 능력"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 수리능력 종합평가 단원에서 수리능력 5대 핵심 요소를 기초연산, 기초통계, 도표분석, 도표작성, 종합적용으로 정의합니다. 외국어 활용 능력(E)은 포함되지 않습니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "independentConfidence": "medium",
+  "independentFlags": [
+   "stem_mismatch"
+  ],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "C",
+   "D"
+  ]
+ },
+ {
+  "questionId": "JC-NUM-MC007",
+  "subject": "job-common",
+  "group": "수리활용",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "평균을 구하는 데 필요한 절차를 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "모든 자료의 값을 더해 합계를 구한다"
+   },
+   {
+    "no": 2,
+    "text": "자료의 개수를 센다"
+   },
+   {
+    "no": 3,
+    "text": "합계를 자료의 개수로 나눈다"
+   },
+   {
+    "no": 4,
+    "text": "자료를 크기순으로 정렬한다"
+   },
+   {
+    "no": 5,
+    "text": "가운데 위치한 값을 찾는다"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   3
+  ],
+  "appAnswerText": null,
+  "explanation": "교재에서 평균은 '합계를 개수로 나눈 값'입니다. 4번와 5번는 중앙값을 구하는 절차입니다. 평균을 구할 때는 정렬이 필요 없고, 가운데 값을 찾는 것은 중앙값의 절차입니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   3
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "C"
+  ]
+ },
+ {
+  "questionId": "JC-NUM-MC008",
+  "subject": "job-common",
+  "group": "수리활용",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "수리능력 시험에서 그래프와 표 문제를 풀 때 함정이 되는 패턴을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "단위 혼동 (천원, 만원, % 등을 혼동)"
+   },
+   {
+    "no": 2,
+    "text": "일부 구간만 맞는 선택지를 전체인 것처럼 해석"
+   },
+   {
+    "no": 3,
+    "text": "기준점을 명확히 하고 계산한다"
+   },
+   {
+    "no": 4,
+    "text": "비교 기준 착각 (어느 시점과 비교하는지 혼동)"
+   },
+   {
+    "no": 5,
+    "text": "그래프 축과 범례를 제대로 읽지 않음"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   4,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 '오답을 줄이는 5가지 질문'에서 단위 혼동, 일부만 맞는 선택지, 비교 기준 착각, 그래프 축·범례 오독을 함정으로 명시합니다. 3번는 올바른 풀이 방법이므로 함정이 아닙니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   4,
+   5
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "D",
+   "E"
+  ]
+ },
+ {
+  "questionId": "JC-PSV-MC001",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "문제해결능력의 직무에서의 중요성으로 교재에서 명시한 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "예상치 못한 상황 대처 능력"
+   },
+   {
+    "no": 2,
+    "text": "업무 효율성 향상"
+   },
+   {
+    "no": 3,
+    "text": "재무 관리 능력 향상"
+   },
+   {
+    "no": 4,
+    "text": "고객 만족도 제고"
+   },
+   {
+    "no": 5,
+    "text": "개인 성장과 조직 발전"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   4,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 핵심 개념 정리에서 직무에서의 중요성으로 '예상치 못한 상황 대처 능력, 업무 효율성 향상, 고객 만족도 제고, 개인 성장과 조직 발전'을 명시하고 있습니다. '재무 관리 능력 향상'(C)은 교재에 언급되지 않습니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   4,
+   5
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "D",
+   "E"
+  ]
+ },
+ {
+  "questionId": "JC-PSV-MC002",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "대안 비교 5요소를 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "상황"
+   },
+   {
+    "no": 2,
+    "text": "조건"
+   },
+   {
+    "no": 3,
+    "text": "비용"
+   },
+   {
+    "no": 4,
+    "text": "대안"
+   },
+   {
+    "no": 5,
+    "text": "근거"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   4,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 '대안 비교 5요소' 핵심 개념에서 5요소는 상황, 조건, 대안, 근거, 최선입니다. 여기서 '비용'(C)은 5요소의 이름이 아니며, '최선'이 다섯 번째 요소입니다. 선택지에 최선이 없고 비용이 포함되어 있으므로, 교재에 명시된 요소 중 A(상황), B(조건), D(대안), E(근거)를 선택합니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   4,
+   5
+  ],
+  "independentConfidence": "low",
+  "independentFlags": [
+   "stem_mismatch",
+   "ambiguous_stem"
+  ],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "D",
+   "E"
+  ]
+ },
+ {
+  "questionId": "JC-PSV-MC003",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "대안 비교 시 '오답을 줄이는 5가지 질문'에 해당하는 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "필수 조건이 몇 가지인지 먼저 세었나요?"
+   },
+   {
+    "no": 2,
+    "text": "조건을 하나라도 충족하지 못하는 대안은 제거했나요?"
+   },
+   {
+    "no": 3,
+    "text": "'이상', '이하', '미만', '초과'를 정확히 구분했나요?"
+   },
+   {
+    "no": 4,
+    "text": "감정이 아닌 조건 기반으로 판단했나요?"
+   },
+   {
+    "no": 5,
+    "text": "다수결로 최선의 대안을 결정했나요?"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 '오답을 줄이는 5가지 질문'에는 필수 조건 수 확인(A), 미충족 대안 제거(B), 이상/이하/미만/초과 구분(C), 감정이 아닌 조건 기반 판단(D), 여러 대안 충족 시 추가 기준 유무 확인이 있습니다. '다수결로 결정'(E)은 교재에 없는 내용입니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "C",
+   "D"
+  ]
+ },
+ {
+  "questionId": "JC-PSV-MC004",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "시험장에서 문제 풀기 3단계 중 '2단계(60초): 선택지 분석'에 해당하는 내용을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "문제해결 4단계에 맞는지 검토"
+   },
+   {
+    "no": 2,
+    "text": "논리적 순서와 체계성 확인"
+   },
+   {
+    "no": 3,
+    "text": "현재 상태 vs 원하는 상태 확인"
+   },
+   {
+    "no": 4,
+    "text": "실현 가능성 판단"
+   },
+   {
+    "no": 5,
+    "text": "가장 체계적이고 효과적인 답 선택"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 '시험장에서 이렇게 풀기(총 120초)' 섹션에서 2단계(60초)는 '문제해결 4단계에 맞는지 검토, 논리적 순서와 체계성 확인, 실현 가능성 판단'입니다. C(현재 상태 vs 원하는 상태 확인)는 1단계, E(가장 체계적이고 효과적인 답 선택)는 3단계에 해당합니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   4
+  ],
+  "independentConfidence": "low",
+  "independentFlags": [
+   "education_weak"
+  ],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "D"
+  ]
+ },
+ {
+  "questionId": "JC-PSV-MC005",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "복수 조건 우선순위 판단 시 '오답을 줄이는 5가지 질문'에 해당하는 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "마감 시한이 가장 촉박한 것은 무엇인가?"
+   },
+   {
+    "no": 2,
+    "text": "처리하지 않으면 가장 큰 피해가 예상되는 것은?"
+   },
+   {
+    "no": 3,
+    "text": "다른 업무의 전제 조건이 되는 것은 무엇인가?"
+   },
+   {
+    "no": 4,
+    "text": "현재 가용한 권한과 자원으로 해결 가능한가?"
+   },
+   {
+    "no": 5,
+    "text": "팀장이 가장 선호하는 것은 무엇인가?"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 '복수 조건에서 우선순위 판단하기' 오답을 줄이는 5가지 질문에는 시간 압박(A), 파급 효과(B), 의존 관계(C), 자원 제약(D)이 포함됩니다. '팀장 선호'(E)는 교재에 없는 내용입니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "C",
+   "D"
+  ]
+ },
+ {
+  "questionId": "JC-PSV-MC006",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "창의적 문제해결의 '오답을 줄이는 5가지 질문'에 해당하는 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "근본 원인 파악: 표면적 문제 뒤에 숨어있는 진짜 원인을 찾았는가?"
+   },
+   {
+    "no": 2,
+    "text": "시스템적 관점: 문제들 간의 상호연관성과 전체적 맥락을 고려했는가?"
+   },
+   {
+    "no": 3,
+    "text": "창의적 사고: 기존의 틀을 벗어난 혁신적 관점을 적용했는가?"
+   },
+   {
+    "no": 4,
+    "text": "실현 가능성: 제시된 해결책이 현실적으로 실행 가능한가?"
+   },
+   {
+    "no": 5,
+    "text": "비용 절감: 가장 저렴한 해결책을 선택했는가?"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 '복합 문제 해결과 창의적 사고' 오답을 줄이는 5가지 질문에는 근본 원인 파악(A), 시스템적 관점(B), 창의적 사고(C), 실현 가능성(D)이 포함됩니다. '비용 절감'(E)은 교재에 없는 내용입니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "C",
+   "D"
+  ]
+ },
+ {
+  "questionId": "JC-PSV-MC007",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "문제해결 종합평가에서 '오답을 줄이는 5가지 질문'에 해당하는 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "문제의 핵심이 무엇인지 명확히 파악했는가?"
+   },
+   {
+    "no": 2,
+    "text": "제약조건들을 모두 고려했는가?"
+   },
+   {
+    "no": 3,
+    "text": "각 선택지의 실현 가능성을 검토했는가?"
+   },
+   {
+    "no": 4,
+    "text": "부작용이나 리스크를 충분히 고려했는가?"
+   },
+   {
+    "no": 5,
+    "text": "상급자의 판단을 따르는 것이 항상 옳은가?"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 종합평가 '오답을 줄이는 5가지 질문'에는 핵심 파악(A), 제약조건 고려(B), 실현 가능성 검토(C), 부작용/리스크 고려(D)가 포함됩니다. '상급자 판단'(E)은 교재에 없는 내용입니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "C",
+   "D"
+  ]
+ },
+ {
+  "questionId": "JC-PSV-MC008",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": "카페에서 아르바이트하는 이지원 학생이 오후 피크타임에 에스프레소 머신이 갑자기 작동을 멈춘 상황",
+  "stem": "카페에서 에스프레소 머신이 고장 나고 고객이 대기 중인 상황에서 교재의 '문제 분석' 단계에 해당하는 행동을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "머신 상태 점검(전원, 물, 원두 확인)"
+   },
+   {
+    "no": 2,
+    "text": "고객 대기 상황 파악"
+   },
+   {
+    "no": 3,
+    "text": "즉시 드립커피로 교체하여 주문 처리"
+   },
+   {
+    "no": 4,
+    "text": "사용 가능한 자원 확인"
+   },
+   {
+    "no": 5,
+    "text": "매니저에게 무조건 영업 중단 요청"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 '함께 풀어보기' 사례에서 문제 분석 단계는 '머신 상태 점검(전원, 물, 원두 확인), 고객 대기 상황 파악, 사용 가능한 자원 확인'으로 명시되어 있습니다. C(드립커피 교체)는 대안 개발 단계, E(영업 중단 요청)는 지나친 대안입니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   4
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [
+   "no_context_needed"
+  ],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "D"
+  ]
+ },
+ {
+  "questionId": "JC-ORG-MC001",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "교재에서 설명하는 조직 문제 해결의 올바른 원칙을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "역할 확인, 보고, 협조, 절차 준수가 정답에 가깝다"
+   },
+   {
+    "no": 2,
+    "text": "혼자 결정하고 빠르게 처리하는 것이 가장 효율적이다"
+   },
+   {
+    "no": 3,
+    "text": "문제 발생 시 숨기거나 혼자 해결하지 말고 즉시 보고한다"
+   },
+   {
+    "no": 4,
+    "text": "다른 부서와 관련되면 일방적으로 처리하지 않는다"
+   },
+   {
+    "no": 5,
+    "text": "조직 목표, 고객, 안전, 비용을 함께 고려한다"
+   }
+  ],
+  "appAnswer": [
+   1,
+   3,
+   4,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 시험 직전 암기 문장에 '조직 문제는 혼자 해결보다 역할 확인, 보고, 협조, 절차 준수가 정답에 가깝다'고 명시되어 있습니다. 또한 풀이 순서에서 다른 부서와 관련되면 일방적 처리 금지, 조직 목표·고객·안전·비용 동시 고려가 명시됩니다. 2번는 교재의 원칙에 위배됩니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   3,
+   4,
+   5
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "C",
+   "D",
+   "E"
+  ]
+ },
+ {
+  "questionId": "JC-ORG-MC002",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "교재에서 설명하는 보고 전 확인해야 할 내용과 올바른 보고체계 원칙을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "이 결정이 내 권한 범위 안에 있는지 확인한다"
+   },
+   {
+    "no": 2,
+    "text": "승인이 필요한 사항을 무단으로 처리하지 않는다"
+   },
+   {
+    "no": 3,
+    "text": "보고 대상과 협업 대상을 혼동하지 않는다"
+   },
+   {
+    "no": 4,
+    "text": "문제 발생 시 숨기지 않고 즉시 보고한다"
+   },
+   {
+    "no": 5,
+    "text": "연락 순서가 조직 체계에 맞는지 확인하지 않아도 된다"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 '오답을 줄이는 5가지 질문' 섹션에 이 결정이 내 권한 범위 안인지, 승인 필요 사항 무단 처리 여부, 보고·협업 대상 혼동 여부, 즉시 보고 여부가 모두 명시되어 있습니다. 5번는 연락 순서도 조직 체계에 맞게 확인해야 하므로 틀린 내용입니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "C",
+   "D"
+  ]
+ },
+ {
+  "questionId": "JC-ORG-MC003",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "교재에서 설명하는 이해관계자 분석의 5요소를 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "이해관계자 식별"
+   },
+   {
+    "no": 2,
+    "text": "영향력 분석"
+   },
+   {
+    "no": 3,
+    "text": "관심도 분석"
+   },
+   {
+    "no": 4,
+    "text": "예산 배분 계획"
+   },
+   {
+    "no": 5,
+    "text": "소통 전략 수립"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   3,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 핵심 개념 정리에서 이해관계자 분석의 5요소는 '이해관계자 식별, 영향력 분석, 관심도 분석, 우선순위 설정, 소통 전략 수립'으로 명시되어 있습니다. 4번의 예산 배분 계획은 포함되지 않으며, 우선순위 설정이 네 번째 요소입니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   3,
+   5
+  ],
+  "independentConfidence": "medium",
+  "independentFlags": [
+   "stem_mismatch"
+  ],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "C",
+   "E"
+  ]
+ },
+ {
+  "questionId": "JC-ORG-MC004",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "교재에서 설명하는 이해관계자 분석 시 오답을 줄이는 질문들을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "누가 이 업무에 영향을 받나요?"
+   },
+   {
+    "no": 2,
+    "text": "이 업무가 조직의 어떤 목표와 연결되나요?"
+   },
+   {
+    "no": 3,
+    "text": "이해관계자별 관심도와 기대사항은 무엇인가요?"
+   },
+   {
+    "no": 4,
+    "text": "경쟁사의 전략은 무엇인가요?"
+   },
+   {
+    "no": 5,
+    "text": "우선순위 설정 기준이 명확한가요?"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   3,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 '오답을 줄이는 5가지 질문' 섹션에 이해관계자 범위 확인, 목표 연결성 확인, 관심도와 기대사항 파악, 우선순위 논리성 확인이 명시되어 있습니다. 4번의 경쟁사 전략은 해당 섹션의 5가지 질문에 포함되지 않습니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   3,
+   5
+  ],
+  "independentConfidence": "medium",
+  "independentFlags": [
+   "commonsense_dispute"
+  ],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "C",
+   "E"
+  ]
+ },
+ {
+  "questionId": "JC-ORG-MC005",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "교재에서 조직 변화 저항 관리에 대해 설명한 내용으로 옳은 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "변화 저항은 저항 원인을 정확히 파악하고 이해관계자별 맞춤형 대응방안을 수립하는 것이 핵심이다"
+   },
+   {
+    "no": 2,
+    "text": "저항이 심한 구성원은 다른 부서로 즉시 이동시키는 것이 가장 효과적인 대응이다"
+   },
+   {
+    "no": 3,
+    "text": "변화 저항의 원인이 감정적 저항인지 합리적 우려인지 구분해야 한다"
+   },
+   {
+    "no": 4,
+    "text": "각 저항 요인별로 개별 대응 방안을 마련하는 것이 체계적 관리 방안이다"
+   },
+   {
+    "no": 5,
+    "text": "단기적 갈등 해결보다 장기적 조직 발전을 고려해야 한다"
+   }
+  ],
+  "appAnswer": [
+   1,
+   3,
+   4,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 3줄 요약에 '변화 저항 관리는 저항 원인을 정확히 파악하고 이해관계자별 맞춤형 대응방안을 수립하는 것이 핵심'이라 명시되어 있습니다. 오답 줄이기 질문에 저항 원인 분석(감정적/합리적 구분)이 있으며, 에서 개별 대응이 정답입니다. 2번의 부서 이동은 교재에서 오답으로 처리됩니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   3,
+   4,
+   5
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "C",
+   "D",
+   "E"
+  ]
+ },
+ {
+  "questionId": "JC-ORG-MC006",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "교재에서 설명하는 조직 변화 관리 시 오답을 줄이는 질문들로 옳은 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "현재 조직이 변화 관리 5단계 중 어느 단계에 있는가?"
+   },
+   {
+    "no": 2,
+    "text": "구성원들의 반대가 감정적 저항인가, 합리적 우려인가?"
+   },
+   {
+    "no": 3,
+    "text": "이 방안이 모든 이해관계자에게 Win-Win이 될 수 있는가?"
+   },
+   {
+    "no": 4,
+    "text": "경쟁사는 어떤 변화 전략을 사용하고 있는가?"
+   },
+   {
+    "no": 5,
+    "text": "제안된 방법이 현실적으로 실행 가능하고 지속가능한가?"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   3,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 '오답을 줄이는 5가지 질문'에 변화 단계 확인, 저항 원인 분석, 이해관계자 Win-Win 여부, 실현 가능성이 명시되어 있습니다. 4번의 경쟁사 전략은 해당 질문 목록에 포함되지 않습니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   3,
+   5
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "C",
+   "E"
+  ]
+ },
+ {
+  "questionId": "JC-ORG-MC007",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "교재에서 설명하는 조직 체계 관련 핵심 개념을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "조직도 - 부서별 역할과 보고 체계"
+   },
+   {
+    "no": 2,
+    "text": "의사결정 - 권한과 책임의 흐름"
+   },
+   {
+    "no": 3,
+    "text": "조직 문화 - 가치관과 행동 양식"
+   },
+   {
+    "no": 4,
+    "text": "업무 분장 - 담당자별 역할 분담"
+   },
+   {
+    "no": 5,
+    "text": "성과 관리 - 팀원들의 친밀도 측정"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 종합 복습 핵심 개념 정리에서 조직도는 '부서별 역할과 보고 체계', 의사결정은 '권한과 책임의 흐름', 조직 문화는 '가치관과 행동 양식', 업무 분장은 '담당자별 역할 분담'으로 명시되어 있습니다. 5번의 성과 관리는 '목표 설정과 평가 기준'이지, 친밀도 측정이 아닙니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "C",
+   "D"
+  ]
+ },
+ {
+  "questionId": "JC-ORG-MC008",
+  "subject": "job-common",
+  "group": "문제해결",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "교재에서 설명하는 국제감각과 관련된 핵심 개념을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "글로벌 매너 - 다문화 소통 예절"
+   },
+   {
+    "no": 2,
+    "text": "국제 표준 - 품질과 규격 기준"
+   },
+   {
+    "no": 3,
+    "text": "시차와 관습 - 지역별 비즈니스 환경"
+   },
+   {
+    "no": 4,
+    "text": "업무 프로세스 - 단계별 처리 절차"
+   },
+   {
+    "no": 5,
+    "text": "조직 문화 - 가치관과 행동 양식"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   3
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 종합 복습 핵심 개념 정리에서 국제감각 섹션에는 글로벌 매너(다문화 소통 예절), 국제 표준(품질과 규격 기준), 시차와 관습(지역별 비즈니스 환경) 세 가지가 포함되어 있습니다. 4번는 업무 이해 섹션, 5번는 조직 체계 섹션에 해당합니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   3
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "C"
+  ]
+ },
+ {
+  "questionId": "JC-COM-MC001",
+  "subject": "job-common",
+  "group": "의사소통 국어",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "다음 중 효과적인 경청 태도에 대한 설명으로 옳은 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "상대의 말을 끊지 않고 끝까지 듣되, 중요한 조건은 메모한다"
+   },
+   {
+    "no": 2,
+    "text": "이해한 내용은 '말씀하신 내용은 … 맞습니까?'처럼 확인한다"
+   },
+   {
+    "no": 3,
+    "text": "고개를 끄덕였으면 조건을 기록하지 않아도 들은 것으로 인정된다"
+   },
+   {
+    "no": 4,
+    "text": "감정이 강한 상황에서는 반박보다 공감 표현을 먼저 한다"
+   },
+   {
+    "no": 5,
+    "text": "대화가 끝난 뒤 상대의 요청을 3가지 단서로 요약할 수 있으면 경청한 것이다"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   4,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "교재에서 A, B, D, 5번는 모두 올바른 경청 태도로 명시되어 있습니다. 3번는 틀린 설명으로, 교재에서 '고개를 끄덕였지만 조건을 기록하지 않으면 실제 업무에서는 들은 것으로 인정되기 어렵습니다'라고 명시하고 있습니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   4,
+   5
+  ],
+  "independentConfidence": "medium",
+  "independentFlags": [
+   "commonsense_dispute"
+  ],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "D",
+   "E"
+  ]
+ },
+ {
+  "questionId": "JC-COM-MC002",
+  "subject": "job-common",
+  "group": "의사소통 국어",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "업무 공지문에서 핵심 정보를 파악하기 위한 '공지문 5요소'로 옳은 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "목적: 이 공지/이메일이 왜 나왔는가"
+   },
+   {
+    "no": 2,
+    "text": "대상: 누구에게 해당하는가"
+   },
+   {
+    "no": 3,
+    "text": "기한: 언제까지 해야 하는가"
+   },
+   {
+    "no": 4,
+    "text": "행동: 무엇을 해야 하는가"
+   },
+   {
+    "no": 5,
+    "text": "예외: 누구는 제외되는가"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   3,
+   4,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "교재 '업무 공지문과 이메일에서 핵심 정보 찾기' 단원에서 의사소통 5요소를 목적, 대상, 기한, 행동, 예외로 명시하고 있습니다. 이 다섯 가지 모두가 핵심 정보 파악의 기준이 됩니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   3,
+   4,
+   5
+  ],
+  "independentConfidence": "medium",
+  "independentFlags": [
+   "education_weak"
+  ],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "C",
+   "D",
+   "E"
+  ]
+ },
+ {
+  "questionId": "JC-COM-MC003",
+  "subject": "job-common",
+  "group": "의사소통 국어",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "다음 중 문서의 정확성을 확보하기 위한 방법으로 옳은 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "전문용어는 쉬운 말로 바꿀 수 있으면 바꾸되, 공식 명칭은 임의로 줄이지 않는다"
+   },
+   {
+    "no": 2,
+    "text": "마감이 있는 문서는 정확한 시각까지 적는다"
+   },
+   {
+    "no": 3,
+    "text": "금액은 쉼표와 단위를 함께 써서 10,000원처럼 읽기 쉽게 만든다"
+   },
+   {
+    "no": 4,
+    "text": "제품명, 고객명, 부서명은 추측하지 않고 원문 표기를 확인한다"
+   },
+   {
+    "no": 5,
+    "text": "내용만 맞으면 숫자나 이름이 틀려도 실무 문서로 인정된다"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "교재에서 A, B, C, 4번는 모두 정확성 확보 방법으로 명시되어 있습니다. 5번는 틀린 설명으로, '내용은 맞아도 숫자, 이름, 단위가 틀리면 실무에서는 잘못된 문서로 판단될 수 있습니다'라고 교재에 명시되어 있습니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "C",
+   "D"
+  ]
+ },
+ {
+  "questionId": "JC-COM-MC004",
+  "subject": "job-common",
+  "group": "의사소통 국어",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "다음 중 명확한 표현을 위한 올바른 원칙으로 모두 고른 것은?",
+  "choices": [
+   {
+    "no": 1,
+    "text": "한 문장에는 한 가지 요청을 담는다"
+   },
+   {
+    "no": 2,
+    "text": "'빨리', '적당히', '나중에'처럼 기준이 흐린 말은 시간이나 수량으로 바꾼다"
+   },
+   {
+    "no": 3,
+    "text": "중요한 요청은 이유와 마감을 함께 말한다"
+   },
+   {
+    "no": 4,
+    "text": "'자료 좀 주세요'처럼 간결하게 말하는 것이 명확한 표현이다"
+   },
+   {
+    "no": 5,
+    "text": "보고할 때는 결론을 먼저 말하고 근거를 뒤에 붙인다"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   3,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "교재에서 A, B, C, 5번는 명확한 표현의 원칙으로 명시되어 있습니다. 4번는 틀린 설명으로, 교재에서 '\"자료 좀 주세요\"보다 \"오늘 3시까지 3월 매출표 파일을 메일로 보내 주세요\"가 명확합니다'라고 명시하여, 간결함보다 오해 없는 전달이 중요함을 강조합니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   3,
+   5
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "C",
+   "E"
+  ]
+ },
+ {
+  "questionId": "JC-COM-MC005",
+  "subject": "job-common",
+  "group": "의사소통 국어",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "다음 중 보고서·회의록 문제 풀이에서 오답을 줄이기 위한 체크 질문으로 옳은 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "결론 신호어를 찾았는가? (따라서, 제안한다, 결론적으로 등)"
+   },
+   {
+    "no": 2,
+    "text": "근거가 구체적인 사실/데이터인가?"
+   },
+   {
+    "no": 3,
+    "text": "반론과 보완점을 구분했는가? (반론=문제점, 보완점=해결책)"
+   },
+   {
+    "no": 4,
+    "text": "부분적으로만 맞는 선지는 없는가?"
+   },
+   {
+    "no": 5,
+    "text": "문서의 제목만 보고 결론을 판단했는가?"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "교재에서 A, B, C, 4번는 오답을 줄이는 5가지 질문에 포함되어 있습니다. 5번는 틀린 설명으로, '제목만 보고 내용을 추측하면 오답을 고르게 됩니다'라고 교재에 명시되어 있습니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "independentConfidence": "medium",
+  "independentFlags": [
+   "ambiguous_stem"
+  ],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "C",
+   "D"
+  ]
+ },
+ {
+  "questionId": "JC-COM-MC006",
+  "subject": "job-common",
+  "group": "의사소통 국어",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "다음 중 Win-Win 협상 원칙에 부합하는 행동을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "상대방의 진짜 이익(interest)과 제약사항을 먼저 파악한다"
+   },
+   {
+    "no": 2,
+    "text": "단기 성과보다 지속가능한 관계 구축을 고려한다"
+   },
+   {
+    "no": 3,
+    "text": "객관적 정보와 데이터에 기반하여 협의한다"
+   },
+   {
+    "no": 4,
+    "text": "강압적 태도로 자신에게 유리한 조건만 관철시킨다"
+   },
+   {
+    "no": 5,
+    "text": "기존 틀에 갇히지 않고 창조적인 대안을 모색한다"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   3,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "교재에서 협상 커뮤니케이션의 Win-Win 원칙으로 A, B, C, E를 강조하고 있습니다. 4번는 틀린 행동으로, 교재에서 '강압적 협상 자세'는 부적절한 접근임을 명시하고 있습니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   3,
+   5
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "C",
+   "E"
+  ]
+ },
+ {
+  "questionId": "JC-COM-MC007",
+  "subject": "job-common",
+  "group": "의사소통 국어",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "다음 중 실무 영어(기초외국어능력)에서 직무 상황에 자주 쓰이는 단어와 그 의미가 올바르게 연결된 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "decaf — 디카페인, 카페인이 없는 커피나 음료"
+   },
+   {
+    "no": 2,
+    "text": "receipt — 영수증, 구매 사실을 확인하는 증빙"
+   },
+   {
+    "no": 3,
+    "text": "refund — 환불, 결제한 금액을 돌려받는 처리"
+   },
+   {
+    "no": 4,
+    "text": "appointment — 약속된 방문 시간이나 상담 일정"
+   },
+   {
+    "no": 5,
+    "text": "delivery — 서류 작성, 서식에 따른 기재"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "교재에서 A, B, C, 4번는 직무 상황 필수 단어로 정확히 정의되어 있습니다. 5번는 틀린 설명으로, delivery는 '배송, 물건을 고객에게 보내거나 전달하는 일'을 뜻합니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "C",
+   "D"
+  ]
+ },
+ {
+  "questionId": "JC-COM-MC008",
+  "subject": "job-common",
+  "group": "의사소통 국어",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "다음 중 의사소통능력의 구성 요소로 교재에서 명시된 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "문서이해와 작성"
+   },
+   {
+    "no": 2,
+    "text": "경청과 의사표현"
+   },
+   {
+    "no": 3,
+    "text": "기초외국어능력"
+   },
+   {
+    "no": 4,
+    "text": "수리 계산 능력"
+   },
+   {
+    "no": 5,
+    "text": "상황별 소통 (격식/비격식 구분)"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   3,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "교재의 3줄 요약에서 '의사소통능력은 문서이해, 경청, 의사표현, 기초외국어를 포괄하는 핵심 직업기초능력이다'라고 명시하고 있습니다. 상황별 소통도 의사표현의 하위 개념으로 포함됩니다. D(수리 계산 능력)는 수리능력에 속하며 의사소통능력의 구성 요소가 아닙니다.",
+  "answerSource": "explicit",
+  "independentAnswer": [
+   1,
+   2,
+   3,
+   5
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "C",
+   "E"
+  ]
+ },
+ {
+  "questionId": "NCS-NEW-직업윤리-037",
+  "subject": "ncs-basic",
+  "group": "근로윤리",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "다음 중 직장인의 올바른 직업윤리 태도를 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "업무 중 발생한 실수를 즉시 상사에게 보고하고 해결책을 찾는다"
+   },
+   {
+    "no": 2,
+    "text": "회사 내부 정보를 외부에 절대 유출하지 않는다"
+   },
+   {
+    "no": 3,
+    "text": "지각이 잦을 경우 솔직하게 상사에게 상황을 설명하고 개선하겠다고 한다"
+   },
+   {
+    "no": 4,
+    "text": "마음에 들지 않는 업무는 능력이 부족하다고 핑계를 대며 거절한다"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   3
+  ],
+  "appAnswerText": null,
+  "explanation": "올바른 직업윤리에는 실수의 즉각 보고(A), 기밀 유지(C), 지각 등 문제 상황의 솔직한 고지와 개선 의지(D)가 포함됩니다. 성과 독점(B)과 근거 없는 업무 거절(E)은 직업윤리에 위배됩니다.",
+  "answerSource": null,
+  "independentAnswer": [
+   1,
+   2,
+   3
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "C"
+  ]
+ },
+ {
+  "questionId": "NCS-NEW-직업윤리-038",
+  "subject": "ncs-basic",
+  "group": "근로윤리",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "다음 중 직장 내 직업윤리를 위반하는 행동을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "업무 중 개인 SNS를 30분 이상 사용한다"
+   },
+   {
+    "no": 2,
+    "text": "동료의 실수를 덮어주기 위해 보고서를 허위로 작성한다"
+   },
+   {
+    "no": 3,
+    "text": "상사의 불합리한 지시에 대해 적절한 방법으로 의견을 제시한다"
+   },
+   {
+    "no": 4,
+    "text": "거래처 담당자에게 계약 성사를 위해 허위 정보를 제공한다"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "업무 시간 중 과도한 SNS 사용(A), 허위 보고서 작성(B), 거래처에 허위 정보 제공(E)은 모두 직업윤리 위반입니다. 합리적인 의견 제시(C)와 자기계발(D)은 바람직한 행동입니다.",
+  "answerSource": null,
+  "independentAnswer": [
+   1,
+   2,
+   4
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "D"
+  ]
+ },
+ {
+  "questionId": "NCS-NEW-직업윤리-039",
+  "subject": "ncs-basic",
+  "group": "근로윤리",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "다음 중 신입사원으로서 갖춰야 할 직업 기초 윤리 덕목을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "성실성 - 맡은 일에 최선을 다하는 태도"
+   },
+   {
+    "no": 2,
+    "text": "책임감 - 자신의 업무 결과에 대해 스스로 책임지는 자세"
+   },
+   {
+    "no": 3,
+    "text": "자기중심성 - 개인 이익을 항상 우선시하는 태도"
+   },
+   {
+    "no": 4,
+    "text": "협동심 - 동료와 협력하여 공동 목표를 달성하는 자세"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "직업 기초 윤리 덕목에는 성실성(A), 책임감(B), 협동심(D)이 포함됩니다. 자기중심성(C)과 이기주의(E)는 직업윤리에 반하는 태도입니다.",
+  "answerSource": null,
+  "independentAnswer": [
+   1,
+   2,
+   4
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "D"
+  ]
+ },
+ {
+  "questionId": "NCS-NEW-직업윤리-040",
+  "subject": "ncs-basic",
+  "group": "근로윤리",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "다음 중 직장 내 공정한 업무 처리 원칙에 해당하는 행동을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "업무 처리 시 개인적인 친분보다 공정한 기준을 적용한다"
+   },
+   {
+    "no": 2,
+    "text": "친한 동료의 부당한 요청에는 규정을 무시하고 도움을 준다"
+   },
+   {
+    "no": 3,
+    "text": "이해관계가 충돌할 경우 회사 규정에 따라 처리한다"
+   },
+   {
+    "no": 4,
+    "text": "모든 고객을 동등하게 대우하고 차별 없이 서비스를 제공한다"
+   }
+  ],
+  "appAnswer": [
+   1,
+   3,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "공정한 업무 처리를 위해서는 개인 친분보다 공정한 기준 적용(A), 이해충돌 시 규정 준수(C), 고객 차별 없는 서비스(D)가 중요합니다. 규정 무시(B)와 법령 위반 지시 따르기(E)는 직업윤리에 위반됩니다.",
+  "answerSource": null,
+  "independentAnswer": [
+   1,
+   3,
+   4
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "C",
+   "D"
+  ]
+ },
+ {
+  "questionId": "NCS-NEW-직업윤리-041",
+  "subject": "ncs-basic",
+  "group": "근로윤리",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "다음 중 직업인의 근면·성실한 태도를 나타내는 행동을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "출근 시간보다 5~10분 일찍 도착하여 업무를 준비한다"
+   },
+   {
+    "no": 2,
+    "text": "업무 지시를 받은 후 마감일 직전에 몰아서 처리한다"
+   },
+   {
+    "no": 3,
+    "text": "어려운 업무도 포기하지 않고 끝까지 완수하려 노력한다"
+   },
+   {
+    "no": 4,
+    "text": "업무 공백이 생기지 않도록 자신이 맡은 자리를 지킨다"
+   }
+  ],
+  "appAnswer": [
+   1,
+   3,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "근면·성실한 태도에는 사전 준비(A), 끝까지 완수하려는 노력(C), 자리를 지키는 책임감(D)이 포함됩니다. 마감 직전 몰아서 처리(B)와 모르는 내용을 대충 넘기기(E)는 성실하지 않은 태도입니다.",
+  "answerSource": null,
+  "independentAnswer": [
+   1,
+   3,
+   4
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "C",
+   "D"
+  ]
+ },
+ {
+  "questionId": "NCS-INFO-022",
+  "subject": "ncs-basic",
+  "group": "디지털활용능력",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "정보의 질적 특성으로 가장 관련이 없는 것은?",
+  "choices": [
+   {
+    "no": 1,
+    "text": "정확성"
+   },
+   {
+    "no": 2,
+    "text": "적시성"
+   },
+   {
+    "no": 3,
+    "text": "용량의 크기"
+   },
+   {
+    "no": 4,
+    "text": "완전성"
+   }
+  ],
+  "appAnswer": [
+   3
+  ],
+  "appAnswerText": null,
+  "explanation": "정보의 질적 특성에는 정확성, 적시성, 완전성 등이 있으며 단순한 용량의 크기는 품질 특성이 아닙니다.",
+  "answerSource": null,
+  "independentAnswer": 3,
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": "C"
+ },
+ {
+  "questionId": "NCS-INFO-023",
+  "subject": "ncs-basic",
+  "group": "디지털활용능력",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "스프레드시트의 함수 중 조건에 맞는 셀의 개수를 구하는 함수는?",
+  "choices": [
+   {
+    "no": 1,
+    "text": "SUM"
+   },
+   {
+    "no": 2,
+    "text": "AVERAGE"
+   },
+   {
+    "no": 3,
+    "text": "COUNTIF"
+   },
+   {
+    "no": 4,
+    "text": "VLOOKUP"
+   }
+  ],
+  "appAnswer": [
+   3
+  ],
+  "appAnswerText": null,
+  "explanation": "COUNTIF 함수는 지정한 조건에 맞는 셀의 개수를 구하는 함수입니다.",
+  "answerSource": null,
+  "independentAnswer": 3,
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": "C"
+ },
+ {
+  "questionId": "NCS-INFO-024",
+  "subject": "ncs-basic",
+  "group": "디지털활용능력",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "인터넷 주소(URL)에서 'https'가 의미하는 것은?",
+  "choices": [
+   {
+    "no": 1,
+    "text": "파일 전송 프로토콜"
+   },
+   {
+    "no": 2,
+    "text": "보안이 적용된 웹 프로토콜"
+   },
+   {
+    "no": 3,
+    "text": "이메일 전송 프로토콜"
+   },
+   {
+    "no": 4,
+    "text": "네트워크 진단 도구"
+   }
+  ],
+  "appAnswer": [
+   2
+  ],
+  "appAnswerText": null,
+  "explanation": "HTTPS(HyperText Transfer Protocol Secure)는 SSL/TLS로 암호화된 보안 웹 프로토콜입니다.",
+  "answerSource": null,
+  "independentAnswer": 2,
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": "B"
+ },
+ {
+  "questionId": "NCS-INFO-025",
+  "subject": "ncs-basic",
+  "group": "디지털책임의식",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "저작권법에서 보호하는 저작물에 해당하지 않는 것은?",
+  "choices": [
+   {
+    "no": 1,
+    "text": "소설"
+   },
+   {
+    "no": 2,
+    "text": "음악 작품"
+   },
+   {
+    "no": 3,
+    "text": "단순한 사실이나 데이터"
+   },
+   {
+    "no": 4,
+    "text": "컴퓨터 프로그램"
+   }
+  ],
+  "appAnswer": [
+   3
+  ],
+  "appAnswerText": null,
+  "explanation": "단순한 사실이나 아이디어, 데이터 자체는 저작권 보호 대상이 아닙니다. 창작성이 있는 표현이어야 합니다.",
+  "answerSource": null,
+  "independentAnswer": [
+   3
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [
+   "stem_mismatch"
+  ],
+  "appAnswerRaw": "C"
+ },
+ {
+  "questionId": "NCS-INFO-026",
+  "subject": "ncs-basic",
+  "group": "디지털활용능력",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "정보 검색에서 특정 단어를 제외하고 검색할 때 사용하는 연산자는?",
+  "choices": [
+   {
+    "no": 1,
+    "text": "AND"
+   },
+   {
+    "no": 2,
+    "text": "OR"
+   },
+   {
+    "no": 3,
+    "text": "NOT"
+   },
+   {
+    "no": 4,
+    "text": "NEAR"
+   }
+  ],
+  "appAnswer": [
+   3
+  ],
+  "appAnswerText": null,
+  "explanation": "NOT 연산자를 사용하면 특정 단어가 포함된 결과를 제외하고 검색할 수 있습니다.",
+  "answerSource": null,
+  "independentAnswer": 3,
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": "C"
+ },
+ {
+  "questionId": "NCS-INFO-027",
+  "subject": "ncs-basic",
+  "group": "디지털활용능력",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "엑셀에서 여러 조건을 모두 만족하는 합계를 구하는 함수는?",
+  "choices": [
+   {
+    "no": 1,
+    "text": "SUM"
+   },
+   {
+    "no": 2,
+    "text": "SUMIF"
+   },
+   {
+    "no": 3,
+    "text": "SUMIFS"
+   },
+   {
+    "no": 4,
+    "text": "COUNTIFS"
+   }
+  ],
+  "appAnswer": [
+   3
+  ],
+  "appAnswerText": null,
+  "explanation": "SUMIFS 함수는 여러 조건을 모두 만족하는 셀들의 합계를 구하는 함수입니다.",
+  "answerSource": null,
+  "independentAnswer": 3,
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": "C"
+ },
+ {
+  "questionId": "NCS-INFO-028",
+  "subject": "ncs-basic",
+  "group": "디지털활용능력",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "빅데이터의 3V 특성에 해당하지 않는 것은?",
+  "choices": [
+   {
+    "no": 1,
+    "text": "Volume(규모)"
+   },
+   {
+    "no": 2,
+    "text": "Velocity(속도)"
+   },
+   {
+    "no": 3,
+    "text": "Value(가치)"
+   },
+   {
+    "no": 4,
+    "text": "Variety(다양성)"
+   }
+  ],
+  "appAnswer": [
+   3
+  ],
+  "appAnswerText": null,
+  "explanation": "빅데이터의 3V는 Volume(규모), Velocity(속도), Variety(다양성)입니다. Value는 5V에 추가된 특성입니다.",
+  "answerSource": null,
+  "independentAnswer": 3,
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": "C"
+ },
+ {
+  "questionId": "NCS-TECH-019",
+  "subject": "ncs-basic",
+  "group": "디지털활용능력",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "산업재해의 원인 중 불안전한 행동에 해당하는 것은?",
+  "choices": [
+   {
+    "no": 1,
+    "text": "기계 결함"
+   },
+   {
+    "no": 2,
+    "text": "안전장치 미작동"
+   },
+   {
+    "no": 3,
+    "text": "안전모 미착용"
+   },
+   {
+    "no": 4,
+    "text": "위험한 작업 환경"
+   }
+  ],
+  "appAnswer": [
+   3
+  ],
+  "appAnswerText": null,
+  "explanation": "안전모 미착용은 근로자의 불안전한 행동에 해당하며, 기계 결함·안전장치 미작동·위험한 환경은 불안전한 상태입니다.",
+  "answerSource": null,
+  "independentAnswer": 3,
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": "C"
+ },
+ {
+  "questionId": "NCS-TECH-024",
+  "subject": "ncs-basic",
+  "group": "디지털활용능력",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "기술 문서 작성 시 중요한 원칙이 아닌 것은?",
+  "choices": [
+   {
+    "no": 1,
+    "text": "명확하고 간결한 표현"
+   },
+   {
+    "no": 2,
+    "text": "전문 용어의 적절한 사용"
+   },
+   {
+    "no": 3,
+    "text": "독자 수준 고려"
+   },
+   {
+    "no": 4,
+    "text": "최대한 긴 문장 사용"
+   }
+  ],
+  "appAnswer": [
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "기술 문서는 명확하고 간결한 표현이 중요하며, 긴 문장은 이해를 방해할 수 있습니다.",
+  "answerSource": null,
+  "independentAnswer": 4,
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": "D"
+ },
+ {
+  "questionId": "RW-public-NCS-NEW-자원관리-055",
+  "subject": "recruit-written",
+  "group": "공공기관형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "다음 중 예산 자원을 올바르게 관리하는 방법을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "업무 시작 전 필요한 예산을 사전에 파악하고 계획한다."
+   },
+   {
+    "no": 2,
+    "text": "영수증과 지출 내역을 매번 기록하지 않아도 기억으로 관리한다."
+   },
+   {
+    "no": 3,
+    "text": "예산 집행 후 계획 대비 실적을 비교하여 차이를 분석한다."
+   },
+   {
+    "no": 4,
+    "text": "불필요한 지출이 발생하지 않도록 항목별 지출 기준을 마련한다."
+   },
+   {
+    "no": 5,
+    "text": "남은 예산은 다음 업무에 활용할 수 있도록 상사에게 보고하고 조정한다."
+   }
+  ],
+  "appAnswer": [
+   1,
+   3,
+   4,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "예산 관리는 사전 계획, 실적 비교 분석, 지출 기준 마련, 잔액 보고 및 조정이 핵심이다. B처럼 기억에 의존하면 오류가 발생하고 투명성이 떨어진다.",
+  "answerSource": null,
+  "independentAnswer": [
+   1,
+   3,
+   4,
+   5
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "C",
+   "D",
+   "E"
+  ]
+ },
+ {
+  "questionId": "RW-finance-NCS-NEW-자원관리-055",
+  "subject": "recruit-written",
+  "group": "금융권형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "다음 중 예산 자원을 올바르게 관리하는 방법을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "업무 시작 전 필요한 예산을 사전에 파악하고 계획한다."
+   },
+   {
+    "no": 2,
+    "text": "영수증과 지출 내역을 매번 기록하지 않아도 기억으로 관리한다."
+   },
+   {
+    "no": 3,
+    "text": "예산 집행 후 계획 대비 실적을 비교하여 차이를 분석한다."
+   },
+   {
+    "no": 4,
+    "text": "불필요한 지출이 발생하지 않도록 항목별 지출 기준을 마련한다."
+   },
+   {
+    "no": 5,
+    "text": "남은 예산은 다음 업무에 활용할 수 있도록 상사에게 보고하고 조정한다."
+   }
+  ],
+  "appAnswer": [
+   1,
+   3,
+   4,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "예산 관리는 사전 계획, 실적 비교 분석, 지출 기준 마련, 잔액 보고 및 조정이 핵심이다. B처럼 기억에 의존하면 오류가 발생하고 투명성이 떨어진다.",
+  "answerSource": null,
+  "independentAnswer": [
+   1,
+   3,
+   4,
+   5
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [
+   "education_weak"
+  ],
+  "appAnswerRaw": [
+   "A",
+   "C",
+   "D",
+   "E"
+  ]
+ },
+ {
+  "questionId": "RW-public-NCS-NEW-자원관리-056",
+  "subject": "recruit-written",
+  "group": "공공기관형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "다음 중 인적 자원을 효율적으로 활용하는 방법으로 올바른 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "팀원의 역량과 전문성을 파악하여 적합한 업무를 배분한다."
+   },
+   {
+    "no": 2,
+    "text": "특정 팀원에게만 업무를 집중시켜 빠른 처리를 도모한다."
+   },
+   {
+    "no": 3,
+    "text": "팀원의 업무 과부하 여부를 주기적으로 점검한다."
+   },
+   {
+    "no": 4,
+    "text": "신입사원에게도 성장 기회가 될 수 있는 업무를 단계적으로 부여한다."
+   },
+   {
+    "no": 5,
+    "text": "팀원 간 협업이 필요한 업무는 역할 분담을 명확히 하여 중복 작업을 방지한다."
+   }
+  ],
+  "appAnswer": [
+   1,
+   3,
+   4,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "인적 자원 관리는 역량 기반 배분, 부하 점검, 성장 기회 제공, 역할 명확화가 중요하다. B처럼 특정인에게 업무를 집중시키면 번아웃과 불균형이 발생한다.",
+  "answerSource": null,
+  "independentAnswer": [
+   1,
+   3,
+   4,
+   5
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "C",
+   "D",
+   "E"
+  ]
+ },
+ {
+  "questionId": "RW-finance-NCS-NEW-자원관리-056",
+  "subject": "recruit-written",
+  "group": "금융권형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "다음 중 인적 자원을 효율적으로 활용하는 방법으로 올바른 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "팀원의 역량과 전문성을 파악하여 적합한 업무를 배분한다."
+   },
+   {
+    "no": 2,
+    "text": "특정 팀원에게만 업무를 집중시켜 빠른 처리를 도모한다."
+   },
+   {
+    "no": 3,
+    "text": "팀원의 업무 과부하 여부를 주기적으로 점검한다."
+   },
+   {
+    "no": 4,
+    "text": "신입사원에게도 성장 기회가 될 수 있는 업무를 단계적으로 부여한다."
+   },
+   {
+    "no": 5,
+    "text": "팀원 간 협업이 필요한 업무는 역할 분담을 명확히 하여 중복 작업을 방지한다."
+   }
+  ],
+  "appAnswer": [
+   1,
+   3,
+   4,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "인적 자원 관리는 역량 기반 배분, 부하 점검, 성장 기회 제공, 역할 명확화가 중요하다. B처럼 특정인에게 업무를 집중시키면 번아웃과 불균형이 발생한다.",
+  "answerSource": null,
+  "independentAnswer": [
+   1,
+   3,
+   4,
+   5
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [
+   "education_weak"
+  ],
+  "appAnswerRaw": [
+   "A",
+   "C",
+   "D",
+   "E"
+  ]
+ },
+ {
+  "questionId": "RW-public-NCS-NEW-자원관리-057",
+  "subject": "recruit-written",
+  "group": "공공기관형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "다음 중 물적 자원(장비·소모품)을 올바르게 관리하는 방법을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "사용 후 제자리에 반납하고 사용 기록을 남긴다."
+   },
+   {
+    "no": 2,
+    "text": "소모품이 부족해진 후에야 주문하여 재고를 최소화한다."
+   },
+   {
+    "no": 3,
+    "text": "정기적으로 장비 상태를 점검하여 고장을 사전에 예방한다."
+   },
+   {
+    "no": 4,
+    "text": "장비 사용 방법을 숙지하여 파손과 안전사고를 예방한다."
+   },
+   {
+    "no": 5,
+    "text": "자원 사용 현황을 관리 대장에 기록하여 투명하게 관리한다."
+   }
+  ],
+  "appAnswer": [
+   1,
+   3,
+   4,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "물적 자원 관리의 핵심은 반납 기록, 예방 점검, 올바른 사용, 현황 기록이다. B처럼 소진 후 주문하면 업무 공백이 발생할 수 있다.",
+  "answerSource": null,
+  "independentAnswer": [
+   1,
+   3,
+   4,
+   5
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "C",
+   "D",
+   "E"
+  ]
+ },
+ {
+  "questionId": "RW-finance-NCS-NEW-자원관리-057",
+  "subject": "recruit-written",
+  "group": "금융권형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "다음 중 물적 자원(장비·소모품)을 올바르게 관리하는 방법을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "사용 후 제자리에 반납하고 사용 기록을 남긴다."
+   },
+   {
+    "no": 2,
+    "text": "소모품이 부족해진 후에야 주문하여 재고를 최소화한다."
+   },
+   {
+    "no": 3,
+    "text": "정기적으로 장비 상태를 점검하여 고장을 사전에 예방한다."
+   },
+   {
+    "no": 4,
+    "text": "장비 사용 방법을 숙지하여 파손과 안전사고를 예방한다."
+   },
+   {
+    "no": 5,
+    "text": "자원 사용 현황을 관리 대장에 기록하여 투명하게 관리한다."
+   }
+  ],
+  "appAnswer": [
+   1,
+   3,
+   4,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "물적 자원 관리의 핵심은 반납 기록, 예방 점검, 올바른 사용, 현황 기록이다. B처럼 소진 후 주문하면 업무 공백이 발생할 수 있다.",
+  "answerSource": null,
+  "independentAnswer": [
+   1,
+   3,
+   4,
+   5
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [
+   "education_weak"
+  ],
+  "appAnswerRaw": [
+   "A",
+   "C",
+   "D",
+   "E"
+  ]
+ },
+ {
+  "questionId": "RW-public-NCS-NEW-자원관리-058",
+  "subject": "recruit-written",
+  "group": "공공기관형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "다음 중 신입사원이 자원관리 역량을 향상시키기 위해 실천할 수 있는 방법으로 올바른 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "매일 업무 일지를 작성하여 시간 사용 패턴을 파악한다."
+   },
+   {
+    "no": 2,
+    "text": "예산 지출 후 영수증은 버리고 필요 시 다시 요청한다."
+   },
+   {
+    "no": 3,
+    "text": "업무 완료 후 소요 시간과 결과를 기록하여 다음 계획에 반영한다."
+   },
+   {
+    "no": 4,
+    "text": "낭비되는 자원이 있으면 개선 제안을 통해 효율화에 기여한다."
+   },
+   {
+    "no": 5,
+    "text": "선배에게 자원관리 노하우를 적극적으로 배우고 적용한다."
+   }
+  ],
+  "appAnswer": [
+   1,
+   3,
+   4,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "신입사원의 자원관리 역량 향상을 위해서는 업무 일지, 소요 시간 기록, 개선 제안, 선배 학습이 효과적이다. B처럼 영수증을 버리면 지출 관리가 불가능해진다.",
+  "answerSource": null,
+  "independentAnswer": [
+   1,
+   3,
+   4,
+   5
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "C",
+   "D",
+   "E"
+  ]
+ },
+ {
+  "questionId": "RW-finance-NCS-NEW-자원관리-058",
+  "subject": "recruit-written",
+  "group": "금융권형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "다음 중 신입사원이 자원관리 역량을 향상시키기 위해 실천할 수 있는 방법으로 올바른 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "매일 업무 일지를 작성하여 시간 사용 패턴을 파악한다."
+   },
+   {
+    "no": 2,
+    "text": "예산 지출 후 영수증은 버리고 필요 시 다시 요청한다."
+   },
+   {
+    "no": 3,
+    "text": "업무 완료 후 소요 시간과 결과를 기록하여 다음 계획에 반영한다."
+   },
+   {
+    "no": 4,
+    "text": "낭비되는 자원이 있으면 개선 제안을 통해 효율화에 기여한다."
+   },
+   {
+    "no": 5,
+    "text": "선배에게 자원관리 노하우를 적극적으로 배우고 적용한다."
+   }
+  ],
+  "appAnswer": [
+   1,
+   3,
+   4,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "신입사원의 자원관리 역량 향상을 위해서는 업무 일지, 소요 시간 기록, 개선 제안, 선배 학습이 효과적이다. B처럼 영수증을 버리면 지출 관리가 불가능해진다.",
+  "answerSource": null,
+  "independentAnswer": [
+   1,
+   3,
+   4,
+   5
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [
+   "education_weak"
+  ],
+  "appAnswerRaw": [
+   "A",
+   "C",
+   "D",
+   "E"
+  ]
+ },
+ {
+  "questionId": "RW-public-NCS-ORG-036",
+  "subject": "recruit-written",
+  "group": "공공기관형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "조직 내 직급 체계에서 일반적으로 최하위 직급은?",
+  "choices": [
+   {
+    "no": 1,
+    "text": "부장"
+   },
+   {
+    "no": 2,
+    "text": "과장"
+   },
+   {
+    "no": 3,
+    "text": "대리"
+   },
+   {
+    "no": 4,
+    "text": "사원"
+   }
+  ],
+  "appAnswer": [
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "일반적인 기업 직급 체계에서 사원이 최하위 직급입니다.",
+  "answerSource": null,
+  "independentAnswer": [
+   4
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [
+   "education_weak"
+  ],
+  "appAnswerRaw": "D"
+ },
+ {
+  "questionId": "RW-public-NCS-ORG-037",
+  "subject": "recruit-written",
+  "group": "공공기관형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "조직도에서 같은 수준의 직위를 나타내는 선은?",
+  "choices": [
+   {
+    "no": 1,
+    "text": "수직선"
+   },
+   {
+    "no": 2,
+    "text": "수평선"
+   },
+   {
+    "no": 3,
+    "text": "대각선"
+   },
+   {
+    "no": 4,
+    "text": "점선"
+   }
+  ],
+  "appAnswer": [
+   2
+  ],
+  "appAnswerText": null,
+  "explanation": "조직도에서 수평선은 같은 수준의 직위를 나타냅니다.",
+  "answerSource": null,
+  "independentAnswer": [
+   2
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": "B"
+ },
+ {
+  "questionId": "RW-public-NCS-ORG-038",
+  "subject": "recruit-written",
+  "group": "공공기관형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "기업의 경영 목표로 가장 적합한 것은?",
+  "choices": [
+   {
+    "no": 1,
+    "text": "단기 이익 극대화"
+   },
+   {
+    "no": 2,
+    "text": "지속가능한 성장과 이익 창출"
+   },
+   {
+    "no": 3,
+    "text": "직원 수 최소화"
+   },
+   {
+    "no": 4,
+    "text": "비용 절감만 추구"
+   }
+  ],
+  "appAnswer": [
+   2
+  ],
+  "appAnswerText": null,
+  "explanation": "기업의 경영 목표는 지속가능한 성장과 이익 창출입니다.",
+  "answerSource": null,
+  "independentAnswer": [
+   2
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [
+   "education_weak"
+  ],
+  "appAnswerRaw": "B"
+ },
+ {
+  "questionId": "RW-public-NCS-ORG-039",
+  "subject": "recruit-written",
+  "group": "공공기관형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "팀제 조직의 장점으로 옳은 것은?",
+  "choices": [
+   {
+    "no": 1,
+    "text": "명확한 권한과 책임"
+   },
+   {
+    "no": 2,
+    "text": "유연한 인력 운용과 협업"
+   },
+   {
+    "no": 3,
+    "text": "엄격한 계층 구조"
+   },
+   {
+    "no": 4,
+    "text": "전문성보다 범용성 강조"
+   }
+  ],
+  "appAnswer": [
+   2
+  ],
+  "appAnswerText": null,
+  "explanation": "팀제 조직의 장점은 유연한 인력 운용과 팀원 간 협업이 가능하다는 것입니다.",
+  "answerSource": null,
+  "independentAnswer": [
+   2
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": "B"
+ },
+ {
+  "questionId": "RW-public-NCS-ORG-041",
+  "subject": "recruit-written",
+  "group": "공공기관형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "기업 문화의 구성 요소가 아닌 것은?",
+  "choices": [
+   {
+    "no": 1,
+    "text": "가치관"
+   },
+   {
+    "no": 2,
+    "text": "규범"
+   },
+   {
+    "no": 3,
+    "text": "물리적 시설"
+   },
+   {
+    "no": 4,
+    "text": "주주 배당금"
+   }
+  ],
+  "appAnswer": [
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "주주 배당금은 재무 관련 사항으로 기업 문화의 구성 요소가 아닙니다.",
+  "answerSource": null,
+  "independentAnswer": [
+   4
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": "D"
+ },
+ {
+  "questionId": "RW-public-NCS-ORG-042",
+  "subject": "recruit-written",
+  "group": "공공기관형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "직무 기술서(Job Description)에 포함되지 않는 내용은?",
+  "choices": [
+   {
+    "no": 1,
+    "text": "직무 명칭"
+   },
+   {
+    "no": 2,
+    "text": "주요 업무 내용"
+   },
+   {
+    "no": 3,
+    "text": "직원 개인 사생활"
+   },
+   {
+    "no": 4,
+    "text": "필요 자격 요건"
+   }
+  ],
+  "appAnswer": [
+   3
+  ],
+  "appAnswerText": null,
+  "explanation": "직무 기술서는 직무에 관한 정보를 담으며, 직원 개인 사생활은 포함되지 않습니다.",
+  "answerSource": null,
+  "independentAnswer": [
+   3
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [
+   "commonsense_dispute"
+  ],
+  "appAnswerRaw": "C"
+ },
+ {
+  "questionId": "RW-public-NCS-ORG-043",
+  "subject": "recruit-written",
+  "group": "공공기관형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "경영 혁신 활동 중 업무 프로세스를 근본적으로 재설계하는 것은?",
+  "choices": [
+   {
+    "no": 1,
+    "text": "TQM"
+   },
+   {
+    "no": 2,
+    "text": "BPR"
+   },
+   {
+    "no": 3,
+    "text": "MBO"
+   },
+   {
+    "no": 4,
+    "text": "6시그마"
+   }
+  ],
+  "appAnswer": [
+   2
+  ],
+  "appAnswerText": null,
+  "explanation": "BPR(Business Process Reengineering)은 업무 프로세스를 근본적으로 재설계하는 경영 혁신 기법입니다.",
+  "answerSource": null,
+  "independentAnswer": [
+   2
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": "B"
+ },
+ {
+  "questionId": "RW-public-NCS-ORG-044",
+  "subject": "recruit-written",
+  "group": "공공기관형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "조직의 비전(Vision)이란 무엇인가?",
+  "choices": [
+   {
+    "no": 1,
+    "text": "단기 매출 목표"
+   },
+   {
+    "no": 2,
+    "text": "조직이 나아가야 할 미래의 모습"
+   },
+   {
+    "no": 3,
+    "text": "현재 조직의 재무 상태"
+   },
+   {
+    "no": 4,
+    "text": "직원 복리후생 계획"
+   }
+  ],
+  "appAnswer": [
+   2
+  ],
+  "appAnswerText": null,
+  "explanation": "비전은 조직이 추구하는 미래의 바람직한 모습으로, 조직의 방향성을 제시합니다.",
+  "answerSource": null,
+  "independentAnswer": [
+   2
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": "B"
+ },
+ {
+  "questionId": "RW-public-NCS-INT-025",
+  "subject": "recruit-written",
+  "group": "공공기관형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "고객 불만 처리의 기본 절차로 올바른 것은?",
+  "choices": [
+   {
+    "no": 1,
+    "text": "해명→사과→해결책 제시"
+   },
+   {
+    "no": 2,
+    "text": "경청→공감→해결책 제시→사후 관리"
+   },
+   {
+    "no": 3,
+    "text": "거절→대안 제시→설득"
+   },
+   {
+    "no": 4,
+    "text": "전가→문서화→처리"
+   }
+  ],
+  "appAnswer": [
+   2
+  ],
+  "appAnswerText": null,
+  "explanation": "불만 처리는 경청하고 공감을 표현한 후 해결책을 제시하고 사후 관리를 하는 것이 기본 절차입니다.",
+  "answerSource": null,
+  "independentAnswer": [
+   2
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [
+   "education_weak"
+  ],
+  "appAnswerRaw": "B"
+ },
+ {
+  "questionId": "RW-finance-NCS-INT-025",
+  "subject": "recruit-written",
+  "group": "금융권형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "고객 불만 처리의 기본 절차로 올바른 것은?",
+  "choices": [
+   {
+    "no": 1,
+    "text": "해명→사과→해결책 제시"
+   },
+   {
+    "no": 2,
+    "text": "경청→공감→해결책 제시→사후 관리"
+   },
+   {
+    "no": 3,
+    "text": "거절→대안 제시→설득"
+   },
+   {
+    "no": 4,
+    "text": "전가→문서화→처리"
+   }
+  ],
+  "appAnswer": [
+   2
+  ],
+  "appAnswerText": null,
+  "explanation": "불만 처리는 경청하고 공감을 표현한 후 해결책을 제시하고 사후 관리를 하는 것이 기본 절차입니다.",
+  "answerSource": null,
+  "independentAnswer": [
+   2
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [
+   "no_context_needed"
+  ],
+  "appAnswerRaw": "B"
+ },
+ {
+  "questionId": "RW-enterprise-NCS-INT-025",
+  "subject": "recruit-written",
+  "group": "대기업형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "고객 불만 처리의 기본 절차로 올바른 것은?",
+  "choices": [
+   {
+    "no": 1,
+    "text": "해명→사과→해결책 제시"
+   },
+   {
+    "no": 2,
+    "text": "경청→공감→해결책 제시→사후 관리"
+   },
+   {
+    "no": 3,
+    "text": "거절→대안 제시→설득"
+   },
+   {
+    "no": 4,
+    "text": "전가→문서화→처리"
+   }
+  ],
+  "appAnswer": [
+   2
+  ],
+  "appAnswerText": null,
+  "explanation": "불만 처리는 경청하고 공감을 표현한 후 해결책을 제시하고 사후 관리를 하는 것이 기본 절차입니다.",
+  "answerSource": null,
+  "independentAnswer": [
+   2
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": "B"
+ },
+ {
+  "questionId": "RW-public-NCS-INT-026",
+  "subject": "recruit-written",
+  "group": "공공기관형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "협상에서 BATNA(최선의 대안)를 알아야 하는 이유는?",
+  "choices": [
+   {
+    "no": 1,
+    "text": "상대방을 압박하기 위해"
+   },
+   {
+    "no": 2,
+    "text": "협상 결렬 시 취할 최선의 행동을 파악하기 위해"
+   },
+   {
+    "no": 3,
+    "text": "협상을 빨리 끝내기 위해"
+   },
+   {
+    "no": 4,
+    "text": "상대방 정보를 얻기 위해"
+   }
+  ],
+  "appAnswer": [
+   2
+  ],
+  "appAnswerText": null,
+  "explanation": "BATNA는 협상이 결렬될 경우 취할 수 있는 최선의 대안으로, 협상력의 기반이 됩니다.",
+  "answerSource": null,
+  "independentAnswer": [
+   2
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": "B"
+ },
+ {
+  "questionId": "RW-finance-NCS-INT-026",
+  "subject": "recruit-written",
+  "group": "금융권형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "협상에서 BATNA(최선의 대안)를 알아야 하는 이유는?",
+  "choices": [
+   {
+    "no": 1,
+    "text": "상대방을 압박하기 위해"
+   },
+   {
+    "no": 2,
+    "text": "협상 결렬 시 취할 최선의 행동을 파악하기 위해"
+   },
+   {
+    "no": 3,
+    "text": "협상을 빨리 끝내기 위해"
+   },
+   {
+    "no": 4,
+    "text": "상대방 정보를 얻기 위해"
+   }
+  ],
+  "appAnswer": [
+   2
+  ],
+  "appAnswerText": null,
+  "explanation": "BATNA는 협상이 결렬될 경우 취할 수 있는 최선의 대안으로, 협상력의 기반이 됩니다.",
+  "answerSource": null,
+  "independentAnswer": [
+   2
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [
+   "no_context_needed"
+  ],
+  "appAnswerRaw": "B"
+ },
+ {
+  "questionId": "RW-enterprise-NCS-INT-026",
+  "subject": "recruit-written",
+  "group": "대기업형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "협상에서 BATNA(최선의 대안)를 알아야 하는 이유는?",
+  "choices": [
+   {
+    "no": 1,
+    "text": "상대방을 압박하기 위해"
+   },
+   {
+    "no": 2,
+    "text": "협상 결렬 시 취할 최선의 행동을 파악하기 위해"
+   },
+   {
+    "no": 3,
+    "text": "협상을 빨리 끝내기 위해"
+   },
+   {
+    "no": 4,
+    "text": "상대방 정보를 얻기 위해"
+   }
+  ],
+  "appAnswer": [
+   2
+  ],
+  "appAnswerText": null,
+  "explanation": "BATNA는 협상이 결렬될 경우 취할 수 있는 최선의 대안으로, 협상력의 기반이 됩니다.",
+  "answerSource": null,
+  "independentAnswer": [
+   2
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": "B"
+ },
+ {
+  "questionId": "RW-public-NCS-TECH-018",
+  "subject": "recruit-written",
+  "group": "공공기관형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "기술 능력의 구성 요소가 아닌 것은?",
+  "choices": [
+   {
+    "no": 1,
+    "text": "기술 이해 능력"
+   },
+   {
+    "no": 2,
+    "text": "기술 선택 능력"
+   },
+   {
+    "no": 3,
+    "text": "기술 적용 능력"
+   },
+   {
+    "no": 4,
+    "text": "기술 판매 능력"
+   }
+  ],
+  "appAnswer": [
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "기술 능력은 기술 이해, 선택, 적용 능력을 포함합니다. 기술 판매는 영업 능력으로 기술 능력의 구성 요소가 아닙니다.",
+  "answerSource": null,
+  "independentAnswer": [
+   4
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": "D"
+ },
+ {
+  "questionId": "RW-enterprise-NCS-TECH-018",
+  "subject": "recruit-written",
+  "group": "대기업형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "기술 능력의 구성 요소가 아닌 것은?",
+  "choices": [
+   {
+    "no": 1,
+    "text": "기술 이해 능력"
+   },
+   {
+    "no": 2,
+    "text": "기술 선택 능력"
+   },
+   {
+    "no": 3,
+    "text": "기술 적용 능력"
+   },
+   {
+    "no": 4,
+    "text": "기술 판매 능력"
+   }
+  ],
+  "appAnswer": [
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "기술 능력은 기술 이해, 선택, 적용 능력을 포함합니다. 기술 판매는 영업 능력으로 기술 능력의 구성 요소가 아닙니다.",
+  "answerSource": null,
+  "independentAnswer": [
+   4
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [
+   "negation_confusing"
+  ],
+  "appAnswerRaw": "D"
+ },
+ {
+  "questionId": "RW-public-NCS-TECH-020",
+  "subject": "recruit-written",
+  "group": "공공기관형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "기술 매뉴얼을 효과적으로 활용하기 위한 방법으로 가장 적절한 것은?",
+  "choices": [
+   {
+    "no": 1,
+    "text": "한 번 읽고 기억에 의존한다"
+   },
+   {
+    "no": 2,
+    "text": "목차를 활용하여 필요한 부분을 찾는다"
+   },
+   {
+    "no": 3,
+    "text": "매뉴얼 없이 직접 장비를 조작한다"
+   },
+   {
+    "no": 4,
+    "text": "다른 사람에게 완전히 위임한다"
+   }
+  ],
+  "appAnswer": [
+   2
+  ],
+  "appAnswerText": null,
+  "explanation": "매뉴얼은 목차를 활용하여 필요한 정보를 효율적으로 찾아보는 것이 효과적인 활용 방법입니다.",
+  "answerSource": null,
+  "independentAnswer": [
+   2
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [
+   "education_weak"
+  ],
+  "appAnswerRaw": "B"
+ },
+ {
+  "questionId": "RW-enterprise-NCS-TECH-020",
+  "subject": "recruit-written",
+  "group": "대기업형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "기술 매뉴얼을 효과적으로 활용하기 위한 방법으로 가장 적절한 것은?",
+  "choices": [
+   {
+    "no": 1,
+    "text": "한 번 읽고 기억에 의존한다"
+   },
+   {
+    "no": 2,
+    "text": "목차를 활용하여 필요한 부분을 찾는다"
+   },
+   {
+    "no": 3,
+    "text": "매뉴얼 없이 직접 장비를 조작한다"
+   },
+   {
+    "no": 4,
+    "text": "다른 사람에게 완전히 위임한다"
+   }
+  ],
+  "appAnswer": [
+   2
+  ],
+  "appAnswerText": null,
+  "explanation": "매뉴얼은 목차를 활용하여 필요한 정보를 효율적으로 찾아보는 것이 효과적인 활용 방법입니다.",
+  "answerSource": null,
+  "independentAnswer": [
+   2
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [
+   "education_weak"
+  ],
+  "appAnswerRaw": "B"
+ },
+ {
+  "questionId": "RW-public-NCS-TECH-021",
+  "subject": "recruit-written",
+  "group": "공공기관형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "지식재산권의 종류 중 산업재산권에 해당하지 않는 것은?",
+  "choices": [
+   {
+    "no": 1,
+    "text": "특허권"
+   },
+   {
+    "no": 2,
+    "text": "실용신안권"
+   },
+   {
+    "no": 3,
+    "text": "저작권"
+   },
+   {
+    "no": 4,
+    "text": "상표권"
+   }
+  ],
+  "appAnswer": [
+   3
+  ],
+  "appAnswerText": null,
+  "explanation": "저작권은 문화적 산물을 보호하는 저작권법 상의 권리로, 산업재산권과 구별됩니다. 특허권, 실용신안권, 상표권이 산업재산권입니다.",
+  "answerSource": null,
+  "independentAnswer": [
+   3
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": "C"
+ },
+ {
+  "questionId": "RW-enterprise-NCS-TECH-021",
+  "subject": "recruit-written",
+  "group": "대기업형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "지식재산권의 종류 중 산업재산권에 해당하지 않는 것은?",
+  "choices": [
+   {
+    "no": 1,
+    "text": "특허권"
+   },
+   {
+    "no": 2,
+    "text": "실용신안권"
+   },
+   {
+    "no": 3,
+    "text": "저작권"
+   },
+   {
+    "no": 4,
+    "text": "상표권"
+   }
+  ],
+  "appAnswer": [
+   3
+  ],
+  "appAnswerText": null,
+  "explanation": "저작권은 문화적 산물을 보호하는 저작권법 상의 권리로, 산업재산권과 구별됩니다. 특허권, 실용신안권, 상표권이 산업재산권입니다.",
+  "answerSource": null,
+  "independentAnswer": [
+   3
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [
+   "negation_confusing"
+  ],
+  "appAnswerRaw": "C"
+ },
+ {
+  "questionId": "RW-public-NCS-TECH-022",
+  "subject": "recruit-written",
+  "group": "공공기관형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "기술 시스템의 유지보수 방법 중 고장이 발생하기 전에 예방하는 방식은?",
+  "choices": [
+   {
+    "no": 1,
+    "text": "사후 보전"
+   },
+   {
+    "no": 2,
+    "text": "예방 보전"
+   },
+   {
+    "no": 3,
+    "text": "긴급 보전"
+   },
+   {
+    "no": 4,
+    "text": "임시 보전"
+   }
+  ],
+  "appAnswer": [
+   2
+  ],
+  "appAnswerText": null,
+  "explanation": "예방 보전은 설비나 기기가 고장 나기 전에 정기적으로 점검하고 정비하는 방식입니다.",
+  "answerSource": null,
+  "independentAnswer": [
+   2
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": "B"
+ },
+ {
+  "questionId": "RW-enterprise-NCS-TECH-022",
+  "subject": "recruit-written",
+  "group": "대기업형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "기술 시스템의 유지보수 방법 중 고장이 발생하기 전에 예방하는 방식은?",
+  "choices": [
+   {
+    "no": 1,
+    "text": "사후 보전"
+   },
+   {
+    "no": 2,
+    "text": "예방 보전"
+   },
+   {
+    "no": 3,
+    "text": "긴급 보전"
+   },
+   {
+    "no": 4,
+    "text": "임시 보전"
+   }
+  ],
+  "appAnswer": [
+   2
+  ],
+  "appAnswerText": null,
+  "explanation": "예방 보전은 설비나 기기가 고장 나기 전에 정기적으로 점검하고 정비하는 방식입니다.",
+  "answerSource": null,
+  "independentAnswer": [
+   2
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": "B"
+ },
+ {
+  "questionId": "RW-public-NCS-TECH-023",
+  "subject": "recruit-written",
+  "group": "공공기관형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "친환경 기술의 목표로 가장 적합한 것은?",
+  "choices": [
+   {
+    "no": 1,
+    "text": "최대 생산량 달성"
+   },
+   {
+    "no": 2,
+    "text": "환경 부하 최소화"
+   },
+   {
+    "no": 3,
+    "text": "에너지 소비 극대화"
+   },
+   {
+    "no": 4,
+    "text": "자원의 무한 사용"
+   }
+  ],
+  "appAnswer": [
+   2
+  ],
+  "appAnswerText": null,
+  "explanation": "친환경 기술은 환경 부하를 최소화하고 지속가능한 발전을 추구하는 기술입니다.",
+  "answerSource": null,
+  "independentAnswer": [
+   2
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [
+   "education_weak"
+  ],
+  "appAnswerRaw": "B"
+ },
+ {
+  "questionId": "RW-enterprise-NCS-TECH-023",
+  "subject": "recruit-written",
+  "group": "대기업형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "친환경 기술의 목표로 가장 적합한 것은?",
+  "choices": [
+   {
+    "no": 1,
+    "text": "최대 생산량 달성"
+   },
+   {
+    "no": 2,
+    "text": "환경 부하 최소화"
+   },
+   {
+    "no": 3,
+    "text": "에너지 소비 극대화"
+   },
+   {
+    "no": 4,
+    "text": "자원의 무한 사용"
+   }
+  ],
+  "appAnswer": [
+   2
+  ],
+  "appAnswerText": null,
+  "explanation": "친환경 기술은 환경 부하를 최소화하고 지속가능한 발전을 추구하는 기술입니다.",
+  "answerSource": null,
+  "independentAnswer": [
+   2
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [
+   "education_weak"
+  ],
+  "appAnswerRaw": "B"
+ },
+ {
+  "questionId": "RW-public-NCS-TECH-025",
+  "subject": "recruit-written",
+  "group": "공공기관형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "제조 현장에서 5S 활동 중 '정리'의 의미는?",
+  "choices": [
+   {
+    "no": 1,
+    "text": "필요한 것과 불필요한 것을 구분하여 불필요한 것을 제거"
+   },
+   {
+    "no": 2,
+    "text": "필요한 것을 사용하기 쉽게 배치"
+   },
+   {
+    "no": 3,
+    "text": "작업장을 깨끗하게 청소"
+   },
+   {
+    "no": 4,
+    "text": "정해진 상태를 유지"
+   }
+  ],
+  "appAnswer": [
+   1
+  ],
+  "appAnswerText": null,
+  "explanation": "5S의 '정리(Seiri)'는 필요한 것과 불필요한 것을 구분하여 불필요한 것을 제거하는 활동입니다.",
+  "answerSource": null,
+  "independentAnswer": [
+   1
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": "A"
+ },
+ {
+  "questionId": "RW-enterprise-NCS-TECH-025",
+  "subject": "recruit-written",
+  "group": "대기업형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "제조 현장에서 5S 활동 중 '정리'의 의미는?",
+  "choices": [
+   {
+    "no": 1,
+    "text": "필요한 것과 불필요한 것을 구분하여 불필요한 것을 제거"
+   },
+   {
+    "no": 2,
+    "text": "필요한 것을 사용하기 쉽게 배치"
+   },
+   {
+    "no": 3,
+    "text": "작업장을 깨끗하게 청소"
+   },
+   {
+    "no": 4,
+    "text": "정해진 상태를 유지"
+   }
+  ],
+  "appAnswer": [
+   1
+  ],
+  "appAnswerText": null,
+  "explanation": "5S의 '정리(Seiri)'는 필요한 것과 불필요한 것을 구분하여 불필요한 것을 제거하는 활동입니다.",
+  "answerSource": null,
+  "independentAnswer": [
+   1
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": "A"
+ },
+ {
+  "questionId": "RW-finance-NCS-NEW-금융상식-049",
+  "subject": "recruit-written",
+  "group": "금융권형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "다음은 A은행 창구 직원 김대리가 고객에게 안내하는 내용이다. 고객에게 정확하게 안내한 내용으로 옳은 것을 모두 고르시오.\n\n[고객 문의] 저는 이번에 3천만 원의 여유자금이 생겼는데 어떻게 운용할지 고민 중입니다.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "예금보험공사는 한 금융기관별로 1인당 최대 1억 원까지 원금과 소정의 이자를 보호해 드립니다"
+   },
+   {
+    "no": 2,
+    "text": "정기예금에 가입하시면 중도해지 시에도 약정 이자 전액을 받으실 수 있습니다"
+   },
+   {
+    "no": 3,
+    "text": "주식형 펀드는 원금이 보장되지 않으니 투자 위험을 충분히 고려하셔야 합니다"
+   },
+   {
+    "no": 4,
+    "text": "한국은행에서도 개인 고객을 위한 정기예금 상품을 취급합니다"
+   }
+  ],
+  "appAnswer": [
+   1,
+   3
+  ],
+  "appAnswerText": null,
+  "explanation": "2025년 9월 1일부터 적용되는 예금보험공사의 금융기관별 1억 원 보호 한도(A)와 주식형 펀드의 원금 비보장(C)은 정확한 금융 상식이다. 정기예금 중도해지 시 약정이자의 일부만 받으며(B 오류), 한국은행은 일반 고객을 대상으로 예금 상품을 취급하지 않는다(D 오류).",
+  "answerSource": null,
+  "independentAnswer": [
+   1,
+   3
+  ],
+  "independentConfidence": "medium",
+  "independentFlags": [
+   "commonsense_dispute"
+  ],
+  "appAnswerRaw": [
+   "A",
+   "C"
+  ]
+ },
+ {
+  "questionId": "RW-finance-NCS-NEW-금융상식-050",
+  "subject": "recruit-written",
+  "group": "금융권형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "다음 중 금융 기관의 종류와 주요 기능이 바르게 연결된 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "예금보험공사 — 개인에게 직접 보험 상품을 판매한다"
+   },
+   {
+    "no": 2,
+    "text": "시중은행 — 개인 및 기업의 예금을 받고 대출을 실행한다"
+   },
+   {
+    "no": 3,
+    "text": "한국수출입은행 — 국내 소비자 신용 대출을 전문으로 취급한다"
+   },
+   {
+    "no": 4,
+    "text": "신용보증기금 — 담보 능력이 부족한 기업의 대출에 보증을 제공한다"
+   },
+   {
+    "no": 5,
+    "text": "증권사 — 예금자의 예금을 보호하기 위한 보험 기금을 운영한다"
+   }
+  ],
+  "appAnswer": [
+   2,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "시중은행의 예금 수취 및 대출(B)과 신용보증기금의 보증 기능(D)은 정확하다. 예금보험공사는 보험 상품 판매 기관이 아니며(A), 한국수출입은행은 수출입 관련 금융 전문기관이고(C), 예금보호 기금 운영은 예금보험공사의 역할이다(E).",
+  "answerSource": null,
+  "independentAnswer": [
+   2,
+   4
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "B",
+   "D"
+  ]
+ },
+ {
+  "questionId": "RW-finance-NCS-NEW-금융상식-051",
+  "subject": "recruit-written",
+  "group": "금융권형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "신입사원 정민지는 월급의 일부를 저축하려고 금융 상품을 알아보고 있다. 다음 중 원금이 보장되는 금융 상품을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "시중은행의 정기적금"
+   },
+   {
+    "no": 2,
+    "text": "국내 주식형 펀드"
+   },
+   {
+    "no": 3,
+    "text": "우체국 정기예금"
+   },
+   {
+    "no": 4,
+    "text": "해외 주가지수 ETF"
+   },
+   {
+    "no": 5,
+    "text": "회사채 직접 투자"
+   }
+  ],
+  "appAnswer": [
+   1,
+   3
+  ],
+  "appAnswerText": null,
+  "explanation": "시중은행 정기적금(A)은 예금자보호법상 보호대상이며, 우체국 정기예금(C)은 국가가 지급을 보장한다. 주식형 펀드(B), ETF(D), 회사채(E)는 시장 가격 변동 등에 따른 원금 손실 위험이 있다.",
+  "answerSource": null,
+  "independentAnswer": [
+   1,
+   3
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "C"
+  ]
+ },
+ {
+  "questionId": "RW-finance-NCS-NEW-금융상식-052",
+  "subject": "recruit-written",
+  "group": "금융권형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "다음 중 신용점수에 부정적인 영향을 미치는 행동으로 옳은 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "공과금을 매달 자동이체로 납부한다"
+   },
+   {
+    "no": 2,
+    "text": "신용카드 결제일에 대금을 연체한다"
+   },
+   {
+    "no": 3,
+    "text": "급여 통장을 주거래 은행에 개설한다"
+   },
+   {
+    "no": 4,
+    "text": "단기간에 여러 금융기관에 대출을 동시에 신청한다"
+   }
+  ],
+  "appAnswer": [
+   2,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "신용카드 대금 연체(B)는 상환 능력 저하로 신용점수를 하락시키고, 단기간 복수 대출 신청(D)은 신용 조회 횟수를 급격히 늘려 신용점수에 부정적 영향을 준다.",
+  "answerSource": null,
+  "independentAnswer": [
+   2,
+   4
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "B",
+   "D"
+  ]
+ },
+ {
+  "questionId": "RW-finance-NCS-NEW-금융상식-053",
+  "subject": "recruit-written",
+  "group": "금융권형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "재무팀 박주임은 신입사원들에게 금융 기초 교육을 실시하고 있다. 다음 설명 중 옳은 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "금리가 오르면 채권 가격은 일반적으로 하락한다"
+   },
+   {
+    "no": 2,
+    "text": "분산 투자는 수익률을 극대화하기 위한 전략이다"
+   },
+   {
+    "no": 3,
+    "text": "환율이 오르면 수출기업의 원화 환산 수익이 증가할 수 있다"
+   },
+   {
+    "no": 4,
+    "text": "국채는 주식과 동일한 수준의 투자 위험을 가진다"
+   },
+   {
+    "no": 5,
+    "text": "정기예금은 일반적으로 보통예금보다 금리가 높다"
+   }
+  ],
+  "appAnswer": [
+   1,
+   3,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "금리와 채권 가격은 반비례 관계(A), 환율 상승 시 수출기업 수익 증가(C), 정기예금의 높은 금리(E)는 올바른 금융 지식이다. 분산 투자는 위험을 줄이는 전략(B 오류)이며, 국채는 주식보다 위험이 낮다(D 오류).",
+  "answerSource": null,
+  "independentAnswer": [
+   1,
+   3,
+   5
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "C",
+   "E"
+  ]
+ },
+ {
+  "questionId": "RW-finance-NCS-NEW-경제상식-039",
+  "subject": "recruit-written",
+  "group": "금융권형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "다음 중 인플레이션이 지속될 때 나타날 수 있는 경제적 영향으로 옳은 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "고정된 금액의 연금이나 채권 보유자의 실질 구매력이 감소한다."
+   },
+   {
+    "no": 2,
+    "text": "수출품의 국내 가격이 하락하여 수출 경쟁력이 높아진다."
+   },
+   {
+    "no": 3,
+    "text": "화폐 가치가 하락하므로 실물 자산 보유자에게 유리한 면이 있다."
+   },
+   {
+    "no": 4,
+    "text": "채무자는 미래에 갚아야 할 돈의 실질가치가 줄어드는 혜택을 볼 수 있다."
+   },
+   {
+    "no": 5,
+    "text": "중앙은행은 인플레이션 억제를 위해 기준금리를 인하하는 경향이 있다."
+   }
+  ],
+  "appAnswer": [
+   1,
+   3,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "인플레이션 시 고정 수입자·채권자는 실질가치 손실을 입고, 실물 자산 보유자와 채무자는 상대적으로 유리해진다. 중앙은행은 인플레이션 억제를 위해 금리를 인상(인하가 아님)한다.",
+  "answerSource": null,
+  "independentAnswer": [
+   1,
+   3,
+   4
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "C",
+   "D"
+  ]
+ },
+ {
+  "questionId": "RW-finance-NCS-NEW-경제상식-040",
+  "subject": "recruit-written",
+  "group": "금융권형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "전자제품 판매 매장 직원 이민준 씨는 팀장으로부터 '수요에 영향을 미치는 요인'을 정리하라는 지시를 받았다. 다음 중 수요를 증가시키는 요인으로 올바른 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "해당 상품의 판매 가격 하락"
+   },
+   {
+    "no": 2,
+    "text": "소비자의 소득 증가"
+   },
+   {
+    "no": 3,
+    "text": "대체재 가격 하락"
+   },
+   {
+    "no": 4,
+    "text": "소비자 기호나 선호도 증가"
+   },
+   {
+    "no": 5,
+    "text": "보완재 가격 상승"
+   }
+  ],
+  "appAnswer": [
+   2,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "수요 곡선 자체를 이동시키는 요인은 소득, 기호, 대체재·보완재 가격 등이다. 소득 증가와 선호도 증가는 수요를 늘린다. 해당 상품 자체의 가격 변화는 수요량의 변화(곡선상 이동)이며 수요 증가(곡선 이동)가 아니다.",
+  "answerSource": null,
+  "independentAnswer": [
+   2,
+   4
+  ],
+  "independentConfidence": "medium",
+  "independentFlags": [
+   "ambiguous_stem",
+   "commonsense_dispute"
+  ],
+  "appAnswerRaw": [
+   "B",
+   "D"
+  ]
+ },
+ {
+  "questionId": "RW-finance-NCS-NEW-경제상식-041",
+  "subject": "recruit-written",
+  "group": "금융권형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "의류 매장 재고관리 사원 박지수 씨는 시장 균형 변화를 분석해야 한다. 다음 중 상품 공급을 증가시키는 요인으로 옳은 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "생산 기술 혁신으로 생산비 절감"
+   },
+   {
+    "no": 2,
+    "text": "원자재 가격 상승"
+   },
+   {
+    "no": 3,
+    "text": "생산 보조금 지원 확대"
+   },
+   {
+    "no": 4,
+    "text": "해당 상품의 시장 가격 상승"
+   },
+   {
+    "no": 5,
+    "text": "기업 법인세율 인상"
+   }
+  ],
+  "appAnswer": [
+   1,
+   3
+  ],
+  "appAnswerText": null,
+  "explanation": "공급 곡선 자체를 우측으로 이동시키는 요인은 기술 발전, 생산비 감소, 보조금 확대 등이다. 시장 가격 상승은 공급량 변화(곡선상 이동)이고, 원자재 가격 상승과 세율 인상은 공급을 감소시킨다.",
+  "answerSource": null,
+  "independentAnswer": [
+   1,
+   3
+  ],
+  "independentConfidence": "medium",
+  "independentFlags": [
+   "ambiguous_stem"
+  ],
+  "appAnswerRaw": [
+   "A",
+   "C"
+  ]
+ },
+ {
+  "questionId": "RW-finance-NCS-NEW-경제상식-042",
+  "subject": "recruit-written",
+  "group": "금융권형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "온라인 쇼핑몰 운영팀 신입사원 최현아 씨는 경기 변동에 따른 대응 전략을 세우려 한다. 다음 중 경기 침체기에 일반적으로 나타나는 현상으로 옳은 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "소비자 물가 수준이 빠르게 상승한다."
+   },
+   {
+    "no": 2,
+    "text": "기업의 설비 투자가 줄어들고 실업률이 높아진다."
+   },
+   {
+    "no": 3,
+    "text": "정부는 경기 부양을 위해 재정 지출을 확대하는 경향이 있다."
+   },
+   {
+    "no": 4,
+    "text": "중앙은행은 과열된 경기를 식히기 위해 금리를 인상한다."
+   },
+   {
+    "no": 5,
+    "text": "소비 심리가 위축되어 가계 지출이 감소한다."
+   }
+  ],
+  "appAnswer": [
+   2,
+   3,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "경기 침체기에는 실업 증가, 투자 감소, 소비 위축이 나타나고 정부는 재정 지출 확대로 대응한다. 금리 인하(인상 아님)와 물가 하락 압력이 나타나는 것이 일반적이다.",
+  "answerSource": null,
+  "independentAnswer": [
+   2,
+   3,
+   5
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "B",
+   "C",
+   "E"
+  ]
+ },
+ {
+  "questionId": "RW-finance-NCS-NEW-경제상식-043",
+  "subject": "recruit-written",
+  "group": "금융권형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "자동차 부품회사 영업팀 사원 김태현 씨는 환율 변동이 회사 실적에 미치는 영향을 분석하고 있다. 원/달러 환율이 상승(원화 약세)할 때 나타나는 현상으로 옳은 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "달러 표시 수출품의 가격 경쟁력이 높아진다."
+   },
+   {
+    "no": 2,
+    "text": "해외 원자재 수입 비용이 낮아진다."
+   },
+   {
+    "no": 3,
+    "text": "외화 부채를 보유한 기업의 원화 상환 부담이 줄어든다."
+   },
+   {
+    "no": 4,
+    "text": "해외여행 비용이 증가하여 내국인의 해외여행 수요가 감소할 수 있다."
+   },
+   {
+    "no": 5,
+    "text": "국내 수입 소비재의 원화 가격이 하락한다."
+   }
+  ],
+  "appAnswer": [
+   1,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "원화 약세(환율 상승)는 수출 가격 경쟁력을 높이고, 해외여행 비용을 올린다. 반대로 수입 원자재 비용 증가, 외화 부채 상환 부담 증가, 수입품 원화 가격 상승이 나타난다.",
+  "answerSource": null,
+  "independentAnswer": [
+   1,
+   4
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "D"
+  ]
+ },
+ {
+  "questionId": "RW-finance-NCS-NEW-경영상식-019",
+  "subject": "recruit-written",
+  "group": "금융권형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "㈜스마트리테일 마케팅팀 신입사원 한지수 씨는 신제품 런칭 전략을 정리하고 있다. 다음 중 마케팅 믹스 4P 관점에서 '촉진(Promotion)' 전략에 해당하는 활동을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "온라인 몰과 오프라인 매장 동시 판매 결정"
+   },
+   {
+    "no": 2,
+    "text": "SNS 인플루언서를 활용한 제품 홍보 캠페인 실시"
+   },
+   {
+    "no": 3,
+    "text": "프리미엄 원자재 사용으로 제품 품질 향상"
+   },
+   {
+    "no": 4,
+    "text": "출시 기념 한정 기간 할인 쿠폰 배포"
+   },
+   {
+    "no": 5,
+    "text": "경쟁사 대비 10% 낮은 가격으로 출시가 책정"
+   }
+  ],
+  "appAnswer": [
+   2,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "촉진(Promotion) 전략은 소비자에게 제품을 알리고 구매를 유도하는 커뮤니케이션 활동으로, 인플루언서 홍보와 할인 쿠폰 배포가 이에 해당한다. 유통 채널 결정은 Place, 원자재는 Product, 가격 결정은 Price에 해당한다.",
+  "answerSource": null,
+  "independentAnswer": [
+   2,
+   4
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "B",
+   "D"
+  ]
+ },
+ {
+  "questionId": "RW-finance-NCS-NEW-경영상식-020",
+  "subject": "recruit-written",
+  "group": "금융권형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "식품회사 기획팀 사원 오준서 씨는 신규 브랜드의 시장 진입 전략을 수립 중이다. SWOT 분석 결과 아래와 같은 요인들이 도출되었다. 이 중 '내부 환경' 요인에 해당하는 것을 모두 고르시오. [분석 결과] ① 유사 제품 경쟁사 급증 / ② 독자 개발 특허 레시피 보유 / ③ 온라인 쇼핑 성장 트렌드 / ④ 숙련된 생산 인력 확보 / ⑤ 정부의 식품 안전 규제 강화",
+  "choices": [
+   {
+    "no": 1,
+    "text": "①번과 ③번"
+   },
+   {
+    "no": 2,
+    "text": "②번과 ④번"
+   },
+   {
+    "no": 3,
+    "text": "③번과 ⑤번"
+   },
+   {
+    "no": 4,
+    "text": "①번과 ⑤번"
+   },
+   {
+    "no": 5,
+    "text": "②번과 ③번"
+   }
+  ],
+  "appAnswer": [
+   2,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "SWOT 분석에서 내부 환경 요인은 기업이 직접 통제할 수 있는 강점·약점이다. 독자 특허 레시피(②)와 숙련된 인력(④)은 내부 강점에 해당하며, 나머지는 외부 환경(기회·위협) 요인이다.",
+  "answerSource": null,
+  "independentAnswer": [
+   2
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [
+   "choices_not_parallel"
+  ],
+  "appAnswerRaw": [
+   "B",
+   "D"
+  ]
+ },
+ {
+  "questionId": "RW-finance-NCS-NEW-경영상식-021",
+  "subject": "recruit-written",
+  "group": "금융권형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "건설회사 관리팀 직원 서유나 씨는 고정비와 변동비를 분류하고 있다. 다음 중 고정비(Fixed Cost)에 해당하는 항목을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "공장 건물 임대료"
+   },
+   {
+    "no": 2,
+    "text": "제품 1개 생산에 투입되는 원자재 비용"
+   },
+   {
+    "no": 3,
+    "text": "영업직 직원의 기본급"
+   },
+   {
+    "no": 4,
+    "text": "판매량에 따라 지급하는 배송 운송비"
+   },
+   {
+    "no": 5,
+    "text": "생산량에 연동된 외주 가공비"
+   }
+  ],
+  "appAnswer": [
+   1,
+   3
+  ],
+  "appAnswerText": null,
+  "explanation": "고정비는 생산량이나 판매량에 관계없이 일정하게 발생하는 비용으로, 임대료와 기본급이 대표적이다. 원자재비·운송비·외주 가공비는 생산·판매량에 따라 달라지는 변동비에 해당한다.",
+  "answerSource": null,
+  "independentAnswer": [
+   1,
+   3
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "C"
+  ]
+ },
+ {
+  "questionId": "RW-finance-NCS-NEW-일반상식-020",
+  "subject": "recruit-written",
+  "group": "금융권형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "다음 중 직장인이 알아야 할 사회보험에 해당하는 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "국민건강보험"
+   },
+   {
+    "no": 2,
+    "text": "국민연금"
+   },
+   {
+    "no": 3,
+    "text": "개인연금"
+   },
+   {
+    "no": 4,
+    "text": "고용보험"
+   },
+   {
+    "no": 5,
+    "text": "민간의료보험"
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "4대 사회보험은 국민건강보험, 국민연금, 고용보험, 산업재해보상보험이다. 개인연금과 민간의료보험은 사적 보험이므로 사회보험에 해당하지 않는다.",
+  "answerSource": null,
+  "independentAnswer": [
+   1,
+   2,
+   4
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "D"
+  ]
+ },
+ {
+  "questionId": "RW-finance-NCS-NEW-일반상식-021",
+  "subject": "recruit-written",
+  "group": "금융권형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "다음 보기 중 대한민국 헌법에서 보장하는 기본권의 종류에 해당하는 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "평등권"
+   },
+   {
+    "no": 2,
+    "text": "납세의 의무"
+   },
+   {
+    "no": 3,
+    "text": "자유권"
+   },
+   {
+    "no": 4,
+    "text": "사회권"
+   },
+   {
+    "no": 5,
+    "text": "근로의 의무"
+   }
+  ],
+  "appAnswer": [
+   1,
+   3,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "헌법상 기본권은 평등권, 자유권, 사회권, 청구권, 참정권 등이다. 납세의 의무와 근로의 의무는 기본권이 아닌 헌법상 국민의 의무에 해당한다.",
+  "answerSource": null,
+  "independentAnswer": [
+   1,
+   3,
+   4
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "C",
+   "D"
+  ]
+ },
+ {
+  "questionId": "RW-finance-NCS-NEW-일반상식-022",
+  "subject": "recruit-written",
+  "group": "금융권형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "영업팀 신입사원 김민준이 통계 자료를 해석할 때 주의해야 할 사항으로 옳은 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "평균값이 높으면 모든 구성원의 수치도 높다."
+   },
+   {
+    "no": 2,
+    "text": "증가율이 높아도 절대적 수치가 낮을 수 있다."
+   },
+   {
+    "no": 3,
+    "text": "비율 비교 시 분모의 크기를 함께 확인해야 한다."
+   },
+   {
+    "no": 4,
+    "text": "상관관계가 있으면 반드시 인과관계가 성립한다."
+   }
+  ],
+  "appAnswer": [
+   2,
+   3
+  ],
+  "appAnswerText": null,
+  "explanation": "평균은 극단값의 영향을 받으며 개별 수치를 보장하지 않고, 상관관계가 인과관계를 의미하지는 않는다. 증가율과 절대값을 구분하고 비율 비교 시 분모 크기를 확인하는 것이 통계 해석의 기본 원칙이다.",
+  "answerSource": null,
+  "independentAnswer": [
+   2,
+   3
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "B",
+   "C"
+  ]
+ },
+ {
+  "questionId": "RW-enterprise-NCS-NEW-인적성-051",
+  "subject": "recruit-written",
+  "group": "대기업형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "다음 글을 읽고 글쓴이가 직접 언급한 내용을 모두 고르시오.\n\n\"신입사원 교육에서 가장 강조되는 덕목은 책임감과 성실함이다. 상사의 지시를 정확히 이해하고 마감 기한을 엄수하는 태도는 신뢰를 쌓는 데 필수적이다. 또한 자신의 실수를 인정하고 개선하려는 자세도 중요하다.\"",
+  "choices": [
+   {
+    "no": 1,
+    "text": "신입사원 교육에서 책임감과 성실함이 강조된다."
+   },
+   {
+    "no": 2,
+    "text": "마감 기한 엄수가 신뢰를 쌓는 데 필수적이다."
+   },
+   {
+    "no": 3,
+    "text": "팀워크가 신뢰 형성의 핵심 요소이다."
+   },
+   {
+    "no": 4,
+    "text": "실수를 인정하고 개선하려는 자세가 중요하다."
+   },
+   {
+    "no": 5,
+    "text": "소통 능력이 신입사원의 가장 중요한 역량이다."
+   }
+  ],
+  "appAnswer": [
+   1,
+   2,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "글에서 직접 언급된 내용은 ① 책임감·성실함 강조, ② 마감 기한 엄수와 신뢰의 관계, ③ 실수 인정 및 개선 자세이다. 팀워크(C)와 소통 능력(E)은 글에서 언급되지 않았다.",
+  "answerSource": null,
+  "independentAnswer": [
+   1,
+   2,
+   4
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "B",
+   "D"
+  ]
+ },
+ {
+  "questionId": "RW-enterprise-NCS-NEW-인적성-052",
+  "subject": "recruit-written",
+  "group": "대기업형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "다음 조건을 모두 만족하는 경우를 모두 고르시오.\n\n[조건]\n- A는 B보다 점수가 높다.\n- C는 A보다 점수가 낮다.\n- B와 D의 점수는 같다.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "A의 점수는 C보다 높다."
+   },
+   {
+    "no": 2,
+    "text": "B의 점수는 C보다 낮다."
+   },
+   {
+    "no": 3,
+    "text": "D의 점수는 A보다 낮다."
+   },
+   {
+    "no": 4,
+    "text": "C의 점수가 가장 높다."
+   },
+   {
+    "no": 5,
+    "text": "B는 C보다 점수가 높다."
+   }
+  ],
+  "appAnswer": [
+   1,
+   3
+  ],
+  "appAnswerText": null,
+  "explanation": "조건에 따르면 A > B = D이고 A > C이다. 따라서 A > C (A번 참), A > B = D이므로 D < A (C번 참). B와 C의 비교는 조건에서 직접 명시되지 않아 확정할 수 없다.",
+  "answerSource": null,
+  "independentAnswer": [
+   1,
+   3
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "C"
+  ]
+ },
+ {
+  "questionId": "RW-enterprise-NCS-NEW-인적성-053",
+  "subject": "recruit-written",
+  "group": "대기업형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "다음 글을 읽고 이 글에서 추론할 수 있는 내용을 모두 고르시오.\n\n\"올해 A팀은 야근 빈도가 줄었다. 팀원들이 업무 효율을 높이는 방법을 학습한 덕분이다. 팀장은 정시 퇴근을 장려하는 정책을 도입했고, 팀원들은 이에 적극 협조하였다.\"",
+  "choices": [
+   {
+    "no": 1,
+    "text": "A팀의 업무 방식에 변화가 있었다."
+   },
+   {
+    "no": 2,
+    "text": "A팀은 작년에도 야근이 거의 없었다."
+   },
+   {
+    "no": 3,
+    "text": "팀장의 정책은 팀원들의 반발로 실패했다."
+   },
+   {
+    "no": 4,
+    "text": "업무 효율화 학습이 야근 감소에 영향을 미쳤다."
+   }
+  ],
+  "appAnswer": [
+   1,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "글에서 업무 효율 학습과 팀장의 정책 도입으로 야근이 줄었다고 했으므로, 업무 방식 변화(A)와 학습의 영향(D)은 추론 가능하다. 작년 야근 여부(B)는 글에 나타나지 않으며, 반발로 실패(C)는 글의 내용과 반대이다.",
+  "answerSource": null,
+  "independentAnswer": [
+   1,
+   4
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "D"
+  ]
+ },
+ {
+  "questionId": "RW-enterprise-NCS-NEW-인적성-054",
+  "subject": "recruit-written",
+  "group": "대기업형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "다음 보기 중 비판적 사고의 특징에 해당하는 것을 모두 고르시오.",
+  "choices": [
+   {
+    "no": 1,
+    "text": "권위 있는 사람의 주장은 무조건 받아들인다."
+   },
+   {
+    "no": 2,
+    "text": "주장의 근거가 충분한지 확인한다."
+   },
+   {
+    "no": 3,
+    "text": "결론을 내리기 전 다양한 관점을 검토한다."
+   },
+   {
+    "no": 4,
+    "text": "자신의 첫 번째 판단이 항상 옳다고 가정한다."
+   },
+   {
+    "no": 5,
+    "text": "정보의 출처와 신뢰성을 평가한다."
+   }
+  ],
+  "appAnswer": [
+   2,
+   3,
+   5
+  ],
+  "appAnswerText": null,
+  "explanation": "비판적 사고는 주장의 근거 검토(B), 다양한 관점 고려(C), 정보 출처·신뢰성 평가(E)를 포함한다. 권위에 맹목적 복종(A)이나 첫 판단을 고집(D)하는 것은 비판적 사고와 거리가 멀다.",
+  "answerSource": null,
+  "independentAnswer": [
+   2,
+   3,
+   5
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "B",
+   "C",
+   "E"
+  ]
+ },
+ {
+  "questionId": "RW-enterprise-NCS-NEW-인적성-055",
+  "subject": "recruit-written",
+  "group": "대기업형",
+  "questionMode": "multi",
+  "context": null,
+  "stem": "다음 지문을 읽고 밑줄 친 '이 방식'의 장점으로 글에서 확인할 수 있는 것을 모두 고르시오.\n\n\"우리 회사는 올해부터 업무 일지를 디지털로 전환했다. 이 방식은 검색과 공유가 쉬워졌고, 이전 기록을 빠르게 참조할 수 있다. 또한 보관 공간을 줄이고 분실 위험도 낮아졌다.\"",
+  "choices": [
+   {
+    "no": 1,
+    "text": "기록 검색이 편리해진다."
+   },
+   {
+    "no": 2,
+    "text": "직원 간 업무 갈등이 감소한다."
+   },
+   {
+    "no": 3,
+    "text": "이전 기록을 빠르게 참조할 수 있다."
+   },
+   {
+    "no": 4,
+    "text": "보관 공간이 줄어들고 분실 위험이 낮아진다."
+   },
+   {
+    "no": 5,
+    "text": "업무 처리 속도가 2배 빨라진다."
+   }
+  ],
+  "appAnswer": [
+   1,
+   3,
+   4
+  ],
+  "appAnswerText": null,
+  "explanation": "글에서 직접 언급된 장점은 검색·공유 용이(A), 이전 기록 빠른 참조(C), 보관 공간 절약·분실 위험 감소(D)이다. 업무 갈등 감소(B)와 처리 속도 2배 향상(E)은 글에 언급되지 않았다.",
+  "answerSource": null,
+  "independentAnswer": [
+   1,
+   3,
+   4
+  ],
+  "independentConfidence": "high",
+  "independentFlags": [],
+  "appAnswerRaw": [
+   "A",
+   "C",
+   "D"
+  ]
+ }
+]

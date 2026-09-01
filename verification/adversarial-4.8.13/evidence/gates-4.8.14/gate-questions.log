@@ -1,0 +1,10 @@
+
+> gyo6-jobskill-game@1.0.0 gate:questions
+> python scripts/gate-question-quality.py
+
+[문항게이트] 파일 40개 · 5765문항 검사 · 위반 0건
+           빈 단원 0개
+  ⓘ ncs-extracted-bank.json: 204건 — 미검수 은행이라 이 지적은 빌드를 막지 않음
+     원본 교재에서 기계로 뽑은 미검수 은행. 이 중 발문이 온전한 것만 ncs2026.js 가 출제 풀에 올리고, 나머지는 걸러진다. 복습 id 조회는 isRenderable 이 한 번 더 막는다.
+     출제 풀 유입 0건 (풀에 오른 것 780개는 모두 지적 없음)
+[문항게이트] 통과

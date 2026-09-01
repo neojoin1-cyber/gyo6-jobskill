@@ -111,3 +111,56 @@ BASELINE-INPUT =
 | 독립 적대적 검증자 | 클로드 코드 | 위 다섯 값을 직접 실행·계산으로 확인함 |
 | 문항 독립 채점·판정서 | 코워크 | Play 표시값 수집 후 5번 칸을 채운다 |
 | 소유자 | 사람 | 웹 4.8.13 상향과 미커밋 변경 포함을 승인함 (2026-09-01) |
+
+
+---
+
+# 기준선 갱신 — 4.8.14 (2026-09-02)
+
+BLOCK-P0-01(안드로이드 렌더 오류) 수정으로 네 표면이 모두 4.8.14로 올라갔다.
+**이 문서의 위쪽 4.8.13 기준선은 폐기하지 않고 남긴다** — 그 기준선으로 만든 기록이 이미 원장에 있기 때문이다.
+2026-09-02 이후의 결함은 아래 서명 해시를 인용한다.
+
+| # | 항목 | 값 |
+|---|---|---|
+| 1 | 소스 커밋 | `b7c1b26` (`fix: prevent student menu crash on first learning entry`) |
+| 2 | 웹 `version.json` | `4.8.14` / releasedAt `2026-09-01` |
+| 3 | 웹 엔트리 자산 SHA-256 | `assets/index-DzsLqKW4.js` = `ef71bbbc80b4a52d186e5dcc859cadaba4567046f39643e28b1891db4eb37d0c` |
+| 4 | AAB | versionName `4.8.14` / versionCode `29804584` / sha256 `7a8a27205e982bfed159e25323ec2062030f5dfe6ad33a610e02c6442304dd62` |
+| 5 | Play 표시값 | **미확보** — 코워크 수집분 |
+
+동일성 대조(직접 계산):
+
+| 대조 | 결과 |
+|---|---|
+| 운영 웹 ↔ 홈페이지 미러 ↔ `release/web/gyo6-site` | 3중 동일 (`ef71bbbc…7d0c`) |
+| AAB 내부 `base/assets/public/version.json` | `4.8.14` |
+| AAB 파일 sha256 ↔ `.release.json` 기록값 | 일치 (`7a8a2720…dd62`) |
+
+게이트: `npm test` · `prebuild` · `gate:questions` · `verify:explanation-consistency` ·
+`verify:teacher-release` · `gate:promotion-promises` 전부 exit=0.
+신규 `gate:learning-presence` 가 prebuild 에 편입됐고 통과한다
+(로그 `evidence/gates-4.8.14/`).
+
+```
+BASELINE-INPUT =
+  commit=b7c1b26
+  web.version=4.8.14
+  web.entry=assets/index-DzsLqKW4.js
+  web.entry.sha256=ef71bbbc80b4a52d186e5dcc859cadaba4567046f39643e28b1891db4eb37d0c
+  aab.versionName=4.8.14
+  aab.versionCode=29804584
+  aab.sha256=7a8a27205e982bfed159e25323ec2062030f5dfe6ad33a610e02c6442304dd62
+  play.display=UNRESOLVED
+```
+
+기준선 서명 해시: `9797477fe73a542f5b523f283e83f2dbd7e8a75450e0f19be2f8675b394f64de`
+(짧은 형태 `9797477fe73a`)
+
+## 4.8.13 기준선으로 만든 기록의 취급
+
+| 기록 | 4.8.14에서의 유효성 |
+|---|---|
+| 데이터·소스 기계 감사 (CNT·TCH-001~003·LEGAL-001) | 유효. `b7c1b26` 은 문항 데이터와 미션 경로를 건드리지 않았다 |
+| 화면 관측 (TCH-004·SEC-001/002·STU-001) | 재확인 대상. TCH-004 는 4.8.14에서 다시 본다 |
+| BLOCK-P0-01 | 소유자 지시로 검증 범위에서 제외. 회귀만 확인한다 |

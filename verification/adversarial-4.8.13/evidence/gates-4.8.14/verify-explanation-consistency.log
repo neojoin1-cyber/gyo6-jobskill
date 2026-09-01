@@ -1,0 +1,5 @@
+
+> gyo6-jobskill-game@1.0.0 verify:explanation-consistency
+> node scripts/audit-explanation-consistency.mjs
+
+PASS explanation consistency audit: 1329 questions
