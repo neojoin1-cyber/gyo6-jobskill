@@ -1,0 +1,21 @@
+{
+ "_meta": {
+  "baseline": "9797477fe73a (4.8.14)",
+  "목적": "검증 전용 학급 확보 + 교사 기능 검증"
+ },
+ "단계": [
+  {
+   "단계": "교사 로그인",
+   "결과": "PASS",
+   "메모": null
+  },
+  {
+   "단계": "교사 학급 생성(rpc_create_class)",
+   "결과": "FAIL",
+   "메모": "Only school administrators can create classes",
+   "class_id": null,
+   "class_code": null
+  }
+ ],
+ "중단": "학급 생성 실패로 이후 단계 미실행"
+}

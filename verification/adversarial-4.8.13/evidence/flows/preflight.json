@@ -1,0 +1,54 @@
+{
+ "_meta": {
+  "baseline": "9797477fe73a (4.8.14)",
+  "주의": "자격정보 값은 기록하지 않는다"
+ },
+ "계정": [
+  {
+   "지정역할": "teacher",
+   "이메일": "t***@a***",
+   "상태": "로그인 성공",
+   "프로필조회": true,
+   "실제역할": "teacher",
+   "승인됨": true,
+   "학교연결": true,
+   "이름있음": true,
+   "닉네임있음": false,
+   "학급수": 0,
+   "부트스트랩": [
+    "class_ids",
+    "due_count",
+    "missions",
+    "profile",
+    "server_time",
+    "streak",
+    "unread_count",
+    "wrong_count",
+    "xp"
+   ]
+  },
+  {
+   "지정역할": "student",
+   "이메일": "s***@a***",
+   "상태": "로그인 성공",
+   "프로필조회": true,
+   "실제역할": "student",
+   "승인됨": true,
+   "학교연결": true,
+   "이름있음": true,
+   "닉네임있음": true,
+   "학급수": 1,
+   "부트스트랩": [
+    "class_ids",
+    "due_count",
+    "missions",
+    "profile",
+    "server_time",
+    "streak",
+    "unread_count",
+    "wrong_count",
+    "xp"
+   ]
+  }
+ ]
+}

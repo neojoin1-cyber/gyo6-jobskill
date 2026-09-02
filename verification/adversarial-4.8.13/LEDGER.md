@@ -13,8 +13,8 @@
 | 심각도 | 미해결 | 수정됨 | 재시험 통과 |
 |---|---:|---:|---:|
 | P0 | 1 | 0 | 0 |
-| P1 | 4 | 0 | 0 |
-| P2 | 12 | 0 | 0 |
+| P1 | 5 | 0 | 0 |
+| P2 | 14 | 0 | 0 |
 | P3 | 6 | 0 | 0 |
 
 ---
@@ -1130,3 +1130,75 @@ SHA-256 `7a8a27205e982bfed159e25323ec2062030f5dfe6ad33a610e02c6442304dd62` /
   통계 화면에는 `scrollable-region-focusable`(키보드로 스크롤 영역에 들어갈 수 없음) 1건이 더 있다
 - **증거**: `evidence/admin/admin-scan.json` 의 `axe위반`
 - **비고**: A11Y-001(확대 차단)이 학생·교사뿐 아니라 **관리자 화면까지 전 영역**임이 확인됐다
+
+## TCH-005 — 교사에게만 보이는 「+ 학급 추가」 버튼이 교사가 누르면 반드시 실패한다
+- **심각도**: P2
+- **발견 담당**: 코드
+- **기준선**: `9797477fe73a` (4.8.14 / `b7c1b26`)
+- **환경**: 운영 Supabase(`eniyjdmtbunvizrsomrp`), 소유자가 만든 시험 교사 계정(role=teacher, approved=true)
+- **재현 절차**:
+  1. `.env.local` 에 시험 교사 자격정보가 있는 상태에서
+     `node verification/adversarial-4.8.13/tools/provision-verify-class.mjs`
+  2. 교사 세션으로 `rpc_create_class` 호출
+- **기대 결과**: 교사에게 보이는 버튼은 교사가 쓸 수 있다
+- **실제 결과**: 서버가 거부한다 — `Only school administrators can create classes`.
+  화면 쪽은 `src/screens/teacher/TeacherDashboard.jsx:310` 에서
+  **`profile?.role === 'teacher'` 일 때만** 「+ 학급 추가」를 보여 준다.
+  즉 **버튼이 보이는 역할과 서버가 허용하는 역할이 정확히 어긋난다**(서버는 `school_admin`·`admin` 만 허용).
+  실패 메시지는 `setError(err.message)` 로 **영문 원문 그대로** 교사 화면에 뜬다
+- **재현률**: 3회 중 3회 (서버 규칙이므로 결정적)
+- **증거**: `evidence/flows/provision.json`, 서버 정의 `supabase/migrations/20260824230000_campus_release_fixes.sql:28-29`
+- **영향**: 주요 기능 혼란 — 교사가 학급을 만들려다 매번 실패하고, 한국어 앱에서 영문 DB 오류를 본다
+- **원인 가설**: 확정 — 2026-08-24 마이그레이션이 학급 생성을 학교관리자로 제한할 때
+  교사 화면의 버튼 노출 조건을 함께 바꾸지 않았다
+
+## TCH-006 — 앱에는 교사를 학급에 배정할 방법이 없다
+- **심각도**: P1
+- **발견 담당**: 코드
+- **기준선**: `9797477fe73a` (4.8.14 / `b7c1b26`)
+- **환경**: 운영 Supabase · 소유자 관리자 세션(직접 로그인) · 시험 교사·학생 계정
+- **재현 절차**:
+  1. `node verification/adversarial-4.8.13/tools/e2e/probe-class-teacher-link.mjs`
+     (관리자 세션으로 `rpc_create_class` 호출 후 `teacher_classes` 조회)
+  2. `node verification/adversarial-4.8.13/tools/flows-preflight.mjs` 로 교사·학생의 학급 수 확인
+- **기대 결과**: 학교관리자가 학급을 만들면 담당 교사를 지정할 수 있고, 교사 화면에 그 학급이 나온다
+- **실제 결과**:
+  - 관리자가 학급 생성 → **성공**(`class_code BXNMEPP7`), 그러나 그 학급의 **담당 교사 0명**
+  - 현재 `rpc_create_class`(`campus_release_fixes.sql:15-45`)는 `classes` 에만 넣고
+    **`teacher_classes` 에는 넣지 않는다.** 예전 버전(`20260624_001_initial_schema.sql:429`)은 넣었다
+  - 앱 소스 전체에 `teacher_classes` **쓰기 경로가 없다**(읽기만 8곳).
+    마이그레이션 전체에서도 삽입은 옛 `rpc_create_class` 와 데모 시드(`20260824210000_demo_accounts.sql:102`) 두 곳뿐이다
+  - 실제 데이터가 이를 뒷받침한다 — 시험 교사의 담당 학급 **0개**,
+    시험 학생이 속한 학급(`관광과 3학년1반`)의 담당 교사 **0명**
+- **재현률**: 3회 중 3회
+- **증거**: `evidence/flows/class-teacher-link.json`, `evidence/flows/preflight.json`
+- **영향**: 수업중단 — 학교 도입의 첫 단계가 앱 안에서 끝나지 않는다.
+  교사에게 학급이 붙지 않으면 미션 배정·수업 시작·진도·첨삭·메시지 등 **교사 기능 전체가 빈 화면**이 된다.
+  데모 시드로 만든 계정만 예외다
+- **원인 가설**:
+  확정 — 학급 생성 권한을 학교관리자로 옮기면서 담당 교사 연결(`teacher_classes` 삽입)이 함께 사라졌고,
+  이를 대신할 배정 화면·RPC가 만들어지지 않았다.
+  추정 — 학교관리자 화면의 `교사배정`은 **과목(교재) 배정**이지 학급 담당 배정이 아니다
+  (`src/screens/schooladmin/TeacherSubjectScreen.jsx:87-88`)
+- **정리 필요**: 이 확인 과정에서 검증용 학급 하나가 남았다 —
+  `[검증]전용학급` / 코드 `BXNMEPP7` (한국특성화고등학교). 검증 종료 시 삭제 대상
+- **수정**: (미착수)
+- **재시험**: (대기)
+
+## OPS-002 — 저장소 마이그레이션과 운영 DB 함수가 다르다
+- **심각도**: P2
+- **발견 담당**: 코드
+- **기준선**: `9797477fe73a` (4.8.14)
+- **관측**: `rpc_student_join` 의 인자가 서로 다르다
+  - 저장소: `rpc_student_join(p_display_name, p_nickname, **p_class_code** char(8))`
+    (`20260624_003_school_admin_roles.sql:129-133`, 이후 재정의 없음)
+  - 운영: `p_class_id` 를 받는다 — 무인증 프로브에서
+    `p_class_id` 호출은 `400 P0001 Not authenticated`(함수 있음),
+    `p_class_code` 호출은 `404 PGRST202`(함수 없음)
+  - 앱은 운영과 같은 `p_class_id` 로 호출한다(`src/screens/LoginScreen.jsx:281-285`) → 화면 동작은 정상
+- **재현 절차**: 위 두 형태로 `POST /rest/v1/rpc/rpc_student_join` 에 무인증 호출
+- **영향**: 릴리스 신뢰 — **마이그레이션만으로 DB를 다시 세우면 학생 가입이 깨진다.**
+  운영에 손으로 적용한 변경이 저장소에 없다는 뜻이며, 재해 복구·신규 환경 구축의 근거가 사라진다
+- **원인 가설**: 확정 — 운영 함수가 저장소보다 최신이다.
+  추정 — 대시보드나 Management API 로 직접 고치고 마이그레이션에 반영하지 않았다
+- **수정 방향(참고)**: 운영 정의를 덤프해 마이그레이션으로 되돌려 넣고, 이후 변경은 마이그레이션 경유로 고정
