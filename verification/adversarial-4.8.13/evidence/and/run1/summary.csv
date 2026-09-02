@@ -1,0 +1,17 @@
+condition,error_log_lines,screenshot_bytes
+01-base,0,536596
+02-cutout-corner,0,536949
+02-cutout-tall,0,536778
+02-cutout-waterfall,0,536786
+03-nav-gestural,0,536932
+03-nav-threebutton,0,526347
+04-rotate-landscape,0,546187
+04-rotate-portrait,0,536913
+05-font130,0,571276
+06-density480,0,572004
+07-back-x5,0,537004
+07-relaunch,0,536994
+08-offline,0,536024
+08-online-recovered,0,536688
+09-notif-revoked,0,536698
+09-notif-granted,0,536670

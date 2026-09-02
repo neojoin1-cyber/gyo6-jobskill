@@ -1,0 +1,30 @@
+{
+ "_meta": {
+  "baseline": "9797477fe73a",
+  "조건": "3G 400ms + CPU 6배"
+ },
+ "관측": [
+  {
+   "경과초": 10,
+   "본문길이": 798,
+   "학습관보임": true,
+   "바로시작보임": true,
+   "대기중요청": 1,
+   "대기중예": [
+    {
+     "url": "https://gyo6.kr/cdn-cgi/rum?",
+     "type": "xhr",
+     "경과ms": 19693
+    }
+   ],
+   "본문머리": "학생 체험 | 무제한 | × | 스킬캠퍼스 | 체 | 체험 학생아, 반가워! | 오늘도 이어서 학습 | 오늘 | 2/6 | Lv. 5 | 1 | 인증평가 | 교육부 직업공통능력관 | 고졸공채 필기 | NCS 직업기초능력관 | 고졸공채 필기 | 채용필기 심화관 | 고졸공채 인성검사 | 인"
+  }
+ ],
+ "실패요청": [
+  {
+   "url": "https://eniyjdmtbunvizrsomrp.supabase.co/rest/v1/schools?select=id%2Cname%2Cregion%2Ceducation_offic",
+   "오류": "net::ERR_ABORTED"
+  }
+ ],
+ "총요청": 73
+}
