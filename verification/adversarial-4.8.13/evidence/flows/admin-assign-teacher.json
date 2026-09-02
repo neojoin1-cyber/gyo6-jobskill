@@ -1,0 +1,18 @@
+{
+ "_meta": {
+  "baseline": "9797477fe73a (4.8.14)",
+  "대상학급": "7880eca9-a328-439d-8db5-5fff299e2184",
+  "방법": "소유자 관리자 세션으로 운영에서 직접 시험"
+ },
+ "결과": {
+  "이전담당수": 0,
+  "RPC상태": 200,
+  "RPC응답": {
+   "ok": true
+  },
+  "RPC후담당수": 0,
+  "직접삽입상태": 403,
+  "직접삽입응답": "{\"code\":\"42501\",\"details\":null,\"hint\":null,\"message\":\"new row violates row-level security policy for table \\\"teacher_classes\\\"\"}",
+  "최종담당수": 0
+ }
+}
