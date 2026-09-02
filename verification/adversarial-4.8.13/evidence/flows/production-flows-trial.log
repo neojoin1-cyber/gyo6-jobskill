@@ -1,0 +1,36 @@
+
+> gyo6-jobskill-game@1.0.0 verify:production-flows
+> node scripts/verify-production-flows.mjs
+
+Production flow checks: 31/31 passed
+PASS student login
+PASS student profile: student
+PASS student approved: true
+PASS teacher login
+PASS teacher profile: teacher
+PASS teacher approved: true
+PASS school_admin login
+PASS school_admin profile: school_admin
+PASS school_admin approved: true
+PASS student class membership
+PASS teacher assigned classes
+PASS student-teacher shared class: Demo student and teacher must share an assigned class
+PASS student bootstrap
+PASS teacher bootstrap
+PASS school_admin bootstrap
+PASS student public trial write blocked: 42501
+PASS teacher public trial write blocked: 42501
+PASS school_admin public trial write blocked: 42501
+PASS teacher viewable subjects resolver
+PASS teacher diagnostics menu
+PASS teacher progress menu
+PASS teacher weakness menu
+PASS teacher personality menu
+PASS teacher class students menu
+PASS teacher leaderboard menu
+PASS teacher class position menu
+PASS teacher live class read
+PASS teacher inbox read
+PASS school admin member management read
+PASS student notification read
+PASS school admin class management read

@@ -14,7 +14,7 @@
 |---|---:|---:|---:|
 | P0 | 1 | 0 | 0 |
 | P1 | 4 | 0 | 0 |
-| P2 | 9 | 0 | 0 |
+| P2 | 11 | 0 | 0 |
 | P3 | 4 | 0 | 0 |
 
 ---
@@ -975,3 +975,48 @@ SHA-256 `7a8a27205e982bfed159e25323ec2062030f5dfe6ad33a610e02c6442304dd62` /
   실기기 성능으로 읽을 수 없다. 메모리는 TOTAL PSS 121MB · WebView 1개로 특이점 없음
 - **증거**: `evidence/and/run1/gfxinfo.txt`, `meminfo.txt`, `battery.txt`(온도 25.0℃)
 - **처리**: 실기기 확보 시 재측정. 그 전까지 성능 판정에 인용하지 않는다
+
+## LEGAL-002 — [해소] "31/31 핵심 흐름 검증"은 사실이다. 다만 범위가 절반이다
+- **심각도**: P2 (수치는 사실 · 표현 범위 문제)
+- **발견 담당**: 코드
+- **기준선**: `9797477fe73a` (4.8.14)
+- **절차**: 소유자 승인 후 `PUBLIC_TRIAL_READ_ONLY=true npm run verify:production-flows`
+  (CI `deploy.yml:139-144` 와 같은 조건 · 비밀번호 불필요 · 운영 DB 쓰기 없음)
+- **실행 결과**: `Production flow checks: 31/31 passed` — 홍보물 수치와 정확히 일치.
+  로그인·프로필·승인 상태, 학생–교사 학급 공유, 부트스트랩,
+  **체험 계정 쓰기 차단 42501**(학생·교사·학교관리자 3역할), 교사 메뉴 9종, 알림·회원관리 읽기 등이 통과
+- **다만**: 스크립트에 정의된 체크는 **52개**이고, 체험 토큰 모드에서 실행되는 것은 **31개**뿐이다.
+  실행되지 않는 21개는 다음과 같다 —
+  `teacher starts class` · `teacher publishes lesson focus` · `student sees exact teacher focus` ·
+  `student presence ping` · `teacher sees student active` · `student progress sync` ·
+  `teacher sees student progress` · `first wrong answer count` · `repeated study wrong answer count` ·
+  `wrong-note retry increments repeat count` · `student creates cover-letter evidence` ·
+  `student reloads cover-letter evidence` · `teacher sends personal message` ·
+  `student receives teacher message` · `student replies to teacher` · `teacher receives student reply` ·
+  `teacher class progress read` · `school admin member history/scoped update/password reset/creates/deletes member`
+- **판정**: 숫자는 사실이므로 LEGAL-002 의 "미검증" 상태는 해소한다.
+  다만 홍보 문구 "핵심 흐름"이 수업 진행·문항 제출·메시지 왕복까지 검증했다는 인상을 준다면
+  실제 검증 범위(읽기 계열)와 어긋난다. 표현을 좁히거나 범위를 밝히는 것이 맞다
+- **증거**: `evidence/flows/production-flows-trial.log`
+
+## OPS-001 — 수업·제출·메시지 왕복은 어떤 자동 검증에서도 실행되지 않는다
+- **심각도**: P2
+- **발견 담당**: 코드
+- **기준선**: `9797477fe73a` (4.8.14)
+- **관측**:
+  1. `.github/workflows/deploy.yml:139-144` 는 `verify:production-flows` 를
+     **`PUBLIC_TRIAL_READ_ONLY: "true"` 로만** 실행한다. 정식 계정 경로는 CI에 없다
+  2. 그 결과 LEGAL-002에 적은 **21개 체크가 배포 파이프라인에서 한 번도 실행되지 않는다**
+  3. 이 21개는 학교가 실제로 돈을 내고 쓰는 기능이다 — 수업 시작, 교사 문항 위치 발행,
+     학생 따라가기, 학습 위치 신고, 진도 동기화, 오답 누적, 자소서 작성본, 메시지 왕복, 회원 관리
+- **재현 절차**: `grep -n "verify:production-flows" -A4 .github/workflows/deploy.yml` 및
+  `evidence/flows/production-flows-trial.log` 의 PASS 31건과 스크립트의 `check(` 52건 대조
+- **영향**: 릴리스 신뢰 — 쓰기 계열 회귀를 배포 전에 잡을 장치가 없다.
+  BLOCK-P0-01(정식 학생 계정에서만 나던 렌더 크래시)이 게이트를 모두 통과해 나간 것과 같은 구조다
+  (그 크래시는 UI 렌더 문제라 이 스크립트가 잡을 대상은 아니었지만, **정식 계정 경로가 자동 검증에 없다**는 사실은 같다)
+- **원인 가설**: 확정 — CI에 정식 계정 자격정보가 없어 읽기 전용 모드로만 돌린다.
+  추정 — 운영 DB에 쓰기를 남기지 않으려는 판단으로 보인다. 목적은 타당하나 사각지대가 남는다
+- **권고(참고)**: 검증 전용 학급·계정을 두고 CI에서 그 범위로만 쓰기 계열을 돌리거나,
+  최소한 릴리스 전 수동 1회 실행을 절차에 넣는다
+- **처리**: 소유자가 검증 전용 계정 신설을 승인함(2026-09-02).
+  절차서 `handoff/03_OWNER_TEST_ACCOUNTS.md` — 계정 생성과 비밀번호 입력은 소유자가 수행한다
