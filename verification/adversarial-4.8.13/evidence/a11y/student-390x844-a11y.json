@@ -1,0 +1,239 @@
+{
+ "_meta": {
+  "baseline": "9797477fe73a (4.8.14)",
+  "role": "student",
+  "viewport": "390x844",
+  "대체판정": "접근성 트리 + axe-core. 음성 청취 없음"
+ },
+ "screens": [
+  {
+   "screen": "01-홈",
+   "axe위반": [
+    {
+     "id": "color-contrast",
+     "impact": "serious",
+     "help": "Elements must meet minimum color contrast ratio thresholds",
+     "건수": 2,
+     "예": [
+      {
+       "target": ".campus-active-spot > .campus-spot-copy > small",
+       "요약": "Fix any of the following:   Element has insufficient color contrast of 3.51 (foreground color: #ccdefd, background color: #1769f6, font size: 6.0pt (8px), font weight: bold). Expec"
+      },
+      {
+       "target": ".mission-eyebrow",
+       "요약": "Fix any of the following:   Element has insufficient color contrast of 3.76 (foreground color: #188976, background color: #ddf5ef, font size: 6.8pt (9px), font weight: bold). Expec"
+      }
+     ]
+    },
+    {
+     "id": "meta-viewport",
+     "impact": "moderate",
+     "help": "Zooming and scaling must not be disabled",
+     "건수": 1,
+     "예": [
+      {
+       "target": "meta[name=\"viewport\"]",
+       "요약": "Fix any of the following:   user-scalable=no on <meta> tag disables zooming on mobile devices"
+      }
+     ]
+    }
+   ],
+   "위반건수": 3,
+   "구조": {
+    "랜드마크": [
+     "main:",
+     "navigation:",
+     "region:스킬캠퍼스 학습관 선택 지도",
+     "region:교육부 직업공통능력관 · 의사소통 국어 핵심 점검",
+     "region:과목별 목표와 다음 학습"
+    ],
+    "제목": [
+     "체험 학생아, 반가워!",
+     "교육부 직업공통능력관 · 의사소통 국어 핵심 점검",
+     "이어하기",
+     "과목별 목표와 다음 학습",
+     "내가 모은 스킬 스탬프 3 / 4"
+    ],
+    "이름없는버튼": 0,
+    "버튼수": 29,
+    "상태알림영역": 1
+   },
+   "liveLog": []
+  },
+  {
+   "screen": "02-학습안내",
+   "axe위반": [
+    {
+     "id": "meta-viewport",
+     "impact": "moderate",
+     "help": "Zooming and scaling must not be disabled",
+     "건수": 1,
+     "예": [
+      {
+       "target": "meta[name=\"viewport\"]",
+       "요약": "Fix any of the following:   user-scalable=no on <meta> tag disables zooming on mobile devices"
+      }
+     ]
+    }
+   ],
+   "위반건수": 1,
+   "구조": {
+    "랜드마크": [
+     "navigation:"
+    ],
+    "제목": [
+     "의사소통 국어 핵심 점검"
+    ],
+    "이름없는버튼": 0,
+    "버튼수": 8,
+    "상태알림영역": 1
+   },
+   "liveLog": []
+  },
+  {
+   "screen": "03-문항",
+   "axe위반": [
+    {
+     "id": "meta-viewport",
+     "impact": "moderate",
+     "help": "Zooming and scaling must not be disabled",
+     "건수": 1,
+     "예": [
+      {
+       "target": "meta[name=\"viewport\"]",
+       "요약": "Fix any of the following:   user-scalable=no on <meta> tag disables zooming on mobile devices"
+      }
+     ]
+    }
+   ],
+   "위반건수": 1,
+   "구조": {
+    "랜드마크": [
+     "navigation:"
+    ],
+    "제목": [],
+    "이름없는버튼": 0,
+    "버튼수": 15,
+    "상태알림영역": 1
+   },
+   "liveLog": []
+  },
+  {
+   "screen": "04-정오피드백",
+   "axe위반": [
+    {
+     "id": "meta-viewport",
+     "impact": "moderate",
+     "help": "Zooming and scaling must not be disabled",
+     "건수": 1,
+     "예": [
+      {
+       "target": "meta[name=\"viewport\"]",
+       "요약": "Fix any of the following:   user-scalable=no on <meta> tag disables zooming on mobile devices"
+      }
+     ]
+    }
+   ],
+   "위반건수": 1,
+   "구조": {
+    "랜드마크": [
+     "navigation:"
+    ],
+    "제목": [],
+    "이름없는버튼": 0,
+    "버튼수": 18,
+    "상태알림영역": 2
+   },
+   "liveLog": []
+  }
+ ],
+ "정오표시": {
+  "텍스트로표시된것": [
+   "A 교환용 제품을 미리 준비한다 내 선택",
+   "B 상급자에게 보고하고 지시를 받는다 정답"
+  ],
+  "전체표본": [
+   {
+    "text": "×",
+    "color": "rgb(21, 62, 117)",
+    "background": "rgba(0, 0, 0, 0)",
+    "border": "rgb(21, 62, 117)"
+   },
+   {
+    "text": "←",
+    "color": "rgb(79, 70, 229)",
+    "background": "rgba(0, 0, 0, 0)",
+    "border": "rgb(79, 70, 229)"
+   },
+   {
+    "text": "평가연계",
+    "color": "rgb(22, 101, 52)",
+    "background": "rgb(240, 253, 244)",
+    "border": "rgb(134, 239, 172)"
+   },
+   {
+    "text": "핵심신입사원이 긴급 고객 불만을 단독으로 처리하면 판단 오류가 생길 수 있음",
+    "color": "rgb(17, 24, 39)",
+    "background": "rgba(0, 0, 0, 0)",
+    "border": "rgb(17, 24, 39)"
+   },
+   {
+    "text": "의미·효과｜처리기한이 당일 18시까지로 촉박하고 담당자가 신입사원이므로, 먼저 상급자에게 보고해 처리 기준과 권한을 확인하는 것이 안전함",
+    "color": "rgb(17, 24, 39)",
+    "background": "rgba(0, 0, 0, 0)",
+    "border": "rgb(17, 24, 39)"
+   },
+   {
+    "text": "판단 기준｜상급자에게 보고하고 지시를 받음",
+    "color": "rgb(17, 24, 39)",
+    "background": "rgba(0, 0, 0, 0)",
+    "border": "rgb(17, 24, 39)"
+   },
+   {
+    "text": "A 교환용 제품을 미리 준비한다 내 선택",
+    "color": "rgb(0, 0, 0)",
+    "background": "rgb(254, 242, 242)",
+    "border": "rgb(185, 28, 28)"
+   },
+   {
+    "text": "B 상급자에게 보고하고 지시를 받는다 정답",
+    "color": "rgb(0, 0, 0)",
+    "background": "rgb(232, 245, 233)",
+    "border": "rgb(21, 128, 61)"
+   },
+   {
+    "text": "C 불만 접수 확인 메시지를 고객에게 전송한다",
+    "color": "rgb(0, 0, 0)",
+    "background": "rgb(255, 255, 255)",
+    "border": "rgb(229, 231, 235)"
+   },
+   {
+    "text": "D 고객에게 전화를 걸어 사과한다",
+    "color": "rgb(0, 0, 0)",
+    "background": "rgb(255, 255, 255)",
+    "border": "rgb(229, 231, 235)"
+   },
+   {
+    "text": "E 제품 하자 여부를 먼저 확인한다",
+    "color": "rgb(0, 0, 0)",
+    "background": "rgb(255, 255, 255)",
+    "border": "rgb(229, 231, 235)"
+   },
+   {
+    "text": "발문이 요구하는 판단을 한 문장으로 정리",
+    "color": "rgb(30, 58, 95)",
+    "background": "rgba(0, 0, 0, 0)",
+    "border": "rgb(30, 58, 95)"
+   }
+  ]
+ },
+ "정오순간_라이브영역": [],
+ "배율200": {
+  "버튼수": 29,
+  "가로로넘친버튼": 1,
+  "예": [
+   "1"
+  ],
+  "문서가로스크롤": false
+ }
+}

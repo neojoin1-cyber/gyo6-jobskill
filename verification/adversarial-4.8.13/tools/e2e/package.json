@@ -4,6 +4,8 @@
   "type": "module",
   "description": "4.8.13 적대적 검증 전용 — 앱 저장소 package.json을 오염시키지 않으려고 분리했다.",
   "devDependencies": {
-    "@playwright/test": "^1.62.1"
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.62.1",
+    "axe-core": "^4.13.0"
   }
 }

@@ -1,0 +1,180 @@
+{
+ "_meta": {
+  "baseline": "9797477fe73a (4.8.14)",
+  "role": "teacher",
+  "viewport": "390x844",
+  "대체판정": "접근성 트리 + axe-core. 음성 청취 없음"
+ },
+ "screens": [
+  {
+   "screen": "01-홈",
+   "axe위반": [
+    {
+     "id": "color-contrast",
+     "impact": "serious",
+     "help": "Elements must meet minimum color contrast ratio thresholds",
+     "건수": 6,
+     "예": [
+      {
+       "target": ".teacher-campus-head > div:nth-child(1) > span",
+       "요약": "Fix any of the following:   Element has insufficient color contrast of 4.45 (foreground color: #1769f6, background color: #f4f7fa, font size: 6.8pt (9px), font weight: bold). Expec"
+      },
+      {
+       "target": ".teacher-journey-continue > span > small",
+       "요약": "Fix any of the following:   Element has insufficient color contrast of 3.62 (foreground color: #d1e1fd, background color: #1769f6, font size: 6.8pt (9px), font weight: bold). Expec"
+      }
+     ]
+    },
+    {
+     "id": "meta-viewport",
+     "impact": "moderate",
+     "help": "Zooming and scaling must not be disabled",
+     "건수": 1,
+     "예": [
+      {
+       "target": "meta[name=\"viewport\"]",
+       "요약": "Fix any of the following:   user-scalable=no on <meta> tag disables zooming on mobile devices"
+      }
+     ]
+    }
+   ],
+   "위반건수": 7,
+   "구조": {
+    "랜드마크": [
+     "banner:",
+     "navigation:교사 주요 메뉴",
+     "region:3학년 2반 수업 흐름",
+     "region:오늘의 우선 코칭 신호",
+     "navigation:"
+    ],
+    "제목": [
+     "3학년 2반",
+     "3명이 지금 학습 중이에요",
+     "3학년 2반 수업은 여기까지 왔어요",
+     "오늘 먼저 볼 신호",
+     "학생 성장 신호"
+    ],
+    "이름없는버튼": 0,
+    "버튼수": 38,
+    "상태알림영역": 1
+   },
+   "liveLog": []
+  },
+  {
+   "screen": "02-수업",
+   "axe위반": [
+    {
+     "id": "color-contrast",
+     "impact": "serious",
+     "help": "Elements must meet minimum color contrast ratio thresholds",
+     "건수": 3,
+     "예": [
+      {
+       "target": ".is-on > span",
+       "요약": "Fix any of the following:   Element has insufficient color contrast of 4.26 (foreground color: #ffffff, background color: #0f8a78, font size: 6.8pt (9px), font weight: bold). Expec"
+      },
+      {
+       "target": ".campus-active-spot > .campus-spot-copy > small",
+       "요약": "Fix any of the following:   Element has insufficient color contrast of 3.51 (foreground color: #ccdefd, background color: #1769f6, font size: 6.0pt (8px), font weight: bold). Expec"
+      }
+     ]
+    },
+    {
+     "id": "meta-viewport",
+     "impact": "moderate",
+     "help": "Zooming and scaling must not be disabled",
+     "건수": 1,
+     "예": [
+      {
+       "target": "meta[name=\"viewport\"]",
+       "요약": "Fix any of the following:   user-scalable=no on <meta> tag disables zooming on mobile devices"
+      }
+     ]
+    }
+   ],
+   "위반건수": 4,
+   "구조": {
+    "랜드마크": [
+     "banner:",
+     "region:학생 앱 연결 현황",
+     "main:",
+     "region:스킬캠퍼스 학습관 선택 지도",
+     "region:교육부 직업공통능력관 · 의사소통 국어 핵심 점검",
+     "region:과목별 목표와 다음 학습"
+    ],
+    "제목": [
+     "학생 화면 체험 중",
+     "교육부 직업공통능력관 · 의사소통 국어 핵심 점검",
+     "이어하기",
+     "과목별 목표와 다음 학습",
+     "내가 모은 스킬 스탬프 3 / 4"
+    ],
+    "이름없는버튼": 0,
+    "버튼수": 33,
+    "상태알림영역": 1
+   },
+   "liveLog": []
+  },
+  {
+   "screen": "03-소통",
+   "axe위반": [
+    {
+     "id": "color-contrast",
+     "impact": "serious",
+     "help": "Elements must meet minimum color contrast ratio thresholds",
+     "건수": 7,
+     "예": [
+      {
+       "target": "nav > .is-on",
+       "요약": "Fix any of the following:   Element has insufficient color contrast of 4.24 (foreground color: #1769f6, background color: #eaf2ff, font size: 7.5pt (10px), font weight: bold). Expe"
+      },
+      {
+       "target": ".recipient-scope > .is-on",
+       "요약": "Fix any of the following:   Element has insufficient color contrast of 4.24 (foreground color: #1769f6, background color: #eaf2ff, font size: 6.8pt (9px), font weight: bold). Expec"
+      }
+     ]
+    },
+    {
+     "id": "meta-viewport",
+     "impact": "moderate",
+     "help": "Zooming and scaling must not be disabled",
+     "건수": 1,
+     "예": [
+      {
+       "target": "meta[name=\"viewport\"]",
+       "요약": "Fix any of the following:   user-scalable=no on <meta> tag disables zooming on mobile devices"
+      }
+     ]
+    }
+   ],
+   "위반건수": 8,
+   "구조": {
+    "랜드마크": [
+     "main:",
+     "complementary:",
+     "navigation:"
+    ],
+    "제목": [
+     "학생과 대화하기",
+     "받는 사람"
+    ],
+    "이름없는버튼": 0,
+    "버튼수": 15,
+    "상태알림영역": 1
+   },
+   "liveLog": []
+  }
+ ],
+ "배율200": {
+  "버튼수": 38,
+  "가로로넘친버튼": 8,
+  "예": [
+   "오답 우선 코칭 박민준 · 7개",
+   "학습 참여 현재 3명 · 오늘 19명",
+   "바로 소통 학급 공지·개별 격려",
+   "진단 현황",
+   "약한 영역"
+  ],
+  "문서가로스크롤": false
+ }
+}
