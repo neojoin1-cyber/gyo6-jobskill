@@ -1,0 +1,98 @@
+{
+ "_meta": {
+  "baseline": "9797477fe73a (4.8.14)",
+  "대상": "https://gyo6.kr/apps/sugar-salt/"
+ },
+ "서비스워커": {
+  "등록수": 1,
+  "scope": "https://gyo6.kr/apps/sugar-salt/",
+  "활성": true,
+  "상태": "activated",
+  "캐시": [
+   {
+    "캐시": "workbox-precache-v2-https://gyo6.kr/apps/sugar-salt/",
+    "항목수": 25,
+    "예": [
+     "index.html?__WB_REVISION__=ad825f128fa23c78c6d6d5fab850fb39",
+     "workplace-teamwork.webp?__WB_REVISION__=cd0802e7814726c45a744493af2767ef",
+     "workplace-reflection.webp?__WB_REVISION__=85536443e8e7c4e7a1ec585c465bb18d"
+    ]
+   }
+  ]
+ },
+ "설치조건": {
+  "HTTPS": true,
+  "manifest링크": true,
+  "이름": "설탕과소금",
+  "display": "standalone",
+  "start_url": "./?entry=member",
+  "아이콘수": 4,
+  "maskable보유": true,
+  "서비스워커": true
+ },
+ "캐시워밍": {
+  "학습화면도달": true
+ },
+ "오프라인_홈": {
+  "본문길이": 799,
+  "학습관보임": true,
+  "오류화면": false,
+  "본문": "학생 체험\n무제한\n×\n스킬캠퍼스\n체\n체험 학생아, 반가워!\n오늘도 이어서 학습\n오늘\n2/6\nLv. 5\n1\n인증평가\n교육부 직업공통능력관\n고졸공채 필기\nNCS 직업기초능력관\n고졸공채 필기\n채용필기 심화관\n고졸공채 인성검사\n인성검사훈련관\n고졸 채용\n자기소개서관\n고졸 채용\n면접 스킬관\n지금 할 일 · 1단계\n교육부 직업공통능력관 · 의사소통 국어 핵심 점검\n이어가기\n이어하기\n전체 보기\n학습 기록 둘러보기\n체험 계정의 예시 성취 기록을 확인해 보세요\nSTART\nLEARNING ROUTE\n과목별 목표와 다음 학습\n한 과목씩 이어서 완료하세요\n교육부 직업공통능력관\n학습 이어가기\n직업 상황을 듣고 읽어 정확히 판단하고 표현하기\n이어가기: 의사소통 국어 핵심 점검\nNCS 직업기초능력관\n첫 학습 준비\nNCS 자료에서 요구·근거·계산 절차를 찾아 해결하기\n먼저: 문서소통능력\n채용필기 심화관\n첫 학습 준비\n지원처별 추가 필기 영역을 실전 수준으로 익히기\n먼저: 자원의 종류와 특성 이해\n인성검사훈련관\n응"
+ },
+ "오프라인_미캐시화면": {
+  "이동시도": {
+   "ok": true,
+   "label": "면접 스킬관",
+   "matches": 2
+  },
+  "복구화면문구": false,
+  "빈화면": false,
+  "본문": "학생 체험\n무제한\n×\n←\n🎤 고졸 공정채용 면접\n추천 학습\n📚\n선택 · 학습자율학습\n좋은 답변 기준을 익히고 수정안을 고름\n내 경험으로 직접 답변·녹화·수정 반복\n›\n진단·모의·실전 보기\n↓\n홈\n탐험\n성장\n소식\n나"
+ },
+ "온라인복구": {
+  "학습관보임": true,
+  "본문길이": 813
+ },
+ "콘솔오류": [
+  {
+   "type": "error",
+   "text": "Failed to load resource: net::ERR_INTERNET_DISCONNECTED"
+  },
+  {
+   "type": "error",
+   "text": "Failed to load resource: net::ERR_INTERNET_DISCONNECTED"
+  },
+  {
+   "type": "error",
+   "text": "Failed to load resource: net::ERR_INTERNET_DISCONNECTED"
+  },
+  {
+   "type": "error",
+   "text": "Failed to load resource: net::ERR_INTERNET_DISCONNECTED"
+  },
+  {
+   "type": "error",
+   "text": "Failed to load resource: net::ERR_INTERNET_DISCONNECTED"
+  },
+  {
+   "type": "error",
+   "text": "Failed to load resource: net::ERR_INTERNET_DISCONNECTED"
+  },
+  {
+   "type": "error",
+   "text": "Failed to load resource: net::ERR_INTERNET_DISCONNECTED"
+  },
+  {
+   "type": "error",
+   "text": "Failed to load resource: net::ERR_INTERNET_DISCONNECTED"
+  },
+  {
+   "type": "error",
+   "text": "Failed to load resource: net::ERR_INTERNET_DISCONNECTED"
+  },
+  {
+   "type": "error",
+   "text": "Failed to load resource: net::ERR_INTERNET_DISCONNECTED"
+  }
+ ]
+}

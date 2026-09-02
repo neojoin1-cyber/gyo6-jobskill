@@ -1020,3 +1020,49 @@ SHA-256 `7a8a27205e982bfed159e25323ec2062030f5dfe6ad33a610e02c6442304dd62` /
   최소한 릴리스 전 수동 1회 실행을 절차에 넣는다
 - **처리**: 소유자가 검증 전용 계정 신설을 승인함(2026-09-02).
   절차서 `handoff/03_OWNER_TEST_ACCOUNTS.md` — 계정 생성과 비밀번호 입력은 소유자가 수행한다
+
+## SEC-003 (검사 기록 — 결함 없음) — 배포 산출물에 비밀값이 없다 (SEC-01)
+- **심각도**: INFO
+- **발견 담당**: 코드
+- **기준선**: `9797477fe73a` (4.8.14) · 대상 `release/web/gyo6-site/apps/sugar-salt`
+  (운영 배포본과 엔트리 해시 동일 확인: `ef71bbbc…7d0c`)
+- **절차**: 자산 183개(JS 103개) 전수 정규식 검사 —
+  service_role·SERVICE_ROLE_KEY / 개인키 PEM / `sbp_`·`ghp_`·`AIza` 토큰 /
+  `password|passwd|pw = "..."` 형태 / `Test1234` / `gyo6test` / `DEMO_PASSWORD`
+- **결과**:
+  - 소스맵(`.map`) **0개** — 원본 코드가 배포되지 않는다
+  - JWT 형태 토큰 **1개뿐이며 `role=anon`** (공개 대상 키, ref `eniyjdmtbunvizrsomrp`)
+  - 그 외 패턴 **전부 0건**. `CLAUDE.md:224` 에 적힌 테스트 계정 문자열도 번들에 없다
+- **증거**: 검사 명령과 결과는 이 항목에 그대로 적었다(값 자체는 남기지 않는다)
+
+## PWA-001 (검사 기록 — 결함 없음) — 설치·오프라인이 약속대로 된다
+- **심각도**: INFO
+- **발견 담당**: 코드
+- **기준선**: `9797477fe73a` (4.8.14)
+- **절차**: `node verification/adversarial-4.8.13/tools/e2e/pwa-scan.mjs`
+- **결과**:
+  - 서비스워커 등록 1개 · 상태 `activated` · scope `https://gyo6.kr/apps/sugar-salt/`
+  - precache 25항목(1,415KiB) — index.html · 학습 이미지 10 · CSS 7 · 아이콘 4 · JS 2
+  - 설치 조건 충족 — HTTPS · manifest 링크 · `display: standalone` · `start_url: ./?entry=member` ·
+    아이콘 4개 · maskable 선언 · 서비스워커
+  - **오프라인에서 앱이 열린다** — 캐시가 데워진 상태에서 망을 끊고 다시 열어도
+    홈과 6개 학습관이 그대로 뜨고, 면접 스킬관 화면까지 이동된다(앱 기능 목록의 "오프라인 지원" 성립)
+  - 망 복구 후 정상 복귀
+- **증거**: `evidence/pwa/pwa-scan.json`, `evidence/pwa/offline-home.png`, `evidence/pwa/offline-lazy-chunk.png`
+- **읽는 법**: precache 에 든 JS 는 2개뿐이라 **처음 쓰는 기기에서 곧바로 오프라인 사용은 되지 않는다.**
+  한 번 둘러본 화면이 캐시된 뒤에야 오프라인에서 열린다. 이는 설계로 보이며 결함으로 올리지 않는다
+
+## PWA-002 — maskable 아이콘이 일반 아이콘과 같은 파일이다
+- **심각도**: P3
+- **발견 담당**: 코드
+- **기준선**: `9797477fe73a` (4.8.14)
+- **재현 절차**: `sha256sum release/web/gyo6-site/apps/sugar-salt/icons/*.png`
+- **기대 결과**: `purpose: maskable` 아이콘은 가장자리가 잘려도 되도록 중앙 80% 안전영역에 그림이 들어간다
+- **실제 결과**: 해시가 완전히 같다 —
+  `icon-192.png` = `icon-192-maskable.png` (`f4134e10…`),
+  `icon-512.png` = `icon-512-maskable.png` (`afe1d182…`).
+  즉 maskable 로 선언만 하고 같은 이미지를 쓴다
+- **재현률**: 3회 중 3회(파일 해시)
+- **증거**: manifest 의 `purpose` 선언과 위 해시
+- **영향**: 국소 시각 — 안드로이드 어댑티브 아이콘(원형·둥근사각)에서 로고 가장자리가 잘릴 수 있다
+- **원인 가설**: 확정 — maskable 전용 여백본을 따로 만들지 않고 같은 파일을 복사했다
