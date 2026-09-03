@@ -1,3 +1,5 @@
+import { applyQuestionIntegrityToPool } from './questionIntegrity.js'
+
 export const COVER_ASSESSMENT_AREAS = {
   intent: '문항 요구',
   target: '지원처·직무',
@@ -15,7 +17,7 @@ function practicalQuestion(id, area, stem, correct, distractors, explanation) {
   return { id, area, stem, choices, answer, explanation, isPractical: true }
 }
 
-export const COVER_DIAGNOSTIC_QUESTIONS = [
+export const COVER_DIAGNOSTIC_QUESTIONS = applyQuestionIntegrityToPool([
   practicalQuestion(
     'CD01',
     'intent',
@@ -160,4 +162,4 @@ export const COVER_DIAGNOSTIC_QUESTIONS = [
     ],
     '지원처 불일치는 치명적이므로 파일명과 본문의 지원처·직무·사업·기여 내용까지 전체 대조해야 함.',
   ),
-]
+])

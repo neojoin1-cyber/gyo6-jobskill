@@ -420,9 +420,9 @@ export default function StudyScreen({ initialSubject, initialTrack, initialArea,
           {onBack && (
             <button className="appbar-back" onClick={triggerBack} aria-label="이전 화면">←</button>
           )}
-          <span className="appbar-title">{subject?.label ?? '학습하기'}</span>
+          <h1 className="appbar-title">{subject?.label ?? '학습하기'}</h1>
         </div>
-        <div ref={scrollRef} className="screen-body">
+        <div ref={scrollRef} className="screen-body" role="main">
           <p className="section-title">
             {subjectId === 'recruit-written' && !trackId ? '지원 분야 선택' : '오늘의 학습'}
           </p>
@@ -558,9 +558,9 @@ export default function StudyScreen({ initialSubject, initialTrack, initialArea,
       <div className="screen">
         <div className="appbar">
           <button className="appbar-back" onClick={triggerBack} aria-label="이전 화면">←</button>
-          <span className="appbar-title">{selectedArea?.label}</span>
+          <h1 className="appbar-title">{selectedArea?.label}</h1>
         </div>
-        <div ref={scrollRef} className="screen-body">
+        <div ref={scrollRef} className="screen-body" role="main">
           {/* 문제해결 단원은 시험의 4대 내용영역으로 세웠고 수준 배지가 없다.
               그런데도 "기초·표준·심화·보충 중에서 고르세요" 범례를 띄우면
               있지도 않은 것을 고르라는 안내가 된다. 단원에 수준이 붙은
@@ -652,9 +652,9 @@ export default function StudyScreen({ initialSubject, initialTrack, initialArea,
       <div className="screen">
         <div className="appbar">
           <button className="appbar-back" onClick={triggerBack} aria-label="이전 화면">←</button>
-          <span className="appbar-title">학습</span>
+          <h1 className="appbar-title">학습</h1>
         </div>
-        <div className="screen-body">
+        <div className="screen-body" role="main">
           {/* 정답 없는 자가진단 단원은 '문항이 없는' 것이 아니라 성격이 다르다.
               같은 빈 화면을 보여 주면 학생은 고장이라고 생각한다. */}
           {lessons.find(l => l.id === lessonId)?.kind === 'self-report' ? (
@@ -698,9 +698,9 @@ export default function StudyScreen({ initialSubject, initialTrack, initialArea,
       <div className="screen">
         <div className="appbar">
           <button className="appbar-back" onClick={triggerBack} aria-label="이전 화면">←</button>
-          <span className="appbar-title">🏆 게임 결과</span>
+          <h1 className="appbar-title">🏆 게임 결과</h1>
         </div>
-        <div className="screen-body">
+        <div className="screen-body" role="main">
           {/* 점수 */}
           <div style={{ textAlign: 'center', padding: '24px 0 16px' }}>
             <div style={{ fontSize: 56, marginBottom: 8 }}>{emoji}</div>
@@ -864,14 +864,14 @@ export default function StudyScreen({ initialSubject, initialTrack, initialArea,
         }}>
           <button onClick={triggerBack} aria-label="이전 화면으로 돌아가기"
             style={{ background: 'none', border: 'none', fontSize: 20, cursor: 'pointer', color: 'var(--primary)', padding: '0 4px', flexShrink: 0 }}>←</button>
-          <span style={{ flex: 1, fontSize: 13, fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          <h1 style={{ flex: 1, margin: 0, fontSize: 13, fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             📖 {backTitle}
-          </span>
+          </h1>
           <span className="study-scene-position" aria-label={`현재 학습 장면 ${learnCardStep + 1}/${Math.max(1, contextSummaryCards.length)}`}>
             장면 {learnCardStep + 1}/{Math.max(1, contextSummaryCards.length)}
           </span>
         </div>
-        <div className="screen-body">
+        <div className="screen-body" role="main" aria-label={`${backTitle} 개념 학습`}>
           <StudySummary
             summary={lessonSummary}
             questions={questionPool}
@@ -902,9 +902,9 @@ export default function StudyScreen({ initialSubject, initialTrack, initialArea,
           style={{ background: 'none', border: 'none', fontSize: 20, cursor: 'pointer', color: 'var(--primary)', minWidth: 44, minHeight: 44, padding: 0, flexShrink: 0 }}>
           ←
         </button>
-        <span style={{ flex: 1, fontSize: 13, fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+        <h1 style={{ flex: 1, fontSize: 13, fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', margin: 0 }}>
           {backTitle}
-        </span>
+        </h1>
         <StudyModeToggle mode={studyMode} onChange={switchMode} labels={{ game: '단원 도전' }} />
       </div>
 
@@ -919,7 +919,7 @@ export default function StudyScreen({ initialSubject, initialTrack, initialArea,
         right={isLearn ? null : `${gameCorrect}개 맞힘 · ${answeredCount}/${total}`} />
 
       {/* 콘텐츠 */}
-      <div ref={scrollRef} className="study-question-body" style={{ flex: 1, minHeight: 0, overflowY: 'auto', padding: '10px 14px 8px' }}
+      <div ref={scrollRef} className="study-question-body" role="main" aria-label={`${backTitle} 문항 ${questionIdx + 1}`} style={{ flex: 1, minHeight: 0, overflowY: 'auto', padding: '10px 14px 8px' }}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
@@ -1569,7 +1569,7 @@ function GameFeedback({ q, qType, correct }) {
   else if (qType === 'matching' || qType === 'pulldown') correctText = null
   else correctText = `${(cIdx ?? 0) + 1}. ${q.choices?.[(cIdx ?? 0)] ?? ''}`
   return (
-    <div style={{ marginBottom: 6 }}>
+    <div role="status" aria-live="assertive" aria-atomic="true" style={{ marginBottom: 6 }}>
       <div style={{
         borderRadius: 12, padding: '12px 14px', marginBottom: 10,
         background: correct ? '#e8f5e9' : '#ffebee',
@@ -1735,6 +1735,8 @@ function GameCard({ q, qType, selectedAnswer, checked, correctIdx, onSelect }) {
             else if (!checked && isSelected){ bg = 'var(--primary-light)'; bd = 'var(--primary)'; numBg = 'var(--primary)'; numFg = '#fff' }
             return (
               <button key={ci} onClick={() => onSelect(ci)}
+                data-question-choice={letter}
+                aria-label={`${ci + 1}번 ${text}`}
                 style={{
                   width: '100%', textAlign: 'left',
                   background: bg, border: `2px solid ${bd}`,
@@ -1769,6 +1771,8 @@ function GameCard({ q, qType, selectedAnswer, checked, correctIdx, onSelect }) {
             else if (!checked && isSelected)           { bg = color;         bd = color;           fg = '#fff' }
             return (
               <button key={val} onClick={() => onSelect(ci)}
+                data-question-choice={val}
+                aria-label={`${val} 선택`}
                 style={{
                   flex: 1, padding: '18px 0 14px', borderRadius: 12, cursor: checked ? 'default' : 'pointer',
                   background: bg, border: `2px solid ${bd}`,

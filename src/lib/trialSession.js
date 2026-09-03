@@ -26,6 +26,7 @@ export const TRIAL_ACCOUNTS = Object.freeze({
 })
 
 const DEVICE_COOKIE = 'sst_trial_device'
+const DEVICE_STORAGE_KEY = 'sst.public-trial.device'
 
 function readJson(storage, key, fallback) {
   try {
@@ -58,28 +59,50 @@ export function getTrialDeviceId() {
     ?.slice(DEVICE_COOKIE.length + 1)
   if (existing && /^[a-zA-Z0-9-]{16,80}$/.test(existing)) return existing
 
+  try {
+    const stored = localStorage.getItem(DEVICE_STORAGE_KEY)
+    if (stored && /^[a-zA-Z0-9-]{16,80}$/.test(stored)) return stored
+  } catch { /* 저장 불가 환경에서는 현재 요청용 ID만 사용 */ }
+
   const next = globalThis.crypto?.randomUUID?.()
     ?? `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`
   document.cookie = `${DEVICE_COOKIE}=${next}; Max-Age=31536000; Path=/; SameSite=Strict; Secure`
+  try { localStorage.setItem(DEVICE_STORAGE_KEY, next) } catch { /* noop */ }
   return next
 }
 
 export async function requestTrialToken(role) {
   if (!TRIAL_ACCOUNTS[role]) throw new Error('지원하지 않는 체험 역할입니다.')
   const endpoint = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/public-trial-session`
-  const response = await fetch(endpoint, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      apikey: import.meta.env.VITE_SUPABASE_ANON_KEY,
-    },
-    body: JSON.stringify({ role, deviceId: getTrialDeviceId() }),
-  })
-  const payload = await response.json().catch(() => ({}))
-  if (!response.ok || !payload?.tokenHash) {
-    throw new Error(payload?.message || '체험을 시작하지 못했습니다. 잠시 후 다시 시도해 주세요.')
+  let lastError = null
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    const controller = new AbortController()
+    const timeout = globalThis.setTimeout(() => controller.abort(), 12_000)
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          apikey: import.meta.env.VITE_SUPABASE_ANON_KEY,
+        },
+        body: JSON.stringify({ role, deviceId: getTrialDeviceId() }),
+        signal: controller.signal,
+      })
+      const payload = await response.json().catch(() => ({}))
+      if (!response.ok || !payload?.tokenHash) {
+        throw new Error(payload?.message || '체험 연결 응답을 확인하지 못했습니다.')
+      }
+      return payload
+    } catch (error) {
+      lastError = error
+      if (attempt === 0) await new Promise(resolve => globalThis.setTimeout(resolve, 700))
+    } finally {
+      globalThis.clearTimeout(timeout)
+    }
   }
-  return payload
+  throw new Error(lastError?.name === 'AbortError'
+    ? '체험 연결이 지연되고 있습니다. 네트워크를 확인한 뒤 다시 눌러 주세요.'
+    : lastError?.message || '체험을 시작하지 못했습니다. 다시 시도해 주세요.')
 }
 
 export function requestedTrialRole(search = globalThis.location?.search || '') {
@@ -129,6 +152,7 @@ export function beginTrialSession(role, now = Date.now()) {
 
   const session = {
     role,
+    sessionId: globalThis.crypto?.randomUUID?.() ?? `${now}-${Math.random().toString(36).slice(2)}`,
     startedAt: now,
     expiresAt: TRIAL_TIME_LIMIT_ENABLED ? now + TRIAL_DURATION_MS : 0,
   }

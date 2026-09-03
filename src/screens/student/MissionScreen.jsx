@@ -3,13 +3,12 @@ import { supabase } from '../../lib/supabase.js'
 import { recordActivity } from '../../lib/activity.js'
 import { addXp }          from '../../lib/xp.js'
 import { formatDuration } from '../../lib/dateUtils.js'
-import jobQuestions         from '../../../data/questions.json'
 import { ncs2026Questions as ncsQuestions } from '../../lib/ncs2026.js'
 import { recruitWrittenQuestions } from '../../lib/recruitWritten.js'
 import { INTERVIEW_QUESTIONS, PERSONALITY_QUESTIONS } from '../../lib/guidedSubjectContent.js'
 import { COVER_DIAGNOSTIC_QUESTIONS } from '../../lib/coverAssessmentBank.js'
 import foodServiceQuestions from '../../lib/foodServiceBank.js'
-import { englishStudyQuestions, jobCommonMediaQuestions } from '../../lib/jobCommonAreas.js'
+import { jcStudyQuestions } from '../../lib/jobCommonAreas.js'
 import ListeningPrompt from './ListeningPrompt.jsx'
 import QuestionMedia from './QuestionMedia.jsx'
 import DifficultyBadge from './DifficultyBadge.jsx'
@@ -17,9 +16,9 @@ import QuestionPriorityBadge from './QuestionPriorityBadge.jsx'
 import CompactText from '../../components/CompactText.jsx'
 import { popBack, pushBack, triggerBack } from '../../lib/backButton.js'
 
-// 직업공통 풀 = 기존 문항 + 영어 + 2026 듣기·시각자료 보완 문항
+// 교사가 보는 단원/문항 목록과 학생 미션은 반드시 같은 정규화 풀을 쓴다.
 const QUESTION_POOLS = {
-  'job-common':    [...jobQuestions, ...englishStudyQuestions, ...jobCommonMediaQuestions],
+  'job-common':    jcStudyQuestions(),
   'ncs-basic':     ncsQuestions,
   'recruit-written': recruitWrittenQuestions,
   'interview':       INTERVIEW_QUESTIONS,
@@ -163,7 +162,7 @@ function AnswerFeedback({ q, correct }) {
       ? [...answerSetOf(q)].sort((a, b) => a - b).map(i => `${i + 1}. ${q.choices?.[i] ?? ''}`).join(' / ')
       : `${cIdx + 1}. ${q.choices?.[cIdx] ?? ''}`
   return (
-    <div style={{
+    <div role="status" aria-live="assertive" aria-atomic="true" style={{
       borderRadius: 12, padding: '14px 16px', marginBottom: 24,
       background: correct ? 'rgba(76,175,80,0.08)' : 'rgba(244,67,54,0.06)',
       border: `1.5px solid ${correct ? 'var(--success)' : 'var(--danger)'}`,
@@ -311,16 +310,24 @@ export default function MissionScreen({ mission, onBack, onViewWrongAnswers }) {
         ) && !q.excludeFromQuiz
       )
     }
-    if (pool.length === 0) pool = allQuestions.filter(q => !q.excludeFromQuiz)
+    const hasRequestedScope = qIds.length > 0 || mission.area_ids?.length > 0
+    if (pool.length === 0 && !hasRequestedScope) pool = allQuestions.filter(q => !q.excludeFromQuiz)
 
     if (pool.length === 0) {
-      setErrorMsg(`문항 매칭 실패. question_ids 첫 3개: ${qIds.slice(0,3).join(', ')}`)
+      setErrorMsg('선생님이 지정한 문항을 현재 학습 자료에서 찾지 못했습니다. 임의의 다른 문항으로 바꾸지 않았으니 선생님께 미션 재배정을 요청해 주세요.')
+      setPhase('error')
+      return
+    }
+
+    const requestedCount = Math.min(Number(mission.question_count) || pool.length, pool.length)
+    if (hasRequestedScope && requestedCount < Number(mission.question_count || 0)) {
+      setErrorMsg(`선생님이 지정한 ${mission.question_count}문항 중 ${pool.length}문항만 확인되어 미션을 시작하지 않았습니다. 선생님께 미션 재배정을 요청해 주세요.`)
       setPhase('error')
       return
     }
 
     if (mission.shuffle) pool = pool.sort(() => Math.random() - 0.5)
-    setQuestions(pool.slice(0, mission.question_count))
+    setQuestions(pool.slice(0, requestedCount))
     startTime.current = Date.now()
     if (mission.time_limit_min) setTimeLeft(mission.time_limit_min * 60)
     setPhase('quiz')
@@ -462,7 +469,7 @@ export default function MissionScreen({ mission, onBack, onViewWrongAnswers }) {
     return (
       <div className="screen">
         <div className="appbar"><button className="appbar-back" onClick={triggerBack} aria-label="이전 화면">←</button><span className="appbar-title">{mission.mock ? '모의고사 결과' : '미션 결과'}</span></div>
-        <div className="screen-body">
+        <div className="screen-body" role="main">
           <div style={{ textAlign: 'center', padding: '32px 0 24px' }}>
             <div style={{ fontSize: 64 }}>{mission.mock ? '📝' : surveyTotal > 0 ? '🧭' : isPending ? '📬' : pct >= 80 ? '🎉' : pct >= 60 ? '😊' : '💪'}</div>
             {surveyTotal > 0 && (
@@ -646,7 +653,7 @@ export default function MissionScreen({ mission, onBack, onViewWrongAnswers }) {
     <div className="screen">
       <div className="appbar">
         <button className="appbar-back" onClick={triggerBack} aria-label="이전 화면">←</button>
-        <span className="appbar-title">{mission.title}</span>
+        <h1 className="appbar-title">{mission.title}</h1>
         <span style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
           {timeLeft != null && (
             <span style={{ fontWeight: 700, color: timeLeft <= 60 ? 'var(--danger)' : 'var(--primary)' }}>
@@ -674,7 +681,7 @@ export default function MissionScreen({ mission, onBack, onViewWrongAnswers }) {
           onJump={(i) => tryGoTo(i)} />
       ) : null}
 
-      <div className="screen-body" ref={scrollRef}>
+      <div className="screen-body" ref={scrollRef} role="main" aria-label={`${mission.title} 문항 ${idx + 1}`}>
         {/* 서술형 배지 */}
         {qMode === 'selfcheck' && q.examNotice === 'badge' && (
           <div style={{

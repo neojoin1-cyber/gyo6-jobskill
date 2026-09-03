@@ -48,11 +48,6 @@ export default function TeacherDashboard({ profile, onLogout, onNavigate, hideAp
   const [missions, setMissions] = useState([])
   const [openExams, setOpenExams] = useState([])
   const [loading, setLoading] = useState(true)
-  const [showNewClass, setShowNewClass] = useState(false)
-  const [newClassName, setNewClassName] = useState('')
-  const [newGrade, setNewGrade] = useState('')
-  const [creating, setCreating] = useState(false)
-  const [error, setError] = useState('')
 
   // 모의고사 열기 모달
   const [mockModal, setMockModal] = useState(null)   // 대상 학급
@@ -118,23 +113,6 @@ export default function TeacherDashboard({ profile, onLogout, onNavigate, hideAp
   async function closeMockExam(id) {
     if (!window.confirm('이 모의고사를 마감할까요? 학생에게 더 이상 보이지 않습니다.')) return
     await supabase.from('open_mock_exams').update({ closed_at: new Date().toISOString() }).eq('id', id)
-    load()
-  }
-
-  async function createClass(e) {
-    e.preventDefault()
-    setError('')
-    setCreating(true)
-    const { data, error: err } = await supabase.rpc('rpc_create_class', {
-      p_name: newClassName.trim(),
-      p_grade: newGrade ? parseInt(newGrade) : null,
-      p_academic_year: new Date().getFullYear(),
-    })
-    if (err) { setError(err.message); setCreating(false); return }
-    setShowNewClass(false)
-    setNewClassName('')
-    setNewGrade('')
-    setCreating(false)
     load()
   }
 
@@ -307,37 +285,13 @@ export default function TeacherDashboard({ profile, onLogout, onNavigate, hideAp
         {/* 학급 목록 */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
           <p className="section-title" style={{ margin: 0 }}>내 학급</p>
-          {profile?.role === 'teacher' && (
-            <button className="btn btn-secondary" style={{ padding: '6px 14px', minHeight: 44, fontSize: 13 }} onClick={() => setShowNewClass(v => !v)}>
-              + 학급 추가
-            </button>
-          )}
         </div>
-
-        {showNewClass && (
-          <div className="card" style={{ marginBottom: 16 }}>
-            <form onSubmit={createClass}>
-              <div className="form-group">
-                <label className="form-label">학급 이름</label>
-                <input className="form-input" value={newClassName} onChange={e => setNewClassName(e.target.value)} placeholder="예: 2-1반" required />
-              </div>
-              <div className="form-group">
-                <label className="form-label">학년 (선택)</label>
-                <input className="form-input" type="number" min="1" max="3" value={newGrade} onChange={e => setNewGrade(e.target.value)} placeholder="1~3" />
-              </div>
-              {error && <p style={{ color: 'var(--danger)', fontSize: 13, marginBottom: 10 }}>{error}</p>}
-              <button className="btn btn-primary btn-full" type="submit" disabled={creating}>
-                {creating ? '생성 중...' : '학급 생성'}
-              </button>
-            </form>
-          </div>
-        )}
 
         {classes.length === 0 ? (
           <div className="empty-state">
             <span className="empty-state-icon">🏫</span>
             <span className="empty-state-title">학급이 없습니다</span>
-            <span>+ 학급 추가 버튼으로 첫 학급을 만드세요.</span>
+            <span>학교관리자에게 학급 등록과 담당 교사 배정을 요청하세요.</span>
           </div>
         ) : (
           <div className="teacher-grid">

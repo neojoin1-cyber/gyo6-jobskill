@@ -27,6 +27,7 @@ const fail = message => {
 }
 
 activateUserStorage('student-user-a')
+localStorage.setItem('sst.legacy-owner', 'student-user-a')
 userLocalStorage.setItem('iv_cover_draft', 'A의 자기소개서')
 activateUserStorage('student-user-b')
 if (userLocalStorage.getItem('iv_cover_draft') !== null) fail('다른 사용자의 초안이 노출됨')
@@ -36,6 +37,7 @@ activateUserStorage('student-user-a')
 if (userLocalStorage.getItem('iv_cover_draft') !== 'A의 자기소개서') fail('A의 저장 공간을 다시 불러오지 못함')
 clearUserStorage()
 if (userLocalStorage.getItem('iv_cover_draft') !== null) fail('A의 기기 사본이 삭제되지 않음')
+if (localStorage.getItem('sst.legacy-owner') !== null) fail('A의 레거시 사용자 식별 흔적이 삭제되지 않음')
 activateUserStorage('student-user-b')
 if (userLocalStorage.getItem('iv_cover_draft') !== 'B의 자기소개서') fail('A 삭제가 B의 자료까지 지움')
 

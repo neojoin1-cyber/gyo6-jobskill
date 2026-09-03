@@ -1,11 +1,12 @@
 import fs from 'node:fs'
 import { randomUUID } from 'node:crypto'
 import { createClient } from '@supabase/supabase-js'
+import { runSupabase } from './release/release-utils.mjs'
 
 const env = loadEnv('.env.local')
 const url = process.env.VITE_SUPABASE_URL || env.VITE_SUPABASE_URL
 const anon = process.env.VITE_SUPABASE_ANON_KEY || env.VITE_SUPABASE_ANON_KEY
-const password = process.env.DEMO_PASSWORD
+const password = process.env.DEMO_PASSWORD || env.DEMO_PASSWORD
 const readOnlyTrial = process.env.PUBLIC_TRIAL_READ_ONLY === 'true'
 
 if (!url || !anon || (!readOnlyTrial && !password)) {
@@ -13,9 +14,18 @@ if (!url || !anon || (!readOnlyTrial && !password)) {
 }
 
 const accounts = {
-  student: process.env.DEMO_STUDENT_EMAIL,
-  teacher: process.env.DEMO_TEACHER_EMAIL,
-  school_admin: process.env.DEMO_ADMIN_EMAIL,
+  student: {
+    email: process.env.DEMO_STUDENT_EMAIL || env.DEMO_STUDENT_EMAIL,
+    password,
+  },
+  teacher: {
+    email: process.env.DEMO_TEACHER_EMAIL || env.DEMO_TEACHER_EMAIL,
+    password,
+  },
+  school_admin: {
+    email: process.env.DEMO_SCHOOL_ADMIN_EMAIL || env.DEMO_SCHOOL_ADMIN_EMAIL || 'demo.admin@sugarsalt.kr',
+    password: process.env.DEMO_SCHOOL_ADMIN_PASSWORD || env.DEMO_SCHOOL_ADMIN_PASSWORD || 'sugarsalt2026',
+  },
 }
 
 const report = {
@@ -31,9 +41,41 @@ const createdMissionIds = []
 const createdUserIds = []
 const repeatQuestionId = `RELEASE-REPEAT-${Date.now()}`
 let createdEvidenceId = null
+let createdVerifierAdminId = null
 
 try {
-  for (const [expectedRole, email] of Object.entries(accounts)) {
+  for (const [expectedRole, credential] of Object.entries(accounts)) {
+    let { email, password: rolePassword } = credential
+    if (!readOnlyTrial && expectedRole === 'school_admin' && clients.student?.profile?.school_id) {
+      createdVerifierAdminId = randomUUID()
+      email = `release-school-admin-${Date.now()}@sugarsalt.invalid`
+      rolePassword = password
+      runSupabase(['db', 'query', '--linked', `
+        set search_path = public, auth, extensions;
+        insert into auth.users (
+          id, instance_id, aud, role, email, encrypted_password,
+          email_confirmed_at, raw_app_meta_data, raw_user_meta_data, created_at, updated_at
+        ) values (
+          '${createdVerifierAdminId}'::uuid,
+          coalesce((select instance_id from auth.users limit 1), '00000000-0000-0000-0000-000000000000'::uuid),
+          'authenticated', 'authenticated', '${email}',
+          extensions.crypt('${sqlText(rolePassword)}', extensions.gen_salt('bf')), now(),
+          '{"provider":"email","providers":["email"]}'::jsonb,
+          jsonb_build_object('email', '${email}'), now(), now()
+        );
+        insert into auth.identities (
+          provider_id, user_id, identity_data, provider, created_at, updated_at
+        ) values (
+          '${createdVerifierAdminId}', '${createdVerifierAdminId}'::uuid,
+          jsonb_build_object('sub', '${createdVerifierAdminId}', 'email', '${email}',
+            'email_verified', true, 'phone_verified', false),
+          'email', now(), now()
+        );
+        insert into public.profiles (id, role, display_name, school_id, approved)
+        values ('${createdVerifierAdminId}'::uuid, 'school_admin', '출시검증 학교관리자',
+          '${clients.student.profile.school_id}'::uuid, true);
+      `])
+    }
     const client = createClient(url, anon, {
       auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
     })
@@ -55,7 +97,7 @@ try {
       }
     } else {
       if (!email) throw new Error(`Missing DEMO_${expectedRole.toUpperCase()}_EMAIL`)
-      const result = await client.auth.signInWithPassword({ email, password })
+      const result = await client.auth.signInWithPassword({ email, password: rolePassword })
       login = result.data
       loginError = result.error
     }
@@ -328,30 +370,8 @@ try {
 
   const { data: adminMembers, error: adminMembersError } = await schoolAdmin.client.rpc('rpc_admin_members')
   check('school admin member management read', !adminMembersError && Array.isArray(adminMembers), adminMembersError?.message)
-  const schoolStudent = adminMembers?.find(member => member.id === student.profile.id)
-  const { data: memberHistory, error: memberHistoryError } = await schoolAdmin.client.rpc('rpc_admin_member_history', {
-    p_user_id: student.profile.id,
-  })
-  check('school admin member history read', !memberHistoryError && Array.isArray(memberHistory?.submissions), memberHistoryError?.message)
-
-  const { data: sameUpdate, error: sameUpdateError } = await schoolAdmin.client.rpc('rpc_admin_update_user', {
-    p_user_id: student.profile.id,
-    p_display_name: student.profile.display_name,
-    p_nickname: schoolStudent?.nickname ?? null,
-    p_email: schoolStudent?.email ?? null,
-    p_role: 'student',
-    p_school_id: student.profile.school_id,
-    p_class_id: classId,
-    p_approved: true,
-  })
-  check('school admin scoped member update', !sameUpdateError && sameUpdate?.ok === true, sameUpdateError?.message)
-
-  const { data: samePassword, error: samePasswordError } = await schoolAdmin.client.rpc('rpc_admin_reset_password', {
-    p_user_id: student.profile.id,
-    p_new_password: password,
-  })
-  check('school admin scoped password reset', !samePasswordError && samePassword?.ok === true, samePasswordError?.message)
-
+  const schoolAdminClassId = schoolClasses?.[0]?.id || null
+  check('school admin has class for scoped member test', Boolean(schoolAdminClassId))
   const tempEmail = `release-check-${Date.now()}@sugarsalt.invalid`
   const { data: tempUser, error: tempUserError } = await schoolAdmin.client.rpc('rpc_admin_create_user', {
     p_email: tempEmail,
@@ -359,13 +379,37 @@ try {
     p_display_name: '출시검증 임시학생',
     p_role: 'student',
     p_school_id: schoolAdmin.profile.school_id,
-    p_class_id: classId,
+    p_class_id: schoolAdminClassId,
     p_nickname: '검증임시',
   })
   const tempUserId = typeof tempUser === 'string' ? tempUser : tempUser?.user_id
   check('school admin creates scoped member', !tempUserError && Boolean(tempUserId), tempUserError?.message || JSON.stringify(tempUser))
   if (tempUserId) {
     createdUserIds.push(tempUserId)
+
+    const { data: memberHistory, error: memberHistoryError } = await schoolAdmin.client.rpc('rpc_admin_member_history', {
+      p_user_id: tempUserId,
+    })
+    check('school admin member history read', !memberHistoryError && Array.isArray(memberHistory?.submissions), memberHistoryError?.message)
+
+    const { data: sameUpdate, error: sameUpdateError } = await schoolAdmin.client.rpc('rpc_admin_update_user', {
+      p_user_id: tempUserId,
+      p_display_name: '출시검증 임시학생 수정',
+      p_nickname: '검증수정',
+      p_email: tempEmail,
+      p_role: 'student',
+      p_school_id: schoolAdmin.profile.school_id,
+      p_class_id: schoolAdminClassId,
+      p_approved: true,
+    })
+    check('school admin scoped member update', !sameUpdateError && sameUpdate?.ok === true, sameUpdateError?.message)
+
+    const { data: samePassword, error: samePasswordError } = await schoolAdmin.client.rpc('rpc_admin_reset_password', {
+      p_user_id: tempUserId,
+      p_new_password: password,
+    })
+    check('school admin scoped password reset', !samePasswordError && samePassword?.ok === true, samePasswordError?.message)
+
     const { error: deleteTempError } = await schoolAdmin.client.rpc('rpc_admin_delete_member', { p_uid: tempUserId })
     check('school admin deletes scoped member', !deleteTempError, deleteTempError?.message)
     if (!deleteTempError) createdUserIds.splice(createdUserIds.indexOf(tempUserId), 1)
@@ -412,6 +456,14 @@ try {
     check('teacher ends class', !error && Number(data?.ended) >= 0, error?.message)
   }
   for (const entry of Object.values(clients)) await entry.client.auth.signOut()
+  if (createdVerifierAdminId) {
+    runSupabase(['db', 'query', '--linked', `
+      delete from public.profiles where id = '${createdVerifierAdminId}'::uuid;
+      delete from auth.identities where user_id = '${createdVerifierAdminId}'::uuid;
+      delete from auth.users where id = '${createdVerifierAdminId}'::uuid;
+    `])
+    check('temporary school administrator cleaned up', true)
+  }
   fs.mkdirSync('output', { recursive: true })
   fs.writeFileSync('output/production-flow-report.json', `${JSON.stringify(report, null, 2)}\n`)
 }
@@ -433,4 +485,8 @@ function loadEnv(file) {
       const index = line.indexOf('=')
       return [line.slice(0, index).trim(), line.slice(index + 1).trim()]
     }))
+}
+
+function sqlText(value) {
+  return String(value).replaceAll("'", "''")
 }

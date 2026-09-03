@@ -156,7 +156,7 @@ function engagementProfile({ courseKind, point, contextKind, isListening, hasVis
   if (isEnglishLearningQuestion(source.id ? source : sample)) return 'english'
   // 날짜·처리 시간·예산이 등장했다는 이유만으로 문서/업무 문항을 수리로
   // 보내지 않는다. 실제 계산 행위나 수리 개념이 드러날 때만 수리 학습이다.
-  if (/(수리|계산|산출|비율|백분율|증가율|감소율|단위s*(?:환산|변환)|수량s*(?:계산|비교)|통계|평균|중앙값|최빈값|표준편차|확률|속도|거리|작업률|(?:예산|금액).{0,12}(?:계산|합계|차이|비율))/.test(text)) return 'math'
+  if (/(수리|계산|산출|비율|백분율|증가율|감소율|단위\s*(?:환산|변환)|수량\s*(?:계산|비교)|통계|평균|중앙값|최빈값|표준편차|확률|속도|거리|작업률|(?:예산|금액).{0,12}(?:계산|합계|차이|비율))/.test(text)) return 'math'
   if (/(안전|품질|협업|갈등|팀워크|공동 목표|역할|책임 경계|조율|고객|윤리|절차|우선순위|문제해결|자원)/.test(text)) return 'workplace'
   if (/(문서|독해|이메일|안내|공지|보고|회의록|요지|접속어|어휘|영어|지시어)/.test(text)) return 'document'
   if (hasVisual || /(그래프|도표|차트|자료 해석|(?:^|\s)표(?:\s|$|[·,:]))/.test(text)) return 'visual'

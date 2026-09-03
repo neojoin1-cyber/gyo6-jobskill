@@ -403,12 +403,12 @@ export default function SchoolsScreen() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <p style={{ fontWeight: 700 }}>{s.name}</p>
-                <p style={{ fontSize: 12, color: s.education_office ? 'var(--text-muted)' : 'var(--danger)', marginTop: 2 }}>
+                <p style={{ fontSize: 12, color: s.education_office ? 'var(--text-muted)' : '#b91c1c', marginTop: 2 }}>
                   {s.education_office ? `🏛 ${s.education_office}` : '⚠️ 교육청 미설정 (✏️ 수정)'}
                   {s.education_office && s.region ? ` · ${s.region}` : ''}
                 </p>
                 {admins.length > 0 && (
-                  <p style={{ fontSize: 12, color: 'var(--success)', marginTop: 4 }}>
+                  <p style={{ fontSize: 12, color: '#047857', marginTop: 4 }}>
                     👤 학교관리자: {admins.map(a => a.display_name).join(', ')}
                   </p>
                 )}

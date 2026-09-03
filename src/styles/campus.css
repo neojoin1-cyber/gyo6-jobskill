@@ -84,7 +84,7 @@
 .campus-active-spot { left: 50%; top: 39%; transform: translate(-50%,-50%); min-height: 48px; max-width: min(43%, 160px); padding: 6px 9px; border-radius: 7px; background: var(--campus-blue); color: #fff !important; font-weight: 900; box-shadow: 0 0 0 3px rgba(255,255,255,.88), 0 7px 18px rgba(23,105,246,.34); }
 .campus-active-spot .campus-spot-icon { width: 28px; height: 28px; flex-basis: 28px; }
 .campus-active-spot .campus-spot-icon svg { width: 18px; height: 18px; }
-.campus-active-spot .campus-spot-copy small { color: rgba(255,255,255,.78); }
+.campus-active-spot .campus-spot-copy small { color: #fff; }
 .campus-active-spot .campus-spot-copy b { font-size: clamp(10.5px,2.55cqw,14px); }
 
 @media (max-width: 520px) {
@@ -101,6 +101,7 @@
   .campus-level .level-mark, .level-track { display: none; }
   .route-status { min-width: 61px; height: 36px; padding-inline: 5px; }
   .campus-icon-button { width: 30px; height: 32px; }
+  .campus-home > .campus-topbar .campus-icon-button { display: none; }
 }
 
 @media (max-width: 430px) {
@@ -124,7 +125,7 @@
 .mission-marker svg { width: 24px; height: 24px; }
 .mission-dock > img { width: 70px; height: 92px; object-fit: cover; object-position: 50% 42%; border-radius: 6px; }
 .mission-copy { min-width: 0; }
-.mission-eyebrow { display: inline-block; padding: 3px 6px; border-radius: 4px; background: #ddf5ef; color: #188976; font-size: 10px; font-weight: 800; }
+.mission-eyebrow { display: inline-block; padding: 3px 6px; border-radius: 4px; background: #ddf5ef; color: #0b6658; font-size: 10px; font-weight: 800; }
 .mission-copy h2 { margin: 6px 0 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 15px; }
 .mission-copy > p { color: var(--campus-muted); font-size: 10px; line-height: 1.45; }
 .mission-progress { display: flex; align-items: center; gap: 7px; margin-top: 10px; }
@@ -464,6 +465,9 @@ html.teacher-mode[data-teacher-view='wide'] .learning-link-chain > div { grid-te
 .teacher-quick-actions button:disabled { opacity: .45; cursor: not-allowed; }
 .teacher-quick-actions .start-class { border-color: var(--campus-blue); background: var(--campus-blue); color: #fff; }
 .teacher-quick-actions .start-class svg { color: #fff; }
+.teacher-mobile-tools { display: none; }
+.class-assignment-option { min-height: 42px; display: flex; align-items: center; gap: 8px; padding: 8px 10px; border: 1px solid var(--border); border-radius: 7px; font-size: 13px; font-weight: 700; background: var(--card); }
+.class-assignment-option input { width: 18px; height: 18px; flex: 0 0 auto; }
 .teacher-class-picker { min-height: 0; overflow-y: auto; display: grid; align-content: start; gap: 5px; padding: 15px 0 10px; }
 .teacher-class-picker > p { padding: 0 8px 5px; color: #8a929d; font-size: 9px; font-weight: 900; text-transform: uppercase; }
 .teacher-class-picker > button { min-height: 46px; display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 5px; padding: 0 9px; border: 1px solid transparent; border-radius: 7px; background: transparent; text-align: left; cursor: pointer; }
@@ -760,7 +764,7 @@ html.teacher-mode[data-teacher-view='wide'] .learning-link-chain > div { grid-te
 .teacher-mobile-actions { display: none; }
 .teacher-campus-head { display: flex; align-items: center; gap: 14px; min-height: 76px; }
 .teacher-campus-head > div:first-child { min-width: 0; }
-.teacher-campus-head > div:first-child > span { color: var(--campus-blue); font-size: 9px; font-weight: 900; letter-spacing: .1em; }
+.teacher-campus-head > div:first-child > span { color: #0d55c7; font-size: 9px; font-weight: 900; letter-spacing: .1em; }
 .teacher-campus-head h1 { margin: 3px 0; font-size: 23px; line-height: 1.2; }
 .teacher-campus-head p { color: var(--campus-muted); font-size: 10px; }
 
@@ -774,7 +778,7 @@ html.teacher-mode[data-teacher-view='wide'] .learning-link-chain > div { grid-te
 .teacher-journey-continue > svg:first-child { width: 24px; height: 24px; }
 .teacher-journey-continue > svg:last-child { width: 18px; }
 .teacher-journey-continue span { min-width: 0; display: grid; gap: 2px; }
-.teacher-journey-continue small { font-size: 9px; font-weight: 800; opacity: .8; }
+.teacher-journey-continue small { color: #fff; font-size: 9px; font-weight: 800; opacity: 1; }
 .teacher-journey-continue b { overflow: hidden; font-size: 13px; text-overflow: ellipsis; white-space: nowrap; }
 .teacher-journey-subjects { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); }
 .teacher-journey-subjects > button { min-width: 0; min-height: 74px; padding: 10px 12px; display: grid; grid-template-columns: 32px minmax(0,1fr) 14px; align-items: center; gap: 9px; border: 0; border-right: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0; background: #fff; color: #172033; cursor: pointer; text-align: left; }
@@ -786,7 +790,7 @@ html.teacher-mode[data-teacher-view='wide'] .learning-link-chain > div { grid-te
 .teacher-journey-subjects > button > span svg { width: 19px; height: 19px; }
 .teacher-journey-subjects > button > div { min-width: 0; display: grid; gap: 2px; }
 .teacher-journey-subjects small { color: #0f766e; font-size: 9px; font-weight: 800; }
-.teacher-journey-subjects .is-new small { color: #94a3b8; }
+.teacher-journey-subjects .is-new small { color: #475569; }
 .teacher-journey-subjects b, .teacher-journey-subjects p { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .teacher-journey-subjects b { font-size: 11.5px; }
 .teacher-journey-subjects p { color: #64748b; font-size: 9.5px; }
@@ -924,7 +928,7 @@ html.teacher-mode[data-teacher-view='wide'] .learning-link-chain > div { grid-te
 .classroom-zoom-control > button { min-width: 0; min-height: 32px; display: flex; align-items: center; justify-content: center; gap: 4px; padding: 0; border: 0; border-right: 1px solid #d5e0ec; background: #fff; color: #1769f6; font-size: 9px; font-weight: 900; cursor: pointer; }
 .classroom-zoom-control > button:last-child { border-right: 0; }
 .classroom-zoom-control > button:nth-child(2) { padding: 0 6px; }
-.classroom-zoom-control > button.is-on { background: #0f8a78; color: #fff; }
+.classroom-zoom-control > button.is-on { background: #087263; color: #fff; }
 .classroom-zoom-control > button:disabled { background: #f1f4f7; color: #a1aab6; cursor: default; }
 .classroom-zoom-control svg { width: 14px; flex: 0 0 auto; }
 .classroom-zoom-control span { min-width: 31px; font-variant-numeric: tabular-nums; }
@@ -1197,6 +1201,10 @@ html.teacher-mode[data-teacher-view='wide'] .learning-link-chain > div { grid-te
 .teacher-class-tab .tab-icon { width: 30px; height: 30px; display: grid; place-items: center; margin-top: -14px; border-radius: 9px; background: var(--campus-blue); color: #fff; box-shadow: 0 4px 12px rgba(23,105,246,.26); }
 
 @media (max-width: 720px) {
+  .teacher-mobile-tools { position: sticky; top: 0; z-index: 8; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; padding: 7px 8px; border-bottom: 1px solid var(--campus-line); background: rgba(255,255,255,.97); }
+  .teacher-mobile-tools button { min-width: 0; min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; border: 1px solid var(--campus-line); border-radius: 7px; background: #fff; color: var(--campus-ink); font-size: 11px; font-weight: 800; }
+  .teacher-mobile-tools button svg { width: 18px; height: 18px; color: var(--campus-blue); }
+  .teacher-mobile-tools button:disabled { opacity: .42; }
   .teacher-learning-preview.is-teaching .teacher-preview-context { min-height: 50px; padding-inline: 7px; }
   .teacher-learning-preview.is-teaching .teacher-preview-context { grid-template-columns: 34px minmax(84px,1fr) auto; gap: 4px; }
   .teacher-learning-preview.is-teaching .teacher-preview-mark { display: none; }
@@ -1333,7 +1341,7 @@ html.teacher-mode[data-teacher-view='wide'] .learning-link-chain > div { grid-te
 .recipient-scope { display: grid; grid-template-columns: repeat(3,1fr); gap: 4px; }
 .recipient-scope button { min-height: 38px; display: flex; align-items: center; justify-content: center; gap: 4px; padding: 0 5px; border: 1px solid var(--campus-line); border-radius: 7px; background: #fff; color: #6a7585; font-size: 9px; font-weight: 800; cursor: pointer; }
 .recipient-scope button svg { width: 13px; }
-.recipient-scope button.is-on { border-color: #c9dcff; background: #eaf2ff; color: var(--campus-blue); }
+.recipient-scope button.is-on { border-color: #aac8ff; background: #eaf2ff; color: #0d55c7; }
 .selected-student-note { display: flex; align-items: center; gap: 5px; margin: 10px 3px 0; padding: 8px; border-radius: 7px; background: #e8f7f2; color: #167765; font-size: 9px; }
 .selected-student-note svg { width: 12px; }
 .recipient-list { max-height: 460px; overflow-y: auto; display: grid; gap: 4px; margin-top: 12px; }
@@ -1405,6 +1413,14 @@ html.teacher-mode[data-teacher-view='wide'] .learning-link-chain > div { grid-te
   .recipient-panel { border-right: 0; border-bottom: 1px solid var(--campus-line); }
   .recipient-list { max-height: 180px; }
   .message-writing-desk { padding: 16px; }
+}
+
+@media (max-width: 280px) {
+  .teacher-mobile-tools { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .teacher-campus-main, .teacher-campus-scroll { min-width: 0; overflow-x: hidden; }
+  .teacher-campus-main button { max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
+  .teacher-campus-head, .teacher-class-journey > header, .teacher-journey-continue { width: 100%; min-width: 0; }
+  .teacher-stats, .teacher-bonus-grid, .teacher-mobile-actions { grid-template-columns: minmax(0, 1fr); }
 }
 
 /* The portal iframe can be wide while the app itself is kept in a 480px phone
@@ -1625,4 +1641,34 @@ html.teacher-mode[data-teacher-view='wide'] .learning-link-chain > div { grid-te
   .teacher-lesson-coach > header { min-height: 52px; padding-block: 7px; }
   .teacher-coach-focus { padding-block: 8px; }
   .teacher-coach-focus > p { margin-block: 3px 5px; }
+}
+
+@media (max-width: 720px) {
+  .teacher-smart-brief > div {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    overflow: visible;
+  }
+  .teacher-smart-brief button {
+    width: 100%;
+    min-width: 0;
+    grid-template-columns: minmax(0, 1fr) 12px;
+    padding: 8px 6px;
+  }
+  .teacher-smart-brief button > span { display: none; }
+  .teacher-smart-brief button small,
+  .teacher-smart-brief button b { white-space: normal; overflow-wrap: anywhere; }
+  .teacher-campus-tabs {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    overflow: visible;
+  }
+  .teacher-campus-tabs button {
+    min-width: 0;
+    justify-content: center;
+    padding: 4px 2px;
+    text-align: center;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
 }

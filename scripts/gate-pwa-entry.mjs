@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs'
+import { createHash } from 'node:crypto'
 
 const read = path => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8')
 const manifest = JSON.parse(read('public/manifest.json'))
@@ -9,6 +10,7 @@ const install = read('src/lib/pwaInstall.js')
 const teacher = read('src/screens/teacher/TeacherShell.jsx')
 const student = read('src/screens/student/AccountDataScreen.jsx')
 const html = read('index.html')
+const iconHash = path => createHash('sha256').update(readFileSync(new URL(`../${path}`, import.meta.url))).digest('hex')
 
 const failures = []
 const requireValue = (condition, message) => { if (!condition) failures.push(message) }
@@ -16,6 +18,8 @@ const requireValue = (condition, message) => { if (!condition) failures.push(mes
 requireValue(manifest.start_url === './?entry=member', '설치 아이콘의 정식 사용자 시작 URL이 다릅니다.')
 requireValue(manifest.scope === './', 'PWA scope가 앱 경로 밖으로 변경됐습니다.')
 requireValue(manifest.orientation === 'any', 'PC·태블릿 가로 화면을 허용해야 합니다.')
+requireValue(iconHash('public/icons/icon-192.png') !== iconHash('public/icons/icon-192-maskable.png'), '192px maskable 아이콘이 일반 아이콘과 같습니다.')
+requireValue(iconHash('public/icons/icon-512.png') !== iconHash('public/icons/icon-512-maskable.png'), '512px maskable 아이콘이 일반 아이콘과 같습니다.')
 requireValue(html.includes('href="./manifest.json"'), '하위 경로 배포에서도 manifest를 찾을 수 있어야 합니다.')
 requireValue(login.includes("get('entry') === 'member'"), '정식 사용자 직행 쿼리 처리가 없습니다.')
 requireValue(app.includes('<PwaInstallPrompt enabled={!isTrial} />'), '정식 로그인 후 설치 안내가 연결되지 않았습니다.')
@@ -34,4 +38,3 @@ if (failures.length) {
 }
 
 console.log('[통과] 체험·정식 진입 분리 및 PWA 설치 흐름')
-

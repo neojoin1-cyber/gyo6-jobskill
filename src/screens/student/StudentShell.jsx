@@ -1,4 +1,4 @@
-import { Suspense, useState, useEffect, useRef } from 'react'
+import { Suspense, useState, useEffect, useRef, useCallback } from 'react'
 import { useAuth } from '../../App.jsx'
 import { supabase } from '../../lib/supabase.js'
 import { pushBack, popBack } from '../../lib/backButton.js'
@@ -144,10 +144,13 @@ export default function StudentShell() {
     if (sharingSelfStudy) updateLearningPresence(learningContext)
   }, [learningContext, sharingSelfStudy])
 
-  function handleLearningContext(context) {
+  const handleLearningContext = useCallback((context) => {
     rememberStudentLearningContext(context)
-    setLearningContext(context)
-  }
+    setLearningContext(previous => {
+      if (JSON.stringify(previous) === JSON.stringify(context)) return previous
+      return context
+    })
+  }, [])
 
   function openMission(mission) { setOverlay({ screen: 'mission', mission }) }
   function closeOverlay()       { setOverlay(null) }

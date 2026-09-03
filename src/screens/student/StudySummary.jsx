@@ -574,7 +574,10 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, for
     setFormativeAnswers({})
     setFormativeChecked({})
     setKnown({})
-  }, [summary, questions, initialInteraction]) // eslint-disable-line react-hooks/exhaustive-deps
+  // initialInteraction은 이 컴포넌트가 부모에 저장하는 현재 상태이기도 하다.
+  // 이를 의존성에 두면 저장 → 초기화 → 저장이 반복되어 React 최대 갱신
+  // 깊이 오류가 난다. 단원·문항·복원 시작점이 바뀔 때만 초기화한다.
+  }, [summary, questions]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { onStepChange?.(step) }, [step, onStepChange])
   useEffect(() => {
     if (!onInteractionChange) return

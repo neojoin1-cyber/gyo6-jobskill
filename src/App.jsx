@@ -239,7 +239,7 @@ function AppInner() {
   }, [session?.user?.id, profileRetry])
 
   const trialRole = trialRoleFromUser(session?.user)
-  const requestedTrial = Capacitor.isNativePlatform() ? null : requestedTrialRole()
+  const requestedTrial = requestedTrialRole()
   const switchingTrialRole = Boolean(session && shouldSwitchTrialRole(session.user, requestedTrial))
 
   // The portal reuses one iframe while switching between student and teacher.
@@ -280,7 +280,7 @@ function AppInner() {
   }, [appReady, profile?.role, trialRole])
 
   useEffect(() => {
-    if (!session || !trialRole || Capacitor.isNativePlatform()) {
+    if (!session || !trialRole) {
       setTrialExpiresAt(0)
       return undefined
     }

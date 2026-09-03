@@ -15,6 +15,7 @@ import { JC_SET_QUESTIONS } from './jobCommonSets.js'
 import { JC_BLUEPRINT_FILL } from './jobCommonBlueprintFill.js'
 import { TEENUP_2026 } from './officialStandards.js'
 import { questionPartitionIndex } from './assessmentPartition.js'
+import { applyQuestionIntegrityToPool } from './questionIntegrity.js'
 import {
   koreanListeningQuestions,
   mathVisualQuestions,
@@ -105,7 +106,7 @@ export const jobCommonExtraStudyQuestions = [
   // 공식 시각자료 8문항은 인증평가의 표·그래프 비율을 맞추기 위해 모두
   // 평가 전용이다. 자율학습에는 내용이 겹치지 않는 별도 표 읽기 예시를 둔다.
   {
-    id: 'JC26-MATH-VIS-STUDY-01',
+    id: 'JC26-MATH-VIS-STUDY-02',
     visual: {
       type: 'table',
       caption: '동아리 행사 준비 물품',
@@ -117,7 +118,8 @@ export const jobCommonExtraStudyQuestions = [
         ['생수', 100, 88],
       ],
     },
-    stem: '부족한 수량이 가장 많은 물품은 무엇인가요?',
+    context: '동아리 행사 준비 물품의 필요 수량과 현재 수량은 다음과 같습니다. 명찰 80개/65개, 안내 책자 60권/54권, 필기구 90개/72개, 생수 100병/88병입니다.',
+    stem: '필요 수량에서 현재 수량을 뺄 때, 부족한 수량이 가장 많은 물품은 무엇인가요?',
     choices: ['명찰', '안내 책자', '필기구', '생수', '모두 같다'],
     answer: 'C',
     explanation: '필요 수량에서 현재 수량을 빼면 명찰 15개, 안내 책자 6권, 필기구 18개, 생수 12병이 부족합니다. 따라서 부족분이 가장 큰 필기구가 정답입니다. 필요 수량이나 현재 수량만 비교하면 실제 부족분을 잘못 판단하게 됩니다.',
@@ -237,7 +239,7 @@ export function jcStudyQuestions() {
     ...jobCommonExtraStudyQuestions,
     ...jobCommonValidatedStudyQuestions,
   ]
-  const annotated = pool.filter(q => !q.excludeFromQuiz).map(q => {
+  const annotated = applyQuestionIntegrityToPool(pool).filter(q => !q.excludeFromQuiz).map(q => {
     const off = jcOfficialArea(q)
     return off ? annotateBlueprint(q, off) : q
   })
@@ -253,13 +255,13 @@ const JC_STUDY_ONLY_IDS = new Set([
   'ENG-dialog-basic-01',
   'ENG-dialog-basic-02',
   'ENG-dialog-basic-03',
-  // 복합 제약은 개념 적용에 필요한 서로 다른 상황을 충분히 연습한 뒤
-  // 인증평가로 넘어가도록 5개 대표 문항을 학습 전용으로 확보한다.
-  'JC-SYN-PS-01',
-  'JC-SYN-PS-02',
-  'JC-SYN-PS-03',
-  'JC-SYN-PS-04',
-  'JC-SYN-PS-05',
+  // 1~5번은 독립 검증에서 자료 누락으로 격리되었다. 표·조건과 정답을
+  // 함께 검증한 다음 다섯 문항을 학습 전용으로 두어 단원이 비지 않게 한다.
+  'JC-SYN-PS-06',
+  'JC-SYN-PS-07',
+  'JC-SYN-PS-08',
+  'JC-SYN-PS-09',
+  'JC-SYN-PS-10',
 ])
 
 function isJcAssessmentQuestion(question) {
@@ -766,12 +768,24 @@ export function buildJcMockAreas() {
 // lesson.id 는 실제 questions.json lessonId(또는 ENG-*)라 `${id}-Q*` 패턴이 MissionScreen에서 해석됨.
 export function buildJcMissionAreas() {
   const pool = jcStudyQuestions()
+  // 교사 미션은 MissionScreen의 공통 선택형 풀과 같은 ID 계약만 노출한다.
+  // 심화 전용·연결형·단답형 문항은 자율학습에서 계속 제공하되, 교사가
+  // 선택한 수와 학생에게 전달되는 수가 달라지는 미션 후보에서는 제외한다.
+  const missionPoolIds = new Set([
+    ...jobQuestionsRaw,
+    ...englishStudyQuestions,
+    ...jobCommonMediaQuestions,
+  ].map(q => q.id))
   return buildJcOfficialAreas().map(area => {
     const lessons = area.lessons
       .filter(lesson => lesson.kind !== 'self-report')
       .map(lesson => {
         const questionIds = pool
           .filter(q => q.officialArea === area.id && jcLessonMatches(q, lesson.id))
+          // 연결형은 자율학습의 전용 연결 UI에서 학습한다. 미션의 일반
+          // 답안 입력으로 의미가 바뀌지 않도록 교사 출제 목록에서는 제외한다.
+          .filter(q => missionPoolIds.has(q.id))
+          .filter(q => q.type !== 'matching' && q.type !== 'text' && !q.excludeFromQuiz)
           .map(q => q.id)
         return {
           id: lesson.id,

@@ -7,7 +7,7 @@ import { App } from '@capacitor/app'
 import { Capacitor } from '@capacitor/core'
 import { pushBack, popBack } from '../../lib/backButton.js'
 import { ThemeToggle } from '../../lib/theme.jsx'
-import PendingTeachersScreen from './PendingTeachersScreen.jsx'
+import TeachersScreen from '../admin/TeachersScreen.jsx'
 import SchoolClassesScreen from './SchoolClassesScreen.jsx'
 import SchoolRankingScreen from './SchoolRankingScreen.jsx'
 import TeacherSubjectScreen from './TeacherSubjectScreen.jsx'
@@ -43,7 +43,7 @@ export default function SchoolAdminShell() {
   }, [])
 
   const tabs = [
-    { id: 'pending',   icon: '⏳', label: '교사승인' },
+    { id: 'pending',   icon: '👥', label: '회원·학급' },
     { id: 'subjects',  icon: '📚', label: '교사배정' },
     { id: 'assign',    icon: '📖', label: '교재' },
     { id: 'classes',   icon: '🏫', label: '학급현황' },
@@ -95,7 +95,7 @@ export default function SchoolAdminShell() {
       )}
 
       <div style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-        {tab === 'pending'  && <PendingTeachersScreen />}
+        {tab === 'pending'  && <TeachersScreen currentRole={profile?.role} />}
         {tab === 'subjects' && <div className="screen-body" style={{ paddingTop: 0 }}><TeacherSubjectScreen /></div>}
         {tab === 'assign'   && <SchoolTextbookScreen />}
         {tab === 'classes'  && <SchoolClassesScreen onNavigate={navigate} />}

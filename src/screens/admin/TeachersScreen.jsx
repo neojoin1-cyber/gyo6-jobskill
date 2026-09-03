@@ -30,16 +30,21 @@ const SUPER_ADMIN_ROLE = { value: 'admin', label: '총괄관리자' }
 
 const INIT_FORM = {
   email: '', password: '', display_name: '', nickname: '',
-  role: 'teacher', school_id: '', class_id: '',
+  role: 'teacher', school_id: '', class_id: '', class_ids: [],
 }
 
 const INIT_EDIT = {
   display_name: '', nickname: '', email: '',
-  role: 'student', school_id: '', class_id: '',
+  role: 'student', school_id: '', class_id: '', class_ids: [],
 }
+
+const MULTI_CLASS_ROLES = new Set(['teacher', 'class_admin'])
 
 // 학급 라벨 (학과 학년반)
 function classLabel(m) {
+  if (Array.isArray(m.teacher_class_names) && m.teacher_class_names.length) {
+    return m.teacher_class_names.join(', ')
+  }
   if (!m.class_id) return null
   if (m.class_department || m.class_grade || m.class_num) {
     return `${m.class_department ?? ''} ${m.class_grade ?? ''}학년 ${m.class_num ?? ''}반`.trim()
@@ -103,20 +108,20 @@ export default function TeachersScreen({ currentRole }) {
     setLoading(false)
   }
 
-  // ── 생성 모달: 학교/역할 변경 시 학급 목록 로드 (학생만) ───────────────────────
+  // 학생은 한 학급, 교사·학급관리자는 여러 담당 학급을 선택한다.
   useEffect(() => {
-    if (!addForm.school_id || addForm.role !== 'student') {
+    if (!addForm.school_id || (addForm.role !== 'student' && !MULTI_CLASS_ROLES.has(addForm.role))) {
       setAddAllClasses([]); setAddSelectedDept(''); setAddSelectedGrade('')
-      setAddForm(f => ({ ...f, class_id: '' }))
+      setAddForm(f => ({ ...f, class_id: '', class_ids: [] }))
       return
     }
-    supabase.from('classes').select('id, department, grade, class_num')
+    supabase.from('classes').select('id, name, department, grade, class_num')
       .eq('school_id', addForm.school_id)
       .order('department').order('grade').order('class_num')
       .then(({ data }) => {
         setAddAllClasses(data ?? [])
         setAddSelectedDept(''); setAddSelectedGrade('')
-        setAddForm(f => ({ ...f, class_id: '' }))
+        setAddForm(f => ({ ...f, class_id: '', class_ids: [] }))
       })
   }, [addForm.school_id, addForm.role])
 
@@ -128,14 +133,14 @@ export default function TeachersScreen({ currentRole }) {
     c => c.department === addSelectedDept && String(c.grade) === addSelectedGrade
   )
 
-  // ── 편집 모달: 학교/역할 변경 시 학급 목록 로드 (학생만) ───────────────────────
+  // 편집 시에도 역할에 맞는 학급 목록을 모두 불러온다.
   useEffect(() => {
     if (!editModal) return
-    if (!editForm.school_id || editForm.role !== 'student') {
+    if (!editForm.school_id || (editForm.role !== 'student' && !MULTI_CLASS_ROLES.has(editForm.role))) {
       setEditClasses([]); setEditDept(''); setEditGrade('')
       return
     }
-    supabase.from('classes').select('id, department, grade, class_num')
+    supabase.from('classes').select('id, name, department, grade, class_num')
       .eq('school_id', editForm.school_id)
       .order('department').order('grade').order('class_num')
       .then(({ data }) => setEditClasses(data ?? []))
@@ -160,6 +165,7 @@ export default function TeachersScreen({ currentRole }) {
       role:         m.role ?? 'student',
       school_id:    m.school_id ?? '',
       class_id:     m.class_id ?? '',
+      class_ids:    Array.isArray(m.teacher_class_ids) ? m.teacher_class_ids : [],
     })
     setEditDept(m.class_department ?? '')
     setEditGrade(m.class_grade != null ? String(m.class_grade) : '')
@@ -173,14 +179,17 @@ export default function TeachersScreen({ currentRole }) {
       setEditError('학생은 학반을 선택하세요.'); return
     }
     setEditSaving(true)
-    const { error: err } = await supabase.rpc('rpc_admin_update_user', {
+    const selectedClassIds = editForm.role === 'student'
+      ? [editForm.class_id]
+      : MULTI_CLASS_ROLES.has(editForm.role) ? editForm.class_ids : []
+    const { data: updateResult, error: err } = await supabase.rpc('rpc_admin_update_user_v2', {
       p_user_id:      editModal.id,
       p_display_name: editForm.display_name.trim(),
       p_nickname:     editForm.nickname.trim(),
       p_email:        editForm.email.trim() || null,
       p_role:         editForm.role,
       p_school_id:    editForm.school_id || null,
-      p_class_id:     editForm.role === 'student' ? (editForm.class_id || null) : null,
+      p_class_ids:    selectedClassIds,
       p_approved:     null,
     })
     setEditSaving(false)
@@ -188,6 +197,10 @@ export default function TeachersScreen({ currentRole }) {
       setEditError(
         err.message.includes('이미 사용 중인 이메일') ? '이미 사용 중인 이메일입니다.' : err.message
       )
+      return
+    }
+    if (Number(updateResult?.assigned_class_count ?? 0) !== selectedClassIds.length) {
+      setEditError('학급 배정 결과를 확인하지 못했습니다. 새로고침 후 다시 시도해 주세요.')
       return
     }
     setEditModal(null)
@@ -248,7 +261,7 @@ export default function TeachersScreen({ currentRole }) {
     if (addForm.role === 'student' && !addForm.class_id) { setAddError('학반을 선택하세요.'); return }
 
     setAdding(true)
-    const { error: err } = await supabase.rpc('rpc_admin_create_user', {
+    const { data: created, error: err } = await supabase.rpc('rpc_admin_create_user', {
       p_email:        addForm.email.trim(),
       p_password:     addForm.password,
       p_display_name: addForm.display_name.trim(),
@@ -257,8 +270,8 @@ export default function TeachersScreen({ currentRole }) {
       p_class_id:     addForm.role === 'student' ? (addForm.class_id || null) : null,
       p_nickname:     addForm.nickname.trim() || null,
     })
-    setAdding(false)
     if (err) {
+      setAdding(false)
       setAddError(
         err.message.includes('duplicate key') || err.message.includes('already exists')
           ? '이미 사용 중인 이메일입니다.'
@@ -266,6 +279,32 @@ export default function TeachersScreen({ currentRole }) {
       )
       return
     }
+    if (MULTI_CLASS_ROLES.has(addForm.role) && addForm.class_ids.length > 0) {
+      const userId = created?.user_id
+      if (!userId) {
+        setAdding(false)
+        setAddError('계정은 생성됐지만 담당 학급 배정에 필요한 사용자 정보를 받지 못했습니다. 회원 목록에서 다시 배정해 주세요.')
+        await load()
+        return
+      }
+      const { data: assigned, error: assignError } = await supabase.rpc('rpc_admin_update_user_v2', {
+        p_user_id: userId,
+        p_display_name: addForm.display_name.trim(),
+        p_nickname: addForm.nickname.trim() || null,
+        p_email: addForm.email.trim(),
+        p_role: addForm.role,
+        p_school_id: addForm.school_id,
+        p_class_ids: addForm.class_ids,
+        p_approved: true,
+      })
+      if (assignError || Number(assigned?.assigned_class_count ?? 0) !== addForm.class_ids.length) {
+        setAdding(false)
+        setAddError('계정은 생성됐지만 담당 학급 배정을 완료하지 못했습니다. 회원 목록에서 다시 배정해 주세요.')
+        await load()
+        return
+      }
+    }
+    setAdding(false)
     setAddModal(false)
     setAddForm(INIT_FORM)
     setAddSelectedDept(''); setAddSelectedGrade('')
@@ -323,14 +362,14 @@ export default function TeachersScreen({ currentRole }) {
             <div className="form-group">
               <label className="form-label">역할 *</label>
               <select className="form-input" value={editForm.role}
-                onChange={e => setEditForm(f => ({ ...f, role: e.target.value, class_id: '' }))}>
+                onChange={e => setEditForm(f => ({ ...f, role: e.target.value, class_id: '', class_ids: [] }))}>
                 {roleOptions.map(r => <option key={r.value} value={r.value}>{r.label}</option>)}
               </select>
             </div>
             <div className="form-group">
               <label className="form-label">소속 학교</label>
               <select className="form-input" value={editForm.school_id}
-                onChange={e => setEditForm(f => ({ ...f, school_id: e.target.value, class_id: '' }))}>
+                onChange={e => setEditForm(f => ({ ...f, school_id: e.target.value, class_id: '', class_ids: [] }))}>
                 <option value="">미배정</option>
                 {schools.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
               </select>
@@ -364,6 +403,28 @@ export default function TeachersScreen({ currentRole }) {
                   </select>
                 </div>
               </>
+            )}
+
+            {MULTI_CLASS_ROLES.has(editForm.role) && editForm.school_id && (
+              <fieldset className="form-group" style={{ border: 0, padding: 0 }}>
+                <legend className="form-label">담당 학급</legend>
+                <p style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 8 }}>미션·수업·첨삭·상담에 사용할 학급을 모두 선택하세요.</p>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 8 }}>
+                  {editClasses.map(c => {
+                    const checked = editForm.class_ids.includes(c.id)
+                    return (
+                      <label key={c.id} className="class-assignment-option">
+                        <input type="checkbox" checked={checked} onChange={() => setEditForm(f => ({
+                          ...f,
+                          class_ids: checked ? f.class_ids.filter(id => id !== c.id) : [...f.class_ids, c.id],
+                        }))} />
+                        <span>{c.department ? `${c.department} ` : ''}{c.grade ? `${c.grade}학년 ` : ''}{c.class_num ? `${c.class_num}반` : c.name}</span>
+                      </label>
+                    )
+                  })}
+                  {editClasses.length === 0 && <span style={{ fontSize: 13, color: 'var(--text-muted)' }}>등록된 학급이 없습니다.</span>}
+                </div>
+              </fieldset>
             )}
 
             {editError && <p style={{ color: 'var(--danger)', fontSize: 13, marginBottom: 10 }}>{editError}</p>}
@@ -488,14 +549,14 @@ export default function TeachersScreen({ currentRole }) {
             <div className="form-group">
               <label className="form-label">역할 *</label>
               <select className="form-input" value={addForm.role}
-                onChange={e => setAddForm(f => ({ ...f, role: e.target.value, class_id: '' }))}>
+                onChange={e => setAddForm(f => ({ ...f, role: e.target.value, class_id: '', class_ids: [] }))}>
                 {roleOptions.map(r => <option key={r.value} value={r.value}>{r.label}</option>)}
               </select>
             </div>
             <div className="form-group">
               <label className="form-label">학교 *</label>
               <select className="form-input" value={addForm.school_id}
-                onChange={e => setAddForm(f => ({ ...f, school_id: e.target.value, class_id: '' }))}>
+                onChange={e => setAddForm(f => ({ ...f, school_id: e.target.value, class_id: '', class_ids: [] }))}>
                 <option value="">학교 선택</option>
                 {schools.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
               </select>
@@ -533,6 +594,27 @@ export default function TeachersScreen({ currentRole }) {
                     onChange={e => setAddForm(f => ({ ...f, nickname: e.target.value }))} placeholder="랭킹에 표시될 별명" />
                 </div>
               </>
+            )}
+
+            {MULTI_CLASS_ROLES.has(addForm.role) && addForm.school_id && (
+              <fieldset className="form-group" style={{ border: 0, padding: 0 }}>
+                <legend className="form-label">담당 학급</legend>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 8 }}>
+                  {addAllClasses.map(c => {
+                    const checked = addForm.class_ids.includes(c.id)
+                    return (
+                      <label key={c.id} className="class-assignment-option">
+                        <input type="checkbox" checked={checked} onChange={() => setAddForm(f => ({
+                          ...f,
+                          class_ids: checked ? f.class_ids.filter(id => id !== c.id) : [...f.class_ids, c.id],
+                        }))} />
+                        <span>{c.department ? `${c.department} ` : ''}{c.grade ? `${c.grade}학년 ` : ''}{c.class_num ? `${c.class_num}반` : c.name}</span>
+                      </label>
+                    )
+                  })}
+                  {addAllClasses.length === 0 && <span style={{ fontSize: 13, color: 'var(--text-muted)' }}>등록된 학급이 없습니다.</span>}
+                </div>
+              </fieldset>
             )}
 
             {addError && <p style={{ color: 'var(--danger)', fontSize: 13, marginBottom: 10 }}>{addError}</p>}

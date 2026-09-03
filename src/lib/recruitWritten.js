@@ -4,6 +4,7 @@ import { allNcsSourceQuestions as rawNcsQuestions } from './ncsBanks.js'
 import jobVariantsFile from '../../data/job-variants.json'
 import recruitStudySupplement from '../../data/recruit-written-study-supplement.json'
 import { questionLane } from './assessmentPartition.js'
+import { applyQuestionIntegrityToPool } from './questionIntegrity.js'
 import {
   RECRUITMENT_EXTRA_AREA_IDS,
   recruitmentTrackIds,
@@ -180,7 +181,7 @@ function cloneRecruitmentSet(question, trackId) {
 }
 
 // 원본 NCS 문항과 ID가 겹치지 않는 독립 교재 풀이다.
-export const recruitWrittenQuestions = rawNcsQuestions.flatMap(q =>
+export const recruitWrittenQuestions = applyQuestionIntegrityToPool(rawNcsQuestions.flatMap(q =>
   recruitmentTrackIds(q).flatMap(trackId => cloneRecruitmentSet(q, trackId))
 ).concat((recruitStudySupplement.questions || []).flatMap(question =>
   (question.recruitmentTracks || []).map(trackId => cloneForRecruitment({
@@ -188,7 +189,7 @@ export const recruitWrittenQuestions = rawNcsQuestions.flatMap(q =>
     learningLane: 'study',
     answerSource: 'authored-standards-supplement',
   }, trackId))
-))
+)))
 
 export const ncsLegacySourceQuestions = rawNcsQuestions.filter(q => recruitResidualKind(q))
 export const recruitmentExtraSourceQuestions = rawNcsQuestions.filter(q => EXTRA_AREA_SET.has(q.area))

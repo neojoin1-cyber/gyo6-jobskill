@@ -16,7 +16,6 @@ import {
   MagnifyingGlass,
   PaperPlaneTilt,
   Play,
-  Plus,
   PresentationChart,
   Sparkle,
   SignOut,
@@ -88,11 +87,6 @@ export default function TeacherWorkspace({
   const [journey, setJourney] = useState(() => demoClassLessonJourney('c1'))
   const [journeyLoading, setJourneyLoading] = useState(false)
   const [query, setQuery] = useState('')
-  const [showClassForm, setShowClassForm] = useState(false)
-  const [newClassName, setNewClassName] = useState('')
-  const [newGrade, setNewGrade] = useState('')
-  const [classSaving, setClassSaving] = useState(false)
-  const [classError, setClassError] = useState('')
 
   useEffect(() => {
     if (sourceClasses.length && !sourceClasses.some(item => item.id === classId)) setClassId(sourceClasses[0].id)
@@ -163,27 +157,6 @@ export default function TeacherWorkspace({
   const visibleStudents = students.filter(item => item.display_name?.toLowerCase().includes(query.toLowerCase()))
   const priorityStudent = [...students].sort((a, b) => (b.wrong_open ?? 0) - (a.wrong_open ?? 0))[0] ?? null
 
-  async function createClass(event) {
-    event.preventDefault()
-    if (!newClassName.trim() || classSaving) return
-    setClassSaving(true)
-    setClassError('')
-    const { error } = await supabase.rpc('rpc_create_class', {
-      p_name: newClassName.trim(),
-      p_grade: newGrade ? Number(newGrade) : null,
-      p_academic_year: new Date().getFullYear(),
-    })
-    setClassSaving(false)
-    if (error) {
-      setClassError('학급을 만들지 못했습니다. 학교관리자에게 배정 권한을 확인해 주세요.')
-      return
-    }
-    setNewClassName('')
-    setNewGrade('')
-    setShowClassForm(false)
-    await onRefresh?.()
-  }
-
   const menu = [
     { id: 'dashboard', icon: GraduationCap, label: '학급 캠퍼스' },
     { id: 'grading', icon: ClipboardText, label: '채점함', badge: pendingCount },
@@ -253,6 +226,13 @@ export default function TeacherWorkspace({
       </aside>
 
       <section className="teacher-campus-main">
+        <nav className="teacher-mobile-tools" aria-label="교사 핵심 도구">
+          <button disabled={!cls} onClick={() => cls && onNavigate?.('create-mission', { classId: cls.id, className: cls.name })}><Sparkle /> 미션</button>
+          <button onClick={() => onTab?.('grading')}><ClipboardText /> 채점</button>
+          <button onClick={() => onOpenCoverReviews?.(classId)}><FileText /> 첨삭</button>
+          <button onClick={() => onOpenInterviewCoach?.(classId)}><PresentationChart /> 면접</button>
+          <button onClick={() => onOpenMessages?.({ scope: cls ? 'class' : undefined, target: classId || undefined })}><ChatCircleDots /> 상담</button>
+        </nav>
         {workspaceState === 'loading' ? (
           <div className="teacher-campus-empty"><div className="spinner" /><b>담당 학급을 불러오는 중입니다</b></div>
         ) : workspaceState === 'error' ? (
@@ -275,15 +255,6 @@ export default function TeacherWorkspace({
 
             <TeacherCampusMap className="teacher-learning-map" onOpenStudentCampus={onOpenStudentCampus} />
 
-            {showClassForm && (
-              <form className="teacher-class-form" onSubmit={createClass}>
-                <label><span>학급 이름</span><input value={newClassName} onChange={event => setNewClassName(event.target.value)} placeholder="예: 3학년 취업준비반" required /></label>
-                <label><span>학년</span><select value={newGrade} onChange={event => setNewGrade(event.target.value)}><option value="">선택 안 함</option><option value="1">1학년</option><option value="2">2학년</option><option value="3">3학년</option></select></label>
-                <button type="submit" disabled={classSaving}>{classSaving ? '연결 중...' : '학급 만들기'}</button>
-                {classError && <p role="alert">{classError}</p>}
-              </form>
-            )}
-
             <section className="teacher-bonus-section">
               <header><span>선생님 보너스 패스</span><h2>가르치고, 살피고, 바로 도와주는 도구</h2></header>
               <div className="teacher-bonus-grid">
@@ -298,8 +269,8 @@ export default function TeacherWorkspace({
             <section className="teacher-connect-class">
               <div><span><UsersThree weight="fill" /></span><div><small>학급 연결 시 자동 활성화</small><h2>학생 성장 신호를 한 화면에</h2><p>진도·진단·오답·성취·인성검사·개별 상담까지 담당 학급 범위에서 관리.</p></div></div>
               <div className="teacher-connect-actions">
-                <button className="is-primary" onClick={() => setShowClassForm(value => !value)}><Plus weight="bold" /> 담당 학급 연결</button>
-                <button onClick={() => onNavigate?.('pending-students')}><Student weight="fill" /> 학생 승인</button>
+                <p role="status">학교관리자가 회원·학급 메뉴에서 담당 학급을 배정하면 자동으로 열립니다.</p>
+                <button onClick={() => onNavigate?.('pending-students')}><Student weight="fill" /> 학생 승인 확인</button>
               </div>
             </section>
           </div>

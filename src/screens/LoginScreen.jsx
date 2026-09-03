@@ -214,7 +214,7 @@ export default function LoginScreen() {
   }
 
   async function handleTrialLogin(role) {
-    if (Capacitor.isNativePlatform() || !TRIAL_ACCOUNTS[role]) return
+    if (!TRIAL_ACCOUNTS[role]) return
     reset()
     setTrialMessage('')
     setAudience(role === 'school_admin' ? 'teacher' : role)
@@ -382,8 +382,7 @@ export default function LoginScreen() {
         </p>
       </div>
 
-      {!isNative && (
-        <section className="trial-login-panel" aria-labelledby="trial-login-title">
+      <section className="trial-login-panel" aria-labelledby="trial-login-title">
           <div>
             <span className="trial-login-kicker">제작·검수 기간 무제한</span>
             <h2 id="trial-login-title">계정 입력 없이 바로 체험</h2>
@@ -401,7 +400,6 @@ export default function LoginScreen() {
           <p>체험 기록 저장 안 됨 · 실제 학교 데이터와 분리</p>
           {trialMessage && <div className="trial-login-message" role="status">{trialMessage}</div>}
         </section>
-      )}
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12, maxWidth: 420, width: '100%', margin: '0 auto' }}>
         {[AUDIENCE.student, AUDIENCE.teacher].map(a => (
@@ -462,12 +460,10 @@ export default function LoginScreen() {
 
       {/* 버튼 — 헤더 바로 아래 최상단 */}
       <div style={{ padding: '0 16px 20px', display: 'flex', flexDirection: 'column', gap: 10 }}>
-        {!isNative && (
-          <button className="trial-role-start" type="button" onClick={() => handleTrialLogin(audience)} disabled={loading}>
+        <button className="trial-role-start" type="button" onClick={() => handleTrialLogin(audience)} disabled={loading}>
             <span>{loading ? '체험 화면 여는 중' : `${A.key === 'teacher' ? '교사' : '학생'} 체험 바로 시작`}</span>
             <small>계정 입력 없음 · 시간 제한 없음 · 저장 안 됨</small>
           </button>
-        )}
         {trialMessage && <div className="trial-login-message on-color" role="status">{trialMessage}</div>}
         {/* 로그인·회원가입은 웹·앱 모두에서 사용 가능(PWA). 웹에서도 직접 시연·테스트 가능. */}
         <button onClick={() => { setView('login'); reset() }}

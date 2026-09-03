@@ -16,6 +16,6 @@ export const COVER_LETTER_QUESTION_LIBRARY = [
   { id: 'digital', label: '디지털 활용', question: '디지털 도구나 데이터를 활용해 업무·학습 방식을 개선한 경험을 작성해 주세요.', purpose: '도구 이름보다 문제·사용 방법·검증 결과를 확인함.', required: ['기존 문제', '도구 활용', '보안·정확성', '결과'], sectors: ['finance', 'public', 'enterprise'], minLength: 450, limit: 650 },
   { id: 'strength-weakness', label: '강점·보완점', question: '직무와 연결되는 강점과 보완 중인 점을 사례와 함께 작성해 주세요.', purpose: '성격 나열이 아니라 업무 영향과 보완 행동을 확인함.', required: ['강점 근거', '보완점 영향', '현재 행동'], sectors: ['finance', 'public', 'enterprise'], minLength: 450, limit: 650 },
   { id: 'growth', label: '입사 후 성장', question: '입사 후 처음 익힐 업무와 장기적으로 기여할 방법을 작성해 주세요.', purpose: '과장된 직급 목표보다 초기 학습·확인·기여 순서를 확인함.', required: ['초기 업무', '학습 방법', '장기 기여'], sectors: ['finance', 'public', 'enterprise'], minLength: 450, limit: 650 },
-  { id: 'free', label: '자유 기술', question: '지원자가 추가로 알리고 싶은 내용을 자유롭게 작성해 주세요.', purpose: '다른 항목에서 증명하지 못한 직무 관련 근거를 보완함.', required: ['새로운 근거', '지원 직무 연결'], sectors: ['finance', 'public', 'enterprise'], minLength: 500, limit: 700 },
+  { id: 'free', label: '자유 기술', question: '학교명·지역·교사명·가족관계 등 개인 식별 정보 없이, 다른 항목에서 보여 주지 못한 직무 관련 경험과 행동 근거를 작성해 주세요.', purpose: '블라인드 기준을 지키면서 다른 항목에서 증명하지 못한 직무 관련 근거를 보완함.', required: ['새로운 경험 근거', '내가 한 행동', '확인 가능한 결과', '지원 직무 연결', '블라인드 점검'], sectors: ['finance', 'public', 'enterprise'], minLength: 500, limit: 700 },
   ...EXTRA_COVER_QUESTIONS,
 ]

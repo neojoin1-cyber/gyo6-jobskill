@@ -45,7 +45,16 @@ if (!timeLimitEnabled) {
   if (!repeat.ok || !repeatedTicket.tokenHash || repeatedTicket.timeLimitEnabled !== false) {
     throw new Error(`Unlimited trial re-entry failed: ${repeat.status}`)
   }
+  const repeatClient = createClient(url, anon, { auth: { persistSession: false, autoRefreshToken: false } })
+  const { data: repeatedAuth, error: repeatedAuthError } = await repeatClient.auth.verifyOtp({
+    token_hash: repeatedTicket.tokenHash,
+    type: 'magiclink',
+  })
+  if (repeatedAuthError || !repeatedAuth.user || repeatedAuth.user.id === auth.user.id) {
+    throw new Error('Trial re-entry did not create a fresh isolated identity')
+  }
+  await repeatClient.auth.signOut({ scope: 'local' })
 }
 
 await client.auth.signOut({ scope: 'local' })
-console.log(`PASS: public trial one-time token, identity metadata, read access, server write block, and ${timeLimitEnabled ? 'cooldown' : 'unlimited re-entry'}`)
+console.log(`PASS: public trial one-time token, identity metadata, read access, server write block, and ${timeLimitEnabled ? 'cooldown' : 'fresh isolated re-entry'}`)

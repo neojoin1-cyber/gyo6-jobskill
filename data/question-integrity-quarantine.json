@@ -1,0 +1,5700 @@
+{
+  "generatedFrom": "verification/adversarial-4.8.13",
+  "policy": "정답·해설·구조 결함은 격리하고, 유일한 결함이 오답 분석 부족인 문항은 런타임에서 보기별 피드백을 보강",
+  "auditedAt": "2026-09-01T15:43:43.882087+00:00",
+  "quarantined": {
+    "C01-0-Q06-LEARN-V1": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "C04-3-Q02-LEARN-V1": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "C09-8-Q01-LEARN-V1": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "C09-8-Q02-LEARN-V1": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "C09-8-Q04-LEARN-V1": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "C09-8-Q07-LEARN-V1": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "C11-10-Q02-LEARN-V1": {
+      "verdict": "문항결함",
+      "flags": [
+        "content_mismatch"
+      ],
+      "reason": "문항"
+    },
+    "C11-10-Q07-LEARN-V1": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "C14-13-Q01-LEARN-V1": {
+      "verdict": "해설부실",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "해설"
+    },
+    "C15-14-Q07-LEARN-V1": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice"
+      ],
+      "reason": "없음"
+    },
+    "C15-14-Q08-LEARN-V1": {
+      "verdict": "해설부실",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "해설"
+    },
+    "C18-17-Q04": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "C18-17-Q05-LEARN-V1": {
+      "verdict": "문항결함",
+      "flags": [
+        "no_distractor_analysis"
+      ],
+      "reason": "문항"
+    },
+    "C18-17-Q06": {
+      "verdict": "문항결함",
+      "flags": [
+        "wrong_entity"
+      ],
+      "reason": "문항"
+    },
+    "C18-17-Q06-LEARN-V1": {
+      "verdict": "문항결함",
+      "flags": [
+        "no_distractor_analysis"
+      ],
+      "reason": "문항"
+    },
+    "C18-17-Q07-LEARN-V1": {
+      "verdict": "문항결함",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "문항"
+    },
+    "C18-17-Q08-LEARN-V1": {
+      "verdict": "문항결함",
+      "flags": [
+        "no_distractor_analysis"
+      ],
+      "reason": "문항"
+    },
+    "C19-18-Q02-LEARN-V1": {
+      "verdict": "독립판정재검토",
+      "flags": [],
+      "reason": "없음"
+    },
+    "C19-18-Q03-LEARN-V1": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "C20-19-Q08-LEARN-V1": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "C21-20-Q07": {
+      "verdict": "독립판정재검토",
+      "flags": [],
+      "reason": "없음"
+    },
+    "C21-20-Q07-LEARN-V1": {
+      "verdict": "독립판정재검토",
+      "flags": [
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "C22-21-Q06": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "C23-22-Q02-LEARN-V1": {
+      "verdict": "독립판정재검토",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "C23-22-Q06": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "C25-24-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "C25-24-Q01-LEARN-V1": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "C25-24-Q08-LEARN-V1": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "C26-25-Q06": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "C27-26-Q03": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "C27-26-Q04": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "C29-28-Q01-LEARN-V1": {
+      "verdict": "해설부실",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "해설"
+    },
+    "C29-28-Q02-LEARN-V1": {
+      "verdict": "해설부실",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "해설"
+    },
+    "C29-28-Q03-LEARN-V1": {
+      "verdict": "해설부실",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "해설"
+    },
+    "C29-28-Q06": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "C29-28-Q06-LEARN-V1": {
+      "verdict": "해설부실",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "해설"
+    },
+    "C30-29-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "C30-29-Q01-LEARN-V1": {
+      "verdict": "해설부실",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "해설"
+    },
+    "C30-29-Q03": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "C30-29-Q05-LEARN-V1": {
+      "verdict": "해설부실",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "해설"
+    },
+    "C30-29-Q08-LEARN-V1": {
+      "verdict": "해설부실",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "해설"
+    },
+    "C30-29-Q09-LEARN-V1": {
+      "verdict": "해설부실",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "해설"
+    },
+    "C31-30-Q02-LEARN-V1": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "C33-32-Q01-LEARN-V1": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "C33-32-Q03-LEARN-V1": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "C33-32-Q05-LEARN-V1": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "C33-32-Q06-LEARN-V1": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "C33-32-Q07-LEARN-V1": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "C33-32-Q08-LEARN-V1": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "C35-34-Q02-LEARN-V1": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "C37-36-Q01-LEARN-V1": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "C37-36-Q02-LEARN-V1": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "C37-36-Q03-LEARN-V1": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "C37-36-Q04-LEARN-V1": {
+      "verdict": "독립판정재검토",
+      "flags": [
+        "overclaim",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "C37-36-Q06-LEARN-V1": {
+      "verdict": "문항결함",
+      "flags": [
+        "calc_mismatch"
+      ],
+      "reason": "문항"
+    },
+    "C37-36-Q08-LEARN-V1": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "C38-37-Q01-LEARN-V1": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "C38-37-Q02-LEARN-V1": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "C38-37-Q05-LEARN-V1": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "C38-37-Q06-LEARN-V1": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "C38-37-Q07-LEARN-V1": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "C38-37-Q08-LEARN-V1": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "C38-38-Q01-LEARN-V1": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "C38-38-Q02-LEARN-V1": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "C38-38-Q08-LEARN-V1": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "C39-39-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "C39-39-Q03": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "C39-39-Q03-LEARN-V1": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "C39-39-Q04-LEARN-V1": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "ENG-dialog-basic-10": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "ENG-dialog-std-02": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "ENG-dialog-std-04": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "ENG-dialog-std-05": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "ENG-dialog-std-10": {
+      "verdict": "문항결함",
+      "flags": [],
+      "reason": "문항"
+    },
+    "ENG-vocab-basic-01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "ENG-vocab-basic-02": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "ENG-vocab-basic-03": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "ENG-vocab-basic-04": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "ENG-vocab-basic-05": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "ENG-vocab-basic-07": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "ENG-vocab-basic-08": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "ENG-vocab-basic-09": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "ENG-vocab-basic-10": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "ENG-vocab-D01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "ENG-vocab-D02": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "content_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "ENG-vocab-D04": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "content_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "IV-A02-2": {
+      "verdict": "독립판정재검토",
+      "flags": [],
+      "reason": "없음"
+    },
+    "IV-A04-1": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "IV-A04-4": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "IV-A07-1": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "IV-A07-4": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "IV-A08-3": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "IV-A10-2": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice"
+      ],
+      "reason": "없음"
+    },
+    "IV-A11-2": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice"
+      ],
+      "reason": "없음"
+    },
+    "IV-A12-4": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice"
+      ],
+      "reason": "없음"
+    },
+    "IV-A14-2": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice"
+      ],
+      "reason": "없음"
+    },
+    "IV-A14-4": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice"
+      ],
+      "reason": "없음"
+    },
+    "IV-A15-1": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice"
+      ],
+      "reason": "없음"
+    },
+    "IV-A15-3": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice"
+      ],
+      "reason": "없음"
+    },
+    "IV-A15-4": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice"
+      ],
+      "reason": "없음"
+    },
+    "IV-A16-4": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice"
+      ],
+      "reason": "없음"
+    },
+    "IV-A22-2": {
+      "verdict": "정답오류",
+      "flags": [
+        "content_mismatch"
+      ],
+      "reason": "정답"
+    },
+    "IV-A23-2": {
+      "verdict": "독립판정재검토",
+      "flags": [],
+      "reason": "없음"
+    },
+    "IV-A27-1": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice"
+      ],
+      "reason": "없음"
+    },
+    "IV-A28-1": {
+      "verdict": "정답오류",
+      "flags": [
+        "content_mismatch",
+        "calc_mismatch"
+      ],
+      "reason": "정답"
+    },
+    "IV-A31-2": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice"
+      ],
+      "reason": "없음"
+    },
+    "IV-A31-4": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "IV-A32-3": {
+      "verdict": "독립판정재검토",
+      "flags": [],
+      "reason": "없음"
+    },
+    "IV-A34-1": {
+      "verdict": "해설부실",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "해설"
+    },
+    "IV-A37-3": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "IV-A41-3": {
+      "verdict": "독립판정재검토",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "IV-A44-2": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:대화조각stem"
+      ],
+      "reason": "대화조각stem"
+    },
+    "IV-A44-3": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:대화조각stem"
+      ],
+      "reason": "대화조각stem"
+    },
+    "JC-INF-MC006": {
+      "verdict": "독립판정재검토",
+      "flags": [],
+      "reason": "문항"
+    },
+    "JC-ORG-MC005": {
+      "verdict": "일치",
+      "flags": [
+        "truncated_exp"
+      ],
+      "reason": "해설"
+    },
+    "JC-RSM-C004": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:대화조각stem"
+      ],
+      "reason": "대화조각stem"
+    },
+    "JC-RSM-C010": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "JC-RSM-C031": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "JC-SYN-PS-01": {
+      "verdict": "문항결함",
+      "flags": [],
+      "reason": "문항"
+    },
+    "JC-SYN-PS-02": {
+      "verdict": "문항결함",
+      "flags": [],
+      "reason": "문항"
+    },
+    "JC-SYN-PS-03": {
+      "verdict": "문항결함",
+      "flags": [],
+      "reason": "문항"
+    },
+    "JC-SYN-PS-04": {
+      "verdict": "문항결함",
+      "flags": [],
+      "reason": "문항"
+    },
+    "JC-SYN-PS-05": {
+      "verdict": "문항결함",
+      "flags": [],
+      "reason": "문항"
+    },
+    "JC-SYN-PS-15": {
+      "verdict": "문항결함",
+      "flags": [],
+      "reason": "문항"
+    },
+    "JC-TEC-C008": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "JC26-MATH-VIS-STUDY-01": {
+      "verdict": "문항결함",
+      "flags": [],
+      "reason": "문항"
+    },
+    "NCS-C127-standard-2": {
+      "verdict": "해설부실",
+      "flags": [
+        "content_mismatch",
+        "copied_from_other"
+      ],
+      "reason": "해설"
+    },
+    "NCS-C129-basic-1": {
+      "verdict": "해설오류",
+      "flags": [
+        "content_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS-C129-basic-2": {
+      "verdict": "정답오류",
+      "flags": [
+        "content_mismatch"
+      ],
+      "reason": "정답"
+    },
+    "NCS-C129-diagnosis": {
+      "verdict": "해설오류",
+      "flags": [
+        "content_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS-C129-standard-1": {
+      "verdict": "해설부실",
+      "flags": [
+        "content_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS-C132-diagnosis": {
+      "verdict": "해설부실",
+      "flags": [
+        "content_mismatch",
+        "no_distractor_analysis"
+      ],
+      "reason": "해설"
+    },
+    "NCS-C141-basic-1": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS-C141-basic-2": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS-C141-diagnosis": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS-C141-standard-1": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS-C141-standard-2": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS-C142-diagnosis": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS-C143-diagnosis": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS-C144-basic-1": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS-C144-basic-2": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS-C144-diagnosis": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS-C144-retry-1": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS-C144-retry-2": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "truncated_exp"
+      ],
+      "reason": "해설"
+    },
+    "NCS-C144-standard-2": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS-NEW-직업윤리-037": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS-NEW-직업윤리-038": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS26-SUP-ADP-02": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS26-SUP-ADP-04": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS26-SUP-ADP-05": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS26-SUP-ADP-08": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS26-SUP-ADP-17": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS26-SUP-ADP-19": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS26-SUP-ADP-23": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS26-SUP-AI-05": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS26-SUP-AI-23": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS26-SUP-CFL-11": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS26-SUP-CFL-16": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS26-SUP-CFL-20": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS26-SUP-COL-07": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS26-SUP-COL-11": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS26-SUP-COL-12": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS26-SUP-COM-01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS26-SUP-COM-03": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS26-SUP-COM-04": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS26-SUP-COM-06": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS26-SUP-COM-07": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS26-SUP-COM-16": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS26-SUP-DRE-10": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS26-SUP-DRE-11": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS26-SUP-FOR-01": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:대화조각stem"
+      ],
+      "reason": "대화조각stem"
+    },
+    "NCS26-SUP-FOR-02": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:대화조각stem"
+      ],
+      "reason": "대화조각stem"
+    },
+    "NCS26-SUP-FOR-03": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:대화조각stem"
+      ],
+      "reason": "대화조각stem"
+    },
+    "NCS26-SUP-FOR-04": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:대화조각stem"
+      ],
+      "reason": "대화조각stem"
+    },
+    "NCS26-SUP-FOR-05": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:대화조각stem"
+      ],
+      "reason": "대화조각stem"
+    },
+    "NCS26-SUP-FOR-06": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:대화조각stem"
+      ],
+      "reason": "대화조각stem"
+    },
+    "NCS26-SUP-FOR-07": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:대화조각stem"
+      ],
+      "reason": "대화조각stem"
+    },
+    "NCS26-SUP-FOR-08": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:대화조각stem"
+      ],
+      "reason": "대화조각stem"
+    },
+    "NCS26-SUP-FOR-10": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS26-SUP-FOR-11": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS26-SUP-FOR-12": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS26-SUP-FOR-15": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS26-SUP-FOR-16": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS26-SUP-FOR-20": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:대화조각stem"
+      ],
+      "reason": "대화조각stem"
+    },
+    "NCS26-SUP-FOR-23": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS26-SUP-FOR-24": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS26-SUP-LED-11": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS26-SUP-SAF-04": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS26-SUP-SAF-06": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS26-SUP-SAF-23": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS26-SUP-STA-09": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS26-SUP-TIM-03": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:대화조각stem"
+      ],
+      "reason": "대화조각stem"
+    },
+    "NCS26-SUP-TIM-08": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCS26-SUP-TIM-09": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C002-Q01": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch",
+        "structural:발문부재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C003-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C003-Q03": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C003-Q04": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C003-Q05": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C003-Q06": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C003-Q07": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C004-Q01": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:발문부재"
+      ],
+      "reason": "발문부재"
+    },
+    "NCSX-v1-C004-Q02": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:발문부재"
+      ],
+      "reason": "발문부재"
+    },
+    "NCSX-v1-C004-Q03": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:발문부재"
+      ],
+      "reason": "발문부재"
+    },
+    "NCSX-v1-C004-Q04": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:발문부재"
+      ],
+      "reason": "발문부재"
+    },
+    "NCSX-v1-C004-Q05": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:발문부재"
+      ],
+      "reason": "발문부재"
+    },
+    "NCSX-v1-C004-Q06": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "structural:발문부재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C004-Q07": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:발문부재"
+      ],
+      "reason": "발문부재"
+    },
+    "NCSX-v1-C005-Q02": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C005-Q07": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C006-Q01": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:발문부재"
+      ],
+      "reason": "발문부재"
+    },
+    "NCSX-v1-C006-Q02": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:발문부재"
+      ],
+      "reason": "발문부재"
+    },
+    "NCSX-v1-C006-Q03": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:발문부재"
+      ],
+      "reason": "발문부재"
+    },
+    "NCSX-v1-C006-Q04": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:발문부재"
+      ],
+      "reason": "발문부재"
+    },
+    "NCSX-v1-C006-Q05": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:발문부재"
+      ],
+      "reason": "발문부재"
+    },
+    "NCSX-v1-C006-Q06": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:발문부재"
+      ],
+      "reason": "발문부재"
+    },
+    "NCSX-v1-C006-Q07": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:발문부재"
+      ],
+      "reason": "발문부재"
+    },
+    "NCSX-v1-C007-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "structural:발문부재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C007-Q02": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C007-Q03": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C007-Q04": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C007-Q06": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C007-Q07": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C008-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C008-Q02": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C008-Q03": {
+      "verdict": "독립판정재검토",
+      "flags": [],
+      "reason": "없음"
+    },
+    "NCSX-v1-C008-Q04": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C008-Q05": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C008-Q06": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C009-Q04": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C010-Q01": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:발문부재"
+      ],
+      "reason": "발문부재"
+    },
+    "NCSX-v1-C013-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "structural:발문부재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C013-Q02": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C013-Q04": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C013-Q05": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C013-Q07": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C015-Q05": {
+      "verdict": "문항결함",
+      "flags": [],
+      "reason": "문항"
+    },
+    "NCSX-v1-C016-Q01": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:편집잔재"
+      ],
+      "reason": "편집잔재"
+    },
+    "NCSX-v1-C016-Q02": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:편집잔재"
+      ],
+      "reason": "편집잔재"
+    },
+    "NCSX-v1-C017-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C017-Q03": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C017-Q07": {
+      "verdict": "일치",
+      "flags": [
+        "overclaim"
+      ],
+      "reason": "없음"
+    },
+    "NCSX-v1-C018-Q02": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:발문부재"
+      ],
+      "reason": "발문부재"
+    },
+    "NCSX-v1-C018-Q03": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "structural:발문부재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C018-Q04": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "structural:발문부재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C018-Q05": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "structural:발문부재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C018-Q06": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "structural:발문부재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C018-Q07": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "structural:발문부재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C019-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "structural:발문부재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C019-Q02": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:발문부재"
+      ],
+      "reason": "발문부재"
+    },
+    "NCSX-v1-C019-Q03": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:발문부재"
+      ],
+      "reason": "발문부재"
+    },
+    "NCSX-v1-C019-Q04": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:발문부재"
+      ],
+      "reason": "발문부재"
+    },
+    "NCSX-v1-C019-Q05": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:발문부재"
+      ],
+      "reason": "발문부재"
+    },
+    "NCSX-v1-C019-Q06": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "structural:발문부재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C019-Q07": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "structural:발문부재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C020-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "structural:발문부재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C020-Q02": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C020-Q03": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C020-Q05": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C020-Q06": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C020-Q07": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C021-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "content_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C021-Q02": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "structural:편집잔재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C021-Q03": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "structural:편집잔재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C021-Q04": {
+      "verdict": "정답오류",
+      "flags": [
+        "content_mismatch",
+        "structural:편집잔재"
+      ],
+      "reason": "정답"
+    },
+    "NCSX-v1-C021-Q05": {
+      "verdict": "정답오류",
+      "flags": [
+        "unrelated",
+        "copied_from_other",
+        "structural:편집잔재"
+      ],
+      "reason": "정답"
+    },
+    "NCSX-v1-C021-Q06": {
+      "verdict": "일치",
+      "flags": [
+        "overclaim",
+        "structural:편집잔재"
+      ],
+      "reason": "없음"
+    },
+    "NCSX-v1-C021-Q07": {
+      "verdict": "정답오류",
+      "flags": [
+        "content_mismatch",
+        "structural:편집잔재"
+      ],
+      "reason": "정답"
+    },
+    "NCSX-v1-C022-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C022-Q02": {
+      "verdict": "문항결함",
+      "flags": [
+        "number_mismatch",
+        "overclaim"
+      ],
+      "reason": "문항"
+    },
+    "NCSX-v1-C022-Q05": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C022-Q06": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C022-Q07": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C023-Q03": {
+      "verdict": "문항결함",
+      "flags": [
+        "overclaim"
+      ],
+      "reason": "문항"
+    },
+    "NCSX-v1-C024-Q02": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "content_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C024-Q03": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C024-Q04": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C024-Q05": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C024-Q06": {
+      "verdict": "문항결함",
+      "flags": [
+        "content_mismatch",
+        "overclaim",
+        "structural:편집잔재"
+      ],
+      "reason": "문항"
+    },
+    "NCSX-v1-C024-Q07": {
+      "verdict": "문항결함",
+      "flags": [
+        "overclaim",
+        "structural:편집잔재"
+      ],
+      "reason": "문항"
+    },
+    "NCSX-v1-C026-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C027-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C027-Q02": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C027-Q04": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C027-Q05": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C027-Q06": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C030-Q03": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C031-Q05": {
+      "verdict": "문항결함",
+      "flags": [],
+      "reason": "문항"
+    },
+    "NCSX-v1-C033-Q03": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C033-Q04": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C033-Q06": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C033-Q07": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C034-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C034-Q03": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C034-Q04": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C034-Q05": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C034-Q06": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C035-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C036-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "structural:발문부재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C037-Q01": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:발문부재"
+      ],
+      "reason": "발문부재"
+    },
+    "NCSX-v1-C037-Q02": {
+      "verdict": "문항결함",
+      "flags": [
+        "overclaim",
+        "structural:편집잔재"
+      ],
+      "reason": "문항"
+    },
+    "NCSX-v1-C037-Q03": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:편집잔재"
+      ],
+      "reason": "편집잔재"
+    },
+    "NCSX-v1-C037-Q04": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:편집잔재"
+      ],
+      "reason": "편집잔재"
+    },
+    "NCSX-v1-C037-Q05": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:편집잔재"
+      ],
+      "reason": "편집잔재"
+    },
+    "NCSX-v1-C037-Q06": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:편집잔재"
+      ],
+      "reason": "편집잔재"
+    },
+    "NCSX-v1-C037-Q07": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:편집잔재"
+      ],
+      "reason": "편집잔재"
+    },
+    "NCSX-v1-C038-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "structural:발문부재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C038-Q02": {
+      "verdict": "일치",
+      "flags": [
+        "no_distractor_analysis",
+        "overclaim"
+      ],
+      "reason": "없음"
+    },
+    "NCSX-v1-C038-Q06": {
+      "verdict": "문항결함",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "문항"
+    },
+    "NCSX-v1-C038-Q07": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C039-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "structural:발문부재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C039-Q02": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:발문부재"
+      ],
+      "reason": "발문부재"
+    },
+    "NCSX-v1-C039-Q03": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "structural:발문부재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C039-Q04": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "structural:발문부재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C039-Q05": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "structural:발문부재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C039-Q06": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:발문부재"
+      ],
+      "reason": "발문부재"
+    },
+    "NCSX-v1-C039-Q07": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "overclaim",
+        "structural:발문부재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C040-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C040-Q02": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C040-Q03": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C040-Q04": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C040-Q05": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C040-Q07": {
+      "verdict": "해설부실",
+      "flags": [
+        "unrelated"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C042-Q02": {
+      "verdict": "독립판정재검토",
+      "flags": [
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "NCSX-v1-C044-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C044-Q02": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C044-Q05": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C044-Q06": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C046-Q06": {
+      "verdict": "문항결함",
+      "flags": [
+        "overclaim"
+      ],
+      "reason": "문항"
+    },
+    "NCSX-v1-C047-Q02": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "wrong_entity"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C047-Q05": {
+      "verdict": "독립판정재검토",
+      "flags": [],
+      "reason": "없음"
+    },
+    "NCSX-v1-C047-Q06": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C047-Q07": {
+      "verdict": "정답오류",
+      "flags": [
+        "calc_mismatch"
+      ],
+      "reason": "정답"
+    },
+    "NCSX-v1-C048-Q02": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:편집잔재"
+      ],
+      "reason": "편집잔재"
+    },
+    "NCSX-v1-C048-Q03": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:편집잔재"
+      ],
+      "reason": "편집잔재"
+    },
+    "NCSX-v1-C048-Q04": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:편집잔재"
+      ],
+      "reason": "편집잔재"
+    },
+    "NCSX-v1-C048-Q05": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:편집잔재"
+      ],
+      "reason": "편집잔재"
+    },
+    "NCSX-v1-C048-Q07": {
+      "verdict": "정답오류",
+      "flags": [
+        "calc_mismatch",
+        "number_mismatch"
+      ],
+      "reason": "정답"
+    },
+    "NCSX-v1-C050-Q06": {
+      "verdict": "문항결함",
+      "flags": [
+        "calc_mismatch"
+      ],
+      "reason": "문항"
+    },
+    "NCSX-v1-C051-Q01": {
+      "verdict": "문항결함",
+      "flags": [
+        "calc_mismatch",
+        "content_mismatch"
+      ],
+      "reason": "문항"
+    },
+    "NCSX-v1-C052-Q04": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C052-Q05": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch",
+        "structural:대화조각stem"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C052-Q06": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C052-Q07": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C053-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C053-Q02": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C053-Q04": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C053-Q05": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C053-Q06": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C055-Q01": {
+      "verdict": "독립판정재검토",
+      "flags": [],
+      "reason": "없음"
+    },
+    "NCSX-v1-C059-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C063-Q04": {
+      "verdict": "정답오류",
+      "flags": [
+        "calc_mismatch",
+        "number_mismatch",
+        "truncated_exp"
+      ],
+      "reason": "정답"
+    },
+    "NCSX-v1-C063-Q05": {
+      "verdict": "정답오류",
+      "flags": [
+        "calc_mismatch"
+      ],
+      "reason": "정답"
+    },
+    "NCSX-v1-C064-Q01": {
+      "verdict": "정답오류",
+      "flags": [
+        "calc_mismatch"
+      ],
+      "reason": "정답"
+    },
+    "NCSX-v1-C064-Q03": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C064-Q04": {
+      "verdict": "정답오류",
+      "flags": [
+        "calc_mismatch"
+      ],
+      "reason": "정답"
+    },
+    "NCSX-v1-C064-Q06": {
+      "verdict": "정답오류",
+      "flags": [
+        "calc_mismatch",
+        "number_mismatch"
+      ],
+      "reason": "정답"
+    },
+    "NCSX-v1-C065-Q01": {
+      "verdict": "문항결함",
+      "flags": [
+        "number_mismatch",
+        "content_mismatch"
+      ],
+      "reason": "문항"
+    },
+    "NCSX-v1-C065-Q02": {
+      "verdict": "정답오류",
+      "flags": [
+        "content_mismatch",
+        "calc_mismatch"
+      ],
+      "reason": "정답"
+    },
+    "NCSX-v1-C065-Q03": {
+      "verdict": "정답오류",
+      "flags": [
+        "content_mismatch",
+        "calc_mismatch"
+      ],
+      "reason": "정답"
+    },
+    "NCSX-v1-C066-Q06": {
+      "verdict": "문항결함",
+      "flags": [
+        "overclaim"
+      ],
+      "reason": "문항"
+    },
+    "NCSX-v1-C067-Q01": {
+      "verdict": "문항결함",
+      "flags": [
+        "calc_mismatch"
+      ],
+      "reason": "문항"
+    },
+    "NCSX-v1-C067-Q03": {
+      "verdict": "독립판정재검토",
+      "flags": [],
+      "reason": "없음"
+    },
+    "NCSX-v1-C067-Q05": {
+      "verdict": "문항결함",
+      "flags": [
+        "calc_mismatch"
+      ],
+      "reason": "문항"
+    },
+    "NCSX-v1-C067-Q06": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C068-Q01": {
+      "verdict": "문항결함",
+      "flags": [
+        "number_mismatch",
+        "content_mismatch"
+      ],
+      "reason": "문항"
+    },
+    "NCSX-v1-C068-Q02": {
+      "verdict": "정답오류",
+      "flags": [
+        "content_mismatch",
+        "calc_mismatch",
+        "structural:빈대괄호"
+      ],
+      "reason": "정답"
+    },
+    "NCSX-v1-C068-Q03": {
+      "verdict": "정답오류",
+      "flags": [
+        "content_mismatch",
+        "calc_mismatch",
+        "structural:빈대괄호"
+      ],
+      "reason": "정답"
+    },
+    "NCSX-v1-C068-Q04": {
+      "verdict": "정답오류",
+      "flags": [
+        "content_mismatch",
+        "calc_mismatch"
+      ],
+      "reason": "정답"
+    },
+    "NCSX-v1-C068-Q05": {
+      "verdict": "문항결함",
+      "flags": [
+        "truncated_exp",
+        "content_mismatch",
+        "structural:빈대괄호"
+      ],
+      "reason": "문항"
+    },
+    "NCSX-v1-C068-Q06": {
+      "verdict": "문항결함",
+      "flags": [
+        "number_mismatch",
+        "content_mismatch",
+        "structural:편집잔재"
+      ],
+      "reason": "문항"
+    },
+    "NCSX-v1-C068-Q07": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch",
+        "structural:편집잔재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C069-Q01": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C069-Q02": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C070-Q01": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch",
+        "structural:발문부재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C070-Q02": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:발문부재"
+      ],
+      "reason": "발문부재"
+    },
+    "NCSX-v1-C070-Q03": {
+      "verdict": "문항결함",
+      "flags": [
+        "number_mismatch",
+        "structural:발문부재"
+      ],
+      "reason": "문항"
+    },
+    "NCSX-v1-C070-Q04": {
+      "verdict": "문항결함",
+      "flags": [
+        "number_mismatch",
+        "structural:발문부재"
+      ],
+      "reason": "문항"
+    },
+    "NCSX-v1-C070-Q05": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch",
+        "structural:발문부재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C070-Q06": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:발문부재"
+      ],
+      "reason": "발문부재"
+    },
+    "NCSX-v1-C070-Q07": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch",
+        "structural:발문부재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C072-Q01": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C072-Q02": {
+      "verdict": "해설부실",
+      "flags": [
+        "wrong_entity",
+        "calc_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v1-C072-Q07": {
+      "verdict": "정답오류",
+      "flags": [
+        "calc_mismatch",
+        "overclaim"
+      ],
+      "reason": "정답"
+    },
+    "NCSX-v1-C073-Q01": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:편집잔재"
+      ],
+      "reason": "편집잔재"
+    },
+    "NCSX-v1-C073-Q02": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:편집잔재"
+      ],
+      "reason": "편집잔재"
+    },
+    "NCSX-v1-C076-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "unrelated",
+        "copied_from_other"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C077-Q01": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C078-Q01": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C078-Q05": {
+      "verdict": "독립판정재검토",
+      "flags": [],
+      "reason": "없음"
+    },
+    "NCSX-v2-C078-Q06": {
+      "verdict": "독립판정재검토",
+      "flags": [
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "NCSX-v2-C078-Q07": {
+      "verdict": "독립판정재검토",
+      "flags": [],
+      "reason": "없음"
+    },
+    "NCSX-v2-C079-Q01": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C080-Q01": {
+      "verdict": "독립판정재검토",
+      "flags": [
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "NCSX-v2-C080-Q02": {
+      "verdict": "독립판정재검토",
+      "flags": [],
+      "reason": "없음"
+    },
+    "NCSX-v2-C080-Q06": {
+      "verdict": "독립판정재검토",
+      "flags": [],
+      "reason": "없음"
+    },
+    "NCSX-v2-C080-Q07": {
+      "verdict": "독립판정재검토",
+      "flags": [],
+      "reason": "없음"
+    },
+    "NCSX-v2-C081-Q05": {
+      "verdict": "독립판정재검토",
+      "flags": [],
+      "reason": "문항"
+    },
+    "NCSX-v2-C081-Q07": {
+      "verdict": "문항결함",
+      "flags": [
+        "calc_mismatch"
+      ],
+      "reason": "문항"
+    },
+    "NCSX-v2-C082-Q05": {
+      "verdict": "정답오류",
+      "flags": [
+        "wrong_entity",
+        "content_mismatch"
+      ],
+      "reason": "정답"
+    },
+    "NCSX-v2-C082-Q06": {
+      "verdict": "문항결함",
+      "flags": [
+        "content_mismatch",
+        "overclaim"
+      ],
+      "reason": "문항"
+    },
+    "NCSX-v2-C083-Q01": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C083-Q02": {
+      "verdict": "정답오류",
+      "flags": [
+        "copied_from_other",
+        "unrelated"
+      ],
+      "reason": "정답"
+    },
+    "NCSX-v2-C083-Q03": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C083-Q04": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C083-Q05": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C083-Q06": {
+      "verdict": "독립판정재검토",
+      "flags": [
+        "number_mismatch",
+        "overclaim"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C083-Q07": {
+      "verdict": "독립판정재검토",
+      "flags": [],
+      "reason": "없음"
+    },
+    "NCSX-v2-C084-Q05": {
+      "verdict": "독립판정재검토",
+      "flags": [
+        "overclaim"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C085-Q01": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C086-Q03": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C086-Q04": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C086-Q05": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C086-Q07": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C088-Q06": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:대화조각stem"
+      ],
+      "reason": "대화조각stem"
+    },
+    "NCSX-v2-C089-Q04": {
+      "verdict": "독립판정재검토",
+      "flags": [],
+      "reason": "없음"
+    },
+    "NCSX-v2-C090-Q01": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:발문부재"
+      ],
+      "reason": "발문부재"
+    },
+    "NCSX-v2-C091-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C091-Q02": {
+      "verdict": "독립판정재검토",
+      "flags": [],
+      "reason": "없음"
+    },
+    "NCSX-v2-C091-Q03": {
+      "verdict": "독립판정재검토",
+      "flags": [],
+      "reason": "없음"
+    },
+    "NCSX-v2-C091-Q06": {
+      "verdict": "문항결함",
+      "flags": [
+        "calc_mismatch"
+      ],
+      "reason": "문항"
+    },
+    "NCSX-v2-C092-Q01": {
+      "verdict": "독립판정재검토",
+      "flags": [
+        "structural:발문부재"
+      ],
+      "reason": "없음"
+    },
+    "NCSX-v2-C092-Q03": {
+      "verdict": "독립판정재검토",
+      "flags": [
+        "structural:발문부재"
+      ],
+      "reason": "없음"
+    },
+    "NCSX-v2-C092-Q04": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:발문부재"
+      ],
+      "reason": "발문부재"
+    },
+    "NCSX-v2-C092-Q05": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:발문부재"
+      ],
+      "reason": "발문부재"
+    },
+    "NCSX-v2-C092-Q06": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:발문부재"
+      ],
+      "reason": "발문부재"
+    },
+    "NCSX-v2-C092-Q07": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:발문부재"
+      ],
+      "reason": "발문부재"
+    },
+    "NCSX-v2-C093-Q01": {
+      "verdict": "독립판정재검토",
+      "flags": [
+        "no_distractor_analysis",
+        "structural:발문부재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C093-Q04": {
+      "verdict": "문항결함",
+      "flags": [
+        "overclaim"
+      ],
+      "reason": "문항"
+    },
+    "NCSX-v2-C093-Q05": {
+      "verdict": "일치",
+      "flags": [
+        "overclaim"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C095-Q04": {
+      "verdict": "독립판정재검토",
+      "flags": [],
+      "reason": "없음"
+    },
+    "NCSX-v2-C096-Q01": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C096-Q02": {
+      "verdict": "정답오류",
+      "flags": [
+        "content_mismatch"
+      ],
+      "reason": "정답"
+    },
+    "NCSX-v2-C096-Q03": {
+      "verdict": "정답오류",
+      "flags": [
+        "number_mismatch",
+        "content_mismatch"
+      ],
+      "reason": "정답"
+    },
+    "NCSX-v2-C097-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C097-Q02": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C097-Q03": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C097-Q05": {
+      "verdict": "문항결함",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "문항"
+    },
+    "NCSX-v2-C097-Q06": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C098-Q04": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:대화조각stem"
+      ],
+      "reason": "대화조각stem"
+    },
+    "NCSX-v2-C099-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C102-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C102-Q02": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C103-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C103-Q02": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C105-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C105-Q05": {
+      "verdict": "일치",
+      "flags": [
+        "calc_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C105-Q06": {
+      "verdict": "해설부실",
+      "flags": [
+        "overclaim"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C106-Q04": {
+      "verdict": "독립판정재검토",
+      "flags": [],
+      "reason": "없음"
+    },
+    "NCSX-v2-C107-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C107-Q03": {
+      "verdict": "정답오류",
+      "flags": [
+        "content_mismatch"
+      ],
+      "reason": "정답"
+    },
+    "NCSX-v2-C107-Q05": {
+      "verdict": "문항결함",
+      "flags": [
+        "restates_choice",
+        "overclaim"
+      ],
+      "reason": "문항"
+    },
+    "NCSX-v2-C109-Q01": {
+      "verdict": "정답오류",
+      "flags": [
+        "calc_mismatch",
+        "number_mismatch",
+        "structural:발문부재"
+      ],
+      "reason": "정답"
+    },
+    "NCSX-v2-C109-Q06": {
+      "verdict": "문항결함",
+      "flags": [
+        "calc_mismatch"
+      ],
+      "reason": "문항"
+    },
+    "NCSX-v2-C110-Q02": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:빈대괄호"
+      ],
+      "reason": "빈대괄호"
+    },
+    "NCSX-v2-C110-Q06": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C111-Q03": {
+      "verdict": "해설부실",
+      "flags": [
+        "wrong_entity"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C112-Q04": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C112-Q05": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C112-Q06": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C112-Q07": {
+      "verdict": "독립판정재검토",
+      "flags": [],
+      "reason": "없음"
+    },
+    "NCSX-v2-C113-Q05": {
+      "verdict": "독립판정재검토",
+      "flags": [],
+      "reason": "없음"
+    },
+    "NCSX-v2-C114-Q01": {
+      "verdict": "문항결함",
+      "flags": [
+        "overclaim",
+        "structural:발문부재"
+      ],
+      "reason": "문항"
+    },
+    "NCSX-v2-C114-Q03": {
+      "verdict": "문항결함",
+      "flags": [
+        "overclaim"
+      ],
+      "reason": "문항"
+    },
+    "NCSX-v2-C114-Q06": {
+      "verdict": "정답오류",
+      "flags": [
+        "calc_mismatch",
+        "number_mismatch"
+      ],
+      "reason": "정답"
+    },
+    "NCSX-v2-C114-Q07": {
+      "verdict": "정답오류",
+      "flags": [
+        "calc_mismatch",
+        "number_mismatch"
+      ],
+      "reason": "정답"
+    },
+    "NCSX-v2-C115-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C115-Q02": {
+      "verdict": "문항결함",
+      "flags": [
+        "copied_from_other",
+        "no_distractor_analysis"
+      ],
+      "reason": "문항"
+    },
+    "NCSX-v2-C116-Q02": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C116-Q03": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C117-Q01": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C117-Q02": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C117-Q04": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C117-Q06": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C117-Q07": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C118-Q02": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C118-Q03": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C120-Q01": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C120-Q06": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C120-Q07": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C122-Q01": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C122-Q05": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C122-Q06": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch",
+        "structural:편집잔재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C123-Q01": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C123-Q02": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C123-Q03": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C123-Q04": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C123-Q06": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C123-Q07": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C125-Q03": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C125-Q06": {
+      "verdict": "독립판정재검토",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C126-Q01": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:발문부재"
+      ],
+      "reason": "발문부재"
+    },
+    "NCSX-v2-C127-Q01": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C127-Q06": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:대화조각stem"
+      ],
+      "reason": "대화조각stem"
+    },
+    "NCSX-v2-C128-Q01": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C128-Q03": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C128-Q04": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C128-Q05": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch",
+        "structural:빈대괄호"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C128-Q06": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:빈대괄호"
+      ],
+      "reason": "빈대괄호"
+    },
+    "NCSX-v2-C129-Q03": {
+      "verdict": "독립판정재검토",
+      "flags": [],
+      "reason": "없음"
+    },
+    "NCSX-v2-C130-Q02": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C130-Q03": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C130-Q04": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C130-Q06": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C130-Q07": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C131-Q02": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:편집잔재"
+      ],
+      "reason": "편집잔재"
+    },
+    "NCSX-v2-C131-Q03": {
+      "verdict": "독립판정재검토",
+      "flags": [
+        "number_mismatch",
+        "structural:편집잔재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C131-Q04": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "structural:편집잔재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C131-Q05": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "structural:편집잔재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C131-Q06": {
+      "verdict": "독립판정재검토",
+      "flags": [
+        "number_mismatch",
+        "structural:편집잔재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C131-Q07": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "structural:편집잔재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C132-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C132-Q02": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C132-Q04": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C132-Q05": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C133-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C133-Q04": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C133-Q05": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C134-Q03": {
+      "verdict": "일치",
+      "flags": [
+        "wrong_entity"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C134-Q07": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C135-Q01": {
+      "verdict": "독립판정재검토",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C135-Q02": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "structural:편집잔재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C135-Q03": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "structural:편집잔재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C135-Q04": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:편집잔재"
+      ],
+      "reason": "편집잔재"
+    },
+    "NCSX-v2-C135-Q05": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "structural:편집잔재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C135-Q07": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C136-Q01": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C136-Q04": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C136-Q05": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C136-Q06": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C136-Q07": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C137-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "structural:발문부재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C137-Q02": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C138-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C138-Q02": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C138-Q03": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C138-Q04": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C138-Q05": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C138-Q06": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C139-Q01": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:빈대괄호"
+      ],
+      "reason": "빈대괄호"
+    },
+    "NCSX-v2-C139-Q02": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:빈대괄호"
+      ],
+      "reason": "빈대괄호"
+    },
+    "NCSX-v2-C139-Q03": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:빈대괄호"
+      ],
+      "reason": "빈대괄호"
+    },
+    "NCSX-v2-C139-Q04": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:빈대괄호"
+      ],
+      "reason": "빈대괄호"
+    },
+    "NCSX-v2-C139-Q05": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:빈대괄호"
+      ],
+      "reason": "빈대괄호"
+    },
+    "NCSX-v2-C139-Q06": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:빈대괄호"
+      ],
+      "reason": "빈대괄호"
+    },
+    "NCSX-v2-C139-Q07": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:빈대괄호"
+      ],
+      "reason": "빈대괄호"
+    },
+    "NCSX-v2-C140-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C141-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C141-Q02": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "no_distractor_analysis"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C141-Q04": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C141-Q05": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C141-Q06": {
+      "verdict": "독립판정재검토",
+      "flags": [],
+      "reason": "없음"
+    },
+    "NCSX-v2-C142-Q02": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C142-Q06": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C143-Q01": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C143-Q02": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch",
+        "structural:편집잔재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C143-Q03": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch",
+        "structural:편집잔재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C143-Q04": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:편집잔재"
+      ],
+      "reason": "편집잔재"
+    },
+    "NCSX-v2-C143-Q05": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "structural:편집잔재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C144-Q02": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "content_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C144-Q03": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "content_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C144-Q04": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "content_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C144-Q05": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "content_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C144-Q06": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "content_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C145-Q01": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C145-Q03": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C145-Q04": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C145-Q05": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C147-Q01": {
+      "verdict": "독립판정재검토",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C147-Q05": {
+      "verdict": "문항결함",
+      "flags": [
+        "overclaim"
+      ],
+      "reason": "문항"
+    },
+    "NCSX-v2-C147-Q07": {
+      "verdict": "문항결함",
+      "flags": [
+        "overclaim"
+      ],
+      "reason": "문항"
+    },
+    "NCSX-v2-C148-Q02": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C148-Q04": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C148-Q05": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C148-Q07": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C150-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C150-Q03": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C150-Q04": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C150-Q05": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C150-Q06": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C150-Q07": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C151-Q01": {
+      "verdict": "독립판정재검토",
+      "flags": [],
+      "reason": "없음"
+    },
+    "NCSX-v2-C152-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C152-Q02": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C152-Q03": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C152-Q04": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C152-Q05": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C152-Q06": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v2-C152-Q07": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v3-C218-Q01": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:발문부재"
+      ],
+      "reason": "발문부재"
+    },
+    "NCSX-v3-C218-Q02": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v3-C218-Q03": {
+      "verdict": "독립판정재검토",
+      "flags": [
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "NCSX-v3-C218-Q07": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v3-C219-Q01": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "structural:발문부재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v3-C219-Q02": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v3-C219-Q03": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v3-C219-Q04": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v3-C219-Q05": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v3-C219-Q06": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v3-C219-Q07": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v3-C220-Q01": {
+      "verdict": "독립판정재검토",
+      "flags": [
+        "structural:발문부재"
+      ],
+      "reason": "없음"
+    },
+    "NCSX-v3-C220-Q06": {
+      "verdict": "독립판정재검토",
+      "flags": [],
+      "reason": "없음"
+    },
+    "NCSX-v3-C222-Q01": {
+      "verdict": "문항결함",
+      "flags": [],
+      "reason": "문항"
+    },
+    "NCSX-v3-C222-Q02": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:편집잔재"
+      ],
+      "reason": "편집잔재"
+    },
+    "NCSX-v3-C222-Q03": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:편집잔재"
+      ],
+      "reason": "편집잔재"
+    },
+    "NCSX-v3-C222-Q04": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:편집잔재"
+      ],
+      "reason": "편집잔재"
+    },
+    "NCSX-v3-C222-Q05": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:편집잔재"
+      ],
+      "reason": "편집잔재"
+    },
+    "NCSX-v3-C222-Q06": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:편집잔재"
+      ],
+      "reason": "편집잔재"
+    },
+    "NCSX-v3-C222-Q07": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "structural:편집잔재"
+      ],
+      "reason": "해설"
+    },
+    "NCSX-v3-C223-Q07": {
+      "verdict": "문항결함",
+      "flags": [
+        "calc_mismatch",
+        "overclaim"
+      ],
+      "reason": "문항"
+    },
+    "NCSX-v3-C224-Q06": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "RW-enterprise-NCS-C137-diagnosis": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "RW-enterprise-NCS-C138-diagnosis": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "RW-enterprise-NCS-C145-diagnosis": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "RW-enterprise-NCS-C146-basic-1": {
+      "verdict": "일치",
+      "flags": [
+        "calc_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "RW-enterprise-NCS-C146-basic-2": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "RW-enterprise-NCS-C146-diagnosis": {
+      "verdict": "해설부실",
+      "flags": [
+        "wrong_entity"
+      ],
+      "reason": "해설"
+    },
+    "RW-enterprise-NCS-C146-retry-2": {
+      "verdict": "해설부실",
+      "flags": [
+        "calc_mismatch",
+        "overclaim"
+      ],
+      "reason": "해설"
+    },
+    "RW-enterprise-NCS-C147-diagnosis": {
+      "verdict": "독립판정재검토",
+      "flags": [],
+      "reason": "없음"
+    },
+    "RW-enterprise-NCS-C148-diagnosis": {
+      "verdict": "문항결함",
+      "flags": [
+        "restates_choice",
+        "structural:빈대괄호"
+      ],
+      "reason": "문항"
+    },
+    "RW-enterprise-NCS-C202-diagnosis": {
+      "verdict": "해설부실",
+      "flags": [
+        "content_mismatch",
+        "no_distractor_analysis"
+      ],
+      "reason": "해설"
+    },
+    "RW-enterprise-NCS-C204-basic-2": {
+      "verdict": "독립판정재검토",
+      "flags": [],
+      "reason": "없음"
+    },
+    "RW-enterprise-NCS-C204-retry-2": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch",
+        "no_distractor_analysis"
+      ],
+      "reason": "해설"
+    },
+    "RW-enterprise-NCS-C205-diagnosis": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "structural:발문부재"
+      ],
+      "reason": "해설"
+    },
+    "RW-enterprise-NCS-C206-basic-1": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch",
+        "restates_choice"
+      ],
+      "reason": "해설"
+    },
+    "RW-enterprise-NCS-C206-basic-2": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch",
+        "restates_choice"
+      ],
+      "reason": "해설"
+    },
+    "RW-enterprise-NCS-C206-diagnosis": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch",
+        "restates_choice"
+      ],
+      "reason": "해설"
+    },
+    "RW-enterprise-NCS-C206-standard-1": {
+      "verdict": "문항결함",
+      "flags": [
+        "number_mismatch",
+        "restates_choice"
+      ],
+      "reason": "문항"
+    },
+    "RW-enterprise-NCS-C206-standard-2": {
+      "verdict": "문항결함",
+      "flags": [
+        "number_mismatch",
+        "restates_choice"
+      ],
+      "reason": "문항"
+    },
+    "RW-enterprise-NCS-C207-basic-1": {
+      "verdict": "해설부실",
+      "flags": [
+        "calc_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "RW-enterprise-NCS-C207-basic-2": {
+      "verdict": "문항결함",
+      "flags": [
+        "calc_mismatch",
+        "number_mismatch"
+      ],
+      "reason": "문항"
+    },
+    "RW-enterprise-NCS-C207-diagnosis": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "RW-enterprise-NCS-C207-retry-1": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch",
+        "calc_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "RW-enterprise-NCS-C207-retry-2": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch",
+        "calc_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "RW-enterprise-NCS-C207-standard-3": {
+      "verdict": "문항결함",
+      "flags": [
+        "calc_mismatch",
+        "number_mismatch"
+      ],
+      "reason": "문항"
+    },
+    "RW-enterprise-NCS-C207-standard-4": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch",
+        "calc_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "RW-enterprise-NCS-C208-diagnosis": {
+      "verdict": "해설부실",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "해설"
+    },
+    "RW-enterprise-NCS-C209-diagnosis": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "RW-enterprise-NCS-C210-diagnosis": {
+      "verdict": "문항결함",
+      "flags": [
+        "overclaim"
+      ],
+      "reason": "문항"
+    },
+    "RW-enterprise-NCS-C211-diagnosis": {
+      "verdict": "문항결함",
+      "flags": [
+        "number_mismatch",
+        "restates_choice",
+        "unrelated"
+      ],
+      "reason": "문항"
+    },
+    "RW-enterprise-NCS-C212-diagnosis": {
+      "verdict": "문항결함",
+      "flags": [
+        "number_mismatch",
+        "restates_choice"
+      ],
+      "reason": "문항"
+    },
+    "RW-enterprise-NCS-INT-025": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "RW-enterprise-NCS-NEW-인적성-051": {
+      "verdict": "일치",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "없음"
+    },
+    "RW-enterprise-NCS-TECH-020": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "RW-finance-NCS-C113-basic-1": {
+      "verdict": "해설부실",
+      "flags": [
+        "copied_from_other",
+        "wrong_entity"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-C114-basic-2": {
+      "verdict": "문항결함",
+      "flags": [
+        "content_mismatch",
+        "calc_mismatch"
+      ],
+      "reason": "문항"
+    },
+    "RW-finance-NCS-C115-basic-1": {
+      "verdict": "문항결함",
+      "flags": [
+        "no_distractor_analysis",
+        "structural:빈대괄호"
+      ],
+      "reason": "문항"
+    },
+    "RW-finance-NCS-C115-basic-2": {
+      "verdict": "문항결함",
+      "flags": [
+        "no_distractor_analysis",
+        "structural:빈대괄호"
+      ],
+      "reason": "문항"
+    },
+    "RW-finance-NCS-C115-diagnosis": {
+      "verdict": "문항결함",
+      "flags": [
+        "no_distractor_analysis",
+        "structural:빈대괄호"
+      ],
+      "reason": "문항"
+    },
+    "RW-finance-NCS-C115-retry-1": {
+      "verdict": "문항결함",
+      "flags": [
+        "no_distractor_analysis"
+      ],
+      "reason": "문항"
+    },
+    "RW-finance-NCS-C115-retry-2": {
+      "verdict": "문항결함",
+      "flags": [
+        "no_distractor_analysis"
+      ],
+      "reason": "문항"
+    },
+    "RW-finance-NCS-C115-standard-3": {
+      "verdict": "문항결함",
+      "flags": [
+        "no_distractor_analysis",
+        "structural:빈대괄호"
+      ],
+      "reason": "문항"
+    },
+    "RW-finance-NCS-C115-standard-4": {
+      "verdict": "문항결함",
+      "flags": [
+        "no_distractor_analysis",
+        "structural:빈대괄호"
+      ],
+      "reason": "문항"
+    },
+    "RW-finance-NCS-C116-basic-1": {
+      "verdict": "해설부실",
+      "flags": [
+        "wrong_entity"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-C116-basic-2": {
+      "verdict": "해설부실",
+      "flags": [
+        "wrong_entity"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-C116-diagnosis": {
+      "verdict": "해설부실",
+      "flags": [
+        "wrong_entity"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-C116-retry-1": {
+      "verdict": "해설부실",
+      "flags": [
+        "wrong_entity"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-C116-retry-2": {
+      "verdict": "해설부실",
+      "flags": [
+        "wrong_entity"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-C137-diagnosis": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-C138-diagnosis": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "content_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-C165-basic-1": {
+      "verdict": "해설부실",
+      "flags": [
+        "content_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-C165-diagnosis": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-C165-retry-1": {
+      "verdict": "해설오류",
+      "flags": [
+        "content_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-C165-standard-3": {
+      "verdict": "해설오류",
+      "flags": [
+        "content_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-C166-diagnosis": {
+      "verdict": "해설부실",
+      "flags": [
+        "unrelated",
+        "no_distractor_analysis"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-C167-basic-2": {
+      "verdict": "문항결함",
+      "flags": [
+        "content_mismatch"
+      ],
+      "reason": "문항"
+    },
+    "RW-finance-NCS-C167-standard-1": {
+      "verdict": "해설부실",
+      "flags": [
+        "wrong_entity"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-C168-diagnosis": {
+      "verdict": "해설부실",
+      "flags": [
+        "no_distractor_analysis"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-C169-basic-2": {
+      "verdict": "해설부실",
+      "flags": [
+        "content_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-C169-diagnosis": {
+      "verdict": "해설오류",
+      "flags": [
+        "content_mismatch",
+        "wrong_entity"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-C169-standard-2": {
+      "verdict": "해설부실",
+      "flags": [
+        "content_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-C170-diagnosis": {
+      "verdict": "해설부실",
+      "flags": [
+        "content_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-C171-diagnosis": {
+      "verdict": "해설부실",
+      "flags": [
+        "content_mismatch",
+        "no_distractor_analysis"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-C172-basic-1": {
+      "verdict": "해설부실",
+      "flags": [
+        "content_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-C172-diagnosis": {
+      "verdict": "해설부실",
+      "flags": [
+        "content_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-C172-retry-1": {
+      "verdict": "해설부실",
+      "flags": [
+        "content_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-C172-retry-2": {
+      "verdict": "해설부실",
+      "flags": [
+        "content_mismatch",
+        "overclaim"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-C172-standard-1": {
+      "verdict": "해설부실",
+      "flags": [
+        "content_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-C172-standard-2": {
+      "verdict": "해설부실",
+      "flags": [
+        "content_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-C173-diagnosis": {
+      "verdict": "독립판정재검토",
+      "flags": [],
+      "reason": "없음"
+    },
+    "RW-finance-NCS-C177-basic-1": {
+      "verdict": "해설부실",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-C177-basic-2": {
+      "verdict": "해설부실",
+      "flags": [
+        "unrelated",
+        "no_distractor_analysis"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-C177-diagnosis": {
+      "verdict": "해설부실",
+      "flags": [
+        "unrelated",
+        "no_distractor_analysis"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-C177-standard-1": {
+      "verdict": "문항결함",
+      "flags": [
+        "unrelated",
+        "no_distractor_analysis"
+      ],
+      "reason": "문항"
+    },
+    "RW-finance-NCS-C177-standard-2": {
+      "verdict": "문항결함",
+      "flags": [
+        "unrelated",
+        "no_distractor_analysis"
+      ],
+      "reason": "문항"
+    },
+    "RW-finance-NCS-C179-standard-1": {
+      "verdict": "해설부실",
+      "flags": [
+        "content_mismatch",
+        "no_distractor_analysis"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-C179-standard-2": {
+      "verdict": "해설부실",
+      "flags": [
+        "content_mismatch",
+        "no_distractor_analysis"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-C180-diagnosis": {
+      "verdict": "해설부실",
+      "flags": [
+        "content_mismatch",
+        "no_distractor_analysis"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-C181-basic-1": {
+      "verdict": "해설부실",
+      "flags": [
+        "content_mismatch",
+        "no_distractor_analysis"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-C181-basic-2": {
+      "verdict": "문항결함",
+      "flags": [
+        "no_distractor_analysis"
+      ],
+      "reason": "문항"
+    },
+    "RW-finance-NCS-C181-retry-1": {
+      "verdict": "독립판정재검토",
+      "flags": [],
+      "reason": "없음"
+    },
+    "RW-finance-NCS-C181-retry-2": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "RW-finance-NCS-C181-standard-1": {
+      "verdict": "독립판정재검토",
+      "flags": [
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "RW-finance-NCS-C183-diagnosis": {
+      "verdict": "문항결함",
+      "flags": [],
+      "reason": "문항"
+    },
+    "RW-finance-NCS-C186-basic-2": {
+      "verdict": "정답오류",
+      "flags": [
+        "unrelated",
+        "overclaim"
+      ],
+      "reason": "정답"
+    },
+    "RW-finance-NCS-C186-diagnosis": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "RW-finance-NCS-C186-standard-2": {
+      "verdict": "해설부실",
+      "flags": [
+        "unrelated",
+        "no_distractor_analysis"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-C193-basic-1": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:빈대괄호"
+      ],
+      "reason": "빈대괄호"
+    },
+    "RW-finance-NCS-C193-basic-2": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:빈대괄호"
+      ],
+      "reason": "빈대괄호"
+    },
+    "RW-finance-NCS-C193-diagnosis": {
+      "verdict": "구조결함",
+      "flags": [
+        "structural:빈대괄호"
+      ],
+      "reason": "빈대괄호"
+    },
+    "RW-finance-NCS-C197-basic-2": {
+      "verdict": "해설오류",
+      "flags": [
+        "content_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-C197-retry-1": {
+      "verdict": "문항결함",
+      "flags": [
+        "content_mismatch",
+        "no_distractor_analysis"
+      ],
+      "reason": "문항"
+    },
+    "RW-finance-NCS-C197-standard-2": {
+      "verdict": "문항결함",
+      "flags": [],
+      "reason": "문항"
+    },
+    "RW-finance-NCS-C213-guided": {
+      "verdict": "해설부실",
+      "flags": [
+        "overclaim",
+        "no_distractor_analysis"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-INT-025": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "RW-finance-NCS-NEW-경영상식-020": {
+      "verdict": "정답오류",
+      "flags": [
+        "number_mismatch",
+        "content_mismatch"
+      ],
+      "reason": "정답"
+    },
+    "RW-finance-NCS-NEW-경영상식-022": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-NEW-경영상식-031": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-NEW-경영상식-035": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-NEW-경영상식-039": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-NEW-경영상식-047": {
+      "verdict": "해설오류",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "RW-finance-NCS-NEW-일반상식-028": {
+      "verdict": "문항결함",
+      "flags": [
+        "no_distractor_analysis"
+      ],
+      "reason": "문항"
+    },
+    "RW-public-NCS-C113-basic-1": {
+      "verdict": "해설부실",
+      "flags": [
+        "copied_from_other",
+        "wrong_entity"
+      ],
+      "reason": "해설"
+    },
+    "RW-public-NCS-C114-basic-2": {
+      "verdict": "문항결함",
+      "flags": [
+        "calc_mismatch",
+        "content_mismatch"
+      ],
+      "reason": "문항"
+    },
+    "RW-public-NCS-C115-basic-1": {
+      "verdict": "문항결함",
+      "flags": [
+        "overclaim",
+        "no_distractor_analysis",
+        "structural:빈대괄호"
+      ],
+      "reason": "문항"
+    },
+    "RW-public-NCS-C115-basic-2": {
+      "verdict": "문항결함",
+      "flags": [
+        "overclaim",
+        "no_distractor_analysis",
+        "structural:빈대괄호"
+      ],
+      "reason": "문항"
+    },
+    "RW-public-NCS-C115-diagnosis": {
+      "verdict": "문항결함",
+      "flags": [
+        "overclaim",
+        "no_distractor_analysis",
+        "structural:빈대괄호"
+      ],
+      "reason": "문항"
+    },
+    "RW-public-NCS-C115-retry-1": {
+      "verdict": "문항결함",
+      "flags": [
+        "overclaim",
+        "no_distractor_analysis"
+      ],
+      "reason": "문항"
+    },
+    "RW-public-NCS-C115-retry-2": {
+      "verdict": "문항결함",
+      "flags": [
+        "overclaim",
+        "no_distractor_analysis"
+      ],
+      "reason": "문항"
+    },
+    "RW-public-NCS-C115-standard-3": {
+      "verdict": "문항결함",
+      "flags": [
+        "overclaim",
+        "no_distractor_analysis",
+        "structural:빈대괄호"
+      ],
+      "reason": "문항"
+    },
+    "RW-public-NCS-C115-standard-4": {
+      "verdict": "문항결함",
+      "flags": [
+        "overclaim",
+        "no_distractor_analysis",
+        "structural:빈대괄호"
+      ],
+      "reason": "문항"
+    },
+    "RW-public-NCS-C116-basic-1": {
+      "verdict": "일치",
+      "flags": [
+        "wrong_entity"
+      ],
+      "reason": "해설"
+    },
+    "RW-public-NCS-C116-basic-2": {
+      "verdict": "일치",
+      "flags": [
+        "wrong_entity"
+      ],
+      "reason": "해설"
+    },
+    "RW-public-NCS-C116-diagnosis": {
+      "verdict": "일치",
+      "flags": [
+        "wrong_entity"
+      ],
+      "reason": "해설"
+    },
+    "RW-public-NCS-C116-retry-1": {
+      "verdict": "일치",
+      "flags": [
+        "wrong_entity"
+      ],
+      "reason": "해설"
+    },
+    "RW-public-NCS-C116-retry-2": {
+      "verdict": "해설부실",
+      "flags": [
+        "wrong_entity"
+      ],
+      "reason": "해설"
+    },
+    "RW-public-NCS-C118-basic-1": {
+      "verdict": "해설부실",
+      "flags": [
+        "content_mismatch",
+        "no_distractor_analysis"
+      ],
+      "reason": "해설"
+    },
+    "RW-public-NCS-C119-diagnosis": {
+      "verdict": "문항결함",
+      "flags": [
+        "content_mismatch"
+      ],
+      "reason": "문항"
+    },
+    "RW-public-NCS-C137-diagnosis": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "RW-public-NCS-C138-diagnosis": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch",
+        "content_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "RW-public-NCS-C145-diagnosis": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "RW-public-NCS-C146-basic-1": {
+      "verdict": "일치",
+      "flags": [
+        "wrong_entity"
+      ],
+      "reason": "해설"
+    },
+    "RW-public-NCS-C146-basic-2": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "RW-public-NCS-C146-diagnosis": {
+      "verdict": "일치",
+      "flags": [
+        "wrong_entity"
+      ],
+      "reason": "해설"
+    },
+    "RW-public-NCS-C146-retry-2": {
+      "verdict": "해설부실",
+      "flags": [
+        "overclaim"
+      ],
+      "reason": "해설"
+    },
+    "RW-public-NCS-C147-diagnosis": {
+      "verdict": "해설부실",
+      "flags": [
+        "number_mismatch"
+      ],
+      "reason": "해설"
+    },
+    "RW-public-NCS-C148-diagnosis": {
+      "verdict": "문항결함",
+      "flags": [
+        "restates_choice",
+        "number_mismatch",
+        "structural:빈대괄호"
+      ],
+      "reason": "문항"
+    },
+    "RW-public-NCS-INT-025": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "RW-public-NCS-ORG-036": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "RW-public-NCS-ORG-037": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "RW-public-NCS-ORG-038": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "RW-public-NCS-ORG-039": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    },
+    "RW-public-NCS-ORG-047": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice"
+      ],
+      "reason": "없음"
+    },
+    "RW-public-NCS-ORG-049": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice"
+      ],
+      "reason": "없음"
+    },
+    "RW-public-NCS-ORG-053": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice"
+      ],
+      "reason": "없음"
+    },
+    "RW-public-NCS-TECH-020": {
+      "verdict": "일치",
+      "flags": [
+        "restates_choice",
+        "no_distractor_analysis"
+      ],
+      "reason": "없음"
+    }
+  },
+  "augmentDistractors": [
+    "C03-2-Q07-LEARN-V1",
+    "C13-12-Q04-LEARN-V1",
+    "C14-13-Q02-LEARN-V1",
+    "C14-13-Q03-LEARN-V1",
+    "C14-13-Q04-LEARN-V1",
+    "C14-13-Q06-LEARN-V1",
+    "C15-14-Q01-LEARN-V1",
+    "C15-14-Q02-LEARN-V1",
+    "C15-14-Q04-LEARN-V1",
+    "C15-14-Q05-LEARN-V1",
+    "C18-17-Q01-LEARN-V1",
+    "C18-17-Q03-LEARN-V1",
+    "C20-19-Q02-LEARN-V1",
+    "C20-19-Q05-LEARN-V1",
+    "C22-21-Q09-LEARN-V1",
+    "C23-22-Q01-LEARN-V1",
+    "C23-22-Q03-LEARN-V1",
+    "C23-22-Q05-LEARN-V1",
+    "C23-22-Q06-LEARN-V1",
+    "C25-24-Q02-LEARN-V1",
+    "C25-24-Q03-LEARN-V1",
+    "C25-24-Q04-LEARN-V1",
+    "C25-24-Q05-LEARN-V1",
+    "C25-24-Q06-LEARN-V1",
+    "C25-24-Q07-LEARN-V1",
+    "C25-24-Q09-LEARN-V1",
+    "C27-26-Q05-LEARN-V1",
+    "C27-26-Q06-LEARN-V1",
+    "C27-26-Q07-LEARN-V1",
+    "C29-28-Q04-LEARN-V1",
+    "C29-28-Q05-LEARN-V1",
+    "C29-28-Q07-LEARN-V1",
+    "C30-29-Q02-LEARN-V1",
+    "C30-29-Q03-LEARN-V1",
+    "C30-29-Q04-LEARN-V1",
+    "C30-29-Q06-LEARN-V1",
+    "C30-29-Q07-LEARN-V1",
+    "C31-30-Q01-LEARN-V1",
+    "C31-30-Q03-LEARN-V1",
+    "C31-30-Q04-LEARN-V1",
+    "C31-30-Q05-LEARN-V1",
+    "C31-30-Q06-LEARN-V1",
+    "C31-30-Q07-LEARN-V1",
+    "C31-30-Q08-LEARN-V1",
+    "C33-32-Q04-LEARN-V1",
+    "C33-32-Q09-LEARN-V1",
+    "C35-34-Q05-LEARN-V1",
+    "C35-34-Q06-LEARN-V1",
+    "C35-34-Q08-LEARN-V1",
+    "C37-36-Q05-LEARN-V1",
+    "C37-36-Q07-LEARN-V1",
+    "C37-36-Q09-LEARN-V1",
+    "C38-37-Q03-LEARN-V1",
+    "C38-37-Q04-LEARN-V1",
+    "C38-37-Q09-LEARN-V1",
+    "C38-38-Q03-LEARN-V1",
+    "C38-38-Q04-LEARN-V1",
+    "C38-38-Q05-LEARN-V1",
+    "C38-38-Q06-LEARN-V1",
+    "C38-38-Q07-LEARN-V1",
+    "C38-38-Q09-LEARN-V1",
+    "C39-39-Q01-LEARN-V1",
+    "C39-39-Q02-LEARN-V1",
+    "C39-39-Q09-LEARN-V1",
+    "CD01",
+    "CD02",
+    "CD05",
+    "CD07",
+    "CD10",
+    "CD11",
+    "IV-A36-3",
+    "IV-S03-3",
+    "JC-SET-KO01-3",
+    "JC26-KO-LISTEN-03",
+    "NCS-C125-diagnosis",
+    "NCS-C126-diagnosis",
+    "NCS-C127-basic-1",
+    "NCS-C127-basic-2",
+    "NCS-C127-diagnosis",
+    "NCS-C127-retry-1",
+    "NCS-C127-retry-2",
+    "NCS-C127-standard-1",
+    "NCS-C128-basic-1",
+    "NCS-C128-basic-2",
+    "NCS-C128-diagnosis",
+    "NCS-C128-standard-1",
+    "NCS-C128-standard-2",
+    "NCS-INFO-024",
+    "NCS-INFO-026",
+    "NCS-INFO-027",
+    "NCS-INFO-040",
+    "NCS-TECH-027",
+    "NCS26-COM-FOREIGN-01",
+    "NCS26-COM-FOREIGN-02",
+    "NCS26-COM-FOREIGN-03",
+    "NCS26-COVER-001",
+    "NCS26-COVER-002",
+    "NCS26-COVER-003",
+    "NCS26-COVER-004",
+    "NCS26-COVER-008",
+    "NCS26-COVER-009",
+    "NCS26-COVER-010",
+    "NCS26-COVER-011",
+    "NCS26-COVER-015",
+    "NCS26-COVER-016",
+    "NCS26-COVER-017",
+    "NCS26-COVER-018",
+    "NCS26-COVER-019",
+    "NCS26-COVER-020",
+    "NCS26-COVER-021",
+    "NCS26-COVER-022",
+    "NCS26-COVER-023",
+    "NCS26-COVER-024",
+    "NCS26-COVER-025",
+    "NCS26-COVER-026",
+    "NCS26-COVER-027",
+    "NCS26-COVER-028",
+    "NCS26-COVER-029",
+    "NCS26-COVER-030",
+    "NCS26-COVER-031",
+    "NCS26-COVER-032",
+    "NCS26-COVER-033",
+    "NCS26-COVER-034",
+    "NCS26-COVER-035",
+    "NCS26-COVER-036",
+    "NCS26-COVER-037",
+    "NCS26-COVER-038",
+    "NCS26-COVER-039",
+    "NCS26-COVER-040",
+    "NCS26-COVER-041",
+    "NCS26-COVER-042",
+    "NCS26-COVER-043",
+    "NCS26-COVER-044",
+    "NCS26-COVER-045",
+    "NCS26-COVER-046",
+    "NCS26-COVER-047",
+    "NCS26-COVER-050",
+    "NCS26-COVER-051",
+    "NCS26-COVER-052",
+    "NCS26-DIG-AI-01",
+    "NCS26-DIG-AI-02",
+    "NCS26-DIG-AI-03",
+    "NCS26-ETH-SAFE-01",
+    "NCS26-ETH-SAFE-02",
+    "NCS26-ETH-SAFE-03",
+    "NCS26-SELF-ADAPT-01",
+    "NCS26-SELF-ADAPT-02",
+    "NCS26-SELF-ADAPT-03",
+    "NCS26-SUP-ADP-07",
+    "NCS26-SUP-ADP-09",
+    "NCS26-SUP-ADP-14",
+    "NCS26-SUP-ADP-24",
+    "NCS26-SUP-AI-02",
+    "NCS26-SUP-AI-03",
+    "NCS26-SUP-AI-06",
+    "NCS26-SUP-AI-08",
+    "NCS26-SUP-AI-13",
+    "NCS26-SUP-AI-18",
+    "NCS26-SUP-FOR-01",
+    "NCS26-SUP-FOR-03",
+    "NCS26-SUP-FOR-05",
+    "NCS26-SUP-FOR-06",
+    "NCS26-SUP-LED-01",
+    "NCS26-SUP-LED-05",
+    "NCS26-SUP-LED-06",
+    "NCS26-SUP-LED-12",
+    "NCSX-v1-C002-Q02",
+    "NCSX-v1-C004-Q05",
+    "NCSX-v1-C004-Q07",
+    "NCSX-v1-C010-Q02",
+    "NCSX-v1-C010-Q04",
+    "NCSX-v1-C010-Q05",
+    "NCSX-v1-C010-Q07",
+    "NCSX-v1-C011-Q02",
+    "NCSX-v1-C014-Q02",
+    "NCSX-v1-C014-Q03",
+    "NCSX-v1-C014-Q04",
+    "NCSX-v1-C014-Q05",
+    "NCSX-v1-C019-Q03",
+    "NCSX-v1-C019-Q04",
+    "NCSX-v1-C019-Q05",
+    "NCSX-v1-C023-Q02",
+    "NCSX-v1-C023-Q04",
+    "NCSX-v1-C023-Q05",
+    "NCSX-v1-C035-Q02",
+    "NCSX-v1-C035-Q03",
+    "NCSX-v1-C035-Q04",
+    "NCSX-v1-C035-Q05",
+    "NCSX-v1-C035-Q06",
+    "NCSX-v1-C035-Q07",
+    "NCSX-v1-C036-Q02",
+    "NCSX-v1-C036-Q03",
+    "NCSX-v1-C036-Q04",
+    "NCSX-v1-C036-Q05",
+    "NCSX-v1-C036-Q06",
+    "NCSX-v1-C036-Q07",
+    "NCSX-v1-C038-Q03",
+    "NCSX-v1-C038-Q04",
+    "NCSX-v1-C038-Q05",
+    "NCSX-v1-C041-Q01",
+    "NCSX-v1-C041-Q03",
+    "NCSX-v1-C041-Q05",
+    "NCSX-v1-C042-Q03",
+    "NCSX-v1-C042-Q04",
+    "NCSX-v1-C042-Q05",
+    "NCSX-v2-C100-Q01",
+    "NCSX-v2-C100-Q02",
+    "NCSX-v2-C100-Q03",
+    "NCSX-v2-C100-Q04",
+    "NCSX-v2-C119-Q02",
+    "NCSX-v2-C119-Q03",
+    "NCSX-v2-C119-Q05",
+    "NCSX-v2-C119-Q06",
+    "NCSX-v2-C119-Q07",
+    "NCSX-v2-C125-Q01",
+    "NCSX-v2-C127-Q02",
+    "NCSX-v2-C127-Q04",
+    "NCSX-v2-C127-Q05",
+    "NCSX-v2-C139-Q02",
+    "NCSX-v2-C139-Q03",
+    "NCSX-v2-C139-Q04",
+    "NCSX-v2-C139-Q05",
+    "NCSX-v2-C139-Q06",
+    "NCSX-v2-C139-Q07",
+    "NCSX-v2-C149-Q02",
+    "NCSX-v2-C149-Q05",
+    "NCSX-v2-C149-Q07",
+    "NCSX-v2-C151-Q02",
+    "NCSX-v2-C151-Q03",
+    "NCSX-v2-C151-Q04",
+    "NCSX-v2-C151-Q05",
+    "NCSX-v2-C151-Q06",
+    "NCSX-v2-C151-Q07",
+    "RW-enterprise-NCS-C201-basic-1",
+    "RW-enterprise-NCS-C201-basic-2",
+    "RW-enterprise-NCS-C201-diagnosis",
+    "RW-enterprise-NCS-C201-retry-1",
+    "RW-enterprise-NCS-C201-retry-2",
+    "RW-enterprise-NCS-C201-standard-1",
+    "RW-enterprise-NCS-C201-standard-2",
+    "RW-enterprise-NCS-C203-basic-1",
+    "RW-enterprise-NCS-C203-basic-2",
+    "RW-enterprise-NCS-C203-diagnosis",
+    "RW-enterprise-NCS-C203-retry-1",
+    "RW-enterprise-NCS-C203-retry-2",
+    "RW-enterprise-NCS-C203-standard-3",
+    "RW-enterprise-NCS-C203-standard-4",
+    "RW-enterprise-NCS-C204-basic-1",
+    "RW-enterprise-NCS-C204-retry-1",
+    "RW-enterprise-NCS-C204-standard-3",
+    "RW-enterprise-NCS-C204-standard-4",
+    "RW-enterprise-NCS-INT-031",
+    "RW-enterprise-NCS-TECH-022",
+    "RW-enterprise-NCS-TECH-023",
+    "RW-enterprise-NCS-TECH-025",
+    "RW-enterprise-NCS-TECH-031",
+    "RW-enterprise-NCS-TECH-035",
+    "RW-enterprise-NCS-TECH-038",
+    "RW-finance-NCS-C114-diagnosis",
+    "RW-finance-NCS-C163-diagnosis",
+    "RW-finance-NCS-C165-basic-2",
+    "RW-finance-NCS-C179-basic-2",
+    "RW-finance-NCS-C179-diagnosis",
+    "RW-finance-NCS-C179-retry-1",
+    "RW-finance-NCS-C179-retry-2",
+    "RW-finance-NCS-C181-diagnosis",
+    "RW-finance-NCS-C198-diagnosis",
+    "RW-finance-NCS-C200-diagnosis",
+    "RW-finance-NCS-NEW-경영상식-025",
+    "RW-finance-NCS-NEW-경영상식-026",
+    "RW-finance-NCS-NEW-경영상식-027",
+    "RW-finance-NCS-NEW-경영상식-028",
+    "RW-finance-NCS-NEW-경영상식-030",
+    "RW-finance-NCS-NEW-경영상식-032",
+    "RW-finance-NCS-NEW-경영상식-033",
+    "RW-finance-NCS-NEW-경영상식-034",
+    "RW-finance-NCS-NEW-경영상식-037",
+    "RW-finance-NCS-NEW-경영상식-038",
+    "RW-finance-NCS-NEW-경영상식-040",
+    "RW-finance-NCS-NEW-경영상식-041",
+    "RW-finance-NCS-NEW-경영상식-042",
+    "RW-finance-NCS-NEW-경영상식-046",
+    "RW-finance-NCS-NEW-경영상식-049",
+    "RW-finance-NCS-NEW-경영상식-052",
+    "RW-finance-NCS-NEW-금융상식-052",
+    "RW-finance-NCS-NEW-일반상식-024",
+    "RW-finance-NCS-NEW-일반상식-029",
+    "RW-finance-NCS-NEW-일반상식-034",
+    "RW-finance-NCS-NEW-일반상식-036",
+    "RW-public-NCS-ORG-041",
+    "RW-public-NCS-ORG-042",
+    "RW-public-NCS-ORG-044",
+    "RW-public-NCS-TECH-022",
+    "RW-public-NCS-TECH-023",
+    "RW-public-NCS-TECH-025",
+    "RW-public-NCS-TECH-031",
+    "RW-public-NCS-TECH-035"
+  ],
+  "normalizeToSingle": [
+    "NCS-INFO-022",
+    "NCS-INFO-023",
+    "NCS-INFO-024",
+    "NCS-INFO-025",
+    "NCS-INFO-026",
+    "NCS-INFO-027",
+    "NCS-INFO-028",
+    "NCS-TECH-019",
+    "NCS-TECH-024",
+    "RW-enterprise-NCS-INT-025",
+    "RW-enterprise-NCS-INT-026",
+    "RW-enterprise-NCS-TECH-018",
+    "RW-enterprise-NCS-TECH-020",
+    "RW-enterprise-NCS-TECH-021",
+    "RW-enterprise-NCS-TECH-022",
+    "RW-enterprise-NCS-TECH-023",
+    "RW-enterprise-NCS-TECH-025",
+    "RW-finance-NCS-INT-025",
+    "RW-finance-NCS-INT-026",
+    "RW-public-NCS-INT-025",
+    "RW-public-NCS-INT-026",
+    "RW-public-NCS-ORG-036",
+    "RW-public-NCS-ORG-037",
+    "RW-public-NCS-ORG-038",
+    "RW-public-NCS-ORG-039",
+    "RW-public-NCS-ORG-041",
+    "RW-public-NCS-ORG-042",
+    "RW-public-NCS-ORG-043",
+    "RW-public-NCS-ORG-044",
+    "RW-public-NCS-TECH-018",
+    "RW-public-NCS-TECH-020",
+    "RW-public-NCS-TECH-021",
+    "RW-public-NCS-TECH-022",
+    "RW-public-NCS-TECH-023",
+    "RW-public-NCS-TECH-025"
+  ]
+}

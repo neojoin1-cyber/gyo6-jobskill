@@ -1,10 +1,6 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
-const ACCOUNTS: Record<string, string> = {
-  student: 'demo.student@sugarsalt.kr',
-  teacher: 'demo.teacher@sugarsalt.kr',
-  school_admin: 'demo.admin@sugarsalt.kr',
-}
+const ROLES = new Set(['student', 'teacher', 'school_admin'])
 
 const ALLOWED_ORIGINS = new Set([
   'https://gyo6.kr',
@@ -13,6 +9,8 @@ const ALLOWED_ORIGINS = new Set([
   'http://127.0.0.1:7700',
   'http://127.0.0.1:7717',
   'http://localhost:7700',
+  'https://localhost',
+  'capacitor://localhost',
 ])
 
 function cors(origin: string | null) {
@@ -47,7 +45,7 @@ Deno.serve(async request => {
 
   try {
     const { role, deviceId } = await request.json()
-    if (!ACCOUNTS[role] || typeof deviceId !== 'string' || !/^[a-zA-Z0-9-]{16,80}$/.test(deviceId)) {
+    if (!ROLES.has(role) || typeof deviceId !== 'string' || !/^[a-zA-Z0-9-]{16,80}$/.test(deviceId)) {
       return json({ message: '체험 요청 정보가 올바르지 않습니다.' }, 400, headers)
     }
 
@@ -80,14 +78,42 @@ Deno.serve(async request => {
       }
     }
 
+    const expiredBefore = new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString()
+    const { data: expired } = await admin.from('public_trial_ephemeral_users')
+      .select('user_id').lt('created_at', expiredBefore).limit(12)
+    for (const item of expired || []) await admin.auth.admin.deleteUser(item.user_id)
+
+    const sessionId = crypto.randomUUID()
+    const email = `trial-${role}-${sessionId}@trial.sugarsalt.invalid`
+    const password = `${crypto.randomUUID()}${crypto.randomUUID()}`
+    const { data: created, error: createError } = await admin.auth.admin.createUser({
+      email,
+      password,
+      email_confirm: true,
+      user_metadata: { is_public_trial: true, trial_role: role, trial_session_id: sessionId },
+    })
+    if (createError || !created.user) throw createError || new Error('Trial identity was not created')
+
+    const { data: provisioned, error: provisionError } = await admin.rpc('provision_public_trial_identity', {
+      p_user_id: created.user.id,
+      p_role: role,
+    })
+    if (provisionError || provisioned?.ok !== true) {
+      await admin.auth.admin.deleteUser(created.user.id)
+      throw provisionError || new Error('Trial read scope was not provisioned')
+    }
+
     const { data: link, error: linkError } = await admin.auth.admin.generateLink({
       type: 'magiclink',
-      email: ACCOUNTS[role],
+      email,
     })
     const tokenHash = link?.properties?.hashed_token
-    if (linkError || !tokenHash) throw linkError || new Error('One-time token was not generated')
+    if (linkError || !tokenHash) {
+      await admin.auth.admin.deleteUser(created.user.id)
+      throw linkError || new Error('One-time token was not generated')
+    }
 
-    return json({ tokenHash, expiresInSeconds: 900, timeLimitEnabled }, 200, headers)
+    return json({ tokenHash, expiresInSeconds: 900, timeLimitEnabled, sessionId }, 200, headers)
   } catch (error) {
     console.error('public-trial-session failed', error)
     return json({ message: '체험 연결을 준비하지 못했습니다. 잠시 후 다시 시도해 주세요.' }, 500, headers)

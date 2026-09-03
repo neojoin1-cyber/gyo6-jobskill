@@ -400,7 +400,9 @@ function selectScenario(profile, context) {
     const directSafety = /(안전\s*사고|산업\s*안전|즉시\s*위험|보호구|작업\s*중지|대피|보안\s*사고)/.test(primary)
     const customerResponse = /(?:고객|민원|불만).{0,36}(?:응대|처리|요청|행동|대응|조치|교환|환불)|(?:응대|처리|대응).{0,24}(?:고객|민원|불만)/.test(primary)
     if (directSafety) return rules.find(rule => rule.id === 'safety') || fallback
-    if (customerResponse) return rules.find(rule => rule.id === 'customer') || fallback
+    if (customerResponse || /(?:고객|민원|불만)/.test(primary)) {
+      return rules.find(rule => rule.id === 'customer') || fallback
+    }
   }
   let selected = fallback
   let bestScore = 0

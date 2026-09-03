@@ -169,6 +169,9 @@ export function clearUserStorage({ userId = activeLocalUserId(), keep = [] } = {
       if (!keepSet.has(logical)) removals.push(physical)
     }
     removals.forEach(key => storage.removeItem(key))
+    if (storage.getItem(LEGACY_OWNER_KEY) === safeUserId(userId)) {
+      storage.removeItem(LEGACY_OWNER_KEY)
+    }
   } catch { /* 저장 불가 환경 */ }
 }
 

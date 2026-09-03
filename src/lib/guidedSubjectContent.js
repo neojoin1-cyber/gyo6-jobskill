@@ -2,6 +2,7 @@ import interviewQuiz from '../../data/interview-quiz.json'
 import interviewStudy from '../../data/interview-study.json'
 import personalityBank from '../../data/personality-test-bank.json'
 import { INTERVIEW_FOUNDATION_COURSES } from './interviewFoundationCourses.js'
+import { applyQuestionIntegrityToPool } from './questionIntegrity.js'
 
 export const PERSONALITY_CHOICES = [
   '전혀 그렇지 않다',
@@ -11,12 +12,12 @@ export const PERSONALITY_CHOICES = [
   '매우 그렇다',
 ]
 
-export const INTERVIEW_QUESTIONS = (interviewQuiz.questions ?? []).map(question => ({
+export const INTERVIEW_QUESTIONS = applyQuestionIntegrityToPool((interviewQuiz.questions ?? []).map(question => ({
   ...question,
   type: question.type === 'choice' ? 'mcq' : (question.type ?? 'mcq'),
   questionMode: question.questionMode ?? 'mcq',
   area: question.category,
-}))
+})))
 
 export const PERSONALITY_QUESTIONS = (personalityBank.items ?? [])
   .filter(item => item.kind === 'trait')
