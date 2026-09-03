@@ -80,6 +80,111 @@
   background: #e5e7eb;
   color: #374151;
 }
+.admin-member-filters {
+  margin-bottom: 12px;
+  padding: 10px 0;
+  border-top: 1px solid #dbe3ee;
+  border-bottom: 1px solid #dbe3ee;
+}
+.admin-member-filter-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 8px;
+}
+.admin-filter-field {
+  min-width: 0;
+}
+.admin-filter-field > span,
+.admin-role-filters legend {
+  display: block;
+  margin-bottom: 4px;
+  color: #374151;
+  font-size: 12px;
+  font-weight: 800;
+}
+.admin-filter-field .form-input {
+  height: 42px;
+  padding: 8px 32px 8px 10px;
+  font-size: 13px;
+}
+.admin-role-filters {
+  margin: 9px 0 8px;
+  padding: 0;
+  border: 0;
+}
+.admin-role-filters > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding-bottom: 2px;
+}
+.admin-role-filters button {
+  flex: 0 0 auto;
+  min-height: 36px;
+  padding: 6px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background: #fff;
+  color: #334155;
+  font-size: 12px;
+  font-weight: 750;
+  cursor: pointer;
+}
+.admin-role-filters button[aria-pressed="true"] {
+  border-color: #2457d6;
+  background: #2457d6;
+  color: #fff;
+}
+.admin-role-filters button span {
+  display: inline-block;
+  min-width: 20px;
+  margin-left: 2px;
+  padding: 1px 5px;
+  border-radius: 999px;
+  background: #e8eef8;
+  color: #334155;
+  font-size: 11px;
+  text-align: center;
+}
+.admin-role-filters button[aria-pressed="true"] span {
+  background: #163b94;
+  color: #fff;
+}
+.admin-member-search-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 7px;
+}
+.admin-member-search-row .form-input,
+.admin-member-search-row .btn {
+  height: 42px;
+}
+.admin-member-search-row .btn {
+  padding: 7px 12px;
+  font-size: 12px;
+}
+.admin-filter-result {
+  margin-top: 6px;
+  color: #475569;
+  font-size: 12px;
+}
+.admin-filter-result strong {
+  color: #1746a2;
+}
+.admin-readonly-note {
+  margin-top: 9px;
+  padding-top: 8px;
+  border-top: 1px solid #e2e8f0;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+@media (max-width: 360px) {
+  .admin-member-filter-grid {
+    grid-template-columns: 1fr;
+  }
+}
 
 html, body, #root {
   height: 100%;

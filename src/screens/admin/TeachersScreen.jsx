@@ -28,6 +28,21 @@ const ASSIGNABLE_ROLES = [
 // 총괄관리자(admin) 지정은 본인이 총괄관리자로 로그인했을 때만 가능
 const SUPER_ADMIN_ROLE = { value: 'admin', label: '총괄관리자' }
 
+const ROLE_FILTERS = [
+  { value: 'admin', label: '총괄관리자' },
+  { value: 'school_admin', label: '학교관리자' },
+  { value: 'class_admin', label: '학급관리자' },
+  { value: 'teacher', label: '교사' },
+  { value: 'student', label: '학생' },
+]
+
+const UNASSIGNED = '__unassigned__'
+const OFFICE_UNASSIGNED = '교육청 미지정'
+
+function schoolOffice(school) {
+  return school?.education_office?.trim() || OFFICE_UNASSIGNED
+}
+
 const INIT_FORM = {
   email: '', password: '', display_name: '', nickname: '',
   role: 'teacher', school_id: '', class_id: '', class_ids: [],
@@ -61,6 +76,8 @@ export default function TeachersScreen({ currentRole }) {
   const [loading,     setLoading]     = useState(true)
   const [search,      setSearch]      = useState('')
   const [filterRole,  setFilterRole]  = useState('all')
+  const [filterOffice, setFilterOffice] = useState('')
+  const [filterSchool, setFilterSchool] = useState('')
 
   const [schools,     setSchools]     = useState([])
   const [loadError,   setLoadError]   = useState('')
@@ -103,7 +120,7 @@ export default function TeachersScreen({ currentRole }) {
     setLoadError('')
     const [memberResult, schoolResult] = await Promise.all([
       supabase.rpc('rpc_admin_members'),
-      supabase.from('schools').select('id, name').order('name'),
+      supabase.from('schools').select('id, name, region, education_office').order('name'),
     ])
     setMembers(memberResult.data ?? [])
     setSchools(schoolResult.data ?? [])
@@ -322,15 +339,53 @@ export default function TeachersScreen({ currentRole }) {
   }
 
   // ── 필터 ────────────────────────────────────────────────────────────────────
-  const filtered = members.filter(m => {
-    if (filterRole !== 'all' && m.role !== filterRole) return false
-    const q = search.toLowerCase()
+  const schoolById = new Map(schools.map(school => [school.id, school]))
+  const memberSchoolIds = new Set(members.map(member => member.school_id).filter(Boolean))
+  const availableSchools = currentRole === 'admin'
+    ? schools
+    : schools.filter(school => memberSchoolIds.has(school.id))
+  const officeOptions = [...new Set(availableSchools.map(schoolOffice))]
+    .sort((a, b) => a.localeCompare(b, 'ko'))
+  const schoolOptions = availableSchools
+    .filter(school => !filterOffice || schoolOffice(school) === filterOffice)
+    .sort((a, b) => a.name.localeCompare(b.name, 'ko'))
+  const q = search.trim().toLowerCase()
+  const scopedMembers = members.filter(member => {
+    const school = schoolById.get(member.school_id)
+    if (filterOffice && (member.school_id ? schoolOffice(school) : OFFICE_UNASSIGNED) !== filterOffice) return false
+    if (filterSchool === UNASSIGNED && member.school_id) return false
+    if (filterSchool && filterSchool !== UNASSIGNED && member.school_id !== filterSchool) return false
     if (!q) return true
-    return (m.display_name ?? '').toLowerCase().includes(q)
-      || (m.school_name ?? '').toLowerCase().includes(q)
-      || (m.email ?? '').toLowerCase().includes(q)
-      || (m.nickname ?? '').toLowerCase().includes(q)
+    return (member.display_name ?? '').toLowerCase().includes(q)
+      || (member.school_name ?? '').toLowerCase().includes(q)
+      || (member.email ?? '').toLowerCase().includes(q)
+      || (member.nickname ?? '').toLowerCase().includes(q)
   })
+  const roleCounts = Object.fromEntries(ROLE_FILTERS.map(role => [
+    role.value,
+    scopedMembers.filter(member => member.role === role.value).length,
+  ]))
+  const roleOrder = Object.fromEntries(ROLE_FILTERS.map((role, index) => [role.value, index]))
+  const filtered = scopedMembers
+    .filter(member => filterRole === 'all' || member.role === filterRole)
+    .sort((a, b) => {
+      const roleDifference = (roleOrder[a.role] ?? 99) - (roleOrder[b.role] ?? 99)
+      if (roleDifference) return roleDifference
+      const schoolDifference = (a.school_name ?? '').localeCompare(b.school_name ?? '', 'ko')
+      return schoolDifference || (a.display_name ?? '').localeCompare(b.display_name ?? '', 'ko')
+    })
+
+  const roleFilters = currentRole === 'admin'
+    ? ROLE_FILTERS
+    : ROLE_FILTERS.filter(role => role.value !== 'admin')
+  const filtersActive = Boolean(filterOffice || filterSchool || filterRole !== 'all' || search)
+
+  function resetFilters() {
+    setFilterOffice('')
+    setFilterSchool('')
+    setFilterRole('all')
+    setSearch('')
+  }
 
   const pendingCount = members.filter(m => !m.approved).length
 
@@ -639,7 +694,7 @@ export default function TeachersScreen({ currentRole }) {
       {/* 헤더 */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0 8px' }}>
         <div>
-          <p className="section-title" style={{ margin: 0 }}>회원 관리 ({members.length}명)</p>
+          <p className="section-title" style={{ margin: 0 }}>회원 관리</p>
           {pendingCount > 0 && (
             <p style={{ fontSize: 12, color: 'var(--warning, #f59e0b)', marginTop: 2 }}>⏳ 승인 대기 {pendingCount}명</p>
           )}
@@ -656,28 +711,55 @@ export default function TeachersScreen({ currentRole }) {
         </div>
       </div>
 
-      {/* 검색 + 역할 필터 */}
-      <input className="form-input" value={search} onChange={e => setSearch(e.target.value)}
-        placeholder="이름·이메일·닉네임·학교로 검색..." style={{ marginBottom: 8 }} />
-      <div style={{ display: 'flex', gap: 5, marginBottom: 12, flexWrap: 'wrap' }}>
-        {[
-          { v: 'all', label: '전체' },
-          { v: 'school_admin', label: '학교관리자' },
-          { v: 'teacher', label: '교사' },
-          { v: 'class_admin', label: '학급관리자' },
-          { v: 'student', label: '학생' },
-        ].map(f => (
-          <button key={f.v} onClick={() => setFilterRole(f.v)}
-            style={{
-              padding: '5px 12px', borderRadius: 999, fontSize: 12, border: 'none', cursor: 'pointer',
-              background: filterRole === f.v ? 'var(--primary)' : 'var(--border)',
-              color: filterRole === f.v ? '#fff' : '#374151',
-              fontWeight: 700,
-            }}>
-            {f.label}
-          </button>
-        ))}
-      </div>
+      <section className="admin-member-filters" aria-label="회원 조회 조건">
+        <div className="admin-member-filter-grid">
+          <label className="admin-filter-field" htmlFor="member-office-filter">
+            <span>시도교육청</span>
+            <select id="member-office-filter" className="form-input" value={filterOffice}
+              onChange={event => { setFilterOffice(event.target.value); setFilterSchool('') }}>
+              <option value="">전체 교육청</option>
+              {officeOptions.map(office => <option key={office} value={office}>{office}</option>)}
+            </select>
+          </label>
+          <label className="admin-filter-field" htmlFor="member-school-filter">
+            <span>학교</span>
+            <select id="member-school-filter" className="form-input" value={filterSchool}
+              onChange={event => setFilterSchool(event.target.value)}>
+              <option value="">전체 학교</option>
+              {(!filterOffice || filterOffice === OFFICE_UNASSIGNED) && <option value={UNASSIGNED}>학교 미배정</option>}
+              {schoolOptions.map(school => (
+                <option key={school.id} value={school.id}>
+                  {school.name}{school.region ? ` · ${school.region}` : ''}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+
+        <fieldset className="admin-role-filters">
+          <legend>자격</legend>
+          <div>
+            <button type="button" aria-pressed={filterRole === 'all'} onClick={() => setFilterRole('all')}>
+              전체 <span>{scopedMembers.length}</span>
+            </button>
+            {roleFilters.map(role => (
+              <button key={role.value} type="button" aria-pressed={filterRole === role.value}
+                onClick={() => setFilterRole(role.value)}>
+                {role.label} <span>{roleCounts[role.value] ?? 0}</span>
+              </button>
+            ))}
+          </div>
+        </fieldset>
+
+        <div className="admin-member-search-row">
+          <input id="member-search" aria-label="회원 검색" className="form-input" value={search} onChange={event => setSearch(event.target.value)}
+            placeholder="이름·이메일·닉네임 검색" />
+          <button type="button" className="btn btn-ghost" onClick={resetFilters} disabled={!filtersActive}>초기화</button>
+        </div>
+        <p className="admin-filter-result" role="status">
+          전체 {members.length.toLocaleString()}명 중 <strong>{filtered.length.toLocaleString()}명</strong> 표시
+        </p>
+      </section>
 
       {filtered.length === 0 && (
         <div className="empty-state">
@@ -688,8 +770,9 @@ export default function TeachersScreen({ currentRole }) {
 
       {filtered.map(m => {
         const cls = classLabel(m)
+        const readOnlyAdmin = m.role === 'admin'
         return (
-          <div key={m.id} className="card" style={{
+          <div key={m.id} className="card" data-member-role={m.role} style={{
             marginBottom: 10,
             borderLeft: !m.approved ? '4px solid var(--warning, #f59e0b)' : undefined,
           }}>
@@ -715,24 +798,30 @@ export default function TeachersScreen({ currentRole }) {
                   가입: {formatDate(m.created_at)}
                 </p>
               </div>
-              <button onClick={() => deleteMember(m.id, m.display_name)}
-                style={{ background: 'none', border: 'none', color: 'var(--danger)', cursor: 'pointer', fontSize: 18, padding: 4, minHeight: 44, minWidth: 44 }}>
-                🗑
-              </button>
+              {!readOnlyAdmin && (
+                <button onClick={() => deleteMember(m.id, m.display_name)} aria-label={`${m.display_name} 계정 삭제`}
+                  style={{ background: 'none', border: 'none', color: 'var(--danger)', cursor: 'pointer', fontSize: 18, padding: 4, minHeight: 44, minWidth: 44 }}>
+                  🗑
+                </button>
+              )}
             </div>
 
-            <div style={{ display: 'flex', gap: 6, marginTop: 10 }}>
-              <button className="btn btn-ghost" style={{ flex: 2, fontSize: 12, padding: '6px 0' }}
-                onClick={() => openEdit(m)}>
-                ✏️ 정보 수정
-              </button>
-              <button
-                className={`btn ${m.approved ? 'btn-ghost' : 'btn-primary'}`}
-                style={{ flex: 1, fontSize: 12, padding: '6px 0', color: m.approved ? '#b91c1c' : undefined }}
-                onClick={() => toggleApprove(m)}>
-                {m.approved ? '✗ 승인취소' : '✓ 승인'}
-              </button>
-            </div>
+            {readOnlyAdmin ? (
+              <p className="admin-readonly-note">총괄관리자 계정은 조회만 가능합니다.</p>
+            ) : (
+              <div style={{ display: 'flex', gap: 6, marginTop: 10 }}>
+                <button className="btn btn-ghost" style={{ flex: 2, fontSize: 12, padding: '6px 0' }}
+                  onClick={() => openEdit(m)}>
+                  ✏️ 정보 수정
+                </button>
+                <button
+                  className={`btn ${m.approved ? 'btn-ghost' : 'btn-primary'}`}
+                  style={{ flex: 1, fontSize: 12, padding: '6px 0', color: m.approved ? '#b91c1c' : undefined }}
+                  onClick={() => toggleApprove(m)}>
+                  {m.approved ? '✗ 승인취소' : '✓ 승인'}
+                </button>
+              </div>
+            )}
           </div>
         )
       })}

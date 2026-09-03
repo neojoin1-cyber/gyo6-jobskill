@@ -3,7 +3,7 @@ import { chromium } from '../verification/adversarial-4.8.13/tools/e2e/node_modu
 import { AxeBuilder } from '../verification/adversarial-4.8.13/tools/e2e/node_modules/@axe-core/playwright/dist/index.mjs'
 
 const APP = process.env.APP_URL || 'http://127.0.0.1:7700/'
-const outputDir = 'output/playwright/adversarial-4.8.17'
+const outputDir = 'output/playwright/adversarial-4.8.18'
 mkdirSync(outputDir, { recursive: true })
 const report = { generatedAt: new Date().toISOString(), app: APP, checks: [], scans: [] }
 
@@ -209,6 +209,19 @@ try {
   check('admin role and school choices visible', adminSelects.roleOptions === 4 && adminSelects.schoolOptions > 1, JSON.stringify(adminSelects))
   check('admin dropdowns use light surface', adminSelects.background === 'rgb(255, 255, 255)' && adminSelects.colorScheme === 'light', JSON.stringify(adminSelects))
   await admin.page.screenshot({ path: `${outputDir}/admin-member-edit.png` })
+  await admin.page.getByRole('button', { name: '취소' }).first().click()
+
+  const memberFilters = await admin.page.evaluate(() => ({
+    offices: document.querySelector('#member-office-filter')?.options.length ?? 0,
+    schools: document.querySelector('#member-school-filter')?.options.length ?? 0,
+    roles: document.querySelectorAll('.admin-role-filters button').length,
+    result: document.querySelector('.admin-filter-result')?.textContent?.trim() ?? '',
+  }))
+  check('admin education office school role filters', memberFilters.offices > 1 && memberFilters.schools > 1 && memberFilters.roles === 5, JSON.stringify(memberFilters))
+  await admin.page.getByRole('button', { name: /^학교관리자 \d+$/ }).click()
+  const filteredRoles = await admin.page.locator('[data-member-role]').evaluateAll(elements => elements.map(element => element.dataset.memberRole))
+  check('admin role filter narrows member list', filteredRoles.length > 0 && filteredRoles.every(role => role === 'school_admin'), filteredRoles.join(', '))
+  await admin.page.screenshot({ path: `${outputDir}/admin-member-filters.png` })
 } finally {
   await admin.context.close(); await admin.browser.close()
 }

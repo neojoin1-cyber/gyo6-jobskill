@@ -23,6 +23,7 @@ const migration = read('supabase/migrations/20260903090000_release_integrity_con
 const identityMigration = read('supabase/migrations/20260903091000_email_identity_integrity.sql')
 const accountMigration = read('supabase/migrations/20260903093000_admin_create_user_current_schema.sql')
 const isolatedTrialMigration = read('supabase/migrations/20260903094000_isolated_public_trial_users.sql')
+const memberDirectoryMigration = read('supabase/migrations/20260903150000_admin_member_directory_filters.sql')
 const trial = read('src/lib/trialSession.js')
 const trialEdge = read('supabase/functions/public-trial-session/index.ts')
 const viewport = read('index.html')
@@ -41,6 +42,13 @@ if (!teachers.includes("rpc('rpc_admin_update_user_v2'") || !teachers.includes('
 }
 if (!schoolAdmin.includes('<TeachersScreen currentRole={profile?.role}')) {
   errors.push('TCH-006: school administrator cannot reach member/class assignment')
+}
+for (const contract of ['filterOffice', 'filterSchool', 'ROLE_FILTERS', 'school_education_office']) {
+  const source = contract === 'school_education_office' ? memberDirectoryMigration : teachers
+  if (!source.includes(contract)) errors.push(`OPS-003: admin member directory filter is missing: ${contract}`)
+}
+if (!memberDirectoryMigration.includes("v_role = 'admin'") || !memberDirectoryMigration.includes("p.role <> 'admin' AND p.school_id = v_school")) {
+  errors.push('OPS-003: admin member directory does not preserve the school administrator scope')
 }
 if (teacherDashboard.includes('rpc_create_class') || teacherWorkspace.includes('rpc_create_class')) {
   errors.push('TCH-005: teacher UI still exposes a server-forbidden class creation path')
