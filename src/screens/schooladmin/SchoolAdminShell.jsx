@@ -17,6 +17,7 @@ import ClassWeaknessScreen from '../teacher/ClassWeaknessScreen.jsx'
 import ClassProgressScreen from '../teacher/ClassProgressScreen.jsx'
 import BulkRegisterModal from '../admin/BulkRegisterModal.jsx'
 import SaveExitDialog from '../../components/SaveExitDialog.jsx'
+import AppVersionLabel from '../../components/AppVersionLabel.jsx'
 
 export default function SchoolAdminShell() {
   const { profile } = useAuth()
@@ -75,7 +76,7 @@ export default function SchoolAdminShell() {
         actionLabel={confirmExit === 'logout' ? '저장 후 로그아웃' : '저장 후 종료'}
       />
       <div className="appbar">
-        <span className="appbar-title">🏫 {profile.display_name}</span>
+        <span className="appbar-title">🏫 {profile.display_name} <AppVersionLabel inverse /></span>
         <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
           <ThemeToggle />
           <button className="appbar-back" style={{ fontSize: 12, padding: '4px 10px' }}

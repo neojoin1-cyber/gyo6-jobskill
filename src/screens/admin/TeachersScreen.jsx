@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { CaretDown, Check, MagnifyingGlass, X } from '@phosphor-icons/react'
 import { supabase } from '../../lib/supabase.js'
 import BulkRegisterModal from './BulkRegisterModal.jsx'
 import { formatDate } from '../../lib/dateUtils.js'
@@ -54,6 +55,59 @@ const INIT_EDIT = {
 }
 
 const MULTI_CLASS_ROLES = new Set(['teacher', 'class_admin'])
+
+function AdminChoiceField({ label, value, options, onChange, searchable = false, required = false, testId }) {
+  const [open, setOpen] = useState(false)
+  const [query, setQuery] = useState('')
+  const selected = options.find(option => option.value === value) ?? options[0]
+  const normalizedQuery = query.trim().toLocaleLowerCase('ko-KR')
+  const visibleOptions = normalizedQuery
+    ? options.filter(option => option.label.toLocaleLowerCase('ko-KR').includes(normalizedQuery))
+    : options
+
+  useEffect(() => {
+    if (!open) setQuery('')
+  }, [open])
+
+  return (
+    <div className="form-group admin-choice-field" data-admin-choice={testId}>
+      <span className="form-label">{label}{required ? ' *' : ''}</span>
+      <button type="button" className="form-input admin-choice-trigger" aria-haspopup="listbox"
+        aria-expanded={open} onClick={() => setOpen(true)}>
+        <span>{selected?.label || '선택'}</span><CaretDown aria-hidden="true" />
+      </button>
+      {open && (
+        <div className="admin-choice-layer" role="presentation" onClick={event => {
+          if (event.target === event.currentTarget) setOpen(false)
+        }}>
+          <section className="admin-choice-sheet" role="dialog" aria-modal="true" aria-label={`${label} 선택`}>
+            <header>
+              <div><b>{label} 선택</b><small>{options.length.toLocaleString()}개 항목</small></div>
+              <button type="button" onClick={() => setOpen(false)} aria-label={`${label} 선택 닫기`}><X /></button>
+            </header>
+            {searchable && options.length > 8 && (
+              <label className="admin-choice-search">
+                <MagnifyingGlass aria-hidden="true" />
+                <input autoFocus value={query} onChange={event => setQuery(event.target.value)}
+                  placeholder={`${label} 검색`} aria-label={`${label} 검색`} />
+              </label>
+            )}
+            <div className="admin-choice-options" role="listbox" aria-label={label}>
+              {visibleOptions.map(option => (
+                <button type="button" role="option" aria-selected={option.value === value}
+                  className={option.value === value ? 'is-selected' : ''} key={option.value}
+                  onClick={() => { onChange(option.value); setOpen(false) }}>
+                  <span>{option.label}</span>{option.value === value && <Check weight="bold" aria-hidden="true" />}
+                </button>
+              ))}
+              {visibleOptions.length === 0 && <p>검색 결과가 없습니다.</p>}
+            </div>
+          </section>
+        </div>
+      )}
+    </div>
+  )
+}
 
 // 학급 라벨 (학과 학년반)
 function classLabel(m) {
@@ -420,21 +474,11 @@ export default function TeachersScreen({ currentRole }) {
               <input className="form-input" value={editForm.nickname}
                 onChange={e => setEditForm(f => ({ ...f, nickname: e.target.value }))} placeholder="랭킹에 표시될 별명" />
             </div>
-            <div className="form-group">
-              <label className="form-label">역할 *</label>
-              <select className="form-input" value={editForm.role}
-                onChange={e => setEditForm(f => ({ ...f, role: e.target.value, class_id: '', class_ids: [] }))}>
-                {roleOptions.map(r => <option key={r.value} value={r.value}>{r.label}</option>)}
-              </select>
-            </div>
-            <div className="form-group">
-              <label className="form-label">소속 학교</label>
-              <select className="form-input" value={editForm.school_id}
-                onChange={e => setEditForm(f => ({ ...f, school_id: e.target.value, class_id: '', class_ids: [] }))}>
-                <option value="">미배정</option>
-                {schools.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
-              </select>
-            </div>
+            <AdminChoiceField label="역할" required testId="role" value={editForm.role} options={roleOptions}
+              onChange={role => setEditForm(f => ({ ...f, role, class_id: '', class_ids: [] }))} />
+            <AdminChoiceField label="소속 학교" testId="school" value={editForm.school_id} searchable
+              options={[{ value: '', label: '미배정' }, ...schools.map(s => ({ value: s.id, label: s.name }))]}
+              onChange={school_id => setEditForm(f => ({ ...f, school_id, class_id: '', class_ids: [] }))} />
 
             {/* 학생: 학과→학년→학반 */}
             {editForm.role === 'student' && editForm.school_id && (
@@ -607,21 +651,11 @@ export default function TeachersScreen({ currentRole }) {
               <input className="form-input" value={addForm.display_name}
                 onChange={e => setAddForm(f => ({ ...f, display_name: e.target.value }))} placeholder="홍길동" />
             </div>
-            <div className="form-group">
-              <label className="form-label">역할 *</label>
-              <select className="form-input" value={addForm.role}
-                onChange={e => setAddForm(f => ({ ...f, role: e.target.value, class_id: '', class_ids: [] }))}>
-                {roleOptions.map(r => <option key={r.value} value={r.value}>{r.label}</option>)}
-              </select>
-            </div>
-            <div className="form-group">
-              <label className="form-label">학교 *</label>
-              <select className="form-input" value={addForm.school_id}
-                onChange={e => setAddForm(f => ({ ...f, school_id: e.target.value, class_id: '', class_ids: [] }))}>
-                <option value="">학교 선택</option>
-                {schools.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
-              </select>
-            </div>
+            <AdminChoiceField label="역할" required testId="new-role" value={addForm.role} options={roleOptions}
+              onChange={role => setAddForm(f => ({ ...f, role, class_id: '', class_ids: [] }))} />
+            <AdminChoiceField label="학교" required testId="new-school" value={addForm.school_id} searchable
+              options={[{ value: '', label: '학교 선택' }, ...schools.map(s => ({ value: s.id, label: s.name }))]}
+              onChange={school_id => setAddForm(f => ({ ...f, school_id, class_id: '', class_ids: [] }))} />
 
             {addForm.role === 'student' && addForm.school_id && (
               <>

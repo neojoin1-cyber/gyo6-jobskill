@@ -40,6 +40,7 @@ import { syncDeviceState } from '../../lib/deviceSync.js'
 import { saveBeforeExit } from '../../lib/sessionLifecycle.js'
 import SaveExitDialog from '../../components/SaveExitDialog.jsx'
 import { canOfferPwaInstall, openPwaInstall } from '../../lib/pwaInstall.js'
+import AppVersionLabel from '../../components/AppVersionLabel.jsx'
 
 // 수업 모드와 메시지는 무겁고 대시보드에서만 열렸다. 가로 작업대의 왼쪽
 // 메뉴에서도 열 수 있어야 하므로 셸이 길을 갖는다.
@@ -316,6 +317,7 @@ export default function TeacherShell() {
             {accountOpen && (
               <div className="teacher-account-popover">
                 <header><span>{teacherName.slice(0, 1)}</span><div><b>{teacherName} 선생님</b><small>교사 캠퍼스</small></div></header>
+                <AppVersionLabel className="teacher-version-label" />
                 <button onClick={() => { setAccountOpen(false); navigate('student-campus', { teachingMode: false }) }}><Compass /> 학생 화면 그대로 보기</button>
                 <button onClick={() => { setAccountOpen(false); navigate('pending-students') }}><Student /> 학생 승인</button>
                 <button onClick={() => { chooseView(layout.choice === 'wide' ? 'auto' : 'wide'); setAccountOpen(false) }}>

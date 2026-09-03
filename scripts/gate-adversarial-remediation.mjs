@@ -27,6 +27,8 @@ const memberDirectoryMigration = read('supabase/migrations/20260903150000_admin_
 const trial = read('src/lib/trialSession.js')
 const trialEdge = read('supabase/functions/public-trial-session/index.ts')
 const viewport = read('index.html')
+const appVersion = read('src/components/AppVersionLabel.jsx')
+const androidTheme = read('android/app/src/main/res/values/styles.xml')
 
 if (!mission.includes('jcStudyQuestions()') || mission.includes("import jobQuestions from '../../../data/questions.json'")) {
   errors.push('TCH-001/002: student mission is not using the canonical study pool')
@@ -42,6 +44,15 @@ if (!teachers.includes("rpc('rpc_admin_update_user_v2'") || !teachers.includes('
 }
 if (!schoolAdmin.includes('<TeachersScreen currentRole={profile?.role}')) {
   errors.push('TCH-006: school administrator cannot reach member/class assignment')
+}
+for (const contract of ['AdminChoiceField', 'data-admin-choice={testId}', 'admin-choice-layer', 'searchable']) {
+  if (!teachers.includes(contract)) errors.push(`OPS-003: Android-safe administrator choice is missing: ${contract}`)
+}
+for (const contract of ['CapApp.getInfo()', 'data-app-version', 'data-app-build']) {
+  if (!appVersion.includes(contract)) errors.push(`OPS-004: installed app version evidence is missing: ${contract}`)
+}
+for (const contract of ['AppTheme.LightDialog', 'android:windowBackground">#FFFFFF', 'android:forceDarkAllowed">false']) {
+  if (!androidTheme.includes(contract)) errors.push(`AND-104: native choice dialog light theme is missing: ${contract}`)
 }
 for (const contract of ['filterOffice', 'filterSchool', 'ROLE_FILTERS', 'school_education_office']) {
   const source = contract === 'school_education_office' ? memberDirectoryMigration : teachers

@@ -3,6 +3,7 @@ import { Capacitor } from '@capacitor/core'
 import { App as CapApp } from '@capacitor/app'
 import { supabase } from '../lib/supabase.js'
 import { pushBack, popBack } from '../lib/backButton.js'
+import AppVersionLabel from '../components/AppVersionLabel.jsx'
 import {
   TRIAL_ACCOUNTS,
   beginTrialSession,
@@ -423,6 +424,7 @@ export default function LoginScreen() {
       <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.55)', fontSize: 12, marginTop: 28, lineHeight: 1.6 }}>
         학교관리자·운영자도 선생님으로 들어오시면 됩니다
       </p>
+      <AppVersionLabel inverse className="login-version-label" />
     </div>
   )
 

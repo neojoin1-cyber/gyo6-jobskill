@@ -35,6 +35,7 @@ import CareerChoiceMenu from '../../components/CareerChoiceMenu.jsx'
 import RankingScreen from './RankingScreen.jsx'
 import SaveExitDialog from '../../components/SaveExitDialog.jsx'
 import { canOfferPwaInstall, openPwaInstall } from '../../lib/pwaInstall.js'
+import AppVersionLabel from '../../components/AppVersionLabel.jsx'
 
 function readCareerContext() {
   try {
@@ -422,6 +423,7 @@ export default function AccountDataScreen({ onOpenCareer }) {
 
         <button className="account-logout" onClick={() => setConfirmLogout(true)}><SignOut /> 저장하고 로그아웃</button>
         <button className="account-delete" onClick={() => { setDeletePhrase(''); setDeleteError(''); setDeleteOpen(true) }}><Trash /> 계정 및 데이터 삭제</button>
+        <AppVersionLabel className="account-version-label" />
         <div className="account-legal-links"><a href="https://gyo6.kr/privacy.html" target="_blank" rel="noreferrer">개인정보처리방침</a><a href="https://gyo6.kr/account-deletion.html" target="_blank" rel="noreferrer">계정 삭제 안내</a></div>
       </div>
 

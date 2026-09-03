@@ -67,6 +67,70 @@
   background: #fff !important;
   color: #172033 !important;
 }
+.app-version-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: #526174;
+  font-size: 10px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.app-version-label b { font-size: inherit; font-weight: 800; }
+.app-version-label small { color: #718096; font-size: 9px; font-weight: 700; }
+.app-version-label.is-inverse { color: rgba(255,255,255,.92); }
+.app-version-label.is-inverse small { color: rgba(255,255,255,.72); }
+.appbar-title .app-version-label { margin-left: 6px; vertical-align: middle; }
+.login-version-label { display: flex; margin: 10px auto 0; }
+.account-version-label { display: flex; margin: 16px auto 0; }
+.teacher-version-label { display: flex; padding: 8px; border-bottom: 1px solid #e3e8ef; }
+.admin-choice-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  text-align: left;
+  cursor: pointer;
+}
+.admin-choice-trigger span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.admin-choice-trigger svg { width: 18px; flex: 0 0 auto; color: #1769f6; }
+.admin-choice-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 12000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-top: max(var(--safe-top), 20px);
+  background: rgba(15, 23, 42, .52);
+}
+.admin-choice-sheet {
+  width: min(100%, 480px);
+  max-height: min(78vh, 620px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid #d5dde8;
+  border-radius: 10px 10px 0 0;
+  background: #fff;
+  color: #172033;
+  box-shadow: 0 -12px 36px rgba(15, 23, 42, .2);
+}
+.admin-choice-sheet > header { min-height: 58px; display: flex; align-items: center; gap: 12px; padding: 10px 12px 9px 16px; border-bottom: 1px solid #e2e8f0; }
+.admin-choice-sheet > header > div { min-width: 0; flex: 1; display: grid; gap: 2px; }
+.admin-choice-sheet > header b { font-size: 16px; }
+.admin-choice-sheet > header small { color: #64748b; font-size: 10px; }
+.admin-choice-sheet > header button { width: 44px; height: 44px; display: grid; place-items: center; border: 0; border-radius: 7px; background: #f1f5f9; color: #334155; }
+.admin-choice-sheet > header svg { width: 20px; }
+.admin-choice-search { min-height: 48px; display: grid; grid-template-columns: 20px minmax(0,1fr); align-items: center; gap: 8px; margin: 10px 12px 4px; padding: 0 11px; border: 1px solid #b8c5d6; border-radius: 7px; background: #fff; }
+.admin-choice-search svg { width: 18px; color: #64748b; }
+.admin-choice-search input { min-width: 0; width: 100%; border: 0; outline: 0; background: #fff; color: #172033; font: inherit; font-size: 14px; }
+.admin-choice-options { min-height: 0; overflow-y: auto; padding: 6px 10px max(var(--safe-bottom), 10px); background: #fff; }
+.admin-choice-options > button { width: 100%; min-height: 48px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 10px; border: 0; border-bottom: 1px solid #edf1f5; background: #fff; color: #172033; text-align: left; font: inherit; font-size: 14px; font-weight: 700; }
+.admin-choice-options > button.is-selected { background: #eaf2ff; color: #0d55c7; }
+.admin-choice-options > button svg { width: 18px; flex: 0 0 auto; }
+.admin-choice-options > p { padding: 28px 12px; color: #64748b; text-align: center; font-size: 13px; }
 .admin-load-error {
   margin: 10px 12px;
   padding: 10px 12px;

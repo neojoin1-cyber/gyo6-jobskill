@@ -12,6 +12,7 @@ import StatsScreen        from './StatsScreen.jsx'
 import AdminRankingScreen from './AdminRankingScreen.jsx'
 import CourseListScreen   from '../student/CourseListScreen.jsx'
 import SaveExitDialog from '../../components/SaveExitDialog.jsx'
+import AppVersionLabel from '../../components/AppVersionLabel.jsx'
 
 export default function AdminShell({ profile }) {
   const [tab,         setTab]         = useState('schools')
@@ -58,7 +59,7 @@ export default function AdminShell({ profile }) {
         actionLabel={confirmExit === 'logout' ? '저장 후 로그아웃' : '저장 후 종료'}
       />
       <div className="appbar">
-        <span className="appbar-title">⚙️ 관리자</span>
+        <span className="appbar-title">⚙️ 관리자 <AppVersionLabel inverse /></span>
         <ThemeToggle />
         <button className="appbar-back" onClick={logout} style={{ fontSize: 13 }}>로그아웃</button>
       </div>

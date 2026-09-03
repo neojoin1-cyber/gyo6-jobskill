@@ -12,6 +12,20 @@
     <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="windowActionModeOverlay">true</item>
         <item name="android:fontFamily">sans</item>
+        <item name="android:windowBackground">#FFFFFF</item>
+        <item name="android:colorAccent">#1769F6</item>
+        <item name="colorAccent">#1769F6</item>
+        <item name="android:forceDarkAllowed">false</item>
+        <item name="android:alertDialogTheme">@style/AppTheme.LightDialog</item>
+        <item name="alertDialogTheme">@style/AppTheme.LightDialog</item>
+    </style>
+
+    <style name="AppTheme.LightDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">#FFFFFF</item>
+        <item name="android:colorAccent">#1769F6</item>
+        <item name="colorAccent">#1769F6</item>
+        <item name="android:textColorPrimary">#172033</item>
+        <item name="android:forceDarkAllowed">false</item>
     </style>
 
     <style name="AppTheme.NoActionBarLaunch" parent="Theme.SplashScreen">

@@ -1,5 +1,5 @@
 {
-  "version": "4.8.20",
+  "version": "4.8.21",
   "channel": "web-release",
   "releasedAt": "2026-09-03",
   "supabaseResponseCache": false

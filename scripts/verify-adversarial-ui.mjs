@@ -359,21 +359,24 @@ try {
 
   await admin.page.getByRole('button', { name: /정보 수정/ }).first().waitFor({ state: 'visible', timeout: 20_000 })
   await admin.page.getByRole('button', { name: /정보 수정/ }).first().click()
-  const adminSelects = await admin.page.evaluate(() => {
-    const selects = [...document.querySelectorAll('.school-admin-shell select.form-input')]
-    const role = selects.find(select => [...select.options].some(option => option.value === 'school_admin'))
-    const school = selects.find(select => [...select.options].some(option => option.value === ''))
-    const style = role ? getComputedStyle(role) : null
-    return {
-      roleOptions: role?.options.length ?? 0,
-      schoolOptions: school?.options.length ?? 0,
-      background: style?.backgroundColor ?? '',
-      color: style?.color ?? '',
-      colorScheme: style?.colorScheme ?? '',
-    }
-  })
-  check('admin role and school choices visible', adminSelects.roleOptions === 4 && adminSelects.schoolOptions > 1, JSON.stringify(adminSelects))
-  check('admin dropdowns use light surface', adminSelects.background === 'rgb(255, 255, 255)' && adminSelects.colorScheme === 'light', JSON.stringify(adminSelects))
+  await admin.page.locator('[data-admin-choice="role"] .admin-choice-trigger').click()
+  const roleDialog = admin.page.getByRole('dialog', { name: '역할 선택' })
+  const roleOptions = roleDialog.getByRole('option')
+  const roleSurface = await roleDialog.evaluate(element => ({
+    background: getComputedStyle(element).backgroundColor,
+    color: getComputedStyle(element).color,
+  }))
+  check('admin role choices visible', await roleOptions.count() === 4, `options=${await roleOptions.count()}`)
+  check('admin role choices use light surface', roleSurface.background === 'rgb(255, 255, 255)', JSON.stringify(roleSurface))
+  await roleDialog.getByRole('button', { name: '역할 선택 닫기' }).click()
+
+  await admin.page.locator('[data-admin-choice="school"] .admin-choice-trigger').click()
+  const schoolDialog = admin.page.getByRole('dialog', { name: '소속 학교 선택' })
+  const schoolOptions = schoolDialog.getByRole('option')
+  check('admin school choices visible', await schoolOptions.count() > 1, `options=${await schoolOptions.count()}`)
+  await schoolDialog.getByRole('button', { name: '소속 학교 선택 닫기' }).click()
+  const adminVersion = await admin.page.locator('[data-app-version]').first().getAttribute('data-app-version')
+  check('installed version is visible in administrator chrome', /^\d+\.\d+\.\d+$/.test(adminVersion || ''), adminVersion || '')
   await admin.page.screenshot({ path: `${outputDir}/admin-member-edit.png` })
   await admin.page.getByRole('button', { name: '취소' }).first().click()
 
