@@ -323,6 +323,33 @@ try {
   check('student presence ping', !pingError && ping?.ok === true, pingError?.message || ping?.error)
   check('focus returns with presence', ping?.focus?.questionId === focus.questionId, JSON.stringify(ping?.focus))
 
+  const changedFocus = {
+    ...focus,
+    index: 5,
+    questionId: 'JC26-KO-LISTEN-06',
+    label: '학습 · 의사소통 · 경청 · 6/10',
+  }
+  const { data: changedFocusResult, error: changedFocusError } = await teacher.client.rpc('rpc_set_class_focus', {
+    p_session_id: sessionId,
+    p_focus: changedFocus,
+  })
+  check('teacher republishes changed lesson focus', !changedFocusError && !changedFocusResult?.error,
+    changedFocusError?.message || changedFocusResult?.error)
+
+  const { data: changedStudentSession, error: changedStudentSessionError } = await student.client.rpc('rpc_my_class_session')
+  check('student follows changed teacher focus', !changedStudentSessionError &&
+    changedStudentSession?.focus?.questionId === changedFocus.questionId &&
+    changedStudentSession?.focus?.index === changedFocus.index,
+  changedStudentSessionError?.message || JSON.stringify(changedStudentSession?.focus))
+
+  const { data: changedPing, error: changedPingError } = await student.client.rpc('rpc_presence_ping', {
+    p_session_id: sessionId,
+    p_state: 'active',
+  })
+  check('presence returns latest teacher focus', !changedPingError &&
+    changedPing?.focus?.questionId === changedFocus.questionId && changedPing?.focus?.index === changedFocus.index,
+  changedPingError?.message || JSON.stringify(changedPing?.focus))
+
   const { data: presence, error: presenceError } = await teacher.client.rpc('rpc_class_presence', { p_class_id: classId })
   const studentPresence = presence?.students?.find(row => row.student_id === student.profile.id)
   check('teacher sees student active', !presenceError && studentPresence?.shown === 'active', presenceError?.message || studentPresence?.shown)

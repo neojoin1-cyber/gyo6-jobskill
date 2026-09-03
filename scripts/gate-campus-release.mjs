@@ -46,7 +46,12 @@ if (!teacherLearningPreview.includes('if (!desktopPresentation || typeof window'
 }
 if (!teacherLearningPreview.includes('ClassroomConnectionPanel') ||
     !teacherLearningPreview.includes('setPresence(data)') ||
-    !teacherLearningPreview.includes('학생 앱 위치 전달')) {
+    !teacherLearningPreview.includes('학생 앱 위치 전달') ||
+    !teacherLearningPreview.includes('data-presence-summary') ||
+    !teacherLearningPreview.includes('aria-haspopup="dialog"') ||
+    !teacherLearningPreview.includes('현재 위치 다시 보내기') ||
+    !teacherLearningPreview.includes('publishClassFocus') ||
+    !teacherLearningPreview.includes('useState(false)')) {
   errors.push('교실 수업 화면의 학생 연결 현황 또는 학생 앱 위치 전달 표시가 빠졌습니다.')
 }
 if (!teacherWorkspace.includes('30_000') || !teacherWorkspace.includes('presence_state') ||

@@ -3,7 +3,7 @@ import { chromium } from '../verification/adversarial-4.8.13/tools/e2e/node_modu
 import { AxeBuilder } from '../verification/adversarial-4.8.13/tools/e2e/node_modules/@axe-core/playwright/dist/index.mjs'
 
 const APP = process.env.APP_URL || 'http://127.0.0.1:7700/'
-const outputDir = 'output/playwright/adversarial-4.8.19'
+const outputDir = 'output/playwright/adversarial-4.8.20'
 mkdirSync(outputDir, { recursive: true })
 const report = { generatedAt: new Date().toISOString(), app: APP, checks: [], scans: [] }
 
@@ -224,6 +224,34 @@ try {
     null,
     { timeout: 20_000 },
   )
+  const compactPresence = await teacherDesktop.page.evaluate(() => {
+    const panel = document.querySelector('.classroom-connection-panel')
+    const summary = document.querySelector('[data-presence-summary]')
+    return {
+      height: Math.round(panel?.getBoundingClientRect().height || 0),
+      summary: summary?.innerText.replace(/\s+/g, ' ').trim() || '',
+      dialogVisible: Boolean(document.querySelector('.classroom-connection-dialog')),
+    }
+  })
+  check('class connection defaults to compact summary', compactPresence.height <= 46 && !compactPresence.dialogVisible,
+    JSON.stringify(compactPresence))
+  check('class connection summary keeps all four states',
+    ['연결됨 18', '화면 벗어남 3', '연결 확인 2', '미접속 5'].every(label => compactPresence.summary.includes(label)),
+    compactPresence.summary)
+
+  await teacherDesktop.page.getByRole('button', { name: /상세보기/ }).click()
+  const connectionDialog = teacherDesktop.page.getByRole('dialog', { name: '학생 연결 상세' })
+  await connectionDialog.waitFor({ state: 'visible', timeout: 10_000 })
+  const detailStudents = connectionDialog.locator('ul[aria-label="학생별 연결 상태"] > li')
+  check('class connection detail shows all students on demand', await detailStudents.count() === 28,
+    `students=${await detailStudents.count()}`)
+  const sendFocus = connectionDialog.getByRole('button', { name: '현재 위치 다시 보내기' })
+  check('teacher can explicitly resend student app location', await sendFocus.isVisible() && await sendFocus.isEnabled())
+  await sendFocus.click()
+  await teacherDesktop.page.waitForFunction(() => document.body.innerText.includes('현재 학습 위치를 전달했습니다.'), null, { timeout: 10_000 })
+  await teacherDesktop.page.screenshot({ path: `${outputDir}/teacher-connection-detail-1280.png` })
+  await connectionDialog.getByRole('button', { name: '학생 연결 상세 닫기' }).click()
+  await connectionDialog.waitFor({ state: 'hidden' })
   const measureClassroom = async viewport => {
     await teacherDesktop.page.setViewportSize(viewport)
     await teacherDesktop.page.waitForTimeout(300)
@@ -262,6 +290,35 @@ try {
   check('desktop classroom starts without horizontal clipping', fits(classroom1280) && fits(classroom1389), JSON.stringify({ classroom1280, classroom1389 }))
   await teacherDesktop.page.setViewportSize({ width: 1280, height: 720 })
   await teacherDesktop.page.screenshot({ path: `${outputDir}/teacher-classroom-1280.png` })
+
+  await teacherDesktop.page.setViewportSize({ width: 390, height: 844 })
+  await teacherDesktop.page.waitForTimeout(500)
+  const phonePresence = await teacherDesktop.page.evaluate(() => {
+    const panel = document.querySelector('.classroom-connection-panel')
+    const summary = document.querySelector('[data-presence-summary]')
+    return {
+      height: Math.round(panel?.getBoundingClientRect().height || 0),
+      summary: summary?.innerText.replace(/\s+/g, ' ').trim() || '',
+      viewportWidth: innerWidth,
+      documentWidth: document.documentElement.scrollWidth,
+    }
+  })
+  check('phone class connection stays compact and complete', phonePresence.height <= 50 &&
+    phonePresence.documentWidth <= phonePresence.viewportWidth + 2 &&
+    ['연결됨 18', '화면 벗어남 3', '연결 확인 2', '미접속 5'].every(label => phonePresence.summary.includes(label)),
+  JSON.stringify(phonePresence))
+  await teacherDesktop.page.getByRole('button', { name: /상세보기/ }).click()
+  const phoneDialog = teacherDesktop.page.getByRole('dialog', { name: '학생 연결 상세' })
+  await phoneDialog.waitFor({ state: 'visible' })
+  const phoneDialogPosition = await phoneDialog.evaluate(element => {
+    const dialog = element.getBoundingClientRect()
+    const title = element.querySelector('h2')?.getBoundingClientRect()
+    return { top: Math.round(dialog.top), titleTop: Math.round(title?.top || 0) }
+  })
+  check('phone connection detail clears top app chrome', phoneDialogPosition.top >= 44 && phoneDialogPosition.titleTop >= phoneDialogPosition.top + 10,
+    JSON.stringify(phoneDialogPosition))
+  await teacherDesktop.page.screenshot({ path: `${outputDir}/teacher-connection-detail-390.png` })
+  await teacherDesktop.page.getByRole('button', { name: '학생 연결 상세 닫기' }).click()
   check('desktop classroom page errors', teacherDesktop.errors.length === 0, teacherDesktop.errors.join(' | ').slice(0, 180))
 } finally {
   await teacherDesktop.context.close(); await teacherDesktop.browser.close()

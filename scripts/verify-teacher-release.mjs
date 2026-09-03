@@ -98,6 +98,12 @@ if (!studentShell.includes('rememberStudentLearningContext')) errors.push('Stude
 if (!teacherLearningPreview.includes('ClassroomConnectionPanel') || !teacherLearningPreview.includes("rpc('rpc_class_presence'")) {
   errors.push('Shared classroom cannot show student connection state')
 }
+if (!teacherLearningPreview.includes('data-presence-summary') ||
+    !teacherLearningPreview.includes('aria-haspopup="dialog"') ||
+    !teacherLearningPreview.includes('현재 위치 다시 보내기') ||
+    !teacherLearningPreview.includes('publishClassFocus')) {
+  errors.push('Shared classroom connection summary, detail view, or explicit student location delivery is missing')
+}
 if (!teacherWorkspace.includes('presence_label') || !teacherWorkspace.includes('participated') || !teacherWorkspace.includes('30_000')) {
   errors.push('Teacher workspace still confuses today activity with current learning presence')
 }
