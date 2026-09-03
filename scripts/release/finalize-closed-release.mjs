@@ -6,8 +6,9 @@ import { ROOT, logPass, runNpm } from './release-utils.mjs'
 const explicitMetadata = process.argv.find(value => value.startsWith('--metadata='))?.slice('--metadata='.length)
 const submitted = process.argv.includes('--play-submitted')
 const published = process.argv.includes('--play-published')
-if (!submitted && !published) {
-  throw new Error('Play 비공개 테스트 제출 후 --play-submitted, 실제 제공 후 --play-published를 붙여 실행해야 합니다.')
+const superseded = process.argv.includes('--play-superseded')
+if ([submitted, published, superseded].filter(Boolean).length !== 1) {
+  throw new Error('Play 제출 후 --play-submitted, 실제 제공 후 --play-published, 반려·대체 후 --play-superseded 중 하나만 붙여 실행해야 합니다.')
 }
 
 const releaseDir = resolve(ROOT, 'release/closed')
@@ -42,6 +43,15 @@ if (published) {
     finalizedAt: now,
   }, null, 2)}\n`)
   logPass(`비공개 테스트 제공 완료 · Play build ${build} · v${version} · 앱 실행 시 업데이트 자동 안내`)
+} else if (superseded) {
+  if (!metadata.playSubmitted) throw new Error('Play에 제출되지 않은 릴리스는 대체 종료할 수 없습니다.')
+  writeFileSync(metadataPath, `${JSON.stringify({
+    ...metadata,
+    playPublished: false,
+    playSuperseded: true,
+    supersededAt: now,
+  }, null, 2)}\n`)
+  logPass(`비공개 테스트 대체 종료 · Play build ${build} · v${version}`)
 } else {
   writeFileSync(metadataPath, `${JSON.stringify({
     ...metadata,

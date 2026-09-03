@@ -1,9 +1,43 @@
-import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { copyFileSync, existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
 import { resolve } from 'node:path'
 import { gradleEnv, ROOT, logPass, run, runNpm } from './release-utils.mjs'
 
 const skipSync = process.argv.includes('--skip-sync')
+const outDir = resolve(ROOT, 'release/closed')
+mkdirSync(outDir, { recursive: true })
+
+const releaseEntries = readdirSync(outDir)
+  .filter(name => name.endsWith('.aab.release.json'))
+  .map(name => {
+    try {
+      return { name, metadata: JSON.parse(readFileSync(resolve(outDir, name), 'utf8')) }
+    } catch {
+      return null
+    }
+  })
+  .filter(Boolean)
+
+const latestPublishedBuild = Math.max(0, ...releaseEntries
+  .filter(entry => entry.metadata.playPublished)
+  .map(entry => Number(entry.metadata.build) || 0))
+const pendingReleases = releaseEntries.filter(entry => (
+  entry.metadata.playSubmitted
+  && !entry.metadata.playPublished
+  && !entry.metadata.playSuperseded
+  && Number(entry.metadata.build) > latestPublishedBuild
+))
+
+if (pendingReleases.length) {
+  const details = pendingReleases
+    .map(({ name, metadata }) => `${name} (v${metadata.version}, build ${metadata.build})`)
+    .join(', ')
+  throw new Error(
+    `이전 비공개 테스트 제출이 아직 마감되지 않았습니다: ${details}\n`
+    + 'Play에서 제공 중이면 closed:finalize -- --play-published, 반려·대체되었으면 --play-superseded로 먼저 마감하세요.',
+  )
+}
+
 const keystore = resolve(ROOT, 'android/app/jobhigh-release.jks')
 const properties = resolve(ROOT, 'android/keystore.properties')
 if (!existsSync(keystore) || !existsSync(properties)) {
@@ -32,8 +66,6 @@ if (!Number.isInteger(build) || build < 1 || !/^\d+\.\d+\.\d+$/.test(versionName
   throw new Error('AAB 실제 버전 또는 패키지 정보를 확인하지 못했습니다.')
 }
 
-const outDir = resolve(ROOT, 'release/closed')
-mkdirSync(outDir, { recursive: true })
 const stamp = new Date().toISOString().replace(/[:.]/g, '-').replace('T', '_').replace('Z', '')
 const target = resolve(outDir, `JOBGO-v${versionName}-closed-${stamp}.aab`)
 copyFileSync(source, target)

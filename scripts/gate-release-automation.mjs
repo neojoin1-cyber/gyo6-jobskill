@@ -49,12 +49,12 @@ for (const token of [".from('app_config')", "'appStateChange'", "updateState ===
 }
 
 const buildAab = read('scripts/release/build-closed-aab.mjs')
-for (const token of ['packaged_manifests', 'android:versionCode', '${target}.release.json', "track: 'closed'", 'playSubmitted: false', 'playPublished: false']) {
+for (const token of ['packaged_manifests', 'android:versionCode', '${target}.release.json', "track: 'closed'", 'playSubmitted: false', 'playPublished: false', 'pendingReleases', 'playSuperseded', '--play-published']) {
   requireText(buildAab, token, `비공개 테스트 AAB 게시 메타데이터 누락: ${token}`)
 }
 
 const finalize = read('scripts/release/finalize-closed-release.mjs')
-for (const token of ['--play-submitted', '--play-published', 'sha256', 'closed:publish-config', 'playSubmitted', 'playPublished']) {
+for (const token of ['--play-submitted', '--play-published', '--play-superseded', 'sha256', 'closed:publish-config', 'playSubmitted', 'playPublished', 'playSuperseded']) {
   requireText(finalize, token, `Play 게시 후 업데이트 안내 마감 자동화 누락: ${token}`)
 }
 
