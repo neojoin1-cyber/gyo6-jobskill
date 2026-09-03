@@ -319,7 +319,7 @@ export default function WrongAnswerScreen({ profile, demo = false }) {
     <div className="screen">
       <div className="appbar">
         <span className="appbar-title">📋 오답노트</span>
-        <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>
+        <span data-wrong-answer-count style={{ fontSize: 12, color: 'rgba(255,255,255,.9)', fontWeight: 700 }}>
           총 {allWrong.filter(w => w.type === 'mcq').length}개 오답
         </span>
       </div>

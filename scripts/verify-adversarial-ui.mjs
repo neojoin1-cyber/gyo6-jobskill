@@ -3,7 +3,7 @@ import { chromium } from '../verification/adversarial-4.8.13/tools/e2e/node_modu
 import { AxeBuilder } from '../verification/adversarial-4.8.13/tools/e2e/node_modules/@axe-core/playwright/dist/index.mjs'
 
 const APP = process.env.APP_URL || 'http://127.0.0.1:7700/'
-const outputDir = 'output/playwright/adversarial-4.8.18'
+const outputDir = 'output/playwright/adversarial-4.8.19'
 mkdirSync(outputDir, { recursive: true })
 const report = { generatedAt: new Date().toISOString(), app: APP, checks: [], scans: [] }
 
@@ -67,9 +67,9 @@ async function zoomCheck(page, name) {
   await page.evaluate(() => { document.documentElement.style.zoom = '1' })
 }
 
-async function openTrial(role) {
+async function openTrial(role, viewport = { width: 390, height: 844 }) {
   const browser = await chromium.launch({ headless: true })
-  const context = await browser.newContext({ viewport: { width: 390, height: 844 }, locale: 'ko-KR' })
+  const context = await browser.newContext({ viewport, locale: 'ko-KR' })
   const page = await context.newPage()
   const errors = []
   const network = []
@@ -86,7 +86,7 @@ async function openTrial(role) {
   } else if (role === 'school_admin') {
     await page.locator('.school-admin-shell').waitFor({ state: 'visible', timeout: 40_000 }).catch(() => {})
   } else {
-    await page.locator('.teacher-mobile-tools button').first().waitFor({ state: 'visible', timeout: 40_000 }).catch(() => {})
+    await page.waitForFunction(() => document.body.innerText.includes('TEACHER CAMPUS'), null, { timeout: 40_000 }).catch(() => {})
   }
   await page.waitForTimeout(600)
   return { browser, context, page, errors, network }
@@ -119,6 +119,7 @@ try {
     check('student question heading and main', semantics.headings > 0 && semantics.mains > 0, `${JSON.stringify(semantics)} ${learningBody}`)
     await student.page.screenshot({ path: `${outputDir}/student-learning.png` })
     await scan(student.page, 'student-question')
+    let reconsiderGateChecked = false
     for (let guard = 0; guard < 30; guard += 1) {
       const startChallenge = student.page.getByRole('button', { name: /단원 도전 시작/ }).first()
       if (await startChallenge.isVisible().catch(() => false)) {
@@ -132,6 +133,19 @@ try {
 
       const reveal = student.page.getByRole('button', { name: /탭하여 확인|정답 용어 보기|정답 근거 보기/ }).first()
       if (await reveal.isVisible().catch(() => false)) await reveal.click()
+
+      const reconsider = student.page.locator('.learning-reconsider:visible').first()
+      if (await reconsider.isVisible().catch(() => false)) {
+        const nextBeforeReconsider = student.page.locator('.study-summary-navigation .btn-primary:visible').first()
+        if (!reconsiderGateChecked) {
+          check('changed-condition judgment is required', await nextBeforeReconsider.isDisabled().catch(() => false))
+        }
+        await reconsider.locator('button').first().click()
+        if (!reconsiderGateChecked) {
+          check('changed-condition judgment unlocks next step', !await nextBeforeReconsider.isDisabled().catch(() => true))
+          reconsiderGateChecked = true
+        }
+      }
 
       const missionCriterion = student.page.locator('.learning-exit-criteria button:visible').first()
       if (await missionCriterion.isVisible().catch(() => false)) {
@@ -153,9 +167,19 @@ try {
       await nextScene.click()
       await student.page.waitForTimeout(120)
     }
+    check('changed-condition activity encountered', reconsiderGateChecked)
     const challengeButtons = (await student.page.locator('button:visible').allInnerTexts()).join(' | ')
     const answer = student.page.locator('[data-question-choice]:visible').first()
     check('student challenge reached', await answer.isVisible().catch(() => false), challengeButtons.slice(0, 260))
+    if (await answer.isVisible().catch(() => false)) {
+      const choiceIdentity = await answer.evaluate(element => ({
+        accessibleName: element.getAttribute('aria-label') || '',
+        visibleText: element.innerText.trim().replace(/\s+/g, ' '),
+      }))
+      check('question choice uses matching numeric labels', /^1번\s+\S/.test(choiceIdentity.accessibleName) && /^1\s+/.test(choiceIdentity.visibleText), JSON.stringify(choiceIdentity))
+      const structuredContext = await student.page.locator('[data-question-context]:visible').first().innerText().catch(() => '')
+      check('document passage keeps readable field breaks', /\n제목\s*[:：]/.test(structuredContext) && /\n일시\s*[:：]/.test(structuredContext), structuredContext.replace(/\n/g, ' | ').slice(0, 240))
+    }
     await student.page.screenshot({ path: `${outputDir}/student-challenge.png` })
     if (await answer.isVisible().catch(() => false)) {
       await answer.click()
@@ -165,6 +189,13 @@ try {
     }
     const liveText = await student.page.locator('[aria-live], [role="status"], [role="alert"]').allInnerTexts()
     check('student answer announced', liveText.some(text => /정답|오답|맞|다시/.test(text)), liveText.join(' | ').slice(0, 180))
+
+    await student.page.getByRole('button', { name: '성장', exact: true }).click()
+    const wrongCount = student.page.locator('[data-wrong-answer-count]')
+    await wrongCount.waitFor({ state: 'visible', timeout: 10_000 })
+    const wrongCountColor = await wrongCount.evaluate(element => getComputedStyle(element).color)
+    check('wrong-answer header count has readable contrast', /rgba?\(255,\s*255,\s*255/.test(wrongCountColor), wrongCountColor)
+    await student.page.screenshot({ path: `${outputDir}/student-wrong-answers.png` })
   }
   check('student page errors', student.errors.length === 0, student.errors.join(' | ').slice(0, 180))
 } finally {
@@ -182,6 +213,84 @@ try {
   check('teacher page errors', teacher.errors.length === 0, teacher.errors.join(' | ').slice(0, 180))
 } finally {
   await teacher.context.close(); await teacher.browser.close()
+}
+
+const teacherDesktop = await openTrial('teacher', { width: 1280, height: 720 })
+try {
+  await teacherDesktop.page.getByRole('button', { name: '수업 시작' }).click()
+  await teacherDesktop.page.locator('.teacher-learning-preview.is-teaching').waitFor({ state: 'visible', timeout: 20_000 })
+  await teacherDesktop.page.waitForFunction(
+    () => document.body.innerText.includes('내 경험으로 답하기'),
+    null,
+    { timeout: 20_000 },
+  )
+  const measureClassroom = async viewport => {
+    await teacherDesktop.page.setViewportSize(viewport)
+    await teacherDesktop.page.waitForTimeout(300)
+    return teacherDesktop.page.evaluate(() => {
+      const stage = document.querySelector('.teacher-preview-stage')
+      const zoom = document.querySelector('.classroom-zoom-control button:nth-child(2) span')?.textContent?.trim() || ''
+      const tabs = ['기준 익히기', '답변 고쳐 고르기', '내 경험으로 답하기'].map(label => ({
+        label,
+        visible: (() => {
+          const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT)
+          let node = walker.nextNode()
+          while (node) {
+            if (node.data.includes(label)) {
+              const range = document.createRange()
+              range.selectNodeContents(node)
+              const rect = range.getBoundingClientRect()
+              if (rect.width > 0 && rect.left >= 0 && rect.right <= innerWidth) return true
+            }
+            node = walker.nextNode()
+          }
+          return false
+        })(),
+      }))
+      return {
+        zoom,
+        tabs,
+        clientWidth: stage?.clientWidth || 0,
+        scrollWidth: stage?.scrollWidth || 0,
+      }
+    })
+  }
+  const classroom1280 = await measureClassroom({ width: 1280, height: 720 })
+  const classroom1389 = await measureClassroom({ width: 1389, height: 868 })
+  const fits = result => result.tabs.every(tab => tab.visible) && result.scrollWidth <= result.clientWidth + 2
+  check('desktop classroom starts at 100%', classroom1280.zoom === '100%' && classroom1389.zoom === '100%', JSON.stringify({ classroom1280, classroom1389 }))
+  check('desktop classroom starts without horizontal clipping', fits(classroom1280) && fits(classroom1389), JSON.stringify({ classroom1280, classroom1389 }))
+  await teacherDesktop.page.setViewportSize({ width: 1280, height: 720 })
+  await teacherDesktop.page.screenshot({ path: `${outputDir}/teacher-classroom-1280.png` })
+  check('desktop classroom page errors', teacherDesktop.errors.length === 0, teacherDesktop.errors.join(' | ').slice(0, 180))
+} finally {
+  await teacherDesktop.context.close(); await teacherDesktop.browser.close()
+}
+
+const launchBrowser = await chromium.launch({ headless: true })
+const launchContext = await launchBrowser.newContext({ viewport: { width: 390, height: 844 }, locale: 'ko-KR' })
+const launchPage = await launchContext.newPage()
+try {
+  await launchPage.route('**/functions/v1/public-trial-session', async route => {
+    await new Promise(resolve => setTimeout(resolve, 700))
+    await route.continue()
+  })
+  await launchPage.goto(APP, { waitUntil: 'domcontentloaded', timeout: 60_000 })
+  await launchPage.getByRole('button', { name: /교사 체험/ }).click()
+  const launchFeedback = launchPage.getByRole('button', { name: /체험 화면 여는 중/ })
+  check('teacher trial gives immediate launch feedback', await launchFeedback.isVisible().catch(() => false) && await launchFeedback.isDisabled().catch(() => false))
+  await launchPage.locator('.teacher-mobile-tools').waitFor({ state: 'visible', timeout: 40_000 })
+
+  const transitions = []
+  for (const role of ['student', 'teacher', 'student']) {
+    await launchPage.goto(`${APP}?trial=${role}&trial_nonce=${Date.now()}`, { waitUntil: 'domcontentloaded', timeout: 60_000 })
+    const target = role === 'student' ? launchPage.locator('.campus-home') : launchPage.locator('.teacher-mobile-tools')
+    await target.waitFor({ state: 'visible', timeout: 40_000 }).catch(() => {})
+    transitions.push({ role, visible: await target.isVisible().catch(() => false) })
+  }
+  check('student and teacher trials switch without clearing storage', transitions.every(item => item.visible), JSON.stringify(transitions))
+} finally {
+  await launchContext.close(); await launchBrowser.close()
 }
 
 const admin = await openTrial('school_admin')

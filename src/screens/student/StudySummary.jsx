@@ -633,13 +633,16 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, for
   const pointRequiresResponse = card.type === 'point'
     && typeof card.point === 'object'
     && Boolean(card.point?.sampleQuestion || card.point?.example)
+  const pointRequiresReconsideration = card.type === 'point'
+    && typeof card.point === 'object'
   const formativeComplete = card.type === 'formative'
     && card.assessment.questions.every((_, index) => formativeChecked[index])
   const canContinue = card.type === 'mission'
     ? mission.confirmed
     : card.type === 'formative'
       ? formativeComplete
-      : !pointRequiresResponse || isOpen
+      : (!pointRequiresResponse || isOpen)
+        && (!pointRequiresReconsideration || Boolean(reconsidered[step]))
 
   // 핵심 포인트: '— 확인:' / '(확인:' 뒤(또는 두 번째 문장)를 가렸다 공개
   function splitPoint(text) {
@@ -1157,7 +1160,13 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, for
             {card.type === 'intro'
                 ? introStartLabel
                 : !canContinue
-                ? card.type === 'mission' ? '실전 행동을 확정해 주세요' : card.type === 'formative' ? '3문제 해설까지 확인해 주세요' : '먼저 판단해 주세요'
+                ? card.type === 'mission'
+                  ? '실전 행동을 확정해 주세요'
+                  : card.type === 'formative'
+                    ? '3문제 해설까지 확인해 주세요'
+                    : isOpen && pointRequiresReconsideration
+                      ? '바뀐 조건에서 판단을 골라 주세요'
+                      : '먼저 판단해 주세요'
                 : card.type === 'formative' ? '학습 정리 보기 →' : '다음 →'}
           </button>
         </div>

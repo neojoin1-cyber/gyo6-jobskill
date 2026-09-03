@@ -43,8 +43,13 @@ BEGIN
             JOIN public.classes cls ON cls.id = link.class_id
            WHERE link.teacher_id = p.id
         ) tc ON true
-       WHERE v_role = 'admin'
-          OR (p.role <> 'admin' AND p.school_id = v_school)
+       WHERE NOT EXISTS (
+               SELECT 1
+                 FROM public.public_trial_ephemeral_users trial_user
+                WHERE trial_user.user_id = p.id
+             )
+         AND (v_role = 'admin'
+          OR (p.role <> 'admin' AND p.school_id = v_school))
        ORDER BY p.created_at DESC
     ) t
   );

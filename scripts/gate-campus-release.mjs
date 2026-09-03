@@ -22,6 +22,7 @@ const notifications = read('src/screens/student/NotificationsScreen.jsx')
 const listening = read('src/screens/student/ListeningPrompt.jsx')
 const diagnostic = read('src/screens/student/DiagnosticScreen.jsx')
 const study = read('src/screens/student/StudyScreen.jsx')
+const studySummary = read('src/screens/student/StudySummary.jsx')
 const missionCreate = read('src/screens/teacher/MissionCreateScreen.jsx')
 const teacherShell = read('src/screens/teacher/TeacherShell.jsx')
 const campusCss = read('src/styles/campus.css')
@@ -38,6 +39,10 @@ if (!teacherLearningPreview.includes('StudentCampusHome') || !teacherLearningPre
 }
 if (!teacherLearningPreview.includes('onContextChange={setLearningContext}')) {
   errors.push('Shared classroom cannot derive teacher support from the active student lesson')
+}
+if (!teacherLearningPreview.includes('if (!desktopPresentation || typeof window') ||
+    !teacherLearningPreview.includes('return 1\n  } catch {\n    return 1')) {
+  errors.push('Teacher classroom must start at a complete 100% view before optional enlargement')
 }
 if (!teacherLearningPreview.includes('ClassroomConnectionPanel') ||
     !teacherLearningPreview.includes('setPresence(data)') ||
@@ -85,6 +90,7 @@ if (!/\.campus-topbar\s*\{[^}]*min-height:\s*calc\([^)]*var\(--safe-top\)/s.test
 const structuredStageText = formatStructuredLearningText('개발 단계별 정보: –기획단계(5일): A팀원만 가능 –UI설계(4일): B팀원만 가능')
 const structuredProjectText = formatStructuredLearningText('【프로젝트 추진 현황】프로젝트명: 스마트 오피스PM: 기획팀■ 1단계(완료): 현황 분석회의 결정: A업체 추진')
 const structuredDateText = formatReadableScenario('작성일: 2024.03.15.다음은 확정된 일정입니다.')
+const structuredNoticeText = formatStructuredLearningText('전 직원 공지사항 제목: 정전 안내 일시: 2024.03.15 14:30 사유: 전기설비 점검 조치사항: 재택근무 문의: 총무팀')
 if (!structuredStageText.includes('\n- 기획단계') || !structuredStageText.includes('\n- UI설계')) {
   errors.push('Learning source formatter does not separate stage bullets into readable lines')
 }
@@ -95,6 +101,17 @@ for (const line of ['프로젝트명:', 'PM:', '■ 1단계', '회의 결정:'])
 }
 if (!structuredDateText.includes('2024.03.15.') || structuredDateText.includes('2024.\n03.') || !structuredDateText.includes('\n다음은')) {
   errors.push('Learning source formatter must preserve dates while separating actual sentences')
+}
+for (const line of ['제목:', '일시: 2024.03.15', '사유:', '조치사항:', '문의:']) {
+  if (!structuredNoticeText.split('\n').some(value => value.startsWith(line))) {
+    errors.push(`Learning source formatter does not separate notice field: ${line}`)
+  }
+}
+if (!study.includes('data-question-context') || !study.includes('formatStructuredLearningText(q?.context || embCtx)')) {
+  errors.push('Document-like question passages are not rendered with readable source structure')
+}
+if (!studySummary.includes('pointRequiresReconsideration') || !studySummary.includes('Boolean(reconsidered[step])')) {
+  errors.push('Changed-condition transfer activity can still be skipped')
 }
 
 if (!studentShell.includes('demo={Boolean(isTrial)}') || !studentShell.includes('<NotificationsScreen demo={Boolean(isTrial)}')) {

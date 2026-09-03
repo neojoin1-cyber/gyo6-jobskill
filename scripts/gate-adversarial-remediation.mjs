@@ -50,6 +50,9 @@ for (const contract of ['filterOffice', 'filterSchool', 'ROLE_FILTERS', 'school_
 if (!memberDirectoryMigration.includes("v_role = 'admin'") || !memberDirectoryMigration.includes("p.role <> 'admin' AND p.school_id = v_school")) {
   errors.push('OPS-003: admin member directory does not preserve the school administrator scope')
 }
+if (!memberDirectoryMigration.includes('public_trial_ephemeral_users trial_user') || !memberDirectoryMigration.includes('trial_user.user_id = p.id')) {
+  errors.push('OPS-003: public trial identities remain visible in the administrator member directory')
+}
 if (teacherDashboard.includes('rpc_create_class') || teacherWorkspace.includes('rpc_create_class')) {
   errors.push('TCH-005: teacher UI still exposes a server-forbidden class creation path')
 }

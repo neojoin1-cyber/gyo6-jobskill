@@ -43,6 +43,7 @@ import { jcLessonMatches, jcOrderInLesson } from '../../lib/jobCommonAreas.js'
 import MatchingBoard, { isMatchingCorrect } from './MatchingBoard.jsx'
 import PulldownForm, { isPulldownCorrect } from './PulldownForm.jsx'
 import { studyQuestions } from '../../lib/assessmentPartition.js'
+import { formatStructuredLearningText } from '../../lib/structuredLearningText.js'
 import CompactText from '../../components/CompactText.jsx'
 import { getFirstClassFormative } from '../../lib/firstClassLessons.js'
 
@@ -1254,8 +1255,9 @@ function LearnCard({ q, qType, correctIdx, revealed, onReveal }) {
   const isTextType = qType === 'text'
   const oIsO = isOX && isOXAnswerO(q)
   const correctLetters = isMulti && Array.isArray(q?.answer) ? new Set(q.answer) : null
-  const { question: stemQ, embCtx, hint: stemHint } = parseStem(q?.stem)
-  const ctxText = q?.context || embCtx
+  const { question: rawStemQ, embCtx, hint: stemHint } = parseStem(q?.stem)
+  const stemQ = formatStructuredLearningText(rawStemQ)
+  const ctxText = formatStructuredLearningText(q?.context || embCtx)
 
   if (!revealed) {
     return (
@@ -1268,14 +1270,14 @@ function LearnCard({ q, qType, correctIdx, revealed, onReveal }) {
               <DemandChip q={q} /><DifficultyBadge q={q} />
             </div>
           </div>
-          <p style={{ fontSize: 14, lineHeight: 1.8, fontWeight: 700 }}>{stemQ}</p>
+          <p data-question-stem style={{ fontSize: 14, lineHeight: 1.8, fontWeight: 700, whiteSpace: 'pre-wrap' }}>{stemQ}</p>
         </div>
         <ListeningPrompt key={q?.id} q={q} mode="study" revealTranscript={false} />
         <QuestionMedia q={q} />
         {ctxText && (
           <div style={{ background: '#f0f4ff', borderRadius: 12, padding: '12px 14px', border: '1px solid #c7d7f5', marginBottom: 10 }}>
             <p style={{ fontSize: 12, fontWeight: 700, color: '#3b5bdb', marginBottom: 6 }}>📋 지문 / 상황</p>
-            <p style={{ fontSize: 13, lineHeight: 1.9, whiteSpace: 'pre-wrap', color: '#1a237e' }}>{ctxText}</p>
+            <p data-question-context style={{ fontSize: 13, lineHeight: 1.9, whiteSpace: 'pre-wrap', color: '#1a237e' }}>{ctxText}</p>
           </div>
         )}
         {(qType === 'choice' || isMulti) && (
@@ -1341,14 +1343,14 @@ function LearnCard({ q, qType, correctIdx, revealed, onReveal }) {
     <div>
       <div style={{ background: 'var(--card)', borderRadius: 12, padding: '12px 14px', border: '2px solid var(--primary)', marginBottom: 12 }}>
         <p style={{ fontSize: 12, fontWeight: 800, color: 'var(--primary)', marginBottom: 5, letterSpacing: 0.5 }}>[문제]</p>
-        <p style={{ fontSize: 14, lineHeight: 1.8, fontWeight: 700 }}>{stemQ}</p>
+        <p data-question-stem style={{ fontSize: 14, lineHeight: 1.8, fontWeight: 700, whiteSpace: 'pre-wrap' }}>{stemQ}</p>
       </div>
       <ListeningPrompt key={q?.id} q={q} mode="study" revealTranscript />
       <QuestionMedia q={q} />
       {ctxText && (
         <div style={{ background: '#f0f4ff', borderRadius: 12, padding: '12px 14px', border: '1px solid #c7d7f5', marginBottom: 10 }}>
           <p style={{ fontSize: 12, fontWeight: 700, color: '#3b5bdb', marginBottom: 6 }}>📋 지문 / 상황</p>
-          <p style={{ fontSize: 13, lineHeight: 1.9, whiteSpace: 'pre-wrap', color: '#1a237e' }}>{ctxText}</p>
+          <p data-question-context style={{ fontSize: 13, lineHeight: 1.9, whiteSpace: 'pre-wrap', color: '#1a237e' }}>{ctxText}</p>
         </div>
       )}
 
@@ -1622,8 +1624,9 @@ function GameCard({ q, qType, selectedAnswer, checked, correctIdx, onSelect }) {
   // 연결형은 더 이상 '보고 지나가는' 유형이 아니다. 직접 이어서 채점받는다.
   const skipType = isSelf || isTextType
   const correctLetters = isMulti && Array.isArray(q?.answer) ? new Set(q.answer) : null
-  const { question: stemQ, embCtx, hint: stemHint } = parseStem(q?.stem)
-  const ctxText = q?.context || embCtx
+  const { question: rawStemQ, embCtx, hint: stemHint } = parseStem(q?.stem)
+  const stemQ = formatStructuredLearningText(rawStemQ)
+  const ctxText = formatStructuredLearningText(q?.context || embCtx)
 
   if (skipType) {
     const label = isSelf ? '서술형' : '단답형'
@@ -1641,7 +1644,7 @@ function GameCard({ q, qType, selectedAnswer, checked, correctIdx, onSelect }) {
               <DemandChip q={q} /><DifficultyBadge q={q} />
             </div>
           </div>
-          <p style={{ fontSize: 15, fontWeight: 700, lineHeight: 1.8, whiteSpace: 'pre-wrap' }}>{stemQ}</p>
+          <p data-question-stem style={{ fontSize: 15, fontWeight: 700, lineHeight: 1.8, whiteSpace: 'pre-wrap' }}>{stemQ}</p>
         </div>
         <ListeningPrompt key={q?.id} q={q} revealTranscript={checked} />
         <QuestionMedia q={q} />
@@ -1695,14 +1698,14 @@ function GameCard({ q, qType, selectedAnswer, checked, correctIdx, onSelect }) {
             <DemandChip q={q} /><DifficultyBadge q={q} />
           </div>
         </div>
-        <p style={{ fontSize: 15, fontWeight: 700, lineHeight: 1.8 }}>{stemQ}</p>
+        <p data-question-stem style={{ fontSize: 15, fontWeight: 700, lineHeight: 1.8, whiteSpace: 'pre-wrap' }}>{stemQ}</p>
       </div>
       <ListeningPrompt key={q?.id} q={q} revealTranscript={checked} />
       <QuestionMedia q={q} />
       {ctxText && (
         <div style={{ background: '#f0f4ff', borderRadius: 12, padding: '12px 14px', border: '1px solid #c7d7f5', marginBottom: 10 }}>
           <p style={{ fontSize: 12, fontWeight: 700, color: '#3b5bdb', marginBottom: 6 }}>📋 지문 / 상황</p>
-          <p style={{ fontSize: 13, lineHeight: 1.9, whiteSpace: 'pre-wrap', color: '#1a237e' }}>{ctxText}</p>
+          <p data-question-context style={{ fontSize: 13, lineHeight: 1.9, whiteSpace: 'pre-wrap', color: '#1a237e' }}>{ctxText}</p>
         </div>
       )}
 

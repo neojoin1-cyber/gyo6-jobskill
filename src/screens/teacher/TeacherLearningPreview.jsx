@@ -42,9 +42,9 @@ function initialClassroomZoom(desktopPresentation) {
   try {
     const stored = Number(window.localStorage.getItem(CLASSROOM_ZOOM_STORAGE_KEY))
     if (CLASSROOM_ZOOM_LEVELS.includes(stored)) return stored
-    return window.localStorage.getItem('gyo6_classroom_text_size') === 'standard' ? 1 : 1.25
+    return 1
   } catch {
-    return 1.25
+    return 1
   }
 }
 
