@@ -224,7 +224,7 @@ export default function TeacherWorkspace({
 
         <div className="teacher-quick-actions">
           <button className="start-class" onClick={() => openClassroom()} disabled={!cls}><Broadcast weight="fill" /> 수업 시작</button>
-          <button onClick={() => onOpenStudentCampus?.()}><BookOpenText /> 학생 화면 보기</button>
+          <button onClick={() => onOpenStudentCampus?.(null, { studentView: true })}><BookOpenText /> 학생 화면 보기</button>
           <button onClick={() => onOpenMessages?.({ scope: 'class', target: classId })}><ChatCircleDots /> 메시지</button>
           <button onClick={() => onOpenCoverReviews?.(classId)}><FileText /> 작성본 첨삭</button>
           <button onClick={() => onOpenInterviewCoach?.(classId)}><PresentationChart /> 면접 코칭</button>
@@ -270,7 +270,7 @@ export default function TeacherWorkspace({
                 <h1>{teacherName} 선생님, 먼저 캠퍼스를 둘러보세요</h1>
                 <p>학생이 보는 학습을 그대로 익히고, 수업에서는 더 크게 함께 진행할 수 있어요.</p>
               </div>
-              <button onClick={() => onOpenStudentCampus?.()}><Buildings weight="fill" /><span>학생 화면 그대로</span><ArrowRight /></button>
+              <button onClick={() => onOpenStudentCampus?.(null, { studentView: true })}><Buildings weight="fill" /><span>학생 화면 그대로</span><ArrowRight /></button>
             </header>
 
             <TeacherCampusMap className="teacher-learning-map" onOpenStudentCampus={onOpenStudentCampus} />

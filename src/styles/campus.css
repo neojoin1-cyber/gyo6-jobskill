@@ -988,6 +988,8 @@ html.teacher-mode[data-teacher-view='wide'] .learning-link-chain > div { grid-te
 .teacher-learning-preview.is-teaching .teacher-preview-stage { background: #dce5ee; }
 .teacher-learning-preview.is-teaching .teacher-preview-body { width: 100%; flex: 1 1 100%; box-shadow: 0 0 36px rgba(39,55,78,.1); }
 .teacher-learning-preview.is-teaching .teacher-preview-body { transform-origin: 0 0; }
+.teacher-learning-preview.is-phone-learning .teacher-preview-stage { background: #fff; }
+.teacher-learning-preview.is-phone-learning .teacher-preview-body { width: 100%; flex-basis: 100%; box-shadow: none; }
 .teacher-learning-preview.is-teaching .teacher-preview-stage.is-pannable { justify-content: flex-start; overflow: auto; overscroll-behavior: contain; scrollbar-gutter: stable; cursor: grab; }
 .teacher-learning-preview.is-teaching .teacher-preview-stage.is-panning { cursor: grabbing; user-select: none; }
 .teacher-learning-preview.is-teaching .teacher-preview-stage.is-panning * { cursor: grabbing !important; }

@@ -30,14 +30,15 @@ import { campusCourseTarget } from '../../lib/studentCampusRoutes.js'
 import { popBack, pushBack, triggerBack } from '../../lib/backButton.js'
 import { supabase } from '../../lib/supabase.js'
 import { enterProjection, exitProjection, onFullscreenChange } from '../../lib/orientation.js'
+import { isTeacherPhoneViewport } from '../../lib/teacherLayout.js'
 import TeacherLessonCoach from './TeacherLessonCoach.jsx'
 
 const FOLLOWABLE_MODES = new Set(['study', 'diagnostic', 'mock', 'practical', 'cover-practical'])
 const CLASSROOM_ZOOM_LEVELS = [1, 1.25, 1.5, 1.75, 2, 2.5, 3]
 const CLASSROOM_ZOOM_STORAGE_KEY = 'gyo6_classroom_zoom'
 
-function initialClassroomZoom(teachingMode) {
-  if (!teachingMode || typeof window === 'undefined') return 1
+function initialClassroomZoom(desktopPresentation) {
+  if (!desktopPresentation || typeof window === 'undefined') return 1
   try {
     const stored = Number(window.localStorage.getItem(CLASSROOM_ZOOM_STORAGE_KEY))
     if (CLASSROOM_ZOOM_LEVELS.includes(stored)) return stored
@@ -224,7 +225,9 @@ export default function TeacherLearningPreview({
   const [coachOpen, setCoachOpen] = useState(false)
   const [fullscreen, setFullscreen] = useState(false)
   const [focusMode, setFocusMode] = useState(false)
-  const [classroomZoom, setClassroomZoom] = useState(() => initialClassroomZoom(teachingMode))
+  const [phoneViewport, setPhoneViewport] = useState(() => isTeacherPhoneViewport())
+  const desktopPresentation = teachingMode && !phoneViewport
+  const [classroomZoom, setClassroomZoom] = useState(() => initialClassroomZoom(teachingMode && !isTeacherPhoneViewport()))
   const [panning, setPanning] = useState(false)
   const [classes, setClasses] = useState([])
   const [classId, setClassId] = useState(initialClassId || '')
@@ -240,6 +243,23 @@ export default function TeacherLearningPreview({
     learningContext.stage &&
     !['area-choice', 'lesson-choice'].includes(learningContext.stage),
   )
+
+  useEffect(() => {
+    const updateViewport = () => setPhoneViewport(isTeacherPhoneViewport())
+    window.addEventListener('resize', updateViewport)
+    window.addEventListener('orientationchange', updateViewport)
+    return () => {
+      window.removeEventListener('resize', updateViewport)
+      window.removeEventListener('orientationchange', updateViewport)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (desktopPresentation) return
+    setClassroomZoom(1)
+    setFocusMode(false)
+    exitProjection()
+  }, [desktopPresentation])
 
   const previewBackRef = useRef(null)
   previewBackRef.current = () => {
@@ -281,7 +301,7 @@ export default function TeacherLearningPreview({
   }, [sessionMessage])
 
   useEffect(() => {
-    if (!teachingMode) return undefined
+    if (!desktopPresentation) return undefined
     document.documentElement.classList.add('shared-classroom-mode')
     const stopFullscreen = onFullscreenChange(value => {
       setFullscreen(value)
@@ -293,17 +313,17 @@ export default function TeacherLearningPreview({
       stopFullscreen()
       exitProjection()
     }
-  }, [teachingMode])
+  }, [desktopPresentation])
 
   useEffect(() => {
-    if (!teachingMode || typeof window === 'undefined') return
+    if (!desktopPresentation || typeof window === 'undefined') return
     try { window.localStorage.setItem(CLASSROOM_ZOOM_STORAGE_KEY, String(classroomZoom)) }
     catch { }
     if (classroomZoom === 1) stageRef.current?.scrollTo({ left: 0, top: 0 })
-  }, [classroomZoom, teachingMode])
+  }, [classroomZoom, desktopPresentation])
 
   useEffect(() => {
-    if (!teachingMode) return undefined
+    if (!desktopPresentation) return undefined
     const onKeyDown = event => {
       if (isTypingTarget(event.target)) return
       const stage = stageRef.current
@@ -337,10 +357,10 @@ export default function TeacherLearningPreview({
     }
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
-  }, [classroomZoom, teachingMode]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [classroomZoom, desktopPresentation]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    if (!teachingMode || !focusMode) return undefined
+    if (!desktopPresentation || !focusMode) return undefined
     document.documentElement.classList.add('classroom-focus-mode')
     const onKeyDown = event => {
       if (event.key !== 'Escape') return
@@ -352,7 +372,7 @@ export default function TeacherLearningPreview({
       document.documentElement.classList.remove('classroom-focus-mode')
       window.removeEventListener('keydown', onKeyDown)
     }
-  }, [focusMode, teachingMode])
+  }, [focusMode, desktopPresentation])
 
   useEffect(() => {
     if (!teachingMode) return
@@ -578,7 +598,7 @@ export default function TeacherLearningPreview({
   ]
 
   return (
-    <div ref={rootRef} className={`screen teacher-learning-preview ${teachingMode ? 'is-teaching' : ''} ${focusMode ? 'is-focus' : ''} ${classroomZoom > 1 ? 'is-zoomed' : ''}`}>
+    <div ref={rootRef} className={`screen teacher-learning-preview ${teachingMode ? 'is-teaching' : ''} ${phoneViewport ? 'is-phone-learning' : ''} ${focusMode ? 'is-focus' : ''} ${classroomZoom > 1 ? 'is-zoomed' : ''}`}>
       <header className="teacher-preview-context">
         <button type="button" className="teacher-preview-back" onClick={leavePreview}
           aria-label="교사 캠퍼스로 돌아가기" title="교사 캠퍼스로 돌아가기">
@@ -612,23 +632,23 @@ export default function TeacherLearningPreview({
             onClick={() => setCoachOpen(value => !value)} aria-expanded={coachOpen} aria-haspopup="dialog">
             <PresentationChart weight={coachOpen ? 'fill' : 'regular'} /><span>{contextReady ? '교사 지원' : '단원 선택 전'}</span>
           </button>
-          {teachingMode && (
+          {desktopPresentation && (
             <ClassroomZoomControl zoom={classroomZoom}
               onDecrease={() => changeClassroomZoom(-1)} onReset={() => applyClassroomZoom(1)}
               onIncrease={() => changeClassroomZoom(1)} />
           )}
-          {teachingMode ? (
+          {desktopPresentation ? (
             <button type="button" className="teacher-preview-classroom is-focus-launch" onClick={toggleClassroomFocus}
               aria-label={focusMode ? '수업 집중 화면 종료' : '수업 집중 화면'} title={focusMode ? '수업 집중 화면 종료' : '수업 집중 화면'}>
               {focusMode ? <ArrowsInSimple weight="bold" /> : <ArrowsOutSimple weight="bold" />}
               <span>{focusMode ? '수업 화면 종료' : '수업 집중 화면'}</span>
             </button>
-          ) : (
+          ) : !teachingMode ? (
             <button type="button" className="teacher-preview-classroom"
               onClick={() => onOpenClassroom?.({ ...learningContext, coachOpen })} aria-label="교실 수업으로 열기" title="교실 수업으로 열기">
               <Monitor weight="bold" />
             </button>
-          )}
+          ) : null}
         </div>
         {sessionMessage && <p className="teacher-preview-session-message" role="status">{sessionMessage}</p>}
       </header>
@@ -669,14 +689,14 @@ export default function TeacherLearningPreview({
       <div ref={stageRef}
         className={`teacher-preview-stage ${coachOpen ? 'has-coach' : ''} ${classroomZoom > 1 ? 'is-pannable' : ''} ${panning ? 'is-panning' : ''}`}
         onPointerDown={startPan} onPointerMove={movePan} onPointerUp={stopPan} onPointerCancel={stopPan}
-        aria-label={teachingMode && classroomZoom > 1 ? `확대된 수업 화면 ${Math.round(classroomZoom * 100)}%, 드래그 또는 방향키로 이동` : undefined}>
-        <div className="teacher-preview-canvas" style={teachingMode ? {
+        aria-label={desktopPresentation && classroomZoom > 1 ? `확대된 수업 화면 ${Math.round(classroomZoom * 100)}%, 드래그 또는 방향키로 이동` : undefined}>
+        <div className="teacher-preview-canvas" style={desktopPresentation ? {
           width: `${classroomZoom * 100}%`,
           height: `${classroomZoom * 100}%`,
           flexBasis: `${classroomZoom * 100}%`,
           '--classroom-zoom': classroomZoom,
         } : undefined}>
-        <div className="teacher-preview-body" style={teachingMode ? {
+        <div className="teacher-preview-body" style={desktopPresentation ? {
           width: `${100 / classroomZoom}%`,
           height: `${100 / classroomZoom}%`,
           flex: `0 0 ${100 / classroomZoom}%`,

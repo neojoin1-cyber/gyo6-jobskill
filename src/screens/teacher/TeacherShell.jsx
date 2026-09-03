@@ -21,7 +21,7 @@ import {
   Student,
   Trash,
 } from '@phosphor-icons/react'
-import { startTeacherLayout, setView, viewChoice, effectiveView, onViewChange } from '../../lib/teacherLayout.js'
+import { startTeacherLayout, setView, viewChoice, effectiveView, isTeacherPhoneViewport, onViewChange } from '../../lib/teacherLayout.js'
 import TeacherRankingScreen from './TeacherRankingScreen.jsx'
 import TeacherGradingScreen from './TeacherGradingScreen.jsx'
 import MissionCreateScreen from './MissionCreateScreen.jsx'
@@ -261,7 +261,7 @@ export default function TeacherShell() {
           <TeacherLearningPreview
             profile={profile}
             initialSubject={screen.subject}
-            teachingMode={screen.teachingMode}
+            teachingMode={screen.teachingMode ?? (screen.adaptiveMode && !isTeacherPhoneViewport())}
             onBack={closeScreen}
             onOpenClassroom={context => {
               const next = typeof context === 'string' ? { subject: context } : context || {}
@@ -303,7 +303,7 @@ export default function TeacherShell() {
           <div><b>설탕과소금 스킬캠퍼스</b><small>TEACHER</small></div>
         </button>
         <div className="teacher-shell-actions">
-          <button className="teacher-shell-icon" onClick={() => navigate('student-campus')} title="학생 화면 그대로 보기" aria-label="학생 화면 그대로 보기">
+          <button className="teacher-shell-icon" onClick={() => navigate('student-campus', { teachingMode: false })} title="학생 화면 그대로 보기" aria-label="학생 화면 그대로 보기">
             <Compass weight="bold" />
           </button>
           <ThemeToggle />
@@ -316,7 +316,7 @@ export default function TeacherShell() {
             {accountOpen && (
               <div className="teacher-account-popover">
                 <header><span>{teacherName.slice(0, 1)}</span><div><b>{teacherName} 선생님</b><small>교사 캠퍼스</small></div></header>
-                <button onClick={() => { setAccountOpen(false); navigate('student-campus') }}><Compass /> 학생 화면 그대로 보기</button>
+                <button onClick={() => { setAccountOpen(false); navigate('student-campus', { teachingMode: false }) }}><Compass /> 학생 화면 그대로 보기</button>
                 <button onClick={() => { setAccountOpen(false); navigate('pending-students') }}><Student /> 학생 승인</button>
                 <button onClick={() => { chooseView(layout.choice === 'wide' ? 'auto' : 'wide'); setAccountOpen(false) }}>
                   {layout.choice === 'wide' ? <DeviceMobile /> : <Monitor />} {layout.choice === 'wide' ? '자동 맞춤 화면으로' : '넓게 보기 · 교사 작업대'}
@@ -347,7 +347,11 @@ export default function TeacherShell() {
           onOpenMessages={(params = {}) => navigate('messages', params)}
           onOpenCoverReviews={classId => navigate('cover-reviews', { classId })}
           onOpenInterviewCoach={classId => navigate('interview-coaching', { classId })}
-          onOpenStudentCampus={(subject, options = {}) => navigate('student-campus', { subject, ...options })}
+          onOpenStudentCampus={(subject, options = {}) => navigate('student-campus', {
+            subject,
+            adaptiveMode: !options.studentView,
+            teachingMode: options.studentView ? false : options.teachingMode,
+          })}
           onSync={() => syncDeviceState()}
           onLogout={logout}
         />
@@ -380,7 +384,7 @@ export default function TeacherShell() {
       {layout.effective !== 'wide' && (
         <nav className="bottom-tab teacher-main-tabs" aria-label="교사 주요 메뉴">
           <button aria-label="홈" className={`tab-item ${tab === 'dashboard' ? 'active' : ''}`} onClick={() => setTab('dashboard')}><span className="tab-icon"><House weight={tab === 'dashboard' ? 'fill' : 'regular'} /></span>홈</button>
-          <button aria-label="학습" className="tab-item" onClick={() => navigate('student-campus')}><span className="tab-icon"><Compass /></span>학습</button>
+          <button aria-label="학습" className="tab-item" onClick={() => navigate('student-campus', { adaptiveMode: true })}><span className="tab-icon"><Compass /></span>학습</button>
           <button aria-label="수업" className="tab-item teacher-class-tab" onClick={() => navigate('classroom')}><span className="tab-icon"><Buildings weight="fill" /></span>수업</button>
           <button aria-label="학생" className="tab-item" onClick={() => wsClasses[0]
             ? navigate('class-progress', { classId: wsClasses[0].id, className: wsClasses[0].name })

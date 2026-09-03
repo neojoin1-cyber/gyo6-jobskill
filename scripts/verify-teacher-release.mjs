@@ -147,6 +147,17 @@ if (!studentShell.includes('classSession.focus?.subject') || !studentShell.inclu
 if (app.includes('window.location.reload()')) errors.push('Native update startup can still force a WebView reload')
 if (!app.includes("localStorage.setItem(KEY, String(info.build || '0'))")) errors.push('Native update build marker is missing')
 if (!teacherLayout.includes("width >= 860 ? 'wide' : 'tall'")) errors.push('Narrow-screen wide-layout guard is missing')
+if (!teacherLayout.includes('TEACHER_PHONE_MAX_WIDTH = 767') || !teacherShell.includes('screen.adaptiveMode && !isTeacherPhoneViewport()')) {
+  errors.push('Teacher learning does not switch between phone student view and tablet/desktop presentation view')
+}
+if (!teacherLearningPreview.includes('desktopPresentation = teachingMode && !phoneViewport') ||
+    !teacherLearningPreview.includes('if (!desktopPresentation) return undefined') ||
+    !teacherLearningPreview.includes('setClassroomZoom(1)')) {
+  errors.push('Phone classroom can still restore desktop projection or zoom state')
+}
+if (!campusCss.includes('.teacher-learning-preview.is-phone-learning .teacher-preview-body')) {
+  errors.push('Phone teacher learning does not preserve the student-width learning surface')
+}
 if (!bootstrapMigration.includes('ms.subject_id')) errors.push('Student bootstrap still drops mission subject_id')
 if (courseList.includes('원하는 학습 기능을 바로 선택하세요')) errors.push('Non-clickable learning legend still describes itself as selectable')
 if (!interviewCareer.includes('SECTOR_FORM_EXAMPLES') || interviewCareer.includes('placeholder="예: 한국전력공사"')) {

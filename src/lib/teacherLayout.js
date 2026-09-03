@@ -26,6 +26,13 @@ import { isLandscape, onOrientationChange } from './orientation.js'
 const KEY = 'teacher-view'
 const listeners = new Set()
 
+export const TEACHER_PHONE_MAX_WIDTH = 767
+
+/** 스마트폰에서는 교사용 데스크톱 학습 화면을 열지 않는다. */
+export function isTeacherPhoneViewport() {
+  return typeof window !== 'undefined' && window.innerWidth <= TEACHER_PHONE_MAX_WIDTH
+}
+
 let choice = read()
 
 function read() {
