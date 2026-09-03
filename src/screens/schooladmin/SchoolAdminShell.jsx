@@ -56,7 +56,7 @@ export default function SchoolAdminShell() {
     return <ClassProgressScreen classId={screen.classId} className={screen.className} onBack={closeScreen} />
 
   return (
-    <div className="screen">
+    <div className="screen school-admin-shell">
       <SaveExitDialog
         open={Boolean(confirmExit)}
         onCancel={() => setConfirmExit(false)}

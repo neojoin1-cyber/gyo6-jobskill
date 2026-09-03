@@ -1,10 +1,9 @@
 import { mkdirSync, writeFileSync } from 'node:fs'
 import { chromium } from '../verification/adversarial-4.8.13/tools/e2e/node_modules/@playwright/test/index.mjs'
 import { AxeBuilder } from '../verification/adversarial-4.8.13/tools/e2e/node_modules/@axe-core/playwright/dist/index.mjs'
-import { openWithSession } from '../verification/adversarial-4.8.13/tools/e2e/lib/session.mjs'
 
 const APP = process.env.APP_URL || 'http://127.0.0.1:7700/'
-const outputDir = 'output/playwright/adversarial-4.8.16'
+const outputDir = 'output/playwright/adversarial-4.8.17'
 mkdirSync(outputDir, { recursive: true })
 const report = { generatedAt: new Date().toISOString(), app: APP, checks: [], scans: [] }
 
@@ -84,6 +83,8 @@ async function openTrial(role) {
   await page.goto(`${APP}?trial=${role}&trial_nonce=${Date.now()}`, { waitUntil: 'domcontentloaded', timeout: 60_000 })
   if (role === 'student') {
     await page.waitForFunction(() => document.body.innerText.includes('스킬캠퍼스'), null, { timeout: 40_000 }).catch(() => {})
+  } else if (role === 'school_admin') {
+    await page.locator('.school-admin-shell').waitFor({ state: 'visible', timeout: 40_000 }).catch(() => {})
   } else {
     await page.locator('.teacher-mobile-tools button').first().waitFor({ state: 'visible', timeout: 40_000 }).catch(() => {})
   }
@@ -183,16 +184,33 @@ try {
   await teacher.context.close(); await teacher.browser.close()
 }
 
-const admin = await openWithSession('admin', { viewport: { width: 390, height: 844 } })
+const admin = await openTrial('school_admin')
 try {
-  await admin.page.goto(APP, { waitUntil: 'domcontentloaded', timeout: 60_000 })
-  await admin.page.waitForTimeout(4_000)
-  check('admin current-source session entered', !/로그인/.test((await admin.page.locator('body').innerText()).slice(0, 200)))
+  check('school admin trial entered', await admin.page.locator('.school-admin-shell').isVisible())
   await scan(admin.page, 'admin-home')
   await zoomCheck(admin.page, 'admin-home')
   await admin.page.screenshot({ path: `${outputDir}/admin-home.png` })
+
+  await admin.page.getByRole('button', { name: /정보 수정/ }).first().waitFor({ state: 'visible', timeout: 20_000 })
+  await admin.page.getByRole('button', { name: /정보 수정/ }).first().click()
+  const adminSelects = await admin.page.evaluate(() => {
+    const selects = [...document.querySelectorAll('.school-admin-shell select.form-input')]
+    const role = selects.find(select => [...select.options].some(option => option.value === 'school_admin'))
+    const school = selects.find(select => [...select.options].some(option => option.value === ''))
+    const style = role ? getComputedStyle(role) : null
+    return {
+      roleOptions: role?.options.length ?? 0,
+      schoolOptions: school?.options.length ?? 0,
+      background: style?.backgroundColor ?? '',
+      color: style?.color ?? '',
+      colorScheme: style?.colorScheme ?? '',
+    }
+  })
+  check('admin role and school choices visible', adminSelects.roleOptions === 4 && adminSelects.schoolOptions > 1, JSON.stringify(adminSelects))
+  check('admin dropdowns use light surface', adminSelects.background === 'rgb(255, 255, 255)' && adminSelects.colorScheme === 'light', JSON.stringify(adminSelects))
+  await admin.page.screenshot({ path: `${outputDir}/admin-member-edit.png` })
 } finally {
-  await admin.close()
+  await admin.context.close(); await admin.browser.close()
 }
 
 writeFileSync('output/adversarial-ui-report.json', `${JSON.stringify(report, null, 2)}\n`)

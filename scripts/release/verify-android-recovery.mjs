@@ -90,7 +90,12 @@ async function verifyLaunchCycles(serial, label, cycles = 2) {
     adbRun(serial, ['shell', 'am', 'force-stop', appId])
     adbRun(serial, ['logcat', '-c'])
     const launch = adbRun(serial, ['shell', 'am', 'start', '-W', '-n', `${appId}/.MainActivity`]).stdout
-    if (!/Status:\s*ok/i.test(launch)) throw new Error(`Android ${label} ${cycle}차 재실행 실패\n${launch}`)
+    // A cold WebView start can outlive ActivityManager's own -W timeout even
+    // though the activity keeps starting normally. The process, crash log and
+    // boot-guard checks below remain the authoritative readiness checks.
+    if (!/Status:\s*(?:ok|timeout)/i.test(launch)) {
+      throw new Error(`Android ${label} ${cycle}차 재실행 실패\n${launch}`)
+    }
     const deadline = Date.now() + 60_000
     let ready = false
     while (Date.now() < deadline) {

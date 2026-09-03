@@ -39,7 +39,7 @@ export default function AdminShell({ profile }) {
   ]
 
   return (
-    <div className="screen">
+    <div className="screen admin-shell">
       <SaveExitDialog
         open={Boolean(confirmExit)}
         onCancel={() => setConfirmExit(false)}

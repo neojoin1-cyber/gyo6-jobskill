@@ -63,6 +63,7 @@ export default function TeachersScreen({ currentRole }) {
   const [filterRole,  setFilterRole]  = useState('all')
 
   const [schools,     setSchools]     = useState([])
+  const [loadError,   setLoadError]   = useState('')
 
   // 일괄 등록 모달
   const [bulkModal,   setBulkModal]   = useState(false)
@@ -99,12 +100,16 @@ export default function TeachersScreen({ currentRole }) {
 
   async function load() {
     setLoading(true)
-    const [{ data: memberData }, { data: schoolData }] = await Promise.all([
+    setLoadError('')
+    const [memberResult, schoolResult] = await Promise.all([
       supabase.rpc('rpc_admin_members'),
       supabase.from('schools').select('id, name').order('name'),
     ])
-    setMembers(memberData ?? [])
-    setSchools(schoolData ?? [])
+    setMembers(memberResult.data ?? [])
+    setSchools(schoolResult.data ?? [])
+    if (memberResult.error || schoolResult.error) {
+      setLoadError(`관리 목록을 모두 불러오지 못했습니다. ${memberResult.error?.message ?? schoolResult.error?.message ?? ''}`.trim())
+    }
     setLoading(false)
   }
 
@@ -333,6 +338,7 @@ export default function TeachersScreen({ currentRole }) {
 
   return (
     <div className="screen-body" style={{ paddingTop: 0 }}>
+      {loadError && <div className="form-error admin-load-error" role="alert">{loadError}</div>}
 
       {/* 회원 전체 편집 모달 */}
       {editModal && (
@@ -665,8 +671,8 @@ export default function TeachersScreen({ currentRole }) {
             style={{
               padding: '5px 12px', borderRadius: 999, fontSize: 12, border: 'none', cursor: 'pointer',
               background: filterRole === f.v ? 'var(--primary)' : 'var(--border)',
-              color: filterRole === f.v ? '#fff' : 'var(--text-muted)',
-              fontWeight: filterRole === f.v ? 700 : 400,
+              color: filterRole === f.v ? '#fff' : '#374151',
+              fontWeight: 700,
             }}>
             {f.label}
           </button>
@@ -722,7 +728,7 @@ export default function TeachersScreen({ currentRole }) {
               </button>
               <button
                 className={`btn ${m.approved ? 'btn-ghost' : 'btn-primary'}`}
-                style={{ flex: 1, fontSize: 12, padding: '6px 0', color: m.approved ? 'var(--danger)' : undefined }}
+                style={{ flex: 1, fontSize: 12, padding: '6px 0', color: m.approved ? '#b91c1c' : undefined }}
                 onClick={() => toggleApprove(m)}>
                 {m.approved ? '✗ 승인취소' : '✓ 승인'}
               </button>

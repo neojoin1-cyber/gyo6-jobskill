@@ -53,6 +53,34 @@
 [data-theme="dark"] .btn-secondary { background: #1E1B4B; }
 [data-theme="dark"] select { background: #374151; color: var(--text); border-color: var(--border); }
 
+/* Android WebView의 네이티브 선택 목록은 다크 색상을 불완전하게 상속한다.
+   관리 화면의 학교·역할 선택지는 항상 밝고 선명한 목록으로 제공한다. */
+.admin-shell select.form-input,
+.school-admin-shell select.form-input {
+  background: #fff !important;
+  color: #172033 !important;
+  border-color: #b8c5d6 !important;
+  color-scheme: light;
+}
+.admin-shell select.form-input option,
+.school-admin-shell select.form-input option {
+  background: #fff !important;
+  color: #172033 !important;
+}
+.admin-load-error {
+  margin: 10px 12px;
+  padding: 10px 12px;
+  border: 1px solid #dc2626;
+  border-radius: 8px;
+  background: #fff1f2;
+  color: #991b1b;
+}
+.admin-shell .badge-gray,
+.school-admin-shell .badge-gray {
+  background: #e5e7eb;
+  color: #374151;
+}
+
 html, body, #root {
   height: 100%;
   width: 100%;
