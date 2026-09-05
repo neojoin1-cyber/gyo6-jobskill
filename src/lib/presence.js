@@ -72,7 +72,11 @@ async function ping(state) {
     p_session_id: sessionId, p_state: state,
   })
   // 교사가 수업을 닫으면 서버가 알려 준다. 그때 스스로 멈춘다.
-  if (data?.error === 'no_session') { stopPresence(); return }
+  if (data?.error === 'no_session') {
+    stopPresence()
+    onFocus?.(null, { sessionClosed: true })
+    return
+  }
   // 신호 응답에 선생님이 보는 자리가 함께 온다. **조회가 늘지 않는다** —
   // 어차피 오가던 요청에 얹어 보낸 것이다.
   if (data && 'focus' in data) onFocus?.(data.focus ?? null)

@@ -61,6 +61,8 @@ export default function StudentShell() {
    * 띠를 띄우는 이유 — 이건 미성년자를 보는 기능이다. 모르게 보지 않는다.
    */
   const [classSession, setClassSession] = useState(null)
+  const classCheckRef = useRef(null)
+  const lastClassCheckAtRef = useRef(0)
   useEffect(() => {
     if (!profile?.id) return
     let alive = true
@@ -71,10 +73,15 @@ export default function StudentShell() {
       if (s?.session_id) startPresence(s.session_id)
       else stopPresence()
     }
+    classCheckRef.current = check
     check()
     // 참여 신호 응답에 선생님 위치가 실려 온다. 따로 물어보지 않는다.
-    setFocusListener(focus => {
+    setFocusListener((focus, meta) => {
       if (!alive) return
+      if (meta?.sessionClosed) {
+        setClassSession(null)
+        return
+      }
       setClassSession(prev => (prev ? { ...prev, focus } : prev))
     })
     let channel = null
@@ -107,6 +114,7 @@ export default function StudentShell() {
     scheduleFallback()
     return () => {
       alive = false
+      if (classCheckRef.current === check) classCheckRef.current = null
       setFocusListener(null)
       window.clearTimeout(fallbackTimer)
       document.removeEventListener('visibilitychange', onVisible)
@@ -131,6 +139,16 @@ export default function StudentShell() {
   const [immersive,   setImmersive]   = useState(false)
   const [overlay,     setOverlay]     = useState(null)   // { screen, ...params }
   const [confirmExit, setConfirmExit] = useState(false)
+
+  // 실시간 이벤트가 절전·네트워크 전환 중 누락돼도, 학생이 학습관에 들어오거나
+  // 다음 단계로 움직이는 순간 현재 수업을 다시 확인한다. 연속 이동은 10초에 한 번만 묻는다.
+  useEffect(() => {
+    if (!profile?.id || isTrial || tab !== 'study') return
+    const now = Date.now()
+    if (now - lastClassCheckAtRef.current < 10_000) return
+    lastClassCheckAtRef.current = now
+    classCheckRef.current?.()
+  }, [isTrial, learningContext, profile?.id, tab])
 
   const sharingSelfStudy = Boolean(profile?.id && !isTrial && tab === 'study' && !classSession?.session_id)
   useEffect(() => {
