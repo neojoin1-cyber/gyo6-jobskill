@@ -25,12 +25,16 @@ const MODE = {
 
 export default function JobAdaptationScreen({
   mode = 'full',
-  paperNo = 1,
+  paperNo = null,
   onBack,
   onComplete,
 }) {
   const meta = MODE[mode] || MODE.full
-  const items = useMemo(() => buildJobAdaptationItems(mode, paperNo), [mode, paperNo])
+  const resolvedPaperNo = useMemo(() => {
+    if (paperNo != null) return paperNo
+    return Number(localStorage.getItem(`job_adaptation_${mode}_attempt`) || 0) + 1
+  }, [mode, paperNo])
+  const items = useMemo(() => buildJobAdaptationItems(mode, resolvedPaperNo), [mode, resolvedPaperNo])
   const [phase, setPhase] = useState('intro')
   const [responses, setResponses] = useState({})
   const [timeLeft, setTimeLeft] = useState(meta.minutes * 60)
@@ -75,6 +79,9 @@ export default function JobAdaptationScreen({
   }, [])
 
   function start() {
+    if (paperNo == null) {
+      try { localStorage.setItem(`job_adaptation_${mode}_attempt`, String(resolvedPaperNo)) } catch {}
+    }
     setResponses({})
     setResult(null)
     setTimeLeft(meta.minutes * 60)
@@ -89,7 +96,7 @@ export default function JobAdaptationScreen({
     try {
       const key = `job_adaptation_${mode}_history`
       const previous = JSON.parse(localStorage.getItem(key) || '[]')
-      previous.push({ ts: Date.now(), paperNo, result: scored })
+      previous.push({ ts: Date.now(), paperNo: resolvedPaperNo, result: scored })
       localStorage.setItem(key, JSON.stringify(previous.slice(-10)))
     } catch {
       // 저장 공간이 없더라도 현재 결과 화면은 정상 제공한다.

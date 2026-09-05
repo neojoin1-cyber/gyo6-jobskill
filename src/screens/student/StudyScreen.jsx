@@ -43,9 +43,14 @@ import { jcLessonMatches, jcOrderInLesson } from '../../lib/jobCommonAreas.js'
 import MatchingBoard, { isMatchingCorrect } from './MatchingBoard.jsx'
 import PulldownForm, { isPulldownCorrect } from './PulldownForm.jsx'
 import { studyQuestions } from '../../lib/assessmentPartition.js'
+import { markAssessmentPracticeExposure, rotatingPracticeWindow } from '../../lib/assessmentExposure.js'
+import independentJobCommon from '../../../data/assessment-banks/job-common.json'
+import independentNcs from '../../../data/assessment-banks/ncs-basic.json'
+import independentRecruit from '../../../data/assessment-banks/recruit-written.json'
 import { formatStructuredLearningText } from '../../lib/structuredLearningText.js'
 import CompactText from '../../components/CompactText.jsx'
 import { getFirstClassFormative } from '../../lib/firstClassLessons.js'
+import ExtraPracticeQuiz from './ExtraPracticeQuiz.jsx'
 
 const ncsExtrasMap  = new Map(ncsExtras.map(e => [e.lessonId, e]))
 
@@ -88,6 +93,12 @@ const SUBJECTS = [
   { id: 'recruit-written', label: '채용필기 심화·확장', icon: '📝', questions: studyQuestions(recruitWrittenQuestions) },
 ]
 
+const INDEPENDENT_PRACTICE = {
+  'job-common': independentJobCommon.questions || [],
+  'ncs-basic': independentNcs.questions || [],
+  'recruit-written': independentRecruit.questions || [],
+}
+
 // 교육부·대한상의 직업공통능력 인증 = 5개 인증영역.
 const JOB_AREAS = buildJcOfficialAreas()
 
@@ -120,6 +131,7 @@ export default function StudyScreen({ initialSubject, initialTrack, initialArea,
   const [gameChecked,      setGameChecked]      = useState({})   // { idx → bool } 즉시 피드백 공개됨
   const [gameResult,       setGameResult]       = useState(null)
   const [showJump,         setShowJump]         = useState(false)
+  const [showExtraPractice, setShowExtraPractice] = useState(false)
   const [learnRevealed,    setLearnRevealed]    = useState({})
   const scrollRef = useRef(null)
 
@@ -156,7 +168,7 @@ export default function StudyScreen({ initialSubject, initialTrack, initialArea,
     }
   }, [areas, areaId])
 
-  const questionPool = useMemo(() => {
+  const baseQuestionPool = useMemo(() => {
     // 보기 없는 선다형(보기가 문두 ①②③ 텍스트에 붙은 뱅크)은 보기를 분리 추출해 정상 출제
     const qs = (subject?.questions ?? []).map(withExtractedChoices)
     if (!areaId) return []
@@ -187,6 +199,36 @@ export default function StudyScreen({ initialSubject, initialTrack, initialArea,
     }
     return []
   }, [subject, subjectId, trackId, areaId, lessonId])
+
+  const independentPracticePool = useMemo(() => {
+    const candidates = (INDEPENDENT_PRACTICE[subjectId] || []).filter(question => {
+      if (subjectId === 'job-common') return question.officialArea === areaId
+      if (subjectId === 'ncs-basic') {
+        return question.area === areaId && (!lessonId || lessonId === '__all__' || question.ncsAbility === lessonId)
+      }
+      if (subjectId === 'recruit-written') {
+        return question.recruitmentTrack === trackId
+          && recruitAreaId(question.area) === areaId
+          && (!lessonId || lessonId === '__all__' || recruitLessonTitle(question) === lessonId)
+      }
+      return false
+    })
+    return rotatingPracticeWindow(candidates, `${subjectId}:${trackId || ''}:${areaId || ''}:${lessonId || ''}`, 10)
+  }, [areaId, lessonId, subjectId, trackId])
+
+  const independentPracticeCandidates = useMemo(() => (INDEPENDENT_PRACTICE[subjectId] || []).filter(question => {
+    if (subjectId === 'job-common') return question.officialArea === areaId
+    if (subjectId === 'ncs-basic') return question.area === areaId && (!lessonId || lessonId === '__all__' || question.ncsAbility === lessonId)
+    if (subjectId === 'recruit-written') return question.recruitmentTrack === trackId
+      && recruitAreaId(question.area) === areaId
+      && (!lessonId || lessonId === '__all__' || recruitLessonTitle(question) === lessonId)
+    return false
+  }), [areaId, lessonId, subjectId, trackId])
+
+  const questionPool = useMemo(
+    () => studyMode === 'game' ? [...baseQuestionPool, ...independentPracticePool] : baseQuestionPool,
+    [baseQuestionPool, independentPracticePool, studyMode],
+  )
 
   // A classroom follow link opens the same item the teacher is projecting.
   // The ID is authoritative; the numeric index is only a fallback for older sessions.
@@ -249,6 +291,11 @@ export default function StudyScreen({ initialSubject, initialTrack, initialArea,
   )
 
   const contextQuestion = questionPool[questionIdx] ?? null
+  useEffect(() => {
+    if (studyMode === 'game' && contextQuestion?.id?.startsWith('NEW26-')) {
+      markAssessmentPracticeExposure(contextQuestion.id)
+    }
+  }, [contextQuestion?.id, studyMode])
   const contextSummaryCards = useMemo(
     () => lessonSummary ? buildStudySummaryCards(lessonSummary, questionPool, undefined, undefined, formativeAssessment) : [],
     [lessonSummary, questionPool, formativeAssessment],
@@ -324,6 +371,7 @@ export default function StudyScreen({ initialSubject, initialTrack, initialArea,
 
   const backRef = useRef(null)
   backRef.current = () => {
+    if (showExtraPractice) { setShowExtraPractice(false); return }
     if (showJump) { setShowJump(false); return }
     handleBack()
   }
@@ -540,6 +588,17 @@ export default function StudyScreen({ initialSubject, initialTrack, initialArea,
   // 이제 단원 목록을 먼저 보여 주고, 검사 단원을 고를 때만 검사로 간다.
   if (subjectId === 'job-common' && areaId === '직무적응' && lessonId === 'JC26-JOB-ADAPTATION') {
     return <JobAdaptationScreen mode="full" onBack={() => setLessonId(null)} />
+  }
+
+  if (showExtraPractice && independentPracticeCandidates.length > 0) {
+    return <ExtraPracticeQuiz
+      title={contextLessonLabel}
+      questions={independentPracticeCandidates}
+      scope={`${subjectId}:${trackId || ''}:${areaId || ''}:${lessonId || ''}`}
+      courseId={1}
+      onClose={() => setShowExtraPractice(false)}
+      onFullPractice={() => { setShowExtraPractice(false); switchMode('game') }}
+    />
   }
 
   if (!lessonId && lessons.length > 0 && ['job-common', 'ncs-basic', 'recruit-written'].includes(subjectId)) {
@@ -881,8 +940,9 @@ export default function StudyScreen({ initialSubject, initialTrack, initialArea,
             initialInteraction={initialInteraction}
             onStepChange={setLearnCardStep}
             onInteractionChange={setSummaryInteraction}
+            onQuickPractice={independentPracticeCandidates.length ? () => setShowExtraPractice(true) : null}
             onStartQuiz={() => switchMode('game')}
-            startQuizLabel="단원 도전 시작 →"
+            startQuizLabel="단원 도전 시작 · 전체 문제풀이 →"
             embeddedHeader
           />
         </div>

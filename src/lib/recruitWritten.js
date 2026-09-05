@@ -5,6 +5,7 @@ import jobVariantsFile from '../../data/job-variants.json'
 import recruitStudySupplement from '../../data/recruit-written-study-supplement.json'
 import { questionLane } from './assessmentPartition.js'
 import { applyQuestionIntegrityToPool } from './questionIntegrity.js'
+import independentAssessmentBank from '../../data/assessment-banks/recruit-written.json'
 import {
   RECRUITMENT_EXTRA_AREA_IDS,
   recruitmentTrackIds,
@@ -189,7 +190,7 @@ export const recruitWrittenQuestions = applyQuestionIntegrityToPool(rawNcsQuesti
     learningLane: 'study',
     answerSource: 'authored-standards-supplement',
   }, trackId))
-)))
+)).concat(independentAssessmentBank.questions || []))
 
 export const ncsLegacySourceQuestions = rawNcsQuestions.filter(q => recruitResidualKind(q))
 export const recruitmentExtraSourceQuestions = rawNcsQuestions.filter(q => EXTRA_AREA_SET.has(q.area))
@@ -222,6 +223,7 @@ export function recruitAreaLabel(area) {
 }
 
 export function recruitLessonTitle(q) {
+  if (q.curriculumLessonTitle) return q.curriculumLessonTitle
   const groups = CURATED_LESSON_GROUPS[q.area]
   if (!groups) return q.lessonTitle ?? q.lessonId ?? q.area
 

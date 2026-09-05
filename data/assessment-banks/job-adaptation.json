@@ -1,0 +1,3100 @@
+{
+  "meta": {
+    "schemaVersion": 1,
+    "generatedPrefix": "NEW26-",
+    "generatedOn": "2026-09-04",
+    "blueprintVersion": "2026.09.04-1",
+    "target": "add two independently authored items for every baseline item so each assessment pool reaches 300%",
+    "sourcePolicy": "Only framework, competency labels, lesson labels, organization metadata, and baseline counts are inputs. Existing stems, contexts, choices, answers, and explanations are never generation inputs."
+  },
+  "questions": [
+    {
+      "id": "NEW26-JA-problem-01P",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "problem",
+      "direction": 1,
+      "pair": "NEW26-JA-problem-01R",
+      "text": "예상하지 못한 문제가 생겨도 원인과 영향을 구분해 해결 순서를 정한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-problem-01R",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "problem",
+      "direction": -1,
+      "pair": "NEW26-JA-problem-01P",
+      "text": "예상하지 못한 문제가 생겨도 원인을 확인하기 전에 눈앞의 일부터 처리한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-problem-02P",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "problem",
+      "direction": 1,
+      "pair": "NEW26-JA-problem-02R",
+      "text": "일정이 촉박한 업무에서도 원인과 영향을 구분해 해결 순서를 정한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-problem-02R",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "problem",
+      "direction": -1,
+      "pair": "NEW26-JA-problem-02P",
+      "text": "일정이 촉박한 업무에서도 원인을 확인하기 전에 눈앞의 일부터 처리한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-problem-03P",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "problem",
+      "direction": 1,
+      "pair": "NEW26-JA-problem-03R",
+      "text": "처음 맡은 과제를 수행할 때 원인과 영향을 구분해 해결 순서를 정한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-problem-03R",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "problem",
+      "direction": -1,
+      "pair": "NEW26-JA-problem-03P",
+      "text": "처음 맡은 과제를 수행할 때 원인을 확인하기 전에 눈앞의 일부터 처리한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-problem-04P",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "problem",
+      "direction": 1,
+      "pair": "NEW26-JA-problem-04R",
+      "text": "동료와 함께 일하는 동안 원인과 영향을 구분해 해결 순서를 정한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-problem-04R",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "problem",
+      "direction": -1,
+      "pair": "NEW26-JA-problem-04P",
+      "text": "동료와 함께 일하는 동안 원인을 확인하기 전에 눈앞의 일부터 처리한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-problem-05P",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "problem",
+      "direction": 1,
+      "pair": "NEW26-JA-problem-05R",
+      "text": "결과가 기대와 다를 때 원인과 영향을 구분해 해결 순서를 정한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-problem-05R",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "problem",
+      "direction": -1,
+      "pair": "NEW26-JA-problem-05P",
+      "text": "결과가 기대와 다를 때 원인을 확인하기 전에 눈앞의 일부터 처리한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-problem-06P",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "problem",
+      "direction": 1,
+      "pair": "NEW26-JA-problem-06R",
+      "text": "업무 방식이 갑자기 바뀌어도 원인과 영향을 구분해 해결 순서를 정한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-problem-06R",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "problem",
+      "direction": -1,
+      "pair": "NEW26-JA-problem-06P",
+      "text": "업무 방식이 갑자기 바뀌어도 원인을 확인하기 전에 눈앞의 일부터 처리한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-problem-07P",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "problem",
+      "direction": 1,
+      "pair": "NEW26-JA-problem-07R",
+      "text": "예상하지 못한 문제가 생겨도 확인 가능한 자료를 찾아 판단을 고친다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-problem-07R",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "problem",
+      "direction": -1,
+      "pair": "NEW26-JA-problem-07P",
+      "text": "예상하지 못한 문제가 생겨도 자료를 찾지 않고 처음 생각한 원인을 확정한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-problem-08P",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "problem",
+      "direction": 1,
+      "pair": "NEW26-JA-problem-08R",
+      "text": "일정이 촉박한 업무에서도 확인 가능한 자료를 찾아 판단을 고친다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-problem-08R",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "problem",
+      "direction": -1,
+      "pair": "NEW26-JA-problem-08P",
+      "text": "일정이 촉박한 업무에서도 자료를 찾지 않고 처음 생각한 원인을 확정한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-problem-09P",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "problem",
+      "direction": 1,
+      "pair": "NEW26-JA-problem-09R",
+      "text": "처음 맡은 과제를 수행할 때 확인 가능한 자료를 찾아 판단을 고친다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-problem-09R",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "problem",
+      "direction": -1,
+      "pair": "NEW26-JA-problem-09P",
+      "text": "처음 맡은 과제를 수행할 때 자료를 찾지 않고 처음 생각한 원인을 확정한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-problem-10P",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "problem",
+      "direction": 1,
+      "pair": "NEW26-JA-problem-10R",
+      "text": "동료와 함께 일하는 동안 확인 가능한 자료를 찾아 판단을 고친다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-problem-10R",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "problem",
+      "direction": -1,
+      "pair": "NEW26-JA-problem-10P",
+      "text": "동료와 함께 일하는 동안 자료를 찾지 않고 처음 생각한 원인을 확정한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-problem-11P",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "problem",
+      "direction": 1,
+      "pair": "NEW26-JA-problem-11R",
+      "text": "결과가 기대와 다를 때 확인 가능한 자료를 찾아 판단을 고친다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-problem-11R",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "problem",
+      "direction": -1,
+      "pair": "NEW26-JA-problem-11P",
+      "text": "결과가 기대와 다를 때 자료를 찾지 않고 처음 생각한 원인을 확정한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-problem-12P",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "problem",
+      "direction": 1,
+      "pair": "NEW26-JA-problem-12R",
+      "text": "업무 방식이 갑자기 바뀌어도 확인 가능한 자료를 찾아 판단을 고친다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-problem-12R",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "problem",
+      "direction": -1,
+      "pair": "NEW26-JA-problem-12P",
+      "text": "업무 방식이 갑자기 바뀌어도 자료를 찾지 않고 처음 생각한 원인을 확정한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-growth-01P",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "growth",
+      "direction": 1,
+      "pair": "NEW26-JA-growth-01R",
+      "text": "예상하지 못한 문제가 생겨도 부족한 역량을 구체적으로 찾아 학습 계획을 세운다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-growth-01R",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "growth",
+      "direction": -1,
+      "pair": "NEW26-JA-growth-01P",
+      "text": "예상하지 못한 문제가 생겨도 부족한 점을 알아도 별도 학습 계획을 세우지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-growth-02P",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "growth",
+      "direction": 1,
+      "pair": "NEW26-JA-growth-02R",
+      "text": "일정이 촉박한 업무에서도 부족한 역량을 구체적으로 찾아 학습 계획을 세운다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-growth-02R",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "growth",
+      "direction": -1,
+      "pair": "NEW26-JA-growth-02P",
+      "text": "일정이 촉박한 업무에서도 부족한 점을 알아도 별도 학습 계획을 세우지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-growth-03P",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "growth",
+      "direction": 1,
+      "pair": "NEW26-JA-growth-03R",
+      "text": "처음 맡은 과제를 수행할 때 부족한 역량을 구체적으로 찾아 학습 계획을 세운다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-growth-03R",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "growth",
+      "direction": -1,
+      "pair": "NEW26-JA-growth-03P",
+      "text": "처음 맡은 과제를 수행할 때 부족한 점을 알아도 별도 학습 계획을 세우지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-growth-04P",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "growth",
+      "direction": 1,
+      "pair": "NEW26-JA-growth-04R",
+      "text": "동료와 함께 일하는 동안 부족한 역량을 구체적으로 찾아 학습 계획을 세운다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-growth-04R",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "growth",
+      "direction": -1,
+      "pair": "NEW26-JA-growth-04P",
+      "text": "동료와 함께 일하는 동안 부족한 점을 알아도 별도 학습 계획을 세우지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-growth-05P",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "growth",
+      "direction": 1,
+      "pair": "NEW26-JA-growth-05R",
+      "text": "결과가 기대와 다를 때 부족한 역량을 구체적으로 찾아 학습 계획을 세운다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-growth-05R",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "growth",
+      "direction": -1,
+      "pair": "NEW26-JA-growth-05P",
+      "text": "결과가 기대와 다를 때 부족한 점을 알아도 별도 학습 계획을 세우지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-growth-06P",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "growth",
+      "direction": 1,
+      "pair": "NEW26-JA-growth-06R",
+      "text": "업무 방식이 갑자기 바뀌어도 부족한 역량을 구체적으로 찾아 학습 계획을 세운다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-growth-06R",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "growth",
+      "direction": -1,
+      "pair": "NEW26-JA-growth-06P",
+      "text": "업무 방식이 갑자기 바뀌어도 부족한 점을 알아도 별도 학습 계획을 세우지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-growth-07P",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "growth",
+      "direction": 1,
+      "pair": "NEW26-JA-growth-07R",
+      "text": "예상하지 못한 문제가 생겨도 새로 배운 방법을 실제 과제에 적용해 본다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-growth-07R",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "growth",
+      "direction": -1,
+      "pair": "NEW26-JA-growth-07P",
+      "text": "예상하지 못한 문제가 생겨도 새로 배운 방법을 실제 과제에는 적용하지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-growth-08P",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "growth",
+      "direction": 1,
+      "pair": "NEW26-JA-growth-08R",
+      "text": "일정이 촉박한 업무에서도 새로 배운 방법을 실제 과제에 적용해 본다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-growth-08R",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "growth",
+      "direction": -1,
+      "pair": "NEW26-JA-growth-08P",
+      "text": "일정이 촉박한 업무에서도 새로 배운 방법을 실제 과제에는 적용하지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-growth-09P",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "growth",
+      "direction": 1,
+      "pair": "NEW26-JA-growth-09R",
+      "text": "처음 맡은 과제를 수행할 때 새로 배운 방법을 실제 과제에 적용해 본다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-growth-09R",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "growth",
+      "direction": -1,
+      "pair": "NEW26-JA-growth-09P",
+      "text": "처음 맡은 과제를 수행할 때 새로 배운 방법을 실제 과제에는 적용하지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-growth-10P",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "growth",
+      "direction": 1,
+      "pair": "NEW26-JA-growth-10R",
+      "text": "동료와 함께 일하는 동안 새로 배운 방법을 실제 과제에 적용해 본다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-growth-10R",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "growth",
+      "direction": -1,
+      "pair": "NEW26-JA-growth-10P",
+      "text": "동료와 함께 일하는 동안 새로 배운 방법을 실제 과제에는 적용하지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-growth-11P",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "growth",
+      "direction": 1,
+      "pair": "NEW26-JA-growth-11R",
+      "text": "결과가 기대와 다를 때 새로 배운 방법을 실제 과제에 적용해 본다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-growth-11R",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "growth",
+      "direction": -1,
+      "pair": "NEW26-JA-growth-11P",
+      "text": "결과가 기대와 다를 때 새로 배운 방법을 실제 과제에는 적용하지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-growth-12P",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "growth",
+      "direction": 1,
+      "pair": "NEW26-JA-growth-12R",
+      "text": "업무 방식이 갑자기 바뀌어도 새로 배운 방법을 실제 과제에 적용해 본다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-growth-12R",
+      "kind": "trait",
+      "factor": "work",
+      "subscale": "growth",
+      "direction": -1,
+      "pair": "NEW26-JA-growth-12P",
+      "text": "업무 방식이 갑자기 바뀌어도 새로 배운 방법을 실제 과제에는 적용하지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-engagement-01P",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "engagement",
+      "direction": 1,
+      "pair": "NEW26-JA-engagement-01R",
+      "text": "예상하지 못한 문제가 생겨도 중요한 업무에 주의를 다시 모은다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-engagement-01R",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "engagement",
+      "direction": -1,
+      "pair": "NEW26-JA-engagement-01P",
+      "text": "예상하지 못한 문제가 생겨도 중요한 업무 중에도 다른 일에 쉽게 주의가 흐트러진다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-engagement-02P",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "engagement",
+      "direction": 1,
+      "pair": "NEW26-JA-engagement-02R",
+      "text": "일정이 촉박한 업무에서도 중요한 업무에 주의를 다시 모은다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-engagement-02R",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "engagement",
+      "direction": -1,
+      "pair": "NEW26-JA-engagement-02P",
+      "text": "일정이 촉박한 업무에서도 중요한 업무 중에도 다른 일에 쉽게 주의가 흐트러진다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-engagement-03P",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "engagement",
+      "direction": 1,
+      "pair": "NEW26-JA-engagement-03R",
+      "text": "처음 맡은 과제를 수행할 때 중요한 업무에 주의를 다시 모은다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-engagement-03R",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "engagement",
+      "direction": -1,
+      "pair": "NEW26-JA-engagement-03P",
+      "text": "처음 맡은 과제를 수행할 때 중요한 업무 중에도 다른 일에 쉽게 주의가 흐트러진다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-engagement-04P",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "engagement",
+      "direction": 1,
+      "pair": "NEW26-JA-engagement-04R",
+      "text": "동료와 함께 일하는 동안 중요한 업무에 주의를 다시 모은다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-engagement-04R",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "engagement",
+      "direction": -1,
+      "pair": "NEW26-JA-engagement-04P",
+      "text": "동료와 함께 일하는 동안 중요한 업무 중에도 다른 일에 쉽게 주의가 흐트러진다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-engagement-05P",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "engagement",
+      "direction": 1,
+      "pair": "NEW26-JA-engagement-05R",
+      "text": "결과가 기대와 다를 때 중요한 업무에 주의를 다시 모은다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-engagement-05R",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "engagement",
+      "direction": -1,
+      "pair": "NEW26-JA-engagement-05P",
+      "text": "결과가 기대와 다를 때 중요한 업무 중에도 다른 일에 쉽게 주의가 흐트러진다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-engagement-06P",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "engagement",
+      "direction": 1,
+      "pair": "NEW26-JA-engagement-06R",
+      "text": "업무 방식이 갑자기 바뀌어도 중요한 업무에 주의를 다시 모은다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-engagement-06R",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "engagement",
+      "direction": -1,
+      "pair": "NEW26-JA-engagement-06P",
+      "text": "업무 방식이 갑자기 바뀌어도 중요한 업무 중에도 다른 일에 쉽게 주의가 흐트러진다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-engagement-07P",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "engagement",
+      "direction": 1,
+      "pair": "NEW26-JA-engagement-07R",
+      "text": "예상하지 못한 문제가 생겨도 방해 요소를 줄이고 정한 시간 동안 집중한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-engagement-07R",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "engagement",
+      "direction": -1,
+      "pair": "NEW26-JA-engagement-07P",
+      "text": "예상하지 못한 문제가 생겨도 방해 요소를 줄이지 못해 집중 시간을 지키지 못한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-engagement-08P",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "engagement",
+      "direction": 1,
+      "pair": "NEW26-JA-engagement-08R",
+      "text": "일정이 촉박한 업무에서도 방해 요소를 줄이고 정한 시간 동안 집중한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-engagement-08R",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "engagement",
+      "direction": -1,
+      "pair": "NEW26-JA-engagement-08P",
+      "text": "일정이 촉박한 업무에서도 방해 요소를 줄이지 못해 집중 시간을 지키지 못한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-engagement-09P",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "engagement",
+      "direction": 1,
+      "pair": "NEW26-JA-engagement-09R",
+      "text": "처음 맡은 과제를 수행할 때 방해 요소를 줄이고 정한 시간 동안 집중한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-engagement-09R",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "engagement",
+      "direction": -1,
+      "pair": "NEW26-JA-engagement-09P",
+      "text": "처음 맡은 과제를 수행할 때 방해 요소를 줄이지 못해 집중 시간을 지키지 못한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-engagement-10P",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "engagement",
+      "direction": 1,
+      "pair": "NEW26-JA-engagement-10R",
+      "text": "동료와 함께 일하는 동안 방해 요소를 줄이고 정한 시간 동안 집중한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-engagement-10R",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "engagement",
+      "direction": -1,
+      "pair": "NEW26-JA-engagement-10P",
+      "text": "동료와 함께 일하는 동안 방해 요소를 줄이지 못해 집중 시간을 지키지 못한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-engagement-11P",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "engagement",
+      "direction": 1,
+      "pair": "NEW26-JA-engagement-11R",
+      "text": "결과가 기대와 다를 때 방해 요소를 줄이고 정한 시간 동안 집중한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-engagement-11R",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "engagement",
+      "direction": -1,
+      "pair": "NEW26-JA-engagement-11P",
+      "text": "결과가 기대와 다를 때 방해 요소를 줄이지 못해 집중 시간을 지키지 못한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-engagement-12P",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "engagement",
+      "direction": 1,
+      "pair": "NEW26-JA-engagement-12R",
+      "text": "업무 방식이 갑자기 바뀌어도 방해 요소를 줄이고 정한 시간 동안 집중한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-engagement-12R",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "engagement",
+      "direction": -1,
+      "pair": "NEW26-JA-engagement-12P",
+      "text": "업무 방식이 갑자기 바뀌어도 방해 요소를 줄이지 못해 집중 시간을 지키지 못한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-completion-01P",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "completion",
+      "direction": 1,
+      "pair": "NEW26-JA-completion-01R",
+      "text": "예상하지 못한 문제가 생겨도 진행 상황과 남은 일을 점검해 기한 안에 마무리한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-completion-01R",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "completion",
+      "direction": -1,
+      "pair": "NEW26-JA-completion-01P",
+      "text": "예상하지 못한 문제가 생겨도 남은 일을 점검하지 않아 마감을 자주 놓친다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-completion-02P",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "completion",
+      "direction": 1,
+      "pair": "NEW26-JA-completion-02R",
+      "text": "일정이 촉박한 업무에서도 진행 상황과 남은 일을 점검해 기한 안에 마무리한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-completion-02R",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "completion",
+      "direction": -1,
+      "pair": "NEW26-JA-completion-02P",
+      "text": "일정이 촉박한 업무에서도 남은 일을 점검하지 않아 마감을 자주 놓친다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-completion-03P",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "completion",
+      "direction": 1,
+      "pair": "NEW26-JA-completion-03R",
+      "text": "처음 맡은 과제를 수행할 때 진행 상황과 남은 일을 점검해 기한 안에 마무리한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-completion-03R",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "completion",
+      "direction": -1,
+      "pair": "NEW26-JA-completion-03P",
+      "text": "처음 맡은 과제를 수행할 때 남은 일을 점검하지 않아 마감을 자주 놓친다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-completion-04P",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "completion",
+      "direction": 1,
+      "pair": "NEW26-JA-completion-04R",
+      "text": "동료와 함께 일하는 동안 진행 상황과 남은 일을 점검해 기한 안에 마무리한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-completion-04R",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "completion",
+      "direction": -1,
+      "pair": "NEW26-JA-completion-04P",
+      "text": "동료와 함께 일하는 동안 남은 일을 점검하지 않아 마감을 자주 놓친다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-completion-05P",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "completion",
+      "direction": 1,
+      "pair": "NEW26-JA-completion-05R",
+      "text": "결과가 기대와 다를 때 진행 상황과 남은 일을 점검해 기한 안에 마무리한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-completion-05R",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "completion",
+      "direction": -1,
+      "pair": "NEW26-JA-completion-05P",
+      "text": "결과가 기대와 다를 때 남은 일을 점검하지 않아 마감을 자주 놓친다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-completion-06P",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "completion",
+      "direction": 1,
+      "pair": "NEW26-JA-completion-06R",
+      "text": "업무 방식이 갑자기 바뀌어도 진행 상황과 남은 일을 점검해 기한 안에 마무리한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-completion-06R",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "completion",
+      "direction": -1,
+      "pair": "NEW26-JA-completion-06P",
+      "text": "업무 방식이 갑자기 바뀌어도 남은 일을 점검하지 않아 마감을 자주 놓친다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-completion-07P",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "completion",
+      "direction": 1,
+      "pair": "NEW26-JA-completion-07R",
+      "text": "예상하지 못한 문제가 생겨도 어려움이 생기면 가능한 대안을 찾아 끝까지 수행한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-completion-07R",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "completion",
+      "direction": -1,
+      "pair": "NEW26-JA-completion-07P",
+      "text": "예상하지 못한 문제가 생겨도 어려움이 생기면 끝낼 다른 방법을 찾지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-completion-08P",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "completion",
+      "direction": 1,
+      "pair": "NEW26-JA-completion-08R",
+      "text": "일정이 촉박한 업무에서도 어려움이 생기면 가능한 대안을 찾아 끝까지 수행한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-completion-08R",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "completion",
+      "direction": -1,
+      "pair": "NEW26-JA-completion-08P",
+      "text": "일정이 촉박한 업무에서도 어려움이 생기면 끝낼 다른 방법을 찾지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-completion-09P",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "completion",
+      "direction": 1,
+      "pair": "NEW26-JA-completion-09R",
+      "text": "처음 맡은 과제를 수행할 때 어려움이 생기면 가능한 대안을 찾아 끝까지 수행한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-completion-09R",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "completion",
+      "direction": -1,
+      "pair": "NEW26-JA-completion-09P",
+      "text": "처음 맡은 과제를 수행할 때 어려움이 생기면 끝낼 다른 방법을 찾지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-completion-10P",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "completion",
+      "direction": 1,
+      "pair": "NEW26-JA-completion-10R",
+      "text": "동료와 함께 일하는 동안 어려움이 생기면 가능한 대안을 찾아 끝까지 수행한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-completion-10R",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "completion",
+      "direction": -1,
+      "pair": "NEW26-JA-completion-10P",
+      "text": "동료와 함께 일하는 동안 어려움이 생기면 끝낼 다른 방법을 찾지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-completion-11P",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "completion",
+      "direction": 1,
+      "pair": "NEW26-JA-completion-11R",
+      "text": "결과가 기대와 다를 때 어려움이 생기면 가능한 대안을 찾아 끝까지 수행한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-completion-11R",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "completion",
+      "direction": -1,
+      "pair": "NEW26-JA-completion-11P",
+      "text": "결과가 기대와 다를 때 어려움이 생기면 끝낼 다른 방법을 찾지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-completion-12P",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "completion",
+      "direction": 1,
+      "pair": "NEW26-JA-completion-12R",
+      "text": "업무 방식이 갑자기 바뀌어도 어려움이 생기면 가능한 대안을 찾아 끝까지 수행한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-completion-12R",
+      "kind": "trait",
+      "factor": "motivation",
+      "subscale": "completion",
+      "direction": -1,
+      "pair": "NEW26-JA-completion-12P",
+      "text": "업무 방식이 갑자기 바뀌어도 어려움이 생기면 끝낼 다른 방법을 찾지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-interpersonal-01P",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "interpersonal",
+      "direction": 1,
+      "pair": "NEW26-JA-interpersonal-01R",
+      "text": "예상하지 못한 문제가 생겨도 상대의 말을 끝까지 듣고 의도를 확인한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-interpersonal-01R",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "interpersonal",
+      "direction": -1,
+      "pair": "NEW26-JA-interpersonal-01P",
+      "text": "예상하지 못한 문제가 생겨도 상대의 말이 끝나기 전에 내 생각부터 말한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-interpersonal-02P",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "interpersonal",
+      "direction": 1,
+      "pair": "NEW26-JA-interpersonal-02R",
+      "text": "일정이 촉박한 업무에서도 상대의 말을 끝까지 듣고 의도를 확인한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-interpersonal-02R",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "interpersonal",
+      "direction": -1,
+      "pair": "NEW26-JA-interpersonal-02P",
+      "text": "일정이 촉박한 업무에서도 상대의 말이 끝나기 전에 내 생각부터 말한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-interpersonal-03P",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "interpersonal",
+      "direction": 1,
+      "pair": "NEW26-JA-interpersonal-03R",
+      "text": "처음 맡은 과제를 수행할 때 상대의 말을 끝까지 듣고 의도를 확인한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-interpersonal-03R",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "interpersonal",
+      "direction": -1,
+      "pair": "NEW26-JA-interpersonal-03P",
+      "text": "처음 맡은 과제를 수행할 때 상대의 말이 끝나기 전에 내 생각부터 말한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-interpersonal-04P",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "interpersonal",
+      "direction": 1,
+      "pair": "NEW26-JA-interpersonal-04R",
+      "text": "동료와 함께 일하는 동안 상대의 말을 끝까지 듣고 의도를 확인한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-interpersonal-04R",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "interpersonal",
+      "direction": -1,
+      "pair": "NEW26-JA-interpersonal-04P",
+      "text": "동료와 함께 일하는 동안 상대의 말이 끝나기 전에 내 생각부터 말한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-interpersonal-05P",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "interpersonal",
+      "direction": 1,
+      "pair": "NEW26-JA-interpersonal-05R",
+      "text": "결과가 기대와 다를 때 상대의 말을 끝까지 듣고 의도를 확인한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-interpersonal-05R",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "interpersonal",
+      "direction": -1,
+      "pair": "NEW26-JA-interpersonal-05P",
+      "text": "결과가 기대와 다를 때 상대의 말이 끝나기 전에 내 생각부터 말한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-interpersonal-06P",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "interpersonal",
+      "direction": 1,
+      "pair": "NEW26-JA-interpersonal-06R",
+      "text": "업무 방식이 갑자기 바뀌어도 상대의 말을 끝까지 듣고 의도를 확인한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-interpersonal-06R",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "interpersonal",
+      "direction": -1,
+      "pair": "NEW26-JA-interpersonal-06P",
+      "text": "업무 방식이 갑자기 바뀌어도 상대의 말이 끝나기 전에 내 생각부터 말한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-interpersonal-07P",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "interpersonal",
+      "direction": 1,
+      "pair": "NEW26-JA-interpersonal-07R",
+      "text": "예상하지 못한 문제가 생겨도 의견이 달라도 사실과 감정을 구분해 예의를 지킨다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-interpersonal-07R",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "interpersonal",
+      "direction": -1,
+      "pair": "NEW26-JA-interpersonal-07P",
+      "text": "예상하지 못한 문제가 생겨도 의견이 다르면 사실보다 감정으로 반응한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-interpersonal-08P",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "interpersonal",
+      "direction": 1,
+      "pair": "NEW26-JA-interpersonal-08R",
+      "text": "일정이 촉박한 업무에서도 의견이 달라도 사실과 감정을 구분해 예의를 지킨다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-interpersonal-08R",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "interpersonal",
+      "direction": -1,
+      "pair": "NEW26-JA-interpersonal-08P",
+      "text": "일정이 촉박한 업무에서도 의견이 다르면 사실보다 감정으로 반응한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-interpersonal-09P",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "interpersonal",
+      "direction": 1,
+      "pair": "NEW26-JA-interpersonal-09R",
+      "text": "처음 맡은 과제를 수행할 때 의견이 달라도 사실과 감정을 구분해 예의를 지킨다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-interpersonal-09R",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "interpersonal",
+      "direction": -1,
+      "pair": "NEW26-JA-interpersonal-09P",
+      "text": "처음 맡은 과제를 수행할 때 의견이 다르면 사실보다 감정으로 반응한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-interpersonal-10P",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "interpersonal",
+      "direction": 1,
+      "pair": "NEW26-JA-interpersonal-10R",
+      "text": "동료와 함께 일하는 동안 의견이 달라도 사실과 감정을 구분해 예의를 지킨다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-interpersonal-10R",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "interpersonal",
+      "direction": -1,
+      "pair": "NEW26-JA-interpersonal-10P",
+      "text": "동료와 함께 일하는 동안 의견이 다르면 사실보다 감정으로 반응한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-interpersonal-11P",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "interpersonal",
+      "direction": 1,
+      "pair": "NEW26-JA-interpersonal-11R",
+      "text": "결과가 기대와 다를 때 의견이 달라도 사실과 감정을 구분해 예의를 지킨다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-interpersonal-11R",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "interpersonal",
+      "direction": -1,
+      "pair": "NEW26-JA-interpersonal-11P",
+      "text": "결과가 기대와 다를 때 의견이 다르면 사실보다 감정으로 반응한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-interpersonal-12P",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "interpersonal",
+      "direction": 1,
+      "pair": "NEW26-JA-interpersonal-12R",
+      "text": "업무 방식이 갑자기 바뀌어도 의견이 달라도 사실과 감정을 구분해 예의를 지킨다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-interpersonal-12R",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "interpersonal",
+      "direction": -1,
+      "pair": "NEW26-JA-interpersonal-12P",
+      "text": "업무 방식이 갑자기 바뀌어도 의견이 다르면 사실보다 감정으로 반응한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-cooperation-01P",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "cooperation",
+      "direction": 1,
+      "pair": "NEW26-JA-cooperation-01R",
+      "text": "예상하지 못한 문제가 생겨도 공동 목표와 자신의 역할을 분명히 한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-cooperation-01R",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "cooperation",
+      "direction": -1,
+      "pair": "NEW26-JA-cooperation-01P",
+      "text": "예상하지 못한 문제가 생겨도 다른 사람이 정해 줄 때까지 내 역할을 찾지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-cooperation-02P",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "cooperation",
+      "direction": 1,
+      "pair": "NEW26-JA-cooperation-02R",
+      "text": "일정이 촉박한 업무에서도 공동 목표와 자신의 역할을 분명히 한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-cooperation-02R",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "cooperation",
+      "direction": -1,
+      "pair": "NEW26-JA-cooperation-02P",
+      "text": "일정이 촉박한 업무에서도 다른 사람이 정해 줄 때까지 내 역할을 찾지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-cooperation-03P",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "cooperation",
+      "direction": 1,
+      "pair": "NEW26-JA-cooperation-03R",
+      "text": "처음 맡은 과제를 수행할 때 공동 목표와 자신의 역할을 분명히 한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-cooperation-03R",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "cooperation",
+      "direction": -1,
+      "pair": "NEW26-JA-cooperation-03P",
+      "text": "처음 맡은 과제를 수행할 때 다른 사람이 정해 줄 때까지 내 역할을 찾지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-cooperation-04P",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "cooperation",
+      "direction": 1,
+      "pair": "NEW26-JA-cooperation-04R",
+      "text": "동료와 함께 일하는 동안 공동 목표와 자신의 역할을 분명히 한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-cooperation-04R",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "cooperation",
+      "direction": -1,
+      "pair": "NEW26-JA-cooperation-04P",
+      "text": "동료와 함께 일하는 동안 다른 사람이 정해 줄 때까지 내 역할을 찾지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-cooperation-05P",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "cooperation",
+      "direction": 1,
+      "pair": "NEW26-JA-cooperation-05R",
+      "text": "결과가 기대와 다를 때 공동 목표와 자신의 역할을 분명히 한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-cooperation-05R",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "cooperation",
+      "direction": -1,
+      "pair": "NEW26-JA-cooperation-05P",
+      "text": "결과가 기대와 다를 때 다른 사람이 정해 줄 때까지 내 역할을 찾지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-cooperation-06P",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "cooperation",
+      "direction": 1,
+      "pair": "NEW26-JA-cooperation-06R",
+      "text": "업무 방식이 갑자기 바뀌어도 공동 목표와 자신의 역할을 분명히 한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-cooperation-06R",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "cooperation",
+      "direction": -1,
+      "pair": "NEW26-JA-cooperation-06P",
+      "text": "업무 방식이 갑자기 바뀌어도 다른 사람이 정해 줄 때까지 내 역할을 찾지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-cooperation-07P",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "cooperation",
+      "direction": 1,
+      "pair": "NEW26-JA-cooperation-07R",
+      "text": "예상하지 못한 문제가 생겨도 필요한 정보를 팀원에게 제때 공유한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-cooperation-07R",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "cooperation",
+      "direction": -1,
+      "pair": "NEW26-JA-cooperation-07P",
+      "text": "예상하지 못한 문제가 생겨도 중요한 정보도 요청받기 전에는 공유하지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-cooperation-08P",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "cooperation",
+      "direction": 1,
+      "pair": "NEW26-JA-cooperation-08R",
+      "text": "일정이 촉박한 업무에서도 필요한 정보를 팀원에게 제때 공유한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-cooperation-08R",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "cooperation",
+      "direction": -1,
+      "pair": "NEW26-JA-cooperation-08P",
+      "text": "일정이 촉박한 업무에서도 중요한 정보도 요청받기 전에는 공유하지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-cooperation-09P",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "cooperation",
+      "direction": 1,
+      "pair": "NEW26-JA-cooperation-09R",
+      "text": "처음 맡은 과제를 수행할 때 필요한 정보를 팀원에게 제때 공유한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-cooperation-09R",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "cooperation",
+      "direction": -1,
+      "pair": "NEW26-JA-cooperation-09P",
+      "text": "처음 맡은 과제를 수행할 때 중요한 정보도 요청받기 전에는 공유하지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-cooperation-10P",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "cooperation",
+      "direction": 1,
+      "pair": "NEW26-JA-cooperation-10R",
+      "text": "동료와 함께 일하는 동안 필요한 정보를 팀원에게 제때 공유한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-cooperation-10R",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "cooperation",
+      "direction": -1,
+      "pair": "NEW26-JA-cooperation-10P",
+      "text": "동료와 함께 일하는 동안 중요한 정보도 요청받기 전에는 공유하지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-cooperation-11P",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "cooperation",
+      "direction": 1,
+      "pair": "NEW26-JA-cooperation-11R",
+      "text": "결과가 기대와 다를 때 필요한 정보를 팀원에게 제때 공유한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-cooperation-11R",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "cooperation",
+      "direction": -1,
+      "pair": "NEW26-JA-cooperation-11P",
+      "text": "결과가 기대와 다를 때 중요한 정보도 요청받기 전에는 공유하지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-cooperation-12P",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "cooperation",
+      "direction": 1,
+      "pair": "NEW26-JA-cooperation-12R",
+      "text": "업무 방식이 갑자기 바뀌어도 필요한 정보를 팀원에게 제때 공유한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-cooperation-12R",
+      "kind": "trait",
+      "factor": "relationship",
+      "subscale": "cooperation",
+      "direction": -1,
+      "pair": "NEW26-JA-cooperation-12P",
+      "text": "업무 방식이 갑자기 바뀌어도 중요한 정보도 요청받기 전에는 공유하지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-empathy-01P",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "empathy",
+      "direction": 1,
+      "pair": "NEW26-JA-empathy-01R",
+      "text": "예상하지 못한 문제가 생겨도 표정과 말투를 살펴 상대의 감정을 이해한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-empathy-01R",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "empathy",
+      "direction": -1,
+      "pair": "NEW26-JA-empathy-01P",
+      "text": "예상하지 못한 문제가 생겨도 상대가 직접 말하지 않으면 감정을 살필 필요가 없다고 생각한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-empathy-02P",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "empathy",
+      "direction": 1,
+      "pair": "NEW26-JA-empathy-02R",
+      "text": "일정이 촉박한 업무에서도 표정과 말투를 살펴 상대의 감정을 이해한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-empathy-02R",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "empathy",
+      "direction": -1,
+      "pair": "NEW26-JA-empathy-02P",
+      "text": "일정이 촉박한 업무에서도 상대가 직접 말하지 않으면 감정을 살필 필요가 없다고 생각한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-empathy-03P",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "empathy",
+      "direction": 1,
+      "pair": "NEW26-JA-empathy-03R",
+      "text": "처음 맡은 과제를 수행할 때 표정과 말투를 살펴 상대의 감정을 이해한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-empathy-03R",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "empathy",
+      "direction": -1,
+      "pair": "NEW26-JA-empathy-03P",
+      "text": "처음 맡은 과제를 수행할 때 상대가 직접 말하지 않으면 감정을 살필 필요가 없다고 생각한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-empathy-04P",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "empathy",
+      "direction": 1,
+      "pair": "NEW26-JA-empathy-04R",
+      "text": "동료와 함께 일하는 동안 표정과 말투를 살펴 상대의 감정을 이해한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-empathy-04R",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "empathy",
+      "direction": -1,
+      "pair": "NEW26-JA-empathy-04P",
+      "text": "동료와 함께 일하는 동안 상대가 직접 말하지 않으면 감정을 살필 필요가 없다고 생각한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-empathy-05P",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "empathy",
+      "direction": 1,
+      "pair": "NEW26-JA-empathy-05R",
+      "text": "결과가 기대와 다를 때 표정과 말투를 살펴 상대의 감정을 이해한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-empathy-05R",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "empathy",
+      "direction": -1,
+      "pair": "NEW26-JA-empathy-05P",
+      "text": "결과가 기대와 다를 때 상대가 직접 말하지 않으면 감정을 살필 필요가 없다고 생각한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-empathy-06P",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "empathy",
+      "direction": 1,
+      "pair": "NEW26-JA-empathy-06R",
+      "text": "업무 방식이 갑자기 바뀌어도 표정과 말투를 살펴 상대의 감정을 이해한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-empathy-06R",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "empathy",
+      "direction": -1,
+      "pair": "NEW26-JA-empathy-06P",
+      "text": "업무 방식이 갑자기 바뀌어도 상대가 직접 말하지 않으면 감정을 살필 필요가 없다고 생각한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-empathy-07P",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "empathy",
+      "direction": 1,
+      "pair": "NEW26-JA-empathy-07R",
+      "text": "예상하지 못한 문제가 생겨도 감정과 요구를 구분해 필요한 반응을 고른다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-empathy-07R",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "empathy",
+      "direction": -1,
+      "pair": "NEW26-JA-empathy-07P",
+      "text": "예상하지 못한 문제가 생겨도 상대가 감정적으로 말하면 요구 내용도 듣지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-empathy-08P",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "empathy",
+      "direction": 1,
+      "pair": "NEW26-JA-empathy-08R",
+      "text": "일정이 촉박한 업무에서도 감정과 요구를 구분해 필요한 반응을 고른다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-empathy-08R",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "empathy",
+      "direction": -1,
+      "pair": "NEW26-JA-empathy-08P",
+      "text": "일정이 촉박한 업무에서도 상대가 감정적으로 말하면 요구 내용도 듣지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-empathy-09P",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "empathy",
+      "direction": 1,
+      "pair": "NEW26-JA-empathy-09R",
+      "text": "처음 맡은 과제를 수행할 때 감정과 요구를 구분해 필요한 반응을 고른다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-empathy-09R",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "empathy",
+      "direction": -1,
+      "pair": "NEW26-JA-empathy-09P",
+      "text": "처음 맡은 과제를 수행할 때 상대가 감정적으로 말하면 요구 내용도 듣지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-empathy-10P",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "empathy",
+      "direction": 1,
+      "pair": "NEW26-JA-empathy-10R",
+      "text": "동료와 함께 일하는 동안 감정과 요구를 구분해 필요한 반응을 고른다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-empathy-10R",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "empathy",
+      "direction": -1,
+      "pair": "NEW26-JA-empathy-10P",
+      "text": "동료와 함께 일하는 동안 상대가 감정적으로 말하면 요구 내용도 듣지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-empathy-11P",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "empathy",
+      "direction": 1,
+      "pair": "NEW26-JA-empathy-11R",
+      "text": "결과가 기대와 다를 때 감정과 요구를 구분해 필요한 반응을 고른다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-empathy-11R",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "empathy",
+      "direction": -1,
+      "pair": "NEW26-JA-empathy-11P",
+      "text": "결과가 기대와 다를 때 상대가 감정적으로 말하면 요구 내용도 듣지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-empathy-12P",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "empathy",
+      "direction": 1,
+      "pair": "NEW26-JA-empathy-12R",
+      "text": "업무 방식이 갑자기 바뀌어도 감정과 요구를 구분해 필요한 반응을 고른다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-empathy-12R",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "empathy",
+      "direction": -1,
+      "pair": "NEW26-JA-empathy-12P",
+      "text": "업무 방식이 갑자기 바뀌어도 상대가 감정적으로 말하면 요구 내용도 듣지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-regulation-01P",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "regulation",
+      "direction": 1,
+      "pair": "NEW26-JA-regulation-01R",
+      "text": "예상하지 못한 문제가 생겨도 감정적으로 반응하기 전에 생각할 시간을 갖는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-regulation-01R",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "regulation",
+      "direction": -1,
+      "pair": "NEW26-JA-regulation-01P",
+      "text": "예상하지 못한 문제가 생겨도 기분이 상하면 바로 말과 행동으로 드러낸다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-regulation-02P",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "regulation",
+      "direction": 1,
+      "pair": "NEW26-JA-regulation-02R",
+      "text": "일정이 촉박한 업무에서도 감정적으로 반응하기 전에 생각할 시간을 갖는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-regulation-02R",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "regulation",
+      "direction": -1,
+      "pair": "NEW26-JA-regulation-02P",
+      "text": "일정이 촉박한 업무에서도 기분이 상하면 바로 말과 행동으로 드러낸다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-regulation-03P",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "regulation",
+      "direction": 1,
+      "pair": "NEW26-JA-regulation-03R",
+      "text": "처음 맡은 과제를 수행할 때 감정적으로 반응하기 전에 생각할 시간을 갖는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-regulation-03R",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "regulation",
+      "direction": -1,
+      "pair": "NEW26-JA-regulation-03P",
+      "text": "처음 맡은 과제를 수행할 때 기분이 상하면 바로 말과 행동으로 드러낸다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-regulation-04P",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "regulation",
+      "direction": 1,
+      "pair": "NEW26-JA-regulation-04R",
+      "text": "동료와 함께 일하는 동안 감정적으로 반응하기 전에 생각할 시간을 갖는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-regulation-04R",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "regulation",
+      "direction": -1,
+      "pair": "NEW26-JA-regulation-04P",
+      "text": "동료와 함께 일하는 동안 기분이 상하면 바로 말과 행동으로 드러낸다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-regulation-05P",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "regulation",
+      "direction": 1,
+      "pair": "NEW26-JA-regulation-05R",
+      "text": "결과가 기대와 다를 때 감정적으로 반응하기 전에 생각할 시간을 갖는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-regulation-05R",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "regulation",
+      "direction": -1,
+      "pair": "NEW26-JA-regulation-05P",
+      "text": "결과가 기대와 다를 때 기분이 상하면 바로 말과 행동으로 드러낸다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-regulation-06P",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "regulation",
+      "direction": 1,
+      "pair": "NEW26-JA-regulation-06R",
+      "text": "업무 방식이 갑자기 바뀌어도 감정적으로 반응하기 전에 생각할 시간을 갖는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-regulation-06R",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "regulation",
+      "direction": -1,
+      "pair": "NEW26-JA-regulation-06P",
+      "text": "업무 방식이 갑자기 바뀌어도 기분이 상하면 바로 말과 행동으로 드러낸다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-regulation-07P",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "regulation",
+      "direction": 1,
+      "pair": "NEW26-JA-regulation-07R",
+      "text": "예상하지 못한 문제가 생겨도 긴장해도 해야 할 절차에 다시 집중한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-regulation-07R",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "regulation",
+      "direction": -1,
+      "pair": "NEW26-JA-regulation-07P",
+      "text": "예상하지 못한 문제가 생겨도 긴장하면 알고 있던 절차도 이어가기 어렵다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-regulation-08P",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "regulation",
+      "direction": 1,
+      "pair": "NEW26-JA-regulation-08R",
+      "text": "일정이 촉박한 업무에서도 긴장해도 해야 할 절차에 다시 집중한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-regulation-08R",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "regulation",
+      "direction": -1,
+      "pair": "NEW26-JA-regulation-08P",
+      "text": "일정이 촉박한 업무에서도 긴장하면 알고 있던 절차도 이어가기 어렵다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-regulation-09P",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "regulation",
+      "direction": 1,
+      "pair": "NEW26-JA-regulation-09R",
+      "text": "처음 맡은 과제를 수행할 때 긴장해도 해야 할 절차에 다시 집중한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-regulation-09R",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "regulation",
+      "direction": -1,
+      "pair": "NEW26-JA-regulation-09P",
+      "text": "처음 맡은 과제를 수행할 때 긴장하면 알고 있던 절차도 이어가기 어렵다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-regulation-10P",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "regulation",
+      "direction": 1,
+      "pair": "NEW26-JA-regulation-10R",
+      "text": "동료와 함께 일하는 동안 긴장해도 해야 할 절차에 다시 집중한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-regulation-10R",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "regulation",
+      "direction": -1,
+      "pair": "NEW26-JA-regulation-10P",
+      "text": "동료와 함께 일하는 동안 긴장하면 알고 있던 절차도 이어가기 어렵다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-regulation-11P",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "regulation",
+      "direction": 1,
+      "pair": "NEW26-JA-regulation-11R",
+      "text": "결과가 기대와 다를 때 긴장해도 해야 할 절차에 다시 집중한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-regulation-11R",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "regulation",
+      "direction": -1,
+      "pair": "NEW26-JA-regulation-11P",
+      "text": "결과가 기대와 다를 때 긴장하면 알고 있던 절차도 이어가기 어렵다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-regulation-12P",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "regulation",
+      "direction": 1,
+      "pair": "NEW26-JA-regulation-12R",
+      "text": "업무 방식이 갑자기 바뀌어도 긴장해도 해야 할 절차에 다시 집중한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-regulation-12R",
+      "kind": "trait",
+      "factor": "emotion",
+      "subscale": "regulation",
+      "direction": -1,
+      "pair": "NEW26-JA-regulation-12P",
+      "text": "업무 방식이 갑자기 바뀌어도 긴장하면 알고 있던 절차도 이어가기 어렵다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-understanding-01P",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "understanding",
+      "direction": 1,
+      "pair": "NEW26-JA-understanding-01R",
+      "text": "예상하지 못한 문제가 생겨도 규정과 권한 범위를 확인한 뒤 업무를 처리한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-understanding-01R",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "understanding",
+      "direction": -1,
+      "pair": "NEW26-JA-understanding-01P",
+      "text": "예상하지 못한 문제가 생겨도 결과만 좋으면 규정과 권한은 생략해도 된다고 생각한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-understanding-02P",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "understanding",
+      "direction": 1,
+      "pair": "NEW26-JA-understanding-02R",
+      "text": "일정이 촉박한 업무에서도 규정과 권한 범위를 확인한 뒤 업무를 처리한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-understanding-02R",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "understanding",
+      "direction": -1,
+      "pair": "NEW26-JA-understanding-02P",
+      "text": "일정이 촉박한 업무에서도 결과만 좋으면 규정과 권한은 생략해도 된다고 생각한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-understanding-03P",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "understanding",
+      "direction": 1,
+      "pair": "NEW26-JA-understanding-03R",
+      "text": "처음 맡은 과제를 수행할 때 규정과 권한 범위를 확인한 뒤 업무를 처리한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-understanding-03R",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "understanding",
+      "direction": -1,
+      "pair": "NEW26-JA-understanding-03P",
+      "text": "처음 맡은 과제를 수행할 때 결과만 좋으면 규정과 권한은 생략해도 된다고 생각한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-understanding-04P",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "understanding",
+      "direction": 1,
+      "pair": "NEW26-JA-understanding-04R",
+      "text": "동료와 함께 일하는 동안 규정과 권한 범위를 확인한 뒤 업무를 처리한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-understanding-04R",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "understanding",
+      "direction": -1,
+      "pair": "NEW26-JA-understanding-04P",
+      "text": "동료와 함께 일하는 동안 결과만 좋으면 규정과 권한은 생략해도 된다고 생각한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-understanding-05P",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "understanding",
+      "direction": 1,
+      "pair": "NEW26-JA-understanding-05R",
+      "text": "결과가 기대와 다를 때 규정과 권한 범위를 확인한 뒤 업무를 처리한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-understanding-05R",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "understanding",
+      "direction": -1,
+      "pair": "NEW26-JA-understanding-05P",
+      "text": "결과가 기대와 다를 때 결과만 좋으면 규정과 권한은 생략해도 된다고 생각한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-understanding-06P",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "understanding",
+      "direction": 1,
+      "pair": "NEW26-JA-understanding-06R",
+      "text": "업무 방식이 갑자기 바뀌어도 규정과 권한 범위를 확인한 뒤 업무를 처리한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-understanding-06R",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "understanding",
+      "direction": -1,
+      "pair": "NEW26-JA-understanding-06P",
+      "text": "업무 방식이 갑자기 바뀌어도 결과만 좋으면 규정과 권한은 생략해도 된다고 생각한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-understanding-07P",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "understanding",
+      "direction": 1,
+      "pair": "NEW26-JA-understanding-07R",
+      "text": "예상하지 못한 문제가 생겨도 내 업무가 다른 부서와 연결되는 과정을 살핀다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-understanding-07R",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "understanding",
+      "direction": -1,
+      "pair": "NEW26-JA-understanding-07P",
+      "text": "예상하지 못한 문제가 생겨도 내 업무만 끝나면 다른 부서와의 연결은 확인하지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-understanding-08P",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "understanding",
+      "direction": 1,
+      "pair": "NEW26-JA-understanding-08R",
+      "text": "일정이 촉박한 업무에서도 내 업무가 다른 부서와 연결되는 과정을 살핀다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-understanding-08R",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "understanding",
+      "direction": -1,
+      "pair": "NEW26-JA-understanding-08P",
+      "text": "일정이 촉박한 업무에서도 내 업무만 끝나면 다른 부서와의 연결은 확인하지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-understanding-09P",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "understanding",
+      "direction": 1,
+      "pair": "NEW26-JA-understanding-09R",
+      "text": "처음 맡은 과제를 수행할 때 내 업무가 다른 부서와 연결되는 과정을 살핀다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-understanding-09R",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "understanding",
+      "direction": -1,
+      "pair": "NEW26-JA-understanding-09P",
+      "text": "처음 맡은 과제를 수행할 때 내 업무만 끝나면 다른 부서와의 연결은 확인하지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-understanding-10P",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "understanding",
+      "direction": 1,
+      "pair": "NEW26-JA-understanding-10R",
+      "text": "동료와 함께 일하는 동안 내 업무가 다른 부서와 연결되는 과정을 살핀다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-understanding-10R",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "understanding",
+      "direction": -1,
+      "pair": "NEW26-JA-understanding-10P",
+      "text": "동료와 함께 일하는 동안 내 업무만 끝나면 다른 부서와의 연결은 확인하지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-understanding-11P",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "understanding",
+      "direction": 1,
+      "pair": "NEW26-JA-understanding-11R",
+      "text": "결과가 기대와 다를 때 내 업무가 다른 부서와 연결되는 과정을 살핀다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-understanding-11R",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "understanding",
+      "direction": -1,
+      "pair": "NEW26-JA-understanding-11P",
+      "text": "결과가 기대와 다를 때 내 업무만 끝나면 다른 부서와의 연결은 확인하지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-understanding-12P",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "understanding",
+      "direction": 1,
+      "pair": "NEW26-JA-understanding-12R",
+      "text": "업무 방식이 갑자기 바뀌어도 내 업무가 다른 부서와 연결되는 과정을 살핀다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-understanding-12R",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "understanding",
+      "direction": -1,
+      "pair": "NEW26-JA-understanding-12P",
+      "text": "업무 방식이 갑자기 바뀌어도 내 업무만 끝나면 다른 부서와의 연결은 확인하지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-commitment-01P",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "commitment",
+      "direction": 1,
+      "pair": "NEW26-JA-commitment-01R",
+      "text": "예상하지 못한 문제가 생겨도 조직과 동료에게 약속한 책임을 다한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-commitment-01R",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "commitment",
+      "direction": -1,
+      "pair": "NEW26-JA-commitment-01P",
+      "text": "예상하지 못한 문제가 생겨도 조직 결과보다 나에게 주어진 최소한의 일만 한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-commitment-02P",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "commitment",
+      "direction": 1,
+      "pair": "NEW26-JA-commitment-02R",
+      "text": "일정이 촉박한 업무에서도 조직과 동료에게 약속한 책임을 다한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-commitment-02R",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "commitment",
+      "direction": -1,
+      "pair": "NEW26-JA-commitment-02P",
+      "text": "일정이 촉박한 업무에서도 조직 결과보다 나에게 주어진 최소한의 일만 한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-commitment-03P",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "commitment",
+      "direction": 1,
+      "pair": "NEW26-JA-commitment-03R",
+      "text": "처음 맡은 과제를 수행할 때 조직과 동료에게 약속한 책임을 다한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-commitment-03R",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "commitment",
+      "direction": -1,
+      "pair": "NEW26-JA-commitment-03P",
+      "text": "처음 맡은 과제를 수행할 때 조직 결과보다 나에게 주어진 최소한의 일만 한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-commitment-04P",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "commitment",
+      "direction": 1,
+      "pair": "NEW26-JA-commitment-04R",
+      "text": "동료와 함께 일하는 동안 조직과 동료에게 약속한 책임을 다한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-commitment-04R",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "commitment",
+      "direction": -1,
+      "pair": "NEW26-JA-commitment-04P",
+      "text": "동료와 함께 일하는 동안 조직 결과보다 나에게 주어진 최소한의 일만 한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-commitment-05P",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "commitment",
+      "direction": 1,
+      "pair": "NEW26-JA-commitment-05R",
+      "text": "결과가 기대와 다를 때 조직과 동료에게 약속한 책임을 다한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-commitment-05R",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "commitment",
+      "direction": -1,
+      "pair": "NEW26-JA-commitment-05P",
+      "text": "결과가 기대와 다를 때 조직 결과보다 나에게 주어진 최소한의 일만 한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-commitment-06P",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "commitment",
+      "direction": 1,
+      "pair": "NEW26-JA-commitment-06R",
+      "text": "업무 방식이 갑자기 바뀌어도 조직과 동료에게 약속한 책임을 다한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-commitment-06R",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "commitment",
+      "direction": -1,
+      "pair": "NEW26-JA-commitment-06P",
+      "text": "업무 방식이 갑자기 바뀌어도 조직 결과보다 나에게 주어진 최소한의 일만 한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-commitment-07P",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "commitment",
+      "direction": 1,
+      "pair": "NEW26-JA-commitment-07R",
+      "text": "예상하지 못한 문제가 생겨도 조직의 목표를 자신의 업무 계획에 반영한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-commitment-07R",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "commitment",
+      "direction": -1,
+      "pair": "NEW26-JA-commitment-07P",
+      "text": "예상하지 못한 문제가 생겨도 조직 목표는 관리자만 신경 쓰면 된다고 생각한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-commitment-08P",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "commitment",
+      "direction": 1,
+      "pair": "NEW26-JA-commitment-08R",
+      "text": "일정이 촉박한 업무에서도 조직의 목표를 자신의 업무 계획에 반영한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-commitment-08R",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "commitment",
+      "direction": -1,
+      "pair": "NEW26-JA-commitment-08P",
+      "text": "일정이 촉박한 업무에서도 조직 목표는 관리자만 신경 쓰면 된다고 생각한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-commitment-09P",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "commitment",
+      "direction": 1,
+      "pair": "NEW26-JA-commitment-09R",
+      "text": "처음 맡은 과제를 수행할 때 조직의 목표를 자신의 업무 계획에 반영한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-commitment-09R",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "commitment",
+      "direction": -1,
+      "pair": "NEW26-JA-commitment-09P",
+      "text": "처음 맡은 과제를 수행할 때 조직 목표는 관리자만 신경 쓰면 된다고 생각한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-commitment-10P",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "commitment",
+      "direction": 1,
+      "pair": "NEW26-JA-commitment-10R",
+      "text": "동료와 함께 일하는 동안 조직의 목표를 자신의 업무 계획에 반영한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-commitment-10R",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "commitment",
+      "direction": -1,
+      "pair": "NEW26-JA-commitment-10P",
+      "text": "동료와 함께 일하는 동안 조직 목표는 관리자만 신경 쓰면 된다고 생각한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-commitment-11P",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "commitment",
+      "direction": 1,
+      "pair": "NEW26-JA-commitment-11R",
+      "text": "결과가 기대와 다를 때 조직의 목표를 자신의 업무 계획에 반영한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-commitment-11R",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "commitment",
+      "direction": -1,
+      "pair": "NEW26-JA-commitment-11P",
+      "text": "결과가 기대와 다를 때 조직 목표는 관리자만 신경 쓰면 된다고 생각한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-commitment-12P",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "commitment",
+      "direction": 1,
+      "pair": "NEW26-JA-commitment-12R",
+      "text": "업무 방식이 갑자기 바뀌어도 조직의 목표를 자신의 업무 계획에 반영한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-commitment-12R",
+      "kind": "trait",
+      "factor": "organization",
+      "subscale": "commitment",
+      "direction": -1,
+      "pair": "NEW26-JA-commitment-12P",
+      "text": "업무 방식이 갑자기 바뀌어도 조직 목표는 관리자만 신경 쓰면 된다고 생각한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-acceptance-01P",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "acceptance",
+      "direction": 1,
+      "pair": "NEW26-JA-acceptance-01R",
+      "text": "예상하지 못한 문제가 생겨도 변화의 이유와 영향을 이해한 뒤 계획을 조정한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-acceptance-01R",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "acceptance",
+      "direction": -1,
+      "pair": "NEW26-JA-acceptance-01P",
+      "text": "예상하지 못한 문제가 생겨도 익숙한 방식이 바뀌면 이유와 관계없이 거부한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-acceptance-02P",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "acceptance",
+      "direction": 1,
+      "pair": "NEW26-JA-acceptance-02R",
+      "text": "일정이 촉박한 업무에서도 변화의 이유와 영향을 이해한 뒤 계획을 조정한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-acceptance-02R",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "acceptance",
+      "direction": -1,
+      "pair": "NEW26-JA-acceptance-02P",
+      "text": "일정이 촉박한 업무에서도 익숙한 방식이 바뀌면 이유와 관계없이 거부한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-acceptance-03P",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "acceptance",
+      "direction": 1,
+      "pair": "NEW26-JA-acceptance-03R",
+      "text": "처음 맡은 과제를 수행할 때 변화의 이유와 영향을 이해한 뒤 계획을 조정한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-acceptance-03R",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "acceptance",
+      "direction": -1,
+      "pair": "NEW26-JA-acceptance-03P",
+      "text": "처음 맡은 과제를 수행할 때 익숙한 방식이 바뀌면 이유와 관계없이 거부한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-acceptance-04P",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "acceptance",
+      "direction": 1,
+      "pair": "NEW26-JA-acceptance-04R",
+      "text": "동료와 함께 일하는 동안 변화의 이유와 영향을 이해한 뒤 계획을 조정한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-acceptance-04R",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "acceptance",
+      "direction": -1,
+      "pair": "NEW26-JA-acceptance-04P",
+      "text": "동료와 함께 일하는 동안 익숙한 방식이 바뀌면 이유와 관계없이 거부한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-acceptance-05P",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "acceptance",
+      "direction": 1,
+      "pair": "NEW26-JA-acceptance-05R",
+      "text": "결과가 기대와 다를 때 변화의 이유와 영향을 이해한 뒤 계획을 조정한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-acceptance-05R",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "acceptance",
+      "direction": -1,
+      "pair": "NEW26-JA-acceptance-05P",
+      "text": "결과가 기대와 다를 때 익숙한 방식이 바뀌면 이유와 관계없이 거부한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-acceptance-06P",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "acceptance",
+      "direction": 1,
+      "pair": "NEW26-JA-acceptance-06R",
+      "text": "업무 방식이 갑자기 바뀌어도 변화의 이유와 영향을 이해한 뒤 계획을 조정한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-acceptance-06R",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "acceptance",
+      "direction": -1,
+      "pair": "NEW26-JA-acceptance-06P",
+      "text": "업무 방식이 갑자기 바뀌어도 익숙한 방식이 바뀌면 이유와 관계없이 거부한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-acceptance-07P",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "acceptance",
+      "direction": 1,
+      "pair": "NEW26-JA-acceptance-07R",
+      "text": "예상하지 못한 문제가 생겨도 새 규정과 도구를 배우기 위한 노력을 시작한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-acceptance-07R",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "acceptance",
+      "direction": -1,
+      "pair": "NEW26-JA-acceptance-07P",
+      "text": "예상하지 못한 문제가 생겨도 새 규정은 다른 사람이 익힌 뒤 알려 줄 때까지 기다린다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-acceptance-08P",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "acceptance",
+      "direction": 1,
+      "pair": "NEW26-JA-acceptance-08R",
+      "text": "일정이 촉박한 업무에서도 새 규정과 도구를 배우기 위한 노력을 시작한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-acceptance-08R",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "acceptance",
+      "direction": -1,
+      "pair": "NEW26-JA-acceptance-08P",
+      "text": "일정이 촉박한 업무에서도 새 규정은 다른 사람이 익힌 뒤 알려 줄 때까지 기다린다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-acceptance-09P",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "acceptance",
+      "direction": 1,
+      "pair": "NEW26-JA-acceptance-09R",
+      "text": "처음 맡은 과제를 수행할 때 새 규정과 도구를 배우기 위한 노력을 시작한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-acceptance-09R",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "acceptance",
+      "direction": -1,
+      "pair": "NEW26-JA-acceptance-09P",
+      "text": "처음 맡은 과제를 수행할 때 새 규정은 다른 사람이 익힌 뒤 알려 줄 때까지 기다린다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-acceptance-10P",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "acceptance",
+      "direction": 1,
+      "pair": "NEW26-JA-acceptance-10R",
+      "text": "동료와 함께 일하는 동안 새 규정과 도구를 배우기 위한 노력을 시작한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-acceptance-10R",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "acceptance",
+      "direction": -1,
+      "pair": "NEW26-JA-acceptance-10P",
+      "text": "동료와 함께 일하는 동안 새 규정은 다른 사람이 익힌 뒤 알려 줄 때까지 기다린다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-acceptance-11P",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "acceptance",
+      "direction": 1,
+      "pair": "NEW26-JA-acceptance-11R",
+      "text": "결과가 기대와 다를 때 새 규정과 도구를 배우기 위한 노력을 시작한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-acceptance-11R",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "acceptance",
+      "direction": -1,
+      "pair": "NEW26-JA-acceptance-11P",
+      "text": "결과가 기대와 다를 때 새 규정은 다른 사람이 익힌 뒤 알려 줄 때까지 기다린다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-acceptance-12P",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "acceptance",
+      "direction": 1,
+      "pair": "NEW26-JA-acceptance-12R",
+      "text": "업무 방식이 갑자기 바뀌어도 새 규정과 도구를 배우기 위한 노력을 시작한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-acceptance-12R",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "acceptance",
+      "direction": -1,
+      "pair": "NEW26-JA-acceptance-12P",
+      "text": "업무 방식이 갑자기 바뀌어도 새 규정은 다른 사람이 익힌 뒤 알려 줄 때까지 기다린다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-initiative-01P",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "initiative",
+      "direction": 1,
+      "pair": "NEW26-JA-initiative-01R",
+      "text": "예상하지 못한 문제가 생겨도 더 나은 방법의 근거를 정리해 제안한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-initiative-01R",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "initiative",
+      "direction": -1,
+      "pair": "NEW26-JA-initiative-01P",
+      "text": "예상하지 못한 문제가 생겨도 현재 방식에 큰 문제가 없으면 개선할 필요가 없다고 생각한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-initiative-02P",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "initiative",
+      "direction": 1,
+      "pair": "NEW26-JA-initiative-02R",
+      "text": "일정이 촉박한 업무에서도 더 나은 방법의 근거를 정리해 제안한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-initiative-02R",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "initiative",
+      "direction": -1,
+      "pair": "NEW26-JA-initiative-02P",
+      "text": "일정이 촉박한 업무에서도 현재 방식에 큰 문제가 없으면 개선할 필요가 없다고 생각한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-initiative-03P",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "initiative",
+      "direction": 1,
+      "pair": "NEW26-JA-initiative-03R",
+      "text": "처음 맡은 과제를 수행할 때 더 나은 방법의 근거를 정리해 제안한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-initiative-03R",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "initiative",
+      "direction": -1,
+      "pair": "NEW26-JA-initiative-03P",
+      "text": "처음 맡은 과제를 수행할 때 현재 방식에 큰 문제가 없으면 개선할 필요가 없다고 생각한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-initiative-04P",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "initiative",
+      "direction": 1,
+      "pair": "NEW26-JA-initiative-04R",
+      "text": "동료와 함께 일하는 동안 더 나은 방법의 근거를 정리해 제안한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-initiative-04R",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "initiative",
+      "direction": -1,
+      "pair": "NEW26-JA-initiative-04P",
+      "text": "동료와 함께 일하는 동안 현재 방식에 큰 문제가 없으면 개선할 필요가 없다고 생각한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-initiative-05P",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "initiative",
+      "direction": 1,
+      "pair": "NEW26-JA-initiative-05R",
+      "text": "결과가 기대와 다를 때 더 나은 방법의 근거를 정리해 제안한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-initiative-05R",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "initiative",
+      "direction": -1,
+      "pair": "NEW26-JA-initiative-05P",
+      "text": "결과가 기대와 다를 때 현재 방식에 큰 문제가 없으면 개선할 필요가 없다고 생각한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-initiative-06P",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "initiative",
+      "direction": 1,
+      "pair": "NEW26-JA-initiative-06R",
+      "text": "업무 방식이 갑자기 바뀌어도 더 나은 방법의 근거를 정리해 제안한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-initiative-06R",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "initiative",
+      "direction": -1,
+      "pair": "NEW26-JA-initiative-06P",
+      "text": "업무 방식이 갑자기 바뀌어도 현재 방식에 큰 문제가 없으면 개선할 필요가 없다고 생각한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-initiative-07P",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "initiative",
+      "direction": 1,
+      "pair": "NEW26-JA-initiative-07R",
+      "text": "예상하지 못한 문제가 생겨도 작은 개선을 직접 시도하고 결과를 확인한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-initiative-07R",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "initiative",
+      "direction": -1,
+      "pair": "NEW26-JA-initiative-07P",
+      "text": "예상하지 못한 문제가 생겨도 좋은 아이디어가 있어도 실패가 두려워 시도하지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-initiative-08P",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "initiative",
+      "direction": 1,
+      "pair": "NEW26-JA-initiative-08R",
+      "text": "일정이 촉박한 업무에서도 작은 개선을 직접 시도하고 결과를 확인한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-initiative-08R",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "initiative",
+      "direction": -1,
+      "pair": "NEW26-JA-initiative-08P",
+      "text": "일정이 촉박한 업무에서도 좋은 아이디어가 있어도 실패가 두려워 시도하지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-initiative-09P",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "initiative",
+      "direction": 1,
+      "pair": "NEW26-JA-initiative-09R",
+      "text": "처음 맡은 과제를 수행할 때 작은 개선을 직접 시도하고 결과를 확인한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-initiative-09R",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "initiative",
+      "direction": -1,
+      "pair": "NEW26-JA-initiative-09P",
+      "text": "처음 맡은 과제를 수행할 때 좋은 아이디어가 있어도 실패가 두려워 시도하지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-initiative-10P",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "initiative",
+      "direction": 1,
+      "pair": "NEW26-JA-initiative-10R",
+      "text": "동료와 함께 일하는 동안 작은 개선을 직접 시도하고 결과를 확인한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-initiative-10R",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "initiative",
+      "direction": -1,
+      "pair": "NEW26-JA-initiative-10P",
+      "text": "동료와 함께 일하는 동안 좋은 아이디어가 있어도 실패가 두려워 시도하지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-initiative-11P",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "initiative",
+      "direction": 1,
+      "pair": "NEW26-JA-initiative-11R",
+      "text": "결과가 기대와 다를 때 작은 개선을 직접 시도하고 결과를 확인한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-initiative-11R",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "initiative",
+      "direction": -1,
+      "pair": "NEW26-JA-initiative-11P",
+      "text": "결과가 기대와 다를 때 좋은 아이디어가 있어도 실패가 두려워 시도하지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-initiative-12P",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "initiative",
+      "direction": 1,
+      "pair": "NEW26-JA-initiative-12R",
+      "text": "업무 방식이 갑자기 바뀌어도 작은 개선을 직접 시도하고 결과를 확인한다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-initiative-12R",
+      "kind": "trait",
+      "factor": "change",
+      "subscale": "initiative",
+      "direction": -1,
+      "pair": "NEW26-JA-initiative-12P",
+      "text": "업무 방식이 갑자기 바뀌어도 좋은 아이디어가 있어도 실패가 두려워 시도하지 않는다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-IM-01",
+      "kind": "impression",
+      "text": "나는 지금까지 어떤 상황에서도 실수한다는 일이 단 한 번도 없었다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-IM-02",
+      "kind": "impression",
+      "text": "나는 지금까지 어떤 상황에서도 약속을 잊는다는 일이 단 한 번도 없었다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-IM-03",
+      "kind": "impression",
+      "text": "나는 지금까지 어떤 상황에서도 짜증을 낸다는 일이 단 한 번도 없었다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-IM-04",
+      "kind": "impression",
+      "text": "나는 지금까지 어떤 상황에서도 도움을 미룬다는 일이 단 한 번도 없었다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-IM-05",
+      "kind": "impression",
+      "text": "나는 지금까지 어떤 상황에서도 규칙을 잘못 이해한다는 일이 단 한 번도 없었다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-IM-06",
+      "kind": "impression",
+      "text": "나는 지금까지 어떤 상황에서도 집중이 흐트러진다는 일이 단 한 번도 없었다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-IM-07",
+      "kind": "impression",
+      "text": "나는 지금까지 어떤 상황에서도 부정적인 생각을 한다는 일이 단 한 번도 없었다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-IM-08",
+      "kind": "impression",
+      "text": "나는 지금까지 어떤 상황에서도 다른 사람을 부러워한다는 일이 단 한 번도 없었다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-IM-09",
+      "kind": "impression",
+      "text": "나는 학습이나 업무를 하는 동안에도 실수한다는 일이 단 한 번도 없었다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-IM-10",
+      "kind": "impression",
+      "text": "나는 학습이나 업무를 하는 동안에도 약속을 잊는다는 일이 단 한 번도 없었다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-IM-11",
+      "kind": "impression",
+      "text": "나는 학습이나 업무를 하는 동안에도 짜증을 낸다는 일이 단 한 번도 없었다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-IM-12",
+      "kind": "impression",
+      "text": "나는 학습이나 업무를 하는 동안에도 도움을 미룬다는 일이 단 한 번도 없었다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-IM-13",
+      "kind": "impression",
+      "text": "나는 학습이나 업무를 하는 동안에도 규칙을 잘못 이해한다는 일이 단 한 번도 없었다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-IM-14",
+      "kind": "impression",
+      "text": "나는 학습이나 업무를 하는 동안에도 집중이 흐트러진다는 일이 단 한 번도 없었다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-IM-15",
+      "kind": "impression",
+      "text": "나는 학습이나 업무를 하는 동안에도 부정적인 생각을 한다는 일이 단 한 번도 없었다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-IM-16",
+      "kind": "impression",
+      "text": "나는 학습이나 업무를 하는 동안에도 다른 사람을 부러워한다는 일이 단 한 번도 없었다.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-AT-01",
+      "kind": "attention",
+      "expected": 5,
+      "text": "응답 확인 문항 1입니다. 이 문항에는 가장 오른쪽의 5번을 선택해 주세요.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-AT-02",
+      "kind": "attention",
+      "expected": 1,
+      "text": "응답 확인 문항 2입니다. 이 문항에는 가장 왼쪽의 1번을 선택해 주세요.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-AT-03",
+      "kind": "attention",
+      "expected": 5,
+      "text": "응답 확인 문항 3입니다. 이 문항에는 가장 오른쪽의 5번을 선택해 주세요.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-AT-04",
+      "kind": "attention",
+      "expected": 1,
+      "text": "응답 확인 문항 4입니다. 이 문항에는 가장 왼쪽의 1번을 선택해 주세요.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-AT-05",
+      "kind": "attention",
+      "expected": 5,
+      "text": "응답 확인 문항 5입니다. 이 문항에는 가장 오른쪽의 5번을 선택해 주세요.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-AT-06",
+      "kind": "attention",
+      "expected": 1,
+      "text": "응답 확인 문항 6입니다. 이 문항에는 가장 왼쪽의 1번을 선택해 주세요.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-AT-07",
+      "kind": "attention",
+      "expected": 5,
+      "text": "응답 확인 문항 7입니다. 이 문항에는 가장 오른쪽의 5번을 선택해 주세요.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-AT-08",
+      "kind": "attention",
+      "expected": 1,
+      "text": "응답 확인 문항 8입니다. 이 문항에는 가장 왼쪽의 1번을 선택해 주세요.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-AT-09",
+      "kind": "attention",
+      "expected": 5,
+      "text": "응답 확인 문항 9입니다. 이 문항에는 가장 오른쪽의 5번을 선택해 주세요.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-AT-10",
+      "kind": "attention",
+      "expected": 1,
+      "text": "응답 확인 문항 10입니다. 이 문항에는 가장 왼쪽의 1번을 선택해 주세요.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-AT-11",
+      "kind": "attention",
+      "expected": 5,
+      "text": "응답 확인 문항 11입니다. 이 문항에는 가장 오른쪽의 5번을 선택해 주세요.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-AT-12",
+      "kind": "attention",
+      "expected": 1,
+      "text": "응답 확인 문항 12입니다. 이 문항에는 가장 왼쪽의 1번을 선택해 주세요.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-AT-13",
+      "kind": "attention",
+      "expected": 5,
+      "text": "응답 확인 문항 13입니다. 이 문항에는 가장 오른쪽의 5번을 선택해 주세요.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-AT-14",
+      "kind": "attention",
+      "expected": 1,
+      "text": "응답 확인 문항 14입니다. 이 문항에는 가장 왼쪽의 1번을 선택해 주세요.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-AT-15",
+      "kind": "attention",
+      "expected": 5,
+      "text": "응답 확인 문항 15입니다. 이 문항에는 가장 오른쪽의 5번을 선택해 주세요.",
+      "generationLane": "independent-blueprint"
+    },
+    {
+      "id": "NEW26-JA-AT-16",
+      "kind": "attention",
+      "expected": 1,
+      "text": "응답 확인 문항 16입니다. 이 문항에는 가장 왼쪽의 1번을 선택해 주세요.",
+      "generationLane": "independent-blueprint"
+    }
+  ]
+}

@@ -19,6 +19,7 @@ import { assessmentQuestions, assessmentQuestionsById } from './assessmentPartit
 import { INTERVIEW_CAREER_ASSESSMENT_QUESTIONS, INTERVIEW_CAREER_SCOPES } from './interviewCareerContent.js'
 import { INTERVIEW_FOUNDATION_COURSES, interviewFoundationArea } from './interviewFoundationCourses.js'
 import { questionPriorityWeight } from './questionPriority.js'
+import independentAssessmentBank from '../../data/assessment-banks/interview.json'
 
 const base = Array.isArray(jobQuestions) ? jobQuestions : (jobQuestions.questions || [])
 // 직무적응은 정답 없는 전용 리커트 진단으로 제공하므로 지식형 시험지 풀에서 제외한다.
@@ -44,7 +45,11 @@ for (const a of areaMapping.areas) for (const l of (a.lessons || [])) lessonToAr
 // 품질경영·면접스킬: 경량 풀(quiz만, area 태깅됨)
 const qualityPool     = qualityMock.pool
 const qualityScopes   = qualityMock.scopes
-const interviewPool   = [...assessmentQuestionsById(interviewMock.pool), ...INTERVIEW_CAREER_ASSESSMENT_QUESTIONS]
+const interviewPool   = [
+  ...assessmentQuestionsById(interviewMock.pool),
+  ...INTERVIEW_CAREER_ASSESSMENT_QUESTIONS,
+  ...(independentAssessmentBank.questions || []),
+]
 const interviewScopes = [
   ...INTERVIEW_FOUNDATION_COURSES.map(course => ({ key: course.label, name: course.label })),
   ...INTERVIEW_CAREER_SCOPES,
@@ -94,9 +99,14 @@ export const MOCK_SUBJECTS = [
 // 교사 오픈 목록용: [{ key, name, papers }] (전체 10회 + 각 영역 5회)
 export function getMockScopes(subjectId) {
   const c = cfg(subjectId); if (!c) return []
+  const selectable = selectableQuestions(c)
+  const paperTotal = capacity => Math.max(1, Math.ceil(capacity / MOCK_COUNT))
   return [
-    { key: '__all__', name: '전체 영역', papers: MOCK_PAPERS.all },
-    ...c.scopes.map(s => ({ key: s.key, name: s.name, papers: MOCK_PAPERS.area })),
+    { key: '__all__', name: '전체 영역', papers: Math.max(MOCK_PAPERS.all, paperTotal(selectable.length)) },
+    ...c.scopes.map(s => {
+      const capacity = selectable.filter(question => c.areaKey(question) === s.key).length
+      return { key: s.key, name: s.name, papers: Math.max(MOCK_PAPERS.area, paperTotal(capacity)) }
+    }),
   ]
 }
 
@@ -199,6 +209,7 @@ export function buildDiagnosticPaper(subjectId, attempt = 0, count = 40, scope =
     areaKey: c.areaKey,
     weight: c.weight,
     variantMap: c.variantMap,
+    seedScope: `diagnostic:${subjectId}:${scope}`,
   })
 }
 

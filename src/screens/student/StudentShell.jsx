@@ -17,6 +17,7 @@ import { fetchMyClassSession, startPresence, stopPresence, setFocusListener } fr
 import { campusCourseTarget } from '../../lib/studentCampusRoutes.js'
 import { rememberStudentLearningContext } from '../../lib/studentLearningJourney.js'
 import { startLearningPresence, stopLearningPresence, updateLearningPresence } from '../../lib/learningPresence.js'
+import { classResponseFromContext, submitClassResponse } from '../../lib/classResponses.js'
 import { lazyChunk } from '../../lib/lazyChunk.js'
 import { logoutSafely, saveBeforeExit } from '../../lib/sessionLifecycle.js'
 import { isSharedDevice } from '../../lib/deviceSettings.js'
@@ -125,6 +126,7 @@ export default function StudentShell() {
   const deepLink = followLink ?? urlLink
   const [tab,         setTab]         = useState(deepLink ? 'study' : 'home')
   const [learningContext, setLearningContext] = useState(null)
+  const lastClassResponseRef = useRef('')
   // 홈 위에 전체 화면(출석·스피드퀴즈·복습)이 떠 있는 동안엔 탭바를 감춘다.
   const [immersive,   setImmersive]   = useState(false)
   const [overlay,     setOverlay]     = useState(null)   // { screen, ...params }
@@ -151,6 +153,31 @@ export default function StudentShell() {
       return context
     })
   }, [])
+
+  useEffect(() => {
+    const response = classResponseFromContext(learningContext)
+    if (!classSession?.session_id || !response) {
+      if (!classSession?.session_id) lastClassResponseRef.current = ''
+      return undefined
+    }
+    const signature = JSON.stringify({
+      session: classSession.session_id,
+      subject: learningContext.subject,
+      area: learningContext.area || learningContext.areaId,
+      lesson: learningContext.lesson || learningContext.lessonId,
+      stage: learningContext.stage,
+      step: learningContext.step,
+      position: learningContext.position,
+      questionId: learningContext.questionId,
+      response,
+    })
+    if (signature === lastClassResponseRef.current) return undefined
+    const timer = window.setTimeout(async () => {
+      const { error, data } = await submitClassResponse(classSession.session_id, learningContext)
+      if (!error && !data?.error) lastClassResponseRef.current = signature
+    }, 450)
+    return () => window.clearTimeout(timer)
+  }, [classSession?.session_id, learningContext])
 
   function openMission(mission) { setOverlay({ screen: 'mission', mission }) }
   function closeOverlay()       { setOverlay(null) }
@@ -233,9 +260,10 @@ export default function StudentShell() {
                 track: focus.track || null,
                 area: focus.area || null,
                 lesson: focus.lesson || null,
-                questionId: focus.questionId || null,
-                index: Number.isInteger(focus.index) ? focus.index : null,
-                mode: focus.mode || 'study',
+                 questionId: focus.questionId || null,
+                 index: Number.isInteger(focus.index) ? focus.index : null,
+                 step: Number.isInteger(focus.step) ? focus.step : null,
+                 mode: focus.mode || 'study',
               })
               setTab('study')
               setFollowing(false)
@@ -269,7 +297,7 @@ export default function StudentShell() {
 
         <Suspense fallback={<ScreenLoading />}>
           {tab === 'study' && <CourseListScreen
-            key={`${deepLink ? [deepLink.subject, deepLink.mode ?? 'choose', deepLink.area, deepLink.lesson, deepLink.questionId, deepLink.index].join(':') : 'browse'}:${studyResetKey}`}
+            key={`${deepLink ? [deepLink.subject, deepLink.mode ?? 'choose', deepLink.area, deepLink.lesson, deepLink.questionId, deepLink.index, deepLink.step].join(':') : 'browse'}:${studyResetKey}`}
             deepLink={deepLink}
             onContextChange={handleLearningContext}
             onBack={() => { setFollowLink(null); setTab('home') }} />}

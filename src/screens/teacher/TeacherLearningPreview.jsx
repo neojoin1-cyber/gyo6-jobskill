@@ -7,7 +7,10 @@ import {
   Bell,
   Broadcast,
   Buildings,
+  ChatCircleDots,
   ChartLineUp,
+  CheckCircle,
+  Clock,
   Compass,
   House,
   Monitor,
@@ -30,6 +33,8 @@ import { popBack, pushBack, triggerBack } from '../../lib/backButton.js'
 import { supabase } from '../../lib/supabase.js'
 import { enterProjection, exitProjection, onFullscreenChange } from '../../lib/orientation.js'
 import { isTeacherPhoneViewport } from '../../lib/teacherLayout.js'
+import { fetchClassResponses } from '../../lib/classResponses.js'
+import { LESSON_DURATIONS, lessonTiming } from '../../lib/teacherLessonGuides.js'
 import TeacherLessonCoach from './TeacherLessonCoach.jsx'
 
 const FOLLOWABLE_MODES = new Set(['study', 'diagnostic', 'mock', 'practical', 'cover-practical'])
@@ -93,16 +98,18 @@ function classFocus(context) {
     lesson: context.lesson || context.lessonId || null,
     questionId: context.questionId || context.question?.id || null,
     index: Number.isInteger(context.index) ? context.index : null,
+    step: Number.isInteger(context.step) ? context.step : null,
+    position: Number.isInteger(context.position) ? context.position : null,
     label: label || '학생 앱 학습 화면',
   }
 }
 
-function initialCourseLink(initialSubject, initialContext) {
+function initialCourseLink(initialSubject, initialContext, preferLearning = false) {
   const subject = initialContext?.subject || initialSubject
   const base = campusCourseTarget(subject)
   if (!base) return null
   if (!initialContext?.subject) return base
-  return {
+  const link = {
     ...base,
     mode: initialContext.mode ?? base.mode,
     track: initialContext.track || initialContext.trackId || null,
@@ -116,6 +123,14 @@ function initialCourseLink(initialSubject, initialContext) {
         ? Math.max(0, initialContext.position - 1)
         : 0,
     interaction: initialContext.content?.interaction || null,
+  }
+  if (!preferLearning || link.mode !== 'study' || !link.lesson) return link
+  return {
+    ...link,
+    questionId: null,
+    index: null,
+    step: initialContext.content?.kind === 'summary' ? link.step : 0,
+    interaction: initialContext.content?.kind === 'summary' ? link.interaction : null,
   }
 }
 
@@ -175,6 +190,7 @@ function ClassroomConnectionPanel({
   onToggle,
   onRefresh,
   onSendFocus,
+  showSummary = true,
 }) {
   const summary = presence?.summary || {}
   const rank = { active: 0, away: 1, lost: 2, offline: 3 }
@@ -182,8 +198,8 @@ function ClassroomConnectionPanel({
     (rank[left.shown] ?? 4) - (rank[right.shown] ?? 4)
       || String(left.display_name || '').localeCompare(String(right.display_name || ''), 'ko'))
   return (
-    <section className={`classroom-connection-panel ${session ? 'is-live' : ''}`} aria-label="학생 앱 연결 현황">
-      <header>
+    <section className={`classroom-connection-panel ${session ? 'is-live' : ''} ${showSummary ? '' : 'is-dialog-only'}`} aria-label="학생 앱 연결 현황">
+      {showSummary && <header>
         <div className="classroom-connection-title">
           <UsersThree weight="fill" />
           <b>학생 연결</b>
@@ -206,7 +222,7 @@ function ClassroomConnectionPanel({
           aria-label="학생 연결 현황 새로고침" title="학생 연결 현황 새로고침">
           <ArrowClockwise className={busy ? 'is-spinning' : ''} />
         </button>
-      </header>
+      </header>}
       {open && session && (
         <div className="classroom-connection-backdrop" onMouseDown={event => {
           if (event.target === event.currentTarget) onToggle()
@@ -247,6 +263,228 @@ function ClassroomConnectionPanel({
   )
 }
 
+function ClassroomLivePulse({
+  open,
+  presence,
+  session,
+  focusBusy,
+  focusLabel,
+  focusSentAt,
+  responseCount,
+  onToggle,
+  onOpenPresence,
+  onOpenResponses,
+  onRefresh,
+  onSendFocus,
+}) {
+  const summary = presence?.summary || {}
+  const total = summary.total ?? 0
+  const active = summary.active ?? 0
+  const attention = (summary.away ?? 0) + (summary.lost ?? 0)
+  return (
+    <>
+      <button type="button" className={`classroom-live-pulse-toggle ${open ? 'is-open' : ''}`}
+        onClick={onToggle} aria-expanded={open} aria-controls="classroom-live-pulse-panel"
+        aria-label={open ? '라이브 펄스 닫기' : '라이브 펄스 열기'} title="라이브 펄스">
+        <Broadcast weight="fill" />
+        <span>LIVE</span>
+        <b>{session ? `${active}/${total}` : '대기'}</b>
+      </button>
+      {open && (
+        <aside id="classroom-live-pulse-panel" className="classroom-live-pulse-panel"
+          role="dialog" aria-modal="false" aria-labelledby="classroom-live-pulse-title">
+          <header>
+            <div>
+              <small>LIVE CLASS</small>
+              <h2 id="classroom-live-pulse-title">라이브 펄스</h2>
+              <p>{session ? '현재 수업의 참여 상태를 한눈에 확인합니다.' : '학생 연결을 시작하면 현황이 표시됩니다.'}</p>
+            </div>
+            <button type="button" onClick={onToggle} aria-label="라이브 펄스 닫기"><X weight="bold" /></button>
+          </header>
+
+          <section className="classroom-live-pulse-connection" aria-label="연결 상태 요약">
+            <div><span>연결됨</span><b>{active}</b></div>
+            <div><span>화면 벗어남</span><b>{summary.away ?? 0}</b></div>
+            <div><span>연결 확인</span><b>{summary.lost ?? 0}</b></div>
+            <div><span>미접속</span><b>{summary.offline ?? 0}</b></div>
+          </section>
+
+          <section className="classroom-live-pulse-band">
+            <span><UsersThree weight="fill" /></span>
+            <div><small>연결 상태</small><b>{session ? `${active}/${total}명 연결` : '연결 대기'}</b><p>{attention ? `${attention}명 확인 필요` : '수업 흐름이 안정적입니다.'}</p></div>
+            <button type="button" onClick={onOpenPresence} disabled={!session}>상세</button>
+          </section>
+
+          <section className="classroom-live-pulse-band">
+            <span><ChatCircleDots weight="fill" /></span>
+            <div><small>현재 장면 응답</small><b>{session ? `${responseCount}/${total}명 제출` : '응답 대기'}</b><p>분포와 학생별 답변 확인</p></div>
+            <button type="button" onClick={onOpenResponses} disabled={!session || !focusLabel}>열기</button>
+          </section>
+
+          <section className="classroom-live-pulse-focus">
+            <Broadcast weight="fill" />
+            <div><small>학생 앱 위치 전달</small><b>{focusLabel || '학습 단원을 열어 주세요.'}</b><p>{focusSentAt ? `최종 전달 ${presenceTime(focusSentAt)}` : '현재 장면으로 학생 앱을 이동합니다.'}</p></div>
+            <button type="button" onClick={onSendFocus} disabled={focusBusy || !session || !focusLabel}>
+              {focusBusy ? '전달 중' : '위치 전달'}
+            </button>
+          </section>
+
+          <button type="button" className="classroom-live-pulse-refresh" onClick={onRefresh} disabled={!session}>
+            <ArrowClockwise /> 현황 새로고침
+          </button>
+        </aside>
+      )}
+    </>
+  )
+}
+
+function responseText(response = {}) {
+  if (response.kind === 'choice') return response.label || String(response.value ?? '선택 완료')
+  if (response.kind === 'reflection') return response.value || '성찰 응답 완료'
+  if (response.kind === 'exit') return [response.criterion, response.action].filter(Boolean).join(' · ')
+  if (response.kind === 'formative') {
+    return (response.answers || []).map(answer => `${answer.index + 1}번 ${answer.value + 1}번 선택`).join(' · ')
+  }
+  return '응답 완료'
+}
+
+function responseGroups(responses = []) {
+  const groups = new Map()
+  responses.forEach(row => {
+    const label = responseText(row.response)
+    groups.set(label, (groups.get(label) || 0) + 1)
+  })
+  return [...groups.entries()].sort((left, right) => right[1] - left[1])
+}
+
+function demoClassResponses(context, total = 28) {
+  const labels = context?.content?.card?.point?.sampleQuestion?.choices?.map(choice => choice.text)
+    || ['근거를 먼저 확인함', '상대방의 영향을 먼저 확인함', '정보가 더 필요함']
+  const names = ['이수현', '박민준', '최유나', '정도윤', '김서연', '윤지호', '한예린', '오승현', '임다은', '강민서', '신도현', '배서윤']
+  const responses = names.map((display_name, index) => ({
+    student_id: `demo-response-${index + 1}`,
+    display_name,
+    response: { kind: 'choice', value: index % labels.length, label: labels[index % labels.length] },
+    submitted_at: new Date(Date.now() - index * 12_000).toISOString(),
+  }))
+  return { count: responses.length, total, responses, at: new Date().toISOString() }
+}
+
+function ClassroomResponseDialog({ open, busy, data, total, focusLabel, onClose, onRefresh }) {
+  if (!open) return null
+  const responses = data?.responses || []
+  const groups = responseGroups(responses)
+  const answered = data?.count ?? responses.length
+  return (
+    <div className="classroom-response-backdrop" onMouseDown={event => {
+      if (event.target === event.currentTarget) onClose()
+    }}>
+      <section className="classroom-response-dialog" role="dialog" aria-modal="true" aria-labelledby="classroom-response-title">
+        <header>
+          <div>
+            <small>LIVE RESPONSE</small>
+            <h2 id="classroom-response-title">학생 응답</h2>
+            <p>{focusLabel || '현재 수업 장면'} · 응답 {answered}/{total || answered}명</p>
+          </div>
+          <button type="button" onClick={onClose} aria-label="학생 응답 닫기"><X weight="bold" /></button>
+        </header>
+        <div className="classroom-response-summary">
+          <div><span>응답</span><b>{answered}</b></div>
+          <div><span>대기</span><b>{Math.max(0, (total || answered) - answered)}</b></div>
+          <button type="button" onClick={onRefresh} disabled={busy}>
+            <ArrowClockwise className={busy ? 'is-spinning' : ''} />{busy ? '확인 중' : '새로고침'}
+          </button>
+        </div>
+        {groups.length > 0 && (
+          <div className="classroom-response-distribution" aria-label="응답 분포">
+            {groups.map(([label, count]) => (
+              <div key={label}>
+                <span><b>{label}</b><em>{count}명</em></span>
+                <i style={{ '--response-rate': `${answered ? count / answered * 100 : 0}%` }} />
+              </div>
+            ))}
+          </div>
+        )}
+        <div className="classroom-response-list">
+          {busy && responses.length === 0 ? <p>현재 장면의 응답을 모으고 있습니다.</p> : null}
+          {!busy && responses.length === 0 ? <p>아직 제출된 응답이 없습니다. 학생이 선택하거나 형성평가를 확인하면 여기에 표시됩니다.</p> : null}
+          {responses.map(row => (
+            <article key={row.student_id}>
+              <span><CheckCircle weight="fill" /></span>
+              <div><b>{row.display_name}</b><p>{responseText(row.response)}</p></div>
+              <time>{presenceTime(row.submitted_at)}</time>
+            </article>
+          ))}
+        </div>
+      </section>
+    </div>
+  )
+}
+
+function ClassroomScenarioNav({ context, minutes, onMinutesChange, onJump, onBrowse, session, responseCount, onOpenResponses }) {
+  const timing = lessonTiming(minutes)
+  const total = Math.max(1, Number(context.total) || 1)
+  const position = Math.max(1, Number(context.position) || 1)
+  const activeIndex = total <= 1
+    ? 0
+    : Math.min(timing.length - 1, Math.round(((position - 1) / (total - 1)) * (timing.length - 1)))
+  return (
+    <aside className="classroom-scenario-nav" aria-label="수업 시나리오">
+      <header>
+        <small>LESSON STORYBOARD</small>
+        <h2>수업 시나리오</h2>
+        <p>{context.lessonLabel || context.areaLabel}</p>
+      </header>
+      <div className="classroom-scenario-duration" aria-label="수업 시간 선택">
+        {LESSON_DURATIONS.map(value => (
+          <button type="button" key={value} className={minutes === value ? 'is-on' : ''}
+            onClick={() => onMinutesChange(value)} aria-pressed={minutes === value}>
+            <Clock weight={minutes === value ? 'fill' : 'regular'} />{value}분
+          </button>
+        ))}
+      </div>
+      <ol>
+        {timing.map(([phase, studentAction, phaseMinutes], index) => (
+          <li key={`${phase}:${phaseMinutes}`} className={`${index === activeIndex ? 'is-on' : ''} ${index < activeIndex ? 'is-done' : ''}`}>
+            <button type="button" onClick={() => onJump(index, timing.length)} aria-current={index === activeIndex ? 'step' : undefined}>
+              <span>{index < activeIndex ? <CheckCircle weight="fill" /> : index + 1}</span>
+              <div><b>{phase}</b><p>{studentAction}</p></div>
+              <time>{phaseMinutes}분</time>
+            </button>
+          </li>
+        ))}
+      </ol>
+      <div className="classroom-scenario-actions">
+        <button type="button" className="is-response" onClick={onOpenResponses} disabled={!session}>
+          <ChatCircleDots weight="fill" />
+          <span><b>학생 응답 열기</b><small>{session ? (responseCount ? `${responseCount}명 응답 확인` : '현재 장면 응답 확인') : '수업 연결 후 사용'}</small></span>
+        </button>
+        <button type="button" className="is-browse" onClick={onBrowse}>단원 바꾸기</button>
+      </div>
+    </aside>
+  )
+}
+
+function ClassroomProjectionHeader({ context }) {
+  const summary = context.content?.summary
+  const goal = summary?.mustRemember?.[0] || summary?.learningPoints?.[0] || ''
+  return (
+    <header className="classroom-projection-header">
+      <div>
+        <small>교실 수업 장면 {context.position || 1}/{context.total || 1}</small>
+        <h1>{context.title || context.lessonLabel || context.areaLabel || '오늘의 학습 장면'}</h1>
+        <p>{context.lessonLabel || context.areaLabel}</p>
+      </div>
+      {goal && (
+        <aside aria-label="학습 목표">
+          <CheckCircle weight="fill" />
+          <span><small>학습 목표</small><b>{goal}</b></span>
+        </aside>
+      )}
+    </header>
+  )
+}
+
 export default function TeacherLearningPreview({
   profile,
   demoMode = false,
@@ -266,7 +504,10 @@ export default function TeacherLearningPreview({
   const focusRef = useRef('')
   const restoreCoachRef = useRef(Boolean(initialCoachOpen))
   const autoStartRef = useRef(Boolean(initialClassId))
-  const initialLink = useMemo(() => initialCourseLink(initialSubject, initialContext), [initialContext, initialSubject])
+  const initialLink = useMemo(
+    () => initialCourseLink(initialSubject, initialContext, teachingMode),
+    [initialContext, initialSubject, teachingMode],
+  )
   const [tab, setTab] = useState(initialLink ? 'study' : 'home')
   const [deepLink, setDeepLink] = useState(initialLink)
   const [learningContext, setLearningContext] = useState(initialContext || { subject: initialLink?.subject || initialSubject, mode: null })
@@ -283,10 +524,19 @@ export default function TeacherLearningPreview({
   const [presence, setPresence] = useState(null)
   const [presenceOpen, setPresenceOpen] = useState(false)
   const [presenceBusy, setPresenceBusy] = useState(false)
+  const [livePulseOpen, setLivePulseOpen] = useState(false)
   const [focusBusy, setFocusBusy] = useState(false)
   const [focusSentAt, setFocusSentAt] = useState(null)
   const [sessionBusy, setSessionBusy] = useState(false)
   const [sessionMessage, setSessionMessage] = useState('')
+  const [lessonMinutes, setLessonMinutes] = useState(45)
+  const [studyRevision, setStudyRevision] = useState(0)
+  const [scenarioContext, setScenarioContext] = useState(
+    initialContext?.content?.kind === 'summary' ? initialContext : null,
+  )
+  const [responsesOpen, setResponsesOpen] = useState(false)
+  const [responsesBusy, setResponsesBusy] = useState(false)
+  const [responseData, setResponseData] = useState(null)
   const contextReady = Boolean(
     learningContext.subject &&
     learningContext.mode &&
@@ -305,6 +555,10 @@ export default function TeacherLearningPreview({
   }, [])
 
   useEffect(() => {
+    if (learningContext.content?.kind === 'summary') setScenarioContext(learningContext)
+  }, [learningContext])
+
+  useEffect(() => {
     if (desktopPresentation) return
     setClassroomZoom(1)
     setFocusMode(false)
@@ -313,7 +567,9 @@ export default function TeacherLearningPreview({
 
   const previewBackRef = useRef(null)
   previewBackRef.current = () => {
+    if (responsesOpen) { setResponsesOpen(false); return }
     if (presenceOpen) { setPresenceOpen(false); return }
+    if (livePulseOpen) { setLivePulseOpen(false); return }
     if (coachOpen) { setCoachOpen(false); return }
     if (tab !== 'home') { setDeepLink(null); setTab('home'); return }
     leavePreview()
@@ -350,6 +606,10 @@ export default function TeacherLearningPreview({
     const timer = window.setTimeout(() => setSessionMessage(''), 4_500)
     return () => window.clearTimeout(timer)
   }, [sessionMessage])
+
+  useEffect(() => {
+    setResponseData(null)
+  }, [learningContext.areaId, learningContext.lessonId, learningContext.position, learningContext.questionId, learningContext.stage, learningContext.subject])
 
   useEffect(() => {
     if (!desktopPresentation) return undefined
@@ -532,6 +792,58 @@ export default function TeacherLearningPreview({
     setTab('study')
   }
 
+  function jumpToScenarioPhase(index, phaseCount) {
+    if (!learningContext.subject || !learningContext.lessonId) return
+    const sameLessonContext = scenarioContext?.subject === learningContext.subject
+      && (scenarioContext.lessonId || scenarioContext.lesson) === (learningContext.lessonId || learningContext.lesson)
+      ? scenarioContext
+      : null
+    const total = Math.max(1, Number(sameLessonContext?.total) || phaseCount)
+    const targetPosition = phaseCount <= 1
+      ? 1
+      : Math.round(index * (total - 1) / (phaseCount - 1)) + 1
+    const next = {
+      subject: learningContext.subject,
+      mode: 'study',
+      track: learningContext.track || learningContext.trackId || null,
+      area: learningContext.area || learningContext.areaId || null,
+      lesson: learningContext.lesson || learningContext.lessonId || null,
+      questionId: null,
+      index: null,
+      step: targetPosition - 1,
+      interaction: null,
+    }
+    setDeepLink(next)
+    setStudyRevision(value => value + 1)
+  }
+
+  async function loadResponses() {
+    if (!session || !classFocus(learningContext)) return
+    setResponsesBusy(true)
+    if (demoMode) {
+      setResponseData(demoClassResponses(learningContext, presence?.summary?.total || 28))
+      setResponsesBusy(false)
+      return
+    }
+    const { data, error } = await fetchClassResponses(session, learningContext)
+    if (error || data?.error) setSessionMessage('현재 장면의 학생 응답을 불러오지 못했습니다.')
+    else setResponseData(data)
+    setResponsesBusy(false)
+  }
+
+  async function openResponses() {
+    setLivePulseOpen(false)
+    setResponsesOpen(true)
+    await loadResponses()
+  }
+
+  async function toggleLivePulse() {
+    const next = !livePulseOpen
+    setLivePulseOpen(next)
+    if (!next || !session) return
+    await Promise.all([loadPresence({ quiet: true }), loadResponses()])
+  }
+
   async function toggleClassroomFocus() {
     if (focusMode || fullscreen) {
       setFocusMode(false)
@@ -672,6 +984,11 @@ export default function TeacherLearningPreview({
     { id: 'messages', label: '소식', icon: Bell, onClick: () => setTab('messages') },
     { id: 'ranking', label: '나', icon: UserCircle, onClick: () => setTab('ranking') },
   ]
+  const showScenario = desktopPresentation && tab === 'study' && contextReady && learningContext.mode === 'study'
+  const scenarioNavContext = scenarioContext?.subject === learningContext.subject
+    && (scenarioContext.lessonId || scenarioContext.lesson) === (learningContext.lessonId || learningContext.lesson)
+    ? scenarioContext
+    : learningContext
 
   return (
     <div ref={rootRef} className={`screen teacher-learning-preview ${teachingMode ? 'is-teaching' : ''} ${phoneViewport ? 'is-phone-learning' : ''} ${focusMode ? 'is-focus' : ''} ${classroomZoom > 1 ? 'is-zoomed' : ''}`}>
@@ -682,9 +999,9 @@ export default function TeacherLearningPreview({
         </button>
         <span className="teacher-preview-mark"><Buildings weight="fill" /></span>
         <div className="teacher-preview-heading">
-          <small>{teachingMode ? 'CLASSROOM · STUDENT APP' : 'STUDENT VIEW · TEACHER PASS'}</small>
+          <small>{teachingMode ? 'CLASSROOM · LESSON CONDUCTOR' : 'STUDENT VIEW · TEACHER PASS'}</small>
           <b>{teachingMode
-            ? (learningContext.lessonLabel || learningContext.areaLabel || '학생 앱 그대로 교실 수업')
+            ? (learningContext.lessonLabel || learningContext.areaLabel || '교실 수업 준비')
             : '학생과 같은 화면으로 배우기'}</b>
         </div>
         <div className="teacher-preview-actions">
@@ -762,8 +1079,19 @@ export default function TeacherLearningPreview({
           onToggle={() => setPresenceOpen(value => !value)}
           onRefresh={() => loadPresence()}
           onSendFocus={() => publishClassFocus({ announce: true })}
+          showSummary={!desktopPresentation}
         />
       )}
+
+      <ClassroomResponseDialog
+        open={responsesOpen}
+        busy={responsesBusy}
+        data={responseData}
+        total={presence?.summary?.total || 0}
+        focusLabel={classFocus(learningContext)?.label}
+        onClose={() => setResponsesOpen(false)}
+        onRefresh={loadResponses}
+      />
 
       <div ref={stageRef}
         className={`teacher-preview-stage ${coachOpen ? 'has-coach' : ''} ${classroomZoom > 1 ? 'is-pannable' : ''} ${panning ? 'is-panning' : ''}`}
@@ -781,6 +1109,21 @@ export default function TeacherLearningPreview({
           flex: `0 0 ${100 / classroomZoom}%`,
           transform: `scale(${classroomZoom})`,
         } : undefined}>
+          <div className={`teacher-classroom-layout ${showScenario ? 'has-scenario' : ''}`}>
+          {showScenario && (
+            <ClassroomScenarioNav
+              context={scenarioNavContext}
+              minutes={lessonMinutes}
+              onMinutesChange={setLessonMinutes}
+              onJump={jumpToScenarioPhase}
+              onBrowse={() => { setDeepLink(null); setLearningContext({ subject: learningContext.subject, mode: 'study' }); setStudyRevision(value => value + 1) }}
+              session={session}
+              responseCount={responseData?.count || 0}
+              onOpenResponses={openResponses}
+            />
+          )}
+          <main className="teacher-classroom-content">
+          {showScenario && <ClassroomProjectionHeader context={learningContext} />}
           {tab === 'home' && (
             <StudentCampusHome
               profile={profile}
@@ -794,7 +1137,7 @@ export default function TeacherLearningPreview({
           )}
           {tab === 'study' && (
             <CourseListScreen
-              key={deepLink ? `${deepLink.subject}:teacher-preview` : 'teacher-preview-browse'}
+              key={deepLink ? `${[deepLink.subject, deepLink.mode, deepLink.area, deepLink.lesson, deepLink.questionId, deepLink.index, deepLink.step, studyRevision].join(':')}:teacher-preview` : `teacher-preview-browse:${studyRevision}`}
               deepLink={deepLink}
               onContextChange={setLearningContext}
               onBack={() => { setDeepLink(null); setTab('home') }}
@@ -803,13 +1146,33 @@ export default function TeacherLearningPreview({
           {tab === 'growth' && <WrongAnswerScreen profile={profile} />}
           {tab === 'messages' && <NotificationsScreen demo />}
           {tab === 'ranking' && <RankingScreen />}
+          </main>
+          </div>
         </div>
         </div>
+        {desktopPresentation && (
+          <ClassroomLivePulse
+            open={livePulseOpen}
+            presence={presence}
+            session={session}
+            focusBusy={focusBusy}
+            focusLabel={classFocus(learningContext)?.label}
+            focusSentAt={focusSentAt}
+            responseCount={responseData?.count || 0}
+            onToggle={toggleLivePulse}
+            onOpenPresence={() => { setLivePulseOpen(false); setPresenceOpen(true) }}
+            onOpenResponses={openResponses}
+            onRefresh={() => loadPresence()}
+            onSendFocus={() => publishClassFocus({ announce: true })}
+          />
+        )}
         {coachOpen && (
           <TeacherLessonCoach
             subject={learningContext.subject}
             mode={learningContext.mode}
             context={learningContext}
+            lessonMinutes={lessonMinutes}
+            onLessonMinutesChange={setLessonMinutes}
             projectionSafe={focusMode}
             onMessage={onOpenMessages}
             onClose={() => setCoachOpen(false)}

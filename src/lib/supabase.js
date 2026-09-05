@@ -18,6 +18,7 @@ const TRIAL_READ_RPCS = new Set([
   'rpc_class_personality',
   'rpc_class_position',
   'rpc_class_presence',
+  'rpc_class_responses',
   'rpc_class_progress',
   'rpc_class_weakness',
   'rpc_interview_practice_review',

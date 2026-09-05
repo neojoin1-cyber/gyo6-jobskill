@@ -14,8 +14,9 @@ import { JC_PULLDOWN_QUESTIONS } from './jobCommonPulldown.js'
 import { JC_SET_QUESTIONS } from './jobCommonSets.js'
 import { JC_BLUEPRINT_FILL } from './jobCommonBlueprintFill.js'
 import { TEENUP_2026 } from './officialStandards.js'
-import { questionPartitionIndex } from './assessmentPartition.js'
+import { questionContentKey, questionPartitionIndex } from './assessmentPartition.js'
 import { applyQuestionIntegrityToPool } from './questionIntegrity.js'
+import independentAssessmentBank from '../../data/assessment-banks/job-common.json'
 import {
   koreanListeningQuestions,
   mathVisualQuestions,
@@ -535,6 +536,9 @@ const SYNTHESIS_SHARE = 0.2
 // 같은 문제가 두 번 나온다 — 실측 48장 중 15장에서 그런 일이 있었다.
 // id 가 아니라 내용(발문+보기)으로 걸러야 잡힌다.
 function contentKey(q) {
+  if (q.sourceUse === 'structure-and-competency-only-no-source-item-text') {
+    return questionContentKey(q)
+  }
   const ch = Array.isArray(q.choices) ? q.choices : Object.values(q.choices || {})
   const flat = t => String(t ?? '').replace(/[\s'"·,.()[\]]/g, '')
   return `${flat(q.stem)}|${flat([...ch].map(String).sort().join('|'))}`
@@ -735,6 +739,12 @@ export function buildJcMockAreas() {
   }
   for (const q of ENGLISH_SUPPLEMENT) {
     byOfficial['의사소통 영어'].questions.push(annotateBlueprint(q, '의사소통 영어'))
+  }
+  // 공식 평가틀·능력요소·영역별 기준 수량만 입력으로 사용해 새로 쓴 독립 문항.
+  // 자율학습 원문이나 기존 평가 문항의 지문·선지·해설은 생성 입력에 쓰지 않는다.
+  for (const q of independentAssessmentBank.questions || []) {
+    const official = q.officialArea || jcOfficialArea(q)
+    if (official && byOfficial[official]) byOfficial[official].questions.push(annotateBlueprint(q, official))
   }
   // 새로 만든 공식 유형(풀다운·세트)도 출제 풀에 넣는다. 학습에만 넣어 두면
   // 정작 진단·모의에서는 한 번도 만나지 못한 채 시험장에 가게 된다.

@@ -15,6 +15,8 @@ import { NCS_2026, NCS_2026_AREAS } from './officialStandards.js'
 import { attachDemand } from './demandLevel.js'
 import { isCurrentNcsQuestion, RECRUITMENT_EXTRA_AREA_IDS } from './recruitWrittenPolicy.js'
 import { applyQuestionIntegrityToPool } from './questionIntegrity.js'
+import { questionContentKey } from './assessmentPartition.js'
+import independentAssessmentBank from '../../data/assessment-banks/ncs-basic.json'
 
 const RECRUITMENT_EXTRA_AREAS = new Set(RECRUITMENT_EXTRA_AREA_IDS)
 
@@ -454,6 +456,12 @@ function dedupeByContent() {
   const seen = new Set()
   const flat = t => String(t ?? '').replace(/[\s'"·,.()[\]]/g, '')
   return q => {
+    if (q.sourceUse === 'structure-and-competency-only-no-source-item-text') {
+      const key = questionContentKey(q)
+      if (seen.has(key)) return false
+      seen.add(key)
+      return true
+    }
     const stem = flat(q.stem)
     if (stem.length < 12) return true
     const ch = Array.isArray(q.choices) ? q.choices : Object.values(q.choices || {})
@@ -496,6 +504,9 @@ export const ncs2026Questions = applyQuestionIntegrityToPool([
   // 빼 둔 것만 그대로 두고, 값이 없는 것만 출제 대상으로 올린다.
   ...extractedNcs
     .map(q => attachStandard({ ...q, excludeFromQuiz: q.excludeFromQuiz === true }, 'extracted-textbook'))
+    .filter(Boolean),
+  ...(independentAssessmentBank.questions || [])
+    .map(q => attachStandard(q, 'independent-26v1-blueprint'))
     .filter(Boolean),
 ].filter(dedupeByContent()))
 

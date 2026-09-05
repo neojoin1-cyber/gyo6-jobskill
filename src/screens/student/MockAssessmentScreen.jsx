@@ -286,17 +286,18 @@ export default function MockAssessmentScreen({ subjectId, subjectName, onBack, o
 
   function startArea(area) {
     setConfirmArea(null)
+    const paperNo = nextPaperNo(area)
     if (subjectId === 'job-common' && area.assessmentType === 'likert') {
-      setAdaptation({ full: false, paperNo: 1 })
+      setAdaptation({ full: false, paperNo })
       return
     }
     const officialPaper = subjectId === 'job-common'
-      ? buildJcAreaPaper(area.id, 1)
+      ? buildJcAreaPaper(area.id, paperNo)
       : null
     setActiveMission({
       id:    null,
-      mock:  { kind: 'area' },
-      title: `${subjectName} · ${area.displayName} 모의고사`,
+      mock:  { kind: 'area', paperNo },
+      title: `${subjectName} · ${area.displayName} 모의고사 ${paperNo}회`,
       subject_id:     subjectId,
       // 문항 객체를 직접 보유한 영역(품질·면접)은 그대로 응시, 아니면 question_ids 패턴 사용
       questions:      officialPaper || area.questions || undefined,
@@ -345,7 +346,8 @@ export default function MockAssessmentScreen({ subjectId, subjectName, onBack, o
     })
   }
 
-  function startJobCommonFull(paperNo) {
+  function startJobCommonFull() {
+    const paperNo = nextPaperNo({ scopeKey: '__full__', id: '__full__' })
     startJobCommonSection(paperNo, 0)
   }
 
@@ -551,13 +553,13 @@ export default function MockAssessmentScreen({ subjectId, subjectName, onBack, o
             <p style={{ fontSize: 12.5, color: '#475569', lineHeight: 1.65, marginBottom: 10 }}>
               공개된 2026 구성을 반영한 5영역 342문항 · 총 240분입니다.
               국어·영어·수리활용·문제해결은 각각 50분 교시로 진행하고, 직무적응 160문항은 40분 동안 응답합니다.
-              문항 반복을 막기 위해 현재 검증된 공식 규모 시험지는 1회만 제공합니다.
+              응시할 때마다 문제은행의 다음 미출제 구간을 사용해 전체 문항을 순환합니다.
             </p>
             <button
-              onClick={() => startJobCommonFull(1)}
+              onClick={startJobCommonFull}
               className="btn btn-primary btn-full"
             >
-              인증진단 실전 1회 시작
+              인증진단 실전 다음 회차 시작
             </button>
           </div>
         )}

@@ -46,7 +46,7 @@ function positionCounts(results) {
 
 const coverPositions = positionCounts(coverResults)
 const interviewPositions = positionCounts(interviewResults)
-if (coverPositions.some(count => count !== 3)) failures.push(`자기소개서 정답 위치 불균형: ${coverPositions.join('/')}`)
+if (Math.max(...coverPositions) - Math.min(...coverPositions) > 1) failures.push(`자기소개서 정답 위치 불균형: ${coverPositions.join('/')}`)
 if (Math.max(...interviewPositions) - Math.min(...interviewPositions) > 5) failures.push(`면접 정답 위치 불균형: ${interviewPositions.join('/')}`)
 
 function longestCorrectRate(results) {

@@ -7,6 +7,7 @@ import {
   getMockScopeCapacity,
 } from '../src/lib/mockData.js'
 import { COVER_LETTER_STEPS, INTERVIEW_ORGANIZATIONS } from '../src/lib/interviewCareerContent.js'
+import assessmentBaseline from '../data/assessment-expansion-baseline.json'
 import { readFileSync } from 'node:fs'
 
 const failures = []
@@ -48,12 +49,11 @@ for (const subjectId of subjects) {
     const allScope = diagnosticScopes.find(s => s.level === 'all')
     const expectedOrganizationUnits = INTERVIEW_ORGANIZATIONS.length
     const expectedFixedUnits = 10 + COVER_LETTER_STEPS.length
-    const expectedFixedQuestions = 245 + COVER_LETTER_STEPS.length * 5
     const expectedUnitScopes = expectedFixedUnits + expectedOrganizationUnits
-    const expectedQuestionPool = expectedFixedQuestions + expectedOrganizationUnits * 5
+    const expectedQuestionPool = assessmentBaseline.interviewTotal * 3
     assert(areaScopes.length === 10, `interview: 진단 영역은 기초 6 + 심화 4여야 함(${areaScopes.length})`)
-    assert(unitScopes.length === expectedUnitScopes, `interview: 진단 소단원은 고정 ${expectedFixedUnits} + 지원처 ${expectedOrganizationUnits}개여야 함(${unitScopes.length})`)
-    assert(allScope?.count === expectedQuestionPool, `interview: 전체 진단 문항 풀은 고정 ${expectedFixedQuestions} + 지원처별 5문항이어야 함(${allScope?.count})`)
+    assert(unitScopes.length >= expectedUnitScopes, `interview: 기존 진단 소단원 고정 ${expectedFixedUnits} + 지원처 ${expectedOrganizationUnits}개 구조가 보존되어야 함(${unitScopes.length})`)
+    assert(allScope?.count === expectedQuestionPool, `interview: 전체 진단 문항 풀은 확대 전 ${assessmentBaseline.interviewTotal}문항의 300%여야 함(${allScope?.count})`)
     assert(areaScopes.reduce((sum, scope) => sum + scope.count, 0) === allScope?.count, 'interview: 영역별 문항 합계가 전체 문항 풀과 다름')
     assert(mockScopes.length === 10, `interview: 모의 범위는 기초 6 + 심화 4여야 함(${mockScopes.length})`)
     assert(unitScopes.every(scope => !/^(FOUNDATION|ORG|COVER)-/.test(scope.name)), 'interview: 소단원 선택에 내부 코드가 노출됨')

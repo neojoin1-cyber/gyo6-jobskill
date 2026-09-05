@@ -326,6 +326,8 @@ try {
   const changedFocus = {
     ...focus,
     index: 5,
+    step: 5,
+    position: 6,
     questionId: 'JC26-KO-LISTEN-06',
     label: '학습 · 의사소통 · 경청 · 6/10',
   }
@@ -354,6 +356,30 @@ try {
   const studentPresence = presence?.students?.find(row => row.student_id === student.profile.id)
   check('teacher sees student active', !presenceError && studentPresence?.shown === 'active', presenceError?.message || studentPresence?.shown)
   report.metrics.presenceSummary = presence?.summary || null
+
+  const classResponse = { kind: 'choice', value: 'B', label: '핵심 요구와 마감을 먼저 확인함' }
+  const { data: responseSubmit, error: responseSubmitError } = await student.client.rpc('rpc_submit_class_response', {
+    p_session_id: sessionId,
+    p_focus: changedFocus,
+    p_response: classResponse,
+  })
+  check('student submits current classroom response', !responseSubmitError && responseSubmit?.ok === true,
+    responseSubmitError?.message || responseSubmit?.error)
+
+  const { data: classResponses, error: classResponsesError } = await teacher.client.rpc('rpc_class_responses', {
+    p_session_id: sessionId,
+    p_focus: changedFocus,
+  })
+  const submittedResponse = classResponses?.responses?.find(row => row.student_id === student.profile.id)
+  check('teacher opens current classroom responses', !classResponsesError && submittedResponse?.response?.value === 'B',
+    classResponsesError?.message || JSON.stringify(classResponses))
+
+  const { data: studentReadResponses, error: studentReadResponsesError } = await student.client.rpc('rpc_class_responses', {
+    p_session_id: sessionId,
+    p_focus: changedFocus,
+  })
+  check('student cannot open class response list', !studentReadResponsesError && studentReadResponses?.error === 'forbidden',
+    studentReadResponsesError?.message || JSON.stringify(studentReadResponses))
 
   const { data: syncResult, error: syncError } = await student.client.rpc('rpc_sync_progress', {
     p_payload: { reviews: [], wrong: [], resolved: [], activity: { study: 1, quiz: 0, mission: 0 }, correct: 0 },

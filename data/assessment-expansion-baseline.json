@@ -1,0 +1,1503 @@
+{
+  "schemaVersion": 1,
+  "generatedPrefix": "NEW26-",
+  "meaning": "기존 평가 문항의 내용이 아니라 영역·소단원별 수량만 기록한 300% 확대 기준선",
+  "subjects": {
+    "job-common": [
+      {
+        "key": "의사소통 국어",
+        "count": 69
+      },
+      {
+        "key": "의사소통 영어",
+        "count": 93
+      },
+      {
+        "key": "수리활용",
+        "count": 70
+      },
+      {
+        "key": "문제해결",
+        "count": 224
+      }
+    ],
+    "ncs-basic": [
+      {
+        "key": "직업윤리 > 근로윤리 > 책임의식",
+        "count": 9
+      },
+      {
+        "key": "직업윤리 > 근로윤리 > 미분류",
+        "count": 12
+      },
+      {
+        "key": "직업윤리 > 직장공동체의식 > 협력",
+        "count": 19
+      },
+      {
+        "key": "직업윤리 > 직장공동체의식 > 존중",
+        "count": 9
+      },
+      {
+        "key": "디지털능력 > 디지털활용능력 > 디지털 정보 처리",
+        "count": 16
+      },
+      {
+        "key": "디지털능력 > 디지털책임의식 > 디지털 윤리 및 규범 의식",
+        "count": 18
+      },
+      {
+        "key": "디지털능력 > 디지털활용능력 > 미분류",
+        "count": 23
+      },
+      {
+        "key": "직업윤리 > 근로윤리 > 공정의식",
+        "count": 4
+      },
+      {
+        "key": "직업윤리 > 근로윤리 > 성실의식",
+        "count": 3
+      },
+      {
+        "key": "디지털능력 > 디지털활용능력 > 디지털 도구 활용",
+        "count": 7
+      },
+      {
+        "key": "의사소통능력 > 외국어소통능력 > 외국어 표현능력",
+        "count": 5
+      },
+      {
+        "key": "자기관리능력 > 적응학습능력 > 변화대응 학습인식",
+        "count": 7
+      },
+      {
+        "key": "자기관리능력 > 적응학습능력 > 자기주도 학습실행",
+        "count": 4
+      },
+      {
+        "key": "자기관리능력 > 적응학습능력 > 지속적 자기개발",
+        "count": 4
+      },
+      {
+        "key": "직업윤리 > 산업안전보건의식 > 안전보건규범 준수",
+        "count": 5
+      },
+      {
+        "key": "의사소통능력 > 구두소통능력 > 의사표현능력",
+        "count": 1
+      },
+      {
+        "key": "의사소통능력 > 외국어소통능력 > 외국어 이해능력",
+        "count": 3
+      },
+      {
+        "key": "의사소통능력 > 외국어소통능력 > 외국어 상황대응능력",
+        "count": 6
+      },
+      {
+        "key": "수리능력 > 연산능력 > 단위 환산",
+        "count": 2
+      },
+      {
+        "key": "수리능력 > 통계활용능력 > 자료의 요약과 분포",
+        "count": 4
+      },
+      {
+        "key": "수리능력 > 통계활용능력 > 확률과 추론",
+        "count": 2
+      },
+      {
+        "key": "수리능력 > 도표활용능력 > 도표의 작성과 활용",
+        "count": 1
+      },
+      {
+        "key": "수리능력 > 도표활용능력 > 도표의 이해",
+        "count": 2
+      },
+      {
+        "key": "문제해결능력 > 문제분석능력 > 문제 인식 및 정의",
+        "count": 4
+      },
+      {
+        "key": "문제해결능력 > 문제분석능력 > 원인 분석 및 구조화",
+        "count": 3
+      },
+      {
+        "key": "문제해결능력 > 대안발굴능력 > 대안 비교 및 평가",
+        "count": 1
+      },
+      {
+        "key": "문제해결능력 > 대안발굴능력 > 실행가능성 검토",
+        "count": 1
+      },
+      {
+        "key": "자기관리능력 > 경력개발능력 > 직업세계 이해",
+        "count": 2
+      },
+      {
+        "key": "자기관리능력 > 경력개발능력 > 경력개발계획 수립",
+        "count": 3
+      },
+      {
+        "key": "자기관리능력 > 시간관리능력 > 효율적 시간 활용",
+        "count": 7
+      },
+      {
+        "key": "대인관계능력 > 협업능력 > 역할 이해",
+        "count": 4
+      },
+      {
+        "key": "대인관계능력 > 리더십 > 자기 리더십",
+        "count": 5
+      },
+      {
+        "key": "대인관계능력 > 갈등관리능력 > 갈등 조정",
+        "count": 8
+      },
+      {
+        "key": "대인관계능력 > 갈등관리능력 > 갈등 해소",
+        "count": 6
+      },
+      {
+        "key": "디지털능력 > 디지털활용능력 > 디지털을 활용한 문제해결",
+        "count": 3
+      },
+      {
+        "key": "디지털능력 > 인공지능(AI)활용능력 > AI 도구 선택 및 적용",
+        "count": 2
+      },
+      {
+        "key": "디지털능력 > 디지털책임의식 > 디지털 시민의식 실천",
+        "count": 2
+      },
+      {
+        "key": "직업윤리 > 직장공동체의식 > 준법성",
+        "count": 4
+      },
+      {
+        "key": "직업윤리 > 산업안전보건의식 > 위험예방 및 건강관리 실천",
+        "count": 4
+      },
+      {
+        "key": "디지털능력 > 인공지능(AI)활용능력 > AI 기술 이해",
+        "count": 5
+      },
+      {
+        "key": "디지털능력 > 인공지능(AI)활용능력 > AI를 활용한 문제해결",
+        "count": 2
+      },
+      {
+        "key": "직업윤리 > 산업안전보건의식 > 안전보건의식 및 책임 이해",
+        "count": 3
+      },
+      {
+        "key": "수리능력 > 통계활용능력 > 통계의 기초",
+        "count": 14
+      },
+      {
+        "key": "자기관리능력 > 시간관리능력 > 시간자원 인식",
+        "count": 5
+      },
+      {
+        "key": "자기관리능력 > 시간관리능력 > 시간활용 계획 수립",
+        "count": 9
+      },
+      {
+        "key": "대인관계능력 > 협업능력 > 역할 조율",
+        "count": 2
+      },
+      {
+        "key": "대인관계능력 > 협업능력 > 협업을 통한 문제해결",
+        "count": 5
+      },
+      {
+        "key": "대인관계능력 > 리더십 > 동료 리더십",
+        "count": 4
+      },
+      {
+        "key": "대인관계능력 > 리더십 > 팀 리더십",
+        "count": 4
+      },
+      {
+        "key": "대인관계능력 > 갈등관리능력 > 갈등 이해",
+        "count": 9
+      },
+      {
+        "key": "디지털능력 > 디지털책임의식 > 디지털 윤리 및 규범 준수",
+        "count": 4
+      },
+      {
+        "key": "의사소통능력 > 문서소통능력 > 문서이해능력",
+        "count": 58
+      },
+      {
+        "key": "의사소통능력 > 문서소통능력 > 문서표현능력",
+        "count": 5
+      },
+      {
+        "key": "의사소통능력 > 문서소통능력 > 미분류",
+        "count": 31
+      },
+      {
+        "key": "의사소통능력 > 문서소통능력 > 문서작성능력",
+        "count": 16
+      },
+      {
+        "key": "의사소통능력 > 구두소통능력 > 경청능력",
+        "count": 13
+      },
+      {
+        "key": "수리능력 > 연산능력 > 수와 연산",
+        "count": 23
+      },
+      {
+        "key": "수리능력 > 도표활용능력 > 미분류",
+        "count": 12
+      },
+      {
+        "key": "수리능력 > 통계활용능력 > 미분류",
+        "count": 5
+      },
+      {
+        "key": "수리능력 > 연산능력 > 미분류",
+        "count": 3
+      },
+      {
+        "key": "수리능력 > 도표활용능력 > 도표의 해석",
+        "count": 8
+      },
+      {
+        "key": "문제해결능력 > 문제분석능력 > 미분류",
+        "count": 44
+      },
+      {
+        "key": "문제해결능력 > 대안발굴능력 > 아이디어 생성 및 탐색",
+        "count": 1
+      },
+      {
+        "key": "문제해결능력 > 대안발굴능력 > 미분류",
+        "count": 11
+      },
+      {
+        "key": "문제해결능력 > 의사결정능력 > 미분류",
+        "count": 22
+      },
+      {
+        "key": "문제해결능력 > 의사결정능력 > 의사결정 기준 설정",
+        "count": 9
+      },
+      {
+        "key": "문제해결능력 > 문제분석능력 > 정보 수집 및 검증",
+        "count": 4
+      },
+      {
+        "key": "문제해결능력 > 의사결정능력 > 성찰 및 피드백",
+        "count": 1
+      },
+      {
+        "key": "문제해결능력 > 의사결정능력 > 의사결정 수행 및 검토",
+        "count": 7
+      },
+      {
+        "key": "대인관계능력 > 협업능력 > 미분류",
+        "count": 6
+      },
+      {
+        "key": "대인관계능력 > 리더십 > 미분류",
+        "count": 2
+      },
+      {
+        "key": "대인관계능력 > 갈등관리능력 > 미분류",
+        "count": 5
+      },
+      {
+        "key": "자기관리능력 > 경력개발능력 > 자기이해",
+        "count": 19
+      }
+    ],
+    "recruit-written": [
+      {
+        "key": "public > 자원관리 > 자원의 종류와 특성 이해",
+        "count": 3
+      },
+      {
+        "key": "finance > 자원관리 > 자원의 종류와 특성 이해",
+        "count": 3
+      },
+      {
+        "key": "public > 자원관리 > 자원배분의 기본 원칙",
+        "count": 3
+      },
+      {
+        "key": "finance > 자원관리 > 자원배분의 기본 원칙",
+        "count": 3
+      },
+      {
+        "key": "public > 자원관리 > 인적자원 배분 계획 수립",
+        "count": 4
+      },
+      {
+        "key": "finance > 자원관리 > 인적자원 배분 계획 수립",
+        "count": 4
+      },
+      {
+        "key": "public > 자원관리 > 물적자원 배분 및 관리",
+        "count": 2
+      },
+      {
+        "key": "finance > 자원관리 > 물적자원 배분 및 관리",
+        "count": 2
+      },
+      {
+        "key": "public > 조직이해 > 기업의 개념과 형태",
+        "count": 1
+      },
+      {
+        "key": "public > 조직이해 > 경영환경의 이해",
+        "count": 2
+      },
+      {
+        "key": "public > 조직이해 > 경영자의 역할과 기능",
+        "count": 1
+      },
+      {
+        "key": "public > 조직이해 > 조직의 기본 구조와 부서별 역할 이해",
+        "count": 1
+      },
+      {
+        "key": "public > 조직이해 > 조직문화와 규정·규칙 체계",
+        "count": 1
+      },
+      {
+        "key": "public > 기술능력 > 기계요소의 기본 구조와 기능",
+        "count": 4
+      },
+      {
+        "key": "enterprise > 기술능력 > 기계요소의 기본 구조와 기능",
+        "count": 4
+      },
+      {
+        "key": "public > 기술능력 > 전기회로의 기본 개념과 법칙",
+        "count": 1
+      },
+      {
+        "key": "enterprise > 기술능력 > 전기회로의 기본 개념과 법칙",
+        "count": 1
+      },
+      {
+        "key": "public > 자원관리 > 자원관리 보충문항",
+        "count": 2
+      },
+      {
+        "key": "finance > 자원관리 > 자원관리 보충문항",
+        "count": 2
+      },
+      {
+        "key": "public > 조직이해 > 조직이해 보충문항",
+        "count": 5
+      },
+      {
+        "key": "public > 조직이해 > 조직이해능력",
+        "count": 9
+      },
+      {
+        "key": "public > 대인관계 > 대인관계능력",
+        "count": 4
+      },
+      {
+        "key": "finance > 대인관계 > 대인관계능력",
+        "count": 4
+      },
+      {
+        "key": "enterprise > 대인관계 > 대인관계능력",
+        "count": 4
+      },
+      {
+        "key": "public > 기술능력 > 기술능력",
+        "count": 13
+      },
+      {
+        "key": "enterprise > 기술능력 > 기술능력",
+        "count": 13
+      },
+      {
+        "key": "finance > 금융상식 > 금융시장·금융기관·예금보호",
+        "count": 6
+      },
+      {
+        "key": "finance > 금융상식 > 예금·신용·대출·은행업무",
+        "count": 5
+      },
+      {
+        "key": "finance > 금융상식 > 주식·채권·펀드와 투자위험",
+        "count": 8
+      },
+      {
+        "key": "finance > 금융상식 > 환율·외환시장·국제수지",
+        "count": 3
+      },
+      {
+        "key": "finance > 경제상식 > 수요·공급·시장균형과 탄력성",
+        "count": 12
+      },
+      {
+        "key": "finance > 경제상식 > GDP·물가·고용과 경기지표",
+        "count": 9
+      },
+      {
+        "key": "finance > 경제상식 > 재정·통화·환율과 시장실패",
+        "count": 5
+      },
+      {
+        "key": "finance > 경영상식 > 마케팅·소비자·경쟁전략",
+        "count": 15
+      },
+      {
+        "key": "finance > 경영상식 > 조직·인사·리더십·성과관리",
+        "count": 9
+      },
+      {
+        "key": "finance > 일반상식 > 경제·통계·자료해석",
+        "count": 12
+      },
+      {
+        "key": "enterprise > 인적성 > 언어이해·독해·비판적 사고",
+        "count": 12
+      },
+      {
+        "key": "enterprise > 인적성 > 명제·조건·관계·논리추론",
+        "count": 4
+      },
+      {
+        "key": "enterprise > 인적성 > 수리·자료해석·수열·규칙",
+        "count": 11
+      },
+      {
+        "key": "finance > 경영상식 > 생산·SCM·품질·경영정보",
+        "count": 3
+      },
+      {
+        "key": "finance > 경영상식 > 회계·재무·원가와 의사결정",
+        "count": 1
+      },
+      {
+        "key": "finance > 일반상식 > 헌법·노동법·사회보험·개인정보",
+        "count": 5
+      },
+      {
+        "key": "finance > 일반상식 > 직장·ESG·사회·국제상식",
+        "count": 2
+      }
+    ],
+    "recruit-written-study-units": [
+      {
+        "key": "public > 자원관리 > 자원의 종류와 특성 이해"
+      },
+      {
+        "key": "public > 자원관리 > 자원배분의 기본 원칙"
+      },
+      {
+        "key": "public > 자원관리 > 물적자원 배분 및 관리"
+      },
+      {
+        "key": "public > 자원관리 > 자원관리 보충문항"
+      },
+      {
+        "key": "public > 조직이해 > 경영환경의 이해"
+      },
+      {
+        "key": "public > 조직이해 > 기업의 사회적 책임"
+      },
+      {
+        "key": "public > 조직이해 > 조직이해능력"
+      },
+      {
+        "key": "public > 조직이해 > 기업의 개념과 형태"
+      },
+      {
+        "key": "public > 조직이해 > 경영자의 역할과 기능"
+      },
+      {
+        "key": "public > 조직이해 > 조직의 기본 구조와 부서별 역할 이해"
+      },
+      {
+        "key": "public > 조직이해 > 조직문화와 규정·규칙 체계"
+      },
+      {
+        "key": "public > 기술능력 > 기계요소의 기본 구조와 기능"
+      },
+      {
+        "key": "public > 기술능력 > 기술능력"
+      },
+      {
+        "key": "public > 기술능력 > 기본 공구의 종류와 용도 이해"
+      },
+      {
+        "key": "public > 기술능력 > 전기회로의 기본 개념과 법칙"
+      },
+      {
+        "key": "public > 기술능력 > 재료의 기본 특성과 분류"
+      },
+      {
+        "key": "public > 대인관계 > 대인관계능력"
+      },
+      {
+        "key": "public > 대인관계 > 고객 불만 접수 및 초기 대응"
+      },
+      {
+        "key": "public > 대인관계 > 갈등 상황에서의 경청과 공감"
+      },
+      {
+        "key": "finance > 금융상식 > 금융시장·금융기관·예금보호"
+      },
+      {
+        "key": "finance > 금융상식 > 예금·신용·대출·은행업무"
+      },
+      {
+        "key": "finance > 금융상식 > 주식·채권·펀드와 투자위험"
+      },
+      {
+        "key": "finance > 금융상식 > 환율·외환시장·국제수지"
+      },
+      {
+        "key": "finance > 경제상식 > 수요·공급·시장균형과 탄력성"
+      },
+      {
+        "key": "finance > 경제상식 > 재정·통화·환율과 시장실패"
+      },
+      {
+        "key": "finance > 경영상식 > 마케팅·소비자·경쟁전략"
+      },
+      {
+        "key": "finance > 경영상식 > 회계·재무·원가와 의사결정"
+      },
+      {
+        "key": "finance > 경영상식 > 조직·인사·리더십·성과관리"
+      },
+      {
+        "key": "finance > 경영상식 > 생산·SCM·품질·경영정보"
+      },
+      {
+        "key": "finance > 일반상식 > 경제·통계·자료해석"
+      },
+      {
+        "key": "finance > 일반상식 > 헌법·노동법·사회보험·개인정보"
+      },
+      {
+        "key": "finance > 일반상식 > 직장·ESG·사회·국제상식"
+      },
+      {
+        "key": "finance > 자원관리 > 자원의 종류와 특성 이해"
+      },
+      {
+        "key": "finance > 자원관리 > 자원배분의 기본 원칙"
+      },
+      {
+        "key": "finance > 자원관리 > 물적자원 배분 및 관리"
+      },
+      {
+        "key": "finance > 자원관리 > 자원관리 보충문항"
+      },
+      {
+        "key": "finance > 대인관계 > 대인관계능력"
+      },
+      {
+        "key": "finance > 대인관계 > 고객 불만 접수 및 초기 대응"
+      },
+      {
+        "key": "finance > 대인관계 > 갈등 상황에서의 경청과 공감"
+      },
+      {
+        "key": "enterprise > 인적성 > 언어이해·독해·비판적 사고"
+      },
+      {
+        "key": "enterprise > 인적성 > 명제·조건·관계·논리추론"
+      },
+      {
+        "key": "enterprise > 기술능력 > 기계요소의 기본 구조와 기능"
+      },
+      {
+        "key": "enterprise > 기술능력 > 기술능력"
+      },
+      {
+        "key": "enterprise > 기술능력 > 기본 공구의 종류와 용도 이해"
+      },
+      {
+        "key": "enterprise > 기술능력 > 전기회로의 기본 개념과 법칙"
+      },
+      {
+        "key": "enterprise > 기술능력 > 재료의 기본 특성과 분류"
+      },
+      {
+        "key": "enterprise > 대인관계 > 대인관계능력"
+      },
+      {
+        "key": "enterprise > 대인관계 > 고객 불만 접수 및 초기 대응"
+      },
+      {
+        "key": "enterprise > 대인관계 > 갈등 상황에서의 경청과 공감"
+      }
+    ],
+    "interview": [
+      {
+        "key": "오리엔테이션 > A01",
+        "count": 2
+      },
+      {
+        "key": "면접절차 > A02",
+        "count": 2
+      },
+      {
+        "key": "평가기준 > A03",
+        "count": 1
+      },
+      {
+        "key": "자기소개 > A04",
+        "count": 2
+      },
+      {
+        "key": "자기소개 > A05",
+        "count": 1
+      },
+      {
+        "key": "자기소개 > A06",
+        "count": 2
+      },
+      {
+        "key": "지원동기 > A07",
+        "count": 2
+      },
+      {
+        "key": "지원동기 > A08",
+        "count": 2
+      },
+      {
+        "key": " > A09",
+        "count": 2
+      },
+      {
+        "key": " > A10",
+        "count": 2
+      },
+      {
+        "key": " > A11",
+        "count": 2
+      },
+      {
+        "key": " > A12",
+        "count": 2
+      },
+      {
+        "key": " > A13",
+        "count": 2
+      },
+      {
+        "key": " > A14",
+        "count": 2
+      },
+      {
+        "key": " > A15",
+        "count": 2
+      },
+      {
+        "key": " > A16",
+        "count": 2
+      },
+      {
+        "key": "인성면접 > A17",
+        "count": 2
+      },
+      {
+        "key": "인성면접 > A18",
+        "count": 1
+      },
+      {
+        "key": "블라인드 > A19",
+        "count": 2
+      },
+      {
+        "key": "블라인드 > A20",
+        "count": 2
+      },
+      {
+        "key": "블라인드 > A21",
+        "count": 1
+      },
+      {
+        "key": "상황면접 > A22",
+        "count": 2
+      },
+      {
+        "key": "상황면접 > A23",
+        "count": 1
+      },
+      {
+        "key": "상황면접 > A24",
+        "count": 2
+      },
+      {
+        "key": " > A25",
+        "count": 2
+      },
+      {
+        "key": " > A26",
+        "count": 2
+      },
+      {
+        "key": " > A27",
+        "count": 1
+      },
+      {
+        "key": " > A28",
+        "count": 2
+      },
+      {
+        "key": " > A29",
+        "count": 1
+      },
+      {
+        "key": " > A30",
+        "count": 1
+      },
+      {
+        "key": " > A31",
+        "count": 2
+      },
+      {
+        "key": " > A32",
+        "count": 2
+      },
+      {
+        "key": " > A33",
+        "count": 2
+      },
+      {
+        "key": " > A34",
+        "count": 1
+      },
+      {
+        "key": " > A35",
+        "count": 2
+      },
+      {
+        "key": " > A36",
+        "count": 1
+      },
+      {
+        "key": " > A37",
+        "count": 2
+      },
+      {
+        "key": " > A38",
+        "count": 2
+      },
+      {
+        "key": " > A39",
+        "count": 2
+      },
+      {
+        "key": " > A40",
+        "count": 2
+      },
+      {
+        "key": " > A41",
+        "count": 2
+      },
+      {
+        "key": " > A42",
+        "count": 2
+      },
+      {
+        "key": " > A43",
+        "count": 2
+      },
+      {
+        "key": " > A44",
+        "count": 2
+      },
+      {
+        "key": " > A45",
+        "count": 1
+      },
+      {
+        "key": " > S01",
+        "count": 2
+      },
+      {
+        "key": " > S02",
+        "count": 2
+      },
+      {
+        "key": " > S03",
+        "count": 2
+      },
+      {
+        "key": "오리엔테이션 > FOUNDATION-1",
+        "count": 10
+      },
+      {
+        "key": "면접절차 > FOUNDATION-2",
+        "count": 10
+      },
+      {
+        "key": "평가기준 > FOUNDATION-3",
+        "count": 10
+      },
+      {
+        "key": "자기소개 > FOUNDATION-4",
+        "count": 10
+      },
+      {
+        "key": "지원동기 > FOUNDATION-5",
+        "count": 10
+      },
+      {
+        "key": "경험답변 > FOUNDATION-6",
+        "count": 10
+      },
+      {
+        "key": "인성면접 > FOUNDATION-7",
+        "count": 10
+      },
+      {
+        "key": "블라인드 > FOUNDATION-8",
+        "count": 10
+      },
+      {
+        "key": "상황면접 > FOUNDATION-9",
+        "count": 10
+      },
+      {
+        "key": "PT/발표 > FOUNDATION-10",
+        "count": 10
+      },
+      {
+        "key": "토론/그룹 > FOUNDATION-11",
+        "count": 10
+      },
+      {
+        "key": "직무면접 > FOUNDATION-12",
+        "count": 10
+      },
+      {
+        "key": "직장태도 > FOUNDATION-13",
+        "count": 10
+      },
+      {
+        "key": "모의면접 > FOUNDATION-14",
+        "count": 10
+      },
+      {
+        "key": "준비 루틴 > FOUNDATION-15",
+        "count": 10
+      },
+      {
+        "key": "블라인드 안전 > FOUNDATION-16",
+        "count": 10
+      },
+      {
+        "key": "금융권 기관연구 > ORG-kdb",
+        "count": 5
+      },
+      {
+        "key": "금융권 기관연구 > ORG-ibk",
+        "count": 5
+      },
+      {
+        "key": "금융권 기관연구 > ORG-kexim",
+        "count": 5
+      },
+      {
+        "key": "금융권 기관연구 > ORG-kb",
+        "count": 5
+      },
+      {
+        "key": "금융권 기관연구 > ORG-shinhan",
+        "count": 5
+      },
+      {
+        "key": "금융권 기관연구 > ORG-hana",
+        "count": 5
+      },
+      {
+        "key": "금융권 기관연구 > ORG-woori",
+        "count": 5
+      },
+      {
+        "key": "금융권 기관연구 > ORG-nh",
+        "count": 5
+      },
+      {
+        "key": "금융권 기관연구 > ORG-kakao-bank",
+        "count": 5
+      },
+      {
+        "key": "금융권 기관연구 > ORG-toss-bank",
+        "count": 5
+      },
+      {
+        "key": "금융권 기관연구 > ORG-bok",
+        "count": 5
+      },
+      {
+        "key": "금융권 기관연구 > ORG-kdic",
+        "count": 5
+      },
+      {
+        "key": "금융권 기관연구 > ORG-hf",
+        "count": 5
+      },
+      {
+        "key": "금융권 기관연구 > ORG-kodit",
+        "count": 5
+      },
+      {
+        "key": "금융권 기관연구 > ORG-kibo",
+        "count": 5
+      },
+      {
+        "key": "금융권 기관연구 > ORG-sc",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-kepco",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-khnp",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-korail",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-airport",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-kac",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-kwater",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-kogas",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-lh",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-ex",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-kospo",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-nhis",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-nps",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-hrdkorea",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-kdhec",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-keco",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-samsung-electronics",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-sk-hynix",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-hyundai",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-kia",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-posco",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-lg-electronics",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-mobis",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-samsung-sdi",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-hanwha-aerospace",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-doosan-enerbility",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-lg-energy-solution",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-samsung-electro",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-ski",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-kai",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-hd-hhi",
+        "count": 5
+      },
+      {
+        "key": "금융권 기관연구 > ORG-busan-bank",
+        "count": 5
+      },
+      {
+        "key": "금융권 기관연구 > ORG-kyongnam-bank",
+        "count": 5
+      },
+      {
+        "key": "금융권 기관연구 > ORG-im-bank",
+        "count": 5
+      },
+      {
+        "key": "금융권 기관연구 > ORG-kj-bank",
+        "count": 5
+      },
+      {
+        "key": "금융권 기관연구 > ORG-jb-bank",
+        "count": 5
+      },
+      {
+        "key": "금융권 기관연구 > ORG-jeju-bank",
+        "count": 5
+      },
+      {
+        "key": "금융권 기관연구 > ORG-sh-bank",
+        "count": 5
+      },
+      {
+        "key": "금융권 기관연구 > ORG-kbank",
+        "count": 5
+      },
+      {
+        "key": "금융권 기관연구 > ORG-mirae-asset",
+        "count": 5
+      },
+      {
+        "key": "금융권 기관연구 > ORG-nh-investment",
+        "count": 5
+      },
+      {
+        "key": "금융권 기관연구 > ORG-korea-investment",
+        "count": 5
+      },
+      {
+        "key": "금융권 기관연구 > ORG-samsung-life",
+        "count": 5
+      },
+      {
+        "key": "금융권 기관연구 > ORG-samsung-fire",
+        "count": 5
+      },
+      {
+        "key": "금융권 기관연구 > ORG-kyobo-life",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-koen",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-komipo",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-kowepo",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-ewp",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-kepco-enc",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-kps",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-kdn",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-kogas-tech",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-kr-network",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-srail",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-kotsa",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-komsco",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-kra",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-ekr",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-at",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-kosha",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-comwel",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-kead",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-keis",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-khug",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-kamco",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-reb",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-kto",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-kocca",
+        "count": 5
+      },
+      {
+        "key": "공공기관 기관연구 > ORG-kisa",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-samsung-display",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-samsung-heavy",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-samsung-biologics",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-lg-display",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-lg-innotek",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-lg-chem",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-lguplus",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-skt",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-skc",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-sk-siltron",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-hyundai-steel",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-hyundai-transys",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-hyundai-wia",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-hyundai-autoever",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-hyundai-glovis",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-posco-futurem",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-posco-international",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-lotte-chemical",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-lotte-innovate",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-lotte-wellfood",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-cj-cheiljedang",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-cj-logistics",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-hanwha-systems",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-hanwha-solutions",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-hanwha-ocean",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-hd-electric",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-hd-infracore",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-hd-ksoe",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-ls-electric",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-ls-cable",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-hyosung-heavy",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-korean-air",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-kt",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-naver",
+        "count": 5
+      },
+      {
+        "key": "대기업 기관연구 > ORG-celltrion",
+        "count": 5
+      },
+      {
+        "key": "자기소개서 완성 > COVER-target",
+        "count": 5
+      },
+      {
+        "key": "자기소개서 완성 > COVER-questions",
+        "count": 5
+      },
+      {
+        "key": "자기소개서 완성 > COVER-major",
+        "count": 5
+      },
+      {
+        "key": "자기소개서 완성 > COVER-experience",
+        "count": 5
+      },
+      {
+        "key": "자기소개서 완성 > COVER-motivation",
+        "count": 5
+      },
+      {
+        "key": "자기소개서 완성 > COVER-audit",
+        "count": 5
+      }
+    ],
+    "cover-letter": [
+      {
+        "key": "intent",
+        "count": 2
+      },
+      {
+        "key": "target",
+        "count": 2
+      },
+      {
+        "key": "evidence",
+        "count": 2
+      },
+      {
+        "key": "structure",
+        "count": 2
+      },
+      {
+        "key": "ethics",
+        "count": 2
+      },
+      {
+        "key": "polish",
+        "count": 2
+      }
+    ],
+    "cover-letter-areas": [
+      {
+        "key": "intent",
+        "label": "문항 요구"
+      },
+      {
+        "key": "target",
+        "label": "지원처·직무"
+      },
+      {
+        "key": "evidence",
+        "label": "경험 근거"
+      },
+      {
+        "key": "structure",
+        "label": "답변 구조"
+      },
+      {
+        "key": "ethics",
+        "label": "사실·블라인드"
+      },
+      {
+        "key": "polish",
+        "label": "문장·최종 점검"
+      }
+    ],
+    "job-adaptation": [
+      {
+        "key": "full-form",
+        "count": 160
+      }
+    ],
+    "personality": [
+      {
+        "key": "trait > CO",
+        "count": 180
+      },
+      {
+        "key": "trait > ES",
+        "count": 180
+      },
+      {
+        "key": "trait > EX",
+        "count": 132
+      },
+      {
+        "key": "trait > AG",
+        "count": 180
+      },
+      {
+        "key": "trait > OP",
+        "count": 132
+      },
+      {
+        "key": "trait > IN",
+        "count": 180
+      },
+      {
+        "key": "lie > LIE",
+        "count": 30
+      },
+      {
+        "key": "infrequency > INFREQ",
+        "count": 16
+      }
+    ]
+  },
+  "job-commonTotal": 456,
+  "ncs-basicTotal": 596,
+  "recruit-writtenTotal": 218,
+  "interviewTotal": 875,
+  "cover-letterTotal": 12,
+  "job-adaptationTotal": 160,
+  "personalityTotal": 1030
+}

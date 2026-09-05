@@ -1,4 +1,5 @@
 import { applyQuestionIntegrityToPool } from './questionIntegrity.js'
+import independentAssessmentBank from '../../data/assessment-banks/cover-letter.json'
 
 export const COVER_ASSESSMENT_AREAS = {
   intent: '문항 요구',
@@ -162,4 +163,21 @@ export const COVER_DIAGNOSTIC_QUESTIONS = applyQuestionIntegrityToPool([
     ],
     '지원처 불일치는 치명적이므로 파일명과 본문의 지원처·직무·사업·기여 내용까지 전체 대조해야 함.',
   ),
+  ...(independentAssessmentBank.questions || []).map(question => ({
+    ...question,
+    answer: 'ABCD'.indexOf(question.answer),
+  })),
 ])
+
+export function buildCoverDiagnosticPaper(scope = 'all', paperNo = 1, count = 12) {
+  const rotate = items => {
+    if (!items.length) return []
+    const step = scope === 'all' ? Math.max(1, Math.floor(count / Object.keys(COVER_ASSESSMENT_AREAS).length)) : count
+    const start = ((Math.max(1, paperNo) - 1) * step) % items.length
+    return items.slice(start).concat(items.slice(0, start))
+  }
+  if (scope !== 'all') return rotate(COVER_DIAGNOSTIC_QUESTIONS.filter(item => item.area === scope)).slice(0, count)
+  const areas = Object.keys(COVER_ASSESSMENT_AREAS)
+  const perArea = Math.max(1, Math.floor(count / areas.length))
+  return areas.flatMap(area => rotate(COVER_DIAGNOSTIC_QUESTIONS.filter(item => item.area === area)).slice(0, perArea)).slice(0, count)
+}

@@ -6,12 +6,29 @@ import CompactText from '../../components/CompactText.jsx'
 import PersonalizedCareerExamplePanel from '../../components/PersonalizedCareerExamplePanel.jsx'
 import { getFirstClassFormative } from '../../lib/firstClassLessons.js'
 import { userLocalStorage as localStorage } from '../../lib/userLocalStorage.js'
+import ExtraPracticeQuiz from './ExtraPracticeQuiz.jsx'
+import coverBank from '../../../data/assessment-banks/cover-letter.json'
+import personalityBank from '../../../data/assessment-banks/personality.json'
+import { COVER_ASSESSMENT_AREAS } from '../../lib/coverAssessmentBank.js'
+
+function guidedPracticePool(program, area) {
+  if (!area) return []
+  if (program.subjectId === 'cover-letter') {
+    const areaKey = Object.entries(COVER_ASSESSMENT_AREAS).find(([, label]) => label === area.label)?.[0]
+    return (coverBank.questions || []).filter(question => question.area === areaKey)
+  }
+  if (program.subjectId === 'personality') {
+    return (personalityBank.questions || []).filter(question => question.kind === 'trait')
+  }
+  return []
+}
 
 export default function GuidedStudyScreen({ program, initialArea = null, initialLesson = null, initialStep = 0, initialInteraction = null, onBack, onChallenge, onLearningContext }) {
   const [areaId, setAreaId] = useState(initialArea)
   const [lessonId, setLessonId] = useState(initialLesson)
   const [step, setStep] = useState(initialStep)
   const [interaction, setInteraction] = useState(initialInteraction || {})
+  const [showExtraPractice, setShowExtraPractice] = useState(false)
   const area = program.areas.find(item => item.id === areaId)
   const lesson = area?.lessons.find(item => item.id === lessonId)
   const formativeAssessment = useMemo(
@@ -22,9 +39,11 @@ export default function GuidedStudyScreen({ program, initialArea = null, initial
     () => lesson?.summary ? buildStudySummaryCards(lesson.summary, undefined, undefined, undefined, formativeAssessment) : [],
     [lesson, formativeAssessment],
   )
+  const extraPracticeQuestions = useMemo(() => guidedPracticePool(program, area), [area, program])
 
   const backRef = useRef(null)
   backRef.current = () => {
+    if (showExtraPractice) { setShowExtraPractice(false); return }
     if (lesson) { setLessonId(null); setStep(0); setInteraction({}); return }
     if (area) { setAreaId(null); setInteraction({}); return }
     onBack?.()
@@ -117,6 +136,16 @@ export default function GuidedStudyScreen({ program, initialArea = null, initial
   }
 
   const headerTitle = lesson?.label || area?.label || program.title
+  if (showExtraPractice && lesson && extraPracticeQuestions.length) {
+    return <ExtraPracticeQuiz
+      title={lesson.label}
+      questions={extraPracticeQuestions}
+      scope={`${program.subjectId}:${area.id}:${lesson.id}`}
+      courseId={program.subjectId}
+      onClose={() => setShowExtraPractice(false)}
+      onFullPractice={continueAfterLesson}
+    />
+  }
   return <div className="screen guided-study-screen">
     <header className="guided-study-appbar">
       <button onClick={triggerBack} aria-label="이전 화면"><ArrowLeft /></button>
@@ -167,6 +196,8 @@ export default function GuidedStudyScreen({ program, initialArea = null, initial
         ) : null}
         onInteractionChange={setInteraction}
         onStepChange={handleSummaryStepChange}
+        onQuickPractice={extraPracticeQuestions.length ? () => setShowExtraPractice(true) : null}
+        quickPracticeLabel={program.subjectId === 'personality' ? '새로운 응답 2문항 더 연습하기' : '새로운 2문제 더 풀기'}
         onStartQuiz={continueAfterLesson}
         startQuizLabel={nextLesson ? '다음 단원 학습 →' : `${program.challengeLabel} →`}
         embeddedHeader

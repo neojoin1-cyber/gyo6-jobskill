@@ -1,3 +1,5 @@
+import { questionContentKey } from './assessmentPartition.js'
+
 /**
  * 모의고사 시험지 생성기 (결정적·근거 중요도가중·영역 stratified·변형 출제).
  * 같은 (scope, paperNo)는 항상 같은 시험지를 만든다 → DB에 문항 ID를 저장할 필요 없음.
@@ -63,12 +65,23 @@ export function buildMockPaper(pool, scope, paperNo, opts = {}) {
   const areaKey    = opts.areaKey || (q => q.area || q.lessonId || '기타')
   const weight     = opts.weight  || (() => 1)
   const variantMap = opts.variantMap || null
+  const seedScope  = opts.seedScope || scope
 
-  let qs = (pool || []).filter(q => q && q.id && !q.excludeFromQuiz)
+  const seenContent = new Set()
+  let qs = (pool || []).filter(q => {
+    if (!q || !q.id || q.excludeFromQuiz) return false
+    const key = questionContentKey(q)
+    if (seenContent.has(key)) return false
+    seenContent.add(key)
+    return true
+  })
   if (scope && scope !== '__all__') qs = qs.filter(q => areaKey(q) === scope)
   if (qs.length === 0) return []
 
-  const rnd = mulberry32(hashStr(`${scope}|${paperNo}`))
+  // Build one stable full-bank order, then consume consecutive windows by
+  // paper number. This guarantees that repeated diagnostics/mocks cover every
+  // usable item before the cycle starts again.
+  const rnd = mulberry32(hashStr(`coverage|${seedScope}`))
 
   let ordered
   if (qs.length <= count) {
@@ -81,25 +94,27 @@ export function buildMockPaper(pool, scope, paperNo, opts = {}) {
     for (const a of areaList) groups[a] = weightedOrder(groups[a], weight, rnd)
 
     // 라운드로빈으로 영역을 고르게 채움(전체 내용 수용)
-    const picked = []
+    const coverageOrder = []
     const idx = Object.fromEntries(areaList.map(a => [a, 0]))
     let guard = 0
-    while (picked.length < count && guard < count * areaList.length + areaList.length) {
+    while (coverageOrder.length < qs.length && guard < qs.length * areaList.length + areaList.length) {
       let progressed = false
       for (const a of areaList) {
-        if (picked.length >= count) break
+        if (coverageOrder.length >= qs.length) break
         const g = groups[a]
-        if (idx[a] < g.length) { picked.push(g[idx[a]++]); progressed = true }
+        if (idx[a] < g.length) { coverageOrder.push(g[idx[a]++]); progressed = true }
       }
       guard++
       if (!progressed) break
     }
-    // 시험지 내 문제 순서도 시드로 섞음(영역이 뭉치지 않게)
-    ordered = weightedOrder(picked, () => 1, mulberry32(hashStr(`order|${scope}|${paperNo}`)))
+    const start = ((Math.max(1, paperNo) - 1) * count) % coverageOrder.length
+    const picked = Array.from({ length: Math.min(count, coverageOrder.length) }, (_, index) => coverageOrder[(start + index) % coverageOrder.length])
+    // 시험지 안에서만 회차별로 섞는다. 선택 구간은 바꾸지 않는다.
+    ordered = weightedOrder(picked, () => 1, mulberry32(hashStr(`order|${seedScope}|${paperNo}`)))
   }
 
   // 변형 적용(있을 때만). 회차마다 다른 변형이 결정적으로 선택돼 반복이 신선해진다.
-  if (variantMap) ordered = ordered.map(q => applyVariant(q, variantMap[q.id], scope, paperNo))
+  if (variantMap) ordered = ordered.map(q => applyVariant(q, variantMap[q.id], seedScope, paperNo))
   return ordered
 }
 

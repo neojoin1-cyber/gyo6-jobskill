@@ -527,7 +527,7 @@ function FormativeAssessmentCard({ assessment, answers, checked, onSelect, onChe
   )
 }
 
-export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, formativeAssessment = null, onStartQuiz, introStartLabel = '학습 시작 →', startQuizLabel = null, initialStep = 0, initialInteraction = null, cardExtension = null, onStepChange, onInteractionChange, embeddedHeader = false }) {
+export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, formativeAssessment = null, onStartQuiz, onQuickPractice, introStartLabel = '학습 시작 →', startQuizLabel = null, quickPracticeLabel = '추가 2문제 풀기', initialStep = 0, initialInteraction = null, cardExtension = null, onStepChange, onInteractionChange, embeddedHeader = false }) {
   const { title, intro, keyPoints = [], mustRemember = [], terms = [], tips = [] } = summary || {}
   const learningPoints = useMemo(() => buildLearningPoints(summary, questions), [summary, questions])
   const learningMistakes = useMemo(() => buildLearningMistakes(summary, questions), [summary, questions])
@@ -595,6 +595,31 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, for
       contextKind: context?.kind,
       isListening: Boolean(sourceQuestion?.audioText),
     }) : null
+    let response = null
+    if (activeCard?.type === 'point' && sampleSelections[step] != null) {
+      const selected = sampleSelections[step]
+      const choices = point?.sampleQuestion?.choices || []
+      response = {
+        kind: 'choice',
+        value: selected,
+        label: typeof selected === 'object'
+          ? Object.values(selected).filter(Boolean).join(' / ')
+          : choices.find(choice => choice.value === selected)?.text || String(selected),
+      }
+    } else if (activeCard?.type === 'mission' && mission.confirmed) {
+      response = {
+        kind: 'exit',
+        criterion: mission.criterion,
+        action: mission.action.trim(),
+      }
+    } else if (activeCard?.type === 'formative') {
+      const answers = Object.keys(formativeChecked)
+        .filter(index => formativeChecked[index])
+        .map(index => ({ index: Number(index), value: formativeAnswers[index] }))
+      if (answers.length > 0) response = { kind: 'formative', answers }
+    } else if (activeCard?.type === 'point' && reconsidered[step]) {
+      response = { kind: 'reflection', value: reconsidered[step] }
+    }
     onInteractionChange({
       step,
       cardType: activeCard?.type || '',
@@ -605,8 +630,9 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, for
       evidence: point?.learn || '',
       firstPrompt: beat?.first || '',
       twist: beat?.twist || '',
+      response,
     })
-  }, [cards, onInteractionChange, reconsidered, revealed, step, summary?.courseKind])
+  }, [cards, formativeAnswers, formativeChecked, mission, onInteractionChange, reconsidered, revealed, sampleSelections, step, summary?.courseKind])
 
   if (!summary || cards.length === 0) return null
 
@@ -1138,8 +1164,13 @@ export default function StudySummary({ summary, questions = EMPTY_QUESTIONS, for
             <div style={{ fontSize: 14, color: 'var(--text-muted)', marginBottom: 18, textAlign: 'left' }}>
               <CompactText text={`핵심 ${keyPoints.length}개에서 먼저 판단함\n근거 공개 뒤 조건을 바꾸어 다시 생각함\n실전 행동: ${mission.criterion || '다음 문제에서 기준 적용'}`} />
             </div>
+            {onQuickPractice && (
+              <button className="btn btn-primary btn-full" style={{ marginBottom: 8 }} onClick={onQuickPractice}>
+                {quickPracticeLabel}
+              </button>
+            )}
             {onStartQuiz && (
-              <button className="btn btn-primary btn-full" style={{ marginBottom: 8 }} onClick={onStartQuiz}>
+              <button className={`btn ${onQuickPractice ? 'btn-secondary' : 'btn-primary'} btn-full`} style={{ marginBottom: 8 }} onClick={onStartQuiz}>
                 {startQuizLabel || (language.practical ? '실전 작성·답변으로 적용 →' : '도움 없이 문제에 적용 →')}
               </button>
             )}

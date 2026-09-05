@@ -27,7 +27,7 @@
     python scripts/gate-question-quality.py            # 실패 시 종료코드 1
     python scripts/gate-question-quality.py --report   # 위반 전부 출력
 
-검사 대상은 **앱 소스가 실제로 import 하는** data/*.json 이다. 자동으로 찾으므로
+검사 대상은 **앱 소스가 실제로 import 하는** data/**/*.json 이다. 자동으로 찾으므로
 파일이 늘어도 손댈 필요가 없다.
 """
 
@@ -44,7 +44,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 
 def discover_banks() -> list[Path]:
-    """앱 소스가 실제로 import 하는 data/*.json 을 찾아낸다.
+    """앱 소스가 실제로 import 하는 data/**/*.json 을 찾아낸다.
 
     목록을 손으로 적었더니 앱이 쓰는 23개 중 9개만 검사하고 있었다.
     발문이 깨진 문항이 검사 밖 파일(ncs-extracted-bank.json)에 그대로 남아
@@ -52,7 +52,7 @@ def discover_banks() -> list[Path]:
     """
     names = set()
     for src in (ROOT / "src").rglob("*.js*"):
-        for m in re.finditer(r"from\s+'[^']*?/data/([A-Za-z0-9._-]+\.json)'", src.read_text(encoding="utf-8", errors="ignore")):
+        for m in re.finditer(r"from\s+'[^']*?/data/([A-Za-z0-9._/-]+\.json)'", src.read_text(encoding="utf-8", errors="ignore")):
             names.add(m.group(1))
     return sorted(DATA / n for n in names if (DATA / n).exists())
 

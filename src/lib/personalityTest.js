@@ -4,11 +4,12 @@
  * 근거: 실제 채용 인성검사(KHAI/KPDI형)의 신뢰도 척도 구조 — 응답 신뢰도를 먼저 판정.
  */
 import bank from '../../data/personality-test-bank.json'
+import independentAssessmentBank from '../../data/assessment-banks/personality.json'
 
 export const SCALE = bank.meta.scale                 // {min,max,labels[5]}
 export const DIMENSIONS = bank.dimensions            // [{key,name,short,high,low,job,advice*}]
 const DIM_BY = Object.fromEntries(DIMENSIONS.map(d => [d.key, d]))
-const ITEMS = bank.items
+const ITEMS = [...bank.items, ...(independentAssessmentBank.questions || [])]
 
 const traitItems = ITEMS.filter(i => i.kind === 'trait')
 const lieItems   = ITEMS.filter(i => i.kind === 'lie')
@@ -23,7 +24,8 @@ function shuffle(arr, seed) {
 }
 
 // 모드별 회차 수: 진단(간이)은 문항이 적어 서로 겹치지 않게 더 많은 회차 제공.
-export const PAPER_COUNTS = { quick: 20, full: 10 }
+export const PAPER_COUNTS = { quick: 60, full: 30 }
+export const PERSONALITY_ITEM_COUNT = ITEMS.length
 export function paperCount(mode) { return PAPER_COUNTS[mode] || PAPER_COUNTS.full }
 export const PAPER_COUNT = 10   // (구) 기본값 — 하위호환
 
@@ -42,7 +44,8 @@ for (const d of DIMENSIONS) { pairsByDim[d.key] = []; singlesByDim[d.key] = [] }
   }
 }
 
-// 회차당 목표 문항 수 (1030문항 풀 기준)
+// 회차당 목표 문항 수. 문항 풀은 독립 청사진 문항을 더해 기존의 300%이며,
+// 응시 길이는 그대로 두고 회차 사이 중복을 줄인다.
 const SPEC = {
   quick: { size: 48,  seed: 4000 },   // 간이 진단
   full:  { size: 190, seed: 9000 },   // 실전 모의 (초대형 ≈ 190문항, 약 50~60분)

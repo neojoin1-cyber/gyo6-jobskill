@@ -1,5 +1,6 @@
 import interviewQuizData from '../data/interview-quiz.json'
 import interviewStudy from '../data/interview-study.json'
+import assessmentBaseline from '../data/assessment-expansion-baseline.json'
 import {
   buildJcOfficialAreas,
   buildJcMockAreas,
@@ -21,8 +22,7 @@ import {
   studyQuestionsById,
 } from '../src/lib/assessmentPartition.js'
 import { buildInterviewLearningQuestions } from '../src/lib/interviewLearning.js'
-import { INTERVIEW_CAREER_ASSESSMENT_QUESTIONS } from '../src/lib/interviewCareerContent.js'
-import { buildSubjectMockPaper } from '../src/lib/mockData.js'
+import { buildSubjectMockPaper, getDiagnosticScopes } from '../src/lib/mockData.js'
 
 const failures = []
 const rows = []
@@ -99,7 +99,8 @@ for (const course of [...new Set(rows.map(row => row.course))]) {
   console.log(`${course}: ${courseRows.length}단원 · 학습 최소 ${Math.min(...studyCounts)}/평균 ${(studyCounts.reduce((a, b) => a + b, 0) / studyCounts.length).toFixed(1)}${assessmentSummary}`)
 }
 
-console.log(`고졸면접 평가 풀: 기초 ${interviewAssessmentQuiz.length} + 지원처·기관·자기소개서 심화 ${INTERVIEW_CAREER_ASSESSMENT_QUESTIONS.length} = ${interviewAssessmentQuiz.length + INTERVIEW_CAREER_ASSESSMENT_QUESTIONS.length}문항`)
+const interviewAssessmentTotal = getDiagnosticScopes('interview').find(scope => scope.key === '__all__')?.count || 0
+console.log(`고졸면접 평가 풀: 기존 ${assessmentBaseline.interviewTotal} + 독립 신규 ${interviewAssessmentTotal - assessmentBaseline.interviewTotal} = ${interviewAssessmentTotal}문항`)
 
 if (failures.length) {
   console.error(`[학습용량] 실패 ${failures.length}건`)

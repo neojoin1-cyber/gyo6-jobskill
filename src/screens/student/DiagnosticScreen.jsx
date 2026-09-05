@@ -34,6 +34,7 @@ const LEARNING_REVIEW_LINE = 60
 const COUNT_PRESETS = [5, 10, 20, 40]
 
 function histKey(subjectId, scopeKey) { return `diag_hist_${subjectId}_${scopeKey}` }
+function attemptKey(subjectId, scopeKey) { return `diag_attempt_${subjectId}_${scopeKey}` }
 function loadHist(subjectId, scopeKey) {
   try { return JSON.parse(localStorage.getItem(histKey(subjectId, scopeKey)) || '[]') } catch { return [] }
 }
@@ -112,9 +113,11 @@ export default function DiagnosticScreen({ subjectId, subjectName, onBack, onGoT
   useEffect(() => { const id = pushBack(() => backRef.current()); return () => popBack(id) }, [])
 
   function start() {
-    const attempt = loadHist(subjectId, selectedScope.key).length
+    const key = attemptKey(subjectId, selectedScope.key)
+    const attempt = Number(localStorage.getItem(key) || 0)
     const nextPaper = buildDiagnosticPaper(subjectId, attempt, questionCount, selectedScope.key)
     if (!nextPaper.length) return
+    try { localStorage.setItem(key, String(attempt + 1)) } catch {}
     setPaper(nextPaper); setAnswers([]); setI(0); setSelected(null); setResult(null); setPhase('quiz')
   }
 

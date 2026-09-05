@@ -25,14 +25,16 @@ const RHYTHM_STEPS = [
   { label: '한 문장 정리', seconds: 30, icon: CheckCircle, words: '정답만 말하지 말고 “다음에는 무엇부터 확인할지” 한 문장으로 마무리하게 하세요.' },
 ]
 
-export default function TeacherLessonCoach({ subject, mode, context = {}, projectionSafe = false, onMessage, onClose }) {
+export default function TeacherLessonCoach({ subject, mode, context = {}, projectionSafe = false, lessonMinutes: controlledLessonMinutes, onLessonMinutesChange, onMessage, onClose }) {
   const [section, setSection] = useState('rhythm')
   const [observed, setObserved] = useState([])
   const [rhythmIndex, setRhythmIndex] = useState(0)
   const [secondsLeft, setSecondsLeft] = useState(RHYTHM_STEPS[0].seconds)
   const [timerRunning, setTimerRunning] = useState(false)
   const [rhythmDone, setRhythmDone] = useState([])
-  const [lessonMinutes, setLessonMinutes] = useState(45)
+  const [localLessonMinutes, setLocalLessonMinutes] = useState(45)
+  const lessonMinutes = controlledLessonMinutes ?? localLessonMinutes
+  const setLessonMinutes = onLessonMinutesChange ?? setLocalLessonMinutes
   const guide = useMemo(() => getTeacherLessonGuide(subject, mode), [subject, mode])
   const firstClassPlan = useMemo(() => getFirstClassLesson(subject), [subject])
   const firstClassActive = useMemo(() => matchesFirstClassLesson(subject, context), [subject, context])

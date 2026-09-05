@@ -23,8 +23,11 @@ const teacherLayout = read('src/lib/teacherLayout.js')
 const app = read('src/App.jsx')
 const bootstrapMigration = read('supabase/migrations/20260825000000_bootstrap_mission_subject.sql')
 const classProgressMigration = read('supabase/migrations/20260826200000_class_lesson_progress.sql')
+const classResponseMigration = read('supabase/migrations/20260905110000_class_responses.sql')
 const autonomousPresenceMigration = read('supabase/migrations/20260831090000_autonomous_learning_presence.sql')
 const learningPresence = read('src/lib/learningPresence.js')
+const classResponses = read('src/lib/classResponses.js')
+const studySummary = read('src/screens/student/StudySummary.jsx')
 const css = read('src/index.css')
 const campusCss = read('src/styles/campus.css')
 const coverReviewCss = read('src/styles/cover-letter-review.css')
@@ -103,6 +106,43 @@ if (!teacherLearningPreview.includes('data-presence-summary') ||
     !teacherLearningPreview.includes('현재 위치 다시 보내기') ||
     !teacherLearningPreview.includes('publishClassFocus')) {
   errors.push('Shared classroom connection summary, detail view, or explicit student location delivery is missing')
+}
+if (!teacherLearningPreview.includes('ClassroomScenarioNav') ||
+    !teacherLearningPreview.includes('LESSON_DURATIONS') ||
+    !teacherLearningPreview.includes('jumpToScenarioPhase')) {
+  errors.push('Teacher classroom is missing the clickable 10/25/45-minute lesson storyboard')
+}
+if (!teacherLearningPreview.includes("initialCourseLink(initialSubject, initialContext, teachingMode)") ||
+    !teacherLearningPreview.includes("questionId: null") ||
+    !teacherLearningPreview.includes("mode: 'study'") ||
+    !teacherLearningPreview.includes("scenarioContext")) {
+  errors.push('Teacher classroom must open and navigate its storyboard in concept-learning mode before unit challenge questions')
+}
+if (!teacherLearningPreview.includes('ClassroomResponseDialog') ||
+    !teacherLearningPreview.includes('학생 응답 열기') ||
+    !classResponses.includes("rpc('rpc_class_responses'")) {
+  errors.push('Teacher classroom cannot open responses for the current lesson scene')
+}
+if (!teacherLearningPreview.includes('ClassroomLivePulse') ||
+    !teacherLearningPreview.includes('classroom-live-pulse-toggle') ||
+    !teacherLearningPreview.includes('showSummary={!desktopPresentation}') ||
+    !campusCss.includes('.classroom-live-pulse-panel { position: absolute;')) {
+  errors.push('Teacher classroom live pulse must stay collapsed and overlay the learning stage on demand')
+}
+if (!teacherLearningPreview.includes('ClassroomProjectionHeader') ||
+    !campusCss.includes('.classroom-projection-header') ||
+    !campusCss.includes('font-size: clamp(18px,1.55vw,22px) !important;')) {
+  errors.push('Teacher classroom must use projector-scale typography instead of student-card text sizes')
+}
+if (!studentShell.includes('submitClassResponse') || !studySummary.includes('response,')) {
+  errors.push('Student lesson interactions do not reach the active classroom response channel')
+}
+if (!classResponseMigration.includes('CREATE TABLE IF NOT EXISTS public.class_responses') ||
+    !classResponseMigration.includes('rpc_submit_class_response') ||
+    !classResponseMigration.includes('rpc_class_responses') ||
+    !classResponseMigration.includes("s.ended_at IS NULL") ||
+    !classResponseMigration.includes('payload_too_large')) {
+  errors.push('Class response persistence is missing session, authorization, or payload guards')
 }
 if (!teacherWorkspace.includes('presence_label') || !teacherWorkspace.includes('participated') || !teacherWorkspace.includes('30_000')) {
   errors.push('Teacher workspace still confuses today activity with current learning presence')

@@ -1,5 +1,6 @@
 // 교육부·대한상공회의소 직업공통능력 인증진단의 직무적응 평가틀을
 // 연습하기 위한 비공식 자가진단. 정답을 만들거나 공식 등급을 예측하지 않는다.
+import independentAssessmentBank from '../../data/assessment-banks/job-adaptation.json'
 
 export const JOB_ADAPTATION_SCALE = {
   labels: ['전혀 그렇지 않다', '그렇지 않은 편이다', '보통이다', '그런 편이다', '매우 그렇다'],
@@ -189,7 +190,8 @@ const TRAIT_ITEMS = Object.entries(SUBSCALES).flatMap(([subscale, spec]) =>
   }),
 )
 
-const ALL_ITEMS = [...TRAIT_ITEMS, ...VALIDITY_ITEMS]
+const GENERATED_ITEMS = independentAssessmentBank.questions || []
+const ALL_ITEMS = [...TRAIT_ITEMS, ...VALIDITY_ITEMS, ...GENERATED_ITEMS]
 
 function seeded(seed) {
   let value = seed >>> 0
@@ -207,20 +209,45 @@ function shuffle(items, seed) {
 }
 
 export function buildJobAdaptationItems(mode = 'full', paperNo = 1) {
-  if (mode === 'full') return shuffle(ALL_ITEMS, 260700 + paperNo * 31)
+  const traitPool = ALL_ITEMS.filter(item => item.kind === 'trait')
+  const impressionPool = ALL_ITEMS.filter(item => item.kind === 'impression')
+  const attentionPool = ALL_ITEMS.filter(item => item.kind === 'attention')
+  const pairsFor = subscale => {
+    const pairs = []
+    const seen = new Set()
+    for (const item of traitPool.filter(candidate => candidate.subscale === subscale)) {
+      const key = [item.id, item.pair].sort().join('|')
+      if (seen.has(key)) continue
+      seen.add(key)
+      const mate = traitPool.find(candidate => candidate.id === item.pair)
+      if (mate) pairs.push([item, mate])
+    }
+    return pairs
+  }
 
-  const quickTraits = Object.entries(SUBSCALES).flatMap(([subscale]) =>
-    TRAIT_ITEMS.filter(item => item.subscale === subscale).slice(0, 6),
-  )
+  if (mode === 'full') {
+    // 12개 하위척도마다 6쌍을 회차별로 순환 선발해 기존 160문항 규격을 유지한다.
+    const selectedTraits = Object.keys(SUBSCALES).flatMap((subscale, subscaleIndex) => {
+      const pairs = pairsFor(subscale)
+      const ordered = shuffle(pairs, 260700 + subscaleIndex * 101)
+      const start = ((paperNo - 1) * 6) % ordered.length
+      return Array.from({ length: 6 }, (_, index) => ordered[(start + index) % ordered.length]).flat()
+    })
+    const impressions = shuffle(impressionPool, 260900).slice(((paperNo - 1) * 8) % impressionPool.length).concat(shuffle(impressionPool, 260900)).slice(0, 8)
+    const attentions = shuffle(attentionPool, 261000).slice(((paperNo - 1) * 8) % attentionPool.length).concat(shuffle(attentionPool, 261000)).slice(0, 8)
+    return shuffle([...selectedTraits, ...impressions, ...attentions], 260700 + paperNo * 31)
+  }
+
+  const quickTraits = Object.entries(SUBSCALES).flatMap(([subscale], subscaleIndex) => {
+    const candidates = shuffle(pairsFor(subscale), 260800 + subscaleIndex * 53)
+    const start = ((paperNo - 1) * 3) % candidates.length
+    return candidates.slice(start).concat(candidates).slice(0, 3).flat()
+  })
+  const impressionStart = ((paperNo - 1) * 4) % impressionPool.length
+  const attentionStart = ((paperNo - 1) * 4) % attentionPool.length
   const quickValidity = [
-    VALIDITY_ITEMS[paperNo % 8],
-    VALIDITY_ITEMS[(paperNo + 2) % 8],
-    VALIDITY_ITEMS[(paperNo + 4) % 8],
-    VALIDITY_ITEMS[(paperNo + 6) % 8],
-    VALIDITY_ITEMS[8 + (paperNo % 8)],
-    VALIDITY_ITEMS[8 + ((paperNo + 2) % 8)],
-    VALIDITY_ITEMS[8 + ((paperNo + 4) % 8)],
-    VALIDITY_ITEMS[8 + ((paperNo + 6) % 8)],
+    ...impressionPool.slice(impressionStart).concat(impressionPool).slice(0, 4),
+    ...attentionPool.slice(attentionStart).concat(attentionPool).slice(0, 4),
   ]
   return shuffle([...quickTraits, ...quickValidity], 260800 + paperNo * 31)
 }

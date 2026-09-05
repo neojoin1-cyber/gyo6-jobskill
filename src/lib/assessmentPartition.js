@@ -1,3 +1,5 @@
+import { assessmentItemsNotSeenInPractice } from './assessmentExposure.js'
+
 /**
  * Keeps guided self-study items separate from diagnostic and mock assessments.
  * The lane is content-derived so duplicate stems cannot leak under new ids.
@@ -49,7 +51,7 @@ export function selectQuestionLane(questions, lane) {
 }
 
 export const studyQuestions = questions => selectQuestionLane(questions, 'study')
-export const assessmentQuestions = questions => selectQuestionLane(questions, 'assessment')
+export const assessmentQuestions = questions => assessmentItemsNotSeenInPractice(selectQuestionLane(questions, 'assessment'))
 
 export function questionIdLane(question) {
   const identity = String(question?._baseId || question?.id || questionContentKey(question))
@@ -59,4 +61,4 @@ export function questionIdLane(question) {
 export const studyQuestionsById = questions =>
   (questions || []).filter(question => questionIdLane(question) === 'study')
 export const assessmentQuestionsById = questions =>
-  (questions || []).filter(question => questionIdLane(question) === 'assessment')
+  assessmentItemsNotSeenInPractice((questions || []).filter(question => questionIdLane(question) === 'assessment'))

@@ -122,7 +122,7 @@ try {
   check(courseList.includes("COMMON_ABILITY_COURSES['job-common']") && courseList.includes("COMMON_ABILITY_COURSES['ncs-basic']"), '학생 과목명 중앙 기준 원장 사용')
   check(wrongAnswerScreen.includes("COMMON_ABILITY_COURSES['job-common']") && wrongAnswerScreen.includes("COMMON_ABILITY_COURSES['ncs-basic']"), '오답노트 과목명 중앙 기준 원장 사용')
   check(classProgressScreen.includes("COMMON_ABILITY_COURSES['job-common']") && classProgressScreen.includes("COMMON_ABILITY_COURSES['ncs-basic']"), '교사 진도 과목명 중앙 기준 원장 사용')
-  check(mockScreen.includes('인증진단 실전 1회 시작') && !mockScreen.includes('[1, 2, 3].map'), '교육부 인증 실전은 중복 없는 검증 1회만 노출')
+  check(mockScreen.includes('인증진단 실전 다음 회차 시작') && mockScreen.includes("scopeKey: '__full__'") && mockScreen.includes('buildJcAreaPaper(area.id, paperNo)'), '교육부 인증 실전은 공식 규모를 유지하며 문제은행을 회차별 순환')
 } finally {
   await vite.close()
 }

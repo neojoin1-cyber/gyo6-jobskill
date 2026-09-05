@@ -13,10 +13,13 @@ import StudySummary, { buildStudySummaryCards } from './StudySummary.jsx'
 import { saveWrongAnswer } from '../../lib/wrongAnswers.js'
 import { buildInterviewConceptChecks, buildInterviewLearningQuestions } from '../../lib/interviewLearning.js'
 import { studyQuestionsById } from '../../lib/assessmentPartition.js'
+import { markAssessmentPracticeExposure } from '../../lib/assessmentExposure.js'
+import independentInterview from '../../../data/assessment-banks/interview.json'
 import { Buildings, CaretRight, CheckCircle, ChatCircleText, Target } from '@phosphor-icons/react'
 import InterviewCareerLab from './InterviewCareerLab.jsx'
 import CompactText from '../../components/CompactText.jsx'
 import { getFirstClassFormative } from '../../lib/firstClassLessons.js'
+import ExtraPracticeQuiz from './ExtraPracticeQuiz.jsx'
 import '../../styles/interview-study.css'
 import {
   INTERVIEW_FOUNDATION_COURSES,
@@ -160,6 +163,12 @@ export default function InterviewStudyScreen({ initialArea = null, initialLesson
     () => lesson ? buildInterviewConceptChecks(lesson, STUDY_QUIZ_QUESTIONS) : [],
     [lesson],
   )
+  const extraPracticeQuestions = useMemo(
+    () => lesson ? (independentInterview.questions || []).filter(question =>
+      question.lessonId === lesson.id
+      || (question.lessonId?.startsWith('FOUNDATION-') && question.category === lesson.category)) : [],
+    [lesson],
+  )
   const lessonSummary = useMemo(() => lesson ? getSummary(`iv:${lesson.id}`) : null, [lesson])
   const theorySummary = useMemo(
     () => lessonSummary ? { ...lessonSummary, courseKind: 'interview' } : null,
@@ -191,6 +200,11 @@ export default function InterviewStudyScreen({ initialArea = null, initialLesson
     () => lesson ? selectReferenceGroup(lesson.sections, activeTheoryCard, theorySummary) : null,
     [activeTheoryCard, lesson, theorySummary],
   )
+
+  useEffect(() => {
+    const question = view === 'quiz' ? lessonQuizQuestions[practiceIdx] : null
+    if (question?.id?.startsWith('NEW26-')) markAssessmentPracticeExposure(question.id)
+  }, [lessonQuizQuestions, practiceIdx, view])
 
   const selectedCourse = interviewFoundationCourseById(category)
   const catLessons = useMemo(() => {
@@ -246,6 +260,7 @@ export default function InterviewStudyScreen({ initialArea = null, initialLesson
   const backRef = useRef(null)
   backRef.current = () => {
     if (careerSection) { setCareerSection(null); return }
+    if (view === 'extra') { switchView('theory'); return }
     if (lessonId || category) { goBack(); return }
     onBack?.()
   }
@@ -264,6 +279,17 @@ export default function InterviewStudyScreen({ initialArea = null, initialLesson
       onLearningContext={onLearningContext}
       onBack={() => setCareerSection(null)}
       onOpenCover={() => setCareerSection('cover')}
+    />
+  }
+
+  if (view === 'extra' && lesson && extraPracticeQuestions.length) {
+    return <ExtraPracticeQuiz
+      title={lesson.title}
+      questions={extraPracticeQuestions}
+      scope={`interview:${lesson.id}`}
+      courseId="interview"
+      onClose={() => switchView('theory')}
+      onFullPractice={() => switchView(lessonQuizQuestions.length ? 'quiz' : 'practice')}
     />
   }
 
@@ -451,6 +477,8 @@ export default function InterviewStudyScreen({ initialArea = null, initialLesson
                 onInteractionChange={setTheoryInteraction}
                 embeddedHeader
                 introStartLabel="1단계 기준 익히기 시작 →"
+                onQuickPractice={extraPracticeQuestions.length ? () => switchView('extra') : null}
+                quickPracticeLabel="새로운 면접 2문제 더 풀기"
                 startQuizLabel={hasQuiz ? `2단계 답변 고쳐 고르기 ${lessonQuizQuestions.length}문항 →` : `3단계 내 경험으로 답하기 ${practiceQuestions.length}질문 →`}
                 onStartQuiz={(hasQuiz || hasPractice) ? () => { setPhaseDone(current => ({ ...current, theory: true })); switchView(hasQuiz ? 'quiz' : 'practice') } : null}
               />

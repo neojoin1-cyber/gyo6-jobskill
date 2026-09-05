@@ -219,27 +219,38 @@ const teacherDesktop = await openTrial('teacher', { width: 1280, height: 720 })
 try {
   await teacherDesktop.page.getByRole('button', { name: '수업 시작' }).click()
   await teacherDesktop.page.locator('.teacher-learning-preview.is-teaching').waitFor({ state: 'visible', timeout: 20_000 })
-  await teacherDesktop.page.waitForFunction(
-    () => document.body.innerText.includes('내 경험으로 답하기'),
-    null,
-    { timeout: 20_000 },
-  )
-  const compactPresence = await teacherDesktop.page.evaluate(() => {
-    const panel = document.querySelector('.classroom-connection-panel')
-    const summary = document.querySelector('[data-presence-summary]')
+  await teacherDesktop.page.locator('.classroom-scenario-nav').waitFor({ state: 'visible', timeout: 20_000 })
+  const collapsedPulse = await teacherDesktop.page.evaluate(() => {
+    const stage = document.querySelector('.teacher-preview-stage')
+    const toggle = document.querySelector('.classroom-live-pulse-toggle')
     return {
-      height: Math.round(panel?.getBoundingClientRect().height || 0),
-      summary: summary?.innerText.replace(/\s+/g, ' ').trim() || '',
-      dialogVisible: Boolean(document.querySelector('.classroom-connection-dialog')),
+      stageWidth: Math.round(stage?.getBoundingClientRect().width || 0),
+      toggleVisible: Boolean(toggle && toggle.getBoundingClientRect().width > 0),
+      panelVisible: Boolean(document.querySelector('.classroom-live-pulse-panel')),
     }
   })
-  check('class connection defaults to compact summary', compactPresence.height <= 46 && !compactPresence.dialogVisible,
-    JSON.stringify(compactPresence))
-  check('class connection summary keeps all four states',
-    ['연결됨 18', '화면 벗어남 3', '연결 확인 2', '미접속 5'].every(label => compactPresence.summary.includes(label)),
-    compactPresence.summary)
+  check('desktop live pulse defaults to one collapsed button',
+    collapsedPulse.toggleVisible && !collapsedPulse.panelVisible && collapsedPulse.stageWidth === 1280,
+    JSON.stringify(collapsedPulse))
 
-  await teacherDesktop.page.getByRole('button', { name: /상세보기/ }).click()
+  await teacherDesktop.page.getByRole('button', { name: /라이브 펄스/ }).click()
+  const livePulse = teacherDesktop.page.getByRole('dialog', { name: '라이브 펄스' })
+  await livePulse.waitFor({ state: 'visible' })
+  const pulseText = (await livePulse.innerText()).replace(/\s+/g, ' ').trim()
+  check('live pulse overlay keeps all four connection states',
+    ['연결됨 18', '화면 벗어남 3', '연결 확인 2', '미접속 5'].every(label => pulseText.includes(label)),
+    pulseText)
+  const pulseGeometry = await teacherDesktop.page.evaluate(() => {
+    const stage = document.querySelector('.teacher-preview-stage')?.getBoundingClientRect()
+    const panel = document.querySelector('.classroom-live-pulse-panel')?.getBoundingClientRect()
+    return { stageWidth: Math.round(stage?.width || 0), panelRight: Math.round(panel?.right || 0), viewportWidth: innerWidth }
+  })
+  check('live pulse overlays instead of shrinking learning content',
+    pulseGeometry.stageWidth === pulseGeometry.viewportWidth && pulseGeometry.panelRight <= pulseGeometry.viewportWidth,
+    JSON.stringify(pulseGeometry))
+  await teacherDesktop.page.screenshot({ path: `${outputDir}/teacher-live-pulse-1280.png` })
+
+  await livePulse.getByRole('button', { name: '상세' }).click()
   const connectionDialog = teacherDesktop.page.getByRole('dialog', { name: '학생 연결 상세' })
   await connectionDialog.waitFor({ state: 'visible', timeout: 10_000 })
   const detailStudents = connectionDialog.locator('ul[aria-label="학생별 연결 상태"] > li')
@@ -252,32 +263,29 @@ try {
   await teacherDesktop.page.screenshot({ path: `${outputDir}/teacher-connection-detail-1280.png` })
   await connectionDialog.getByRole('button', { name: '학생 연결 상세 닫기' }).click()
   await connectionDialog.waitFor({ state: 'hidden' })
+
+  await teacherDesktop.page.getByRole('button', { name: /라이브 펄스/ }).click()
+  await livePulse.waitFor({ state: 'visible' })
+  await livePulse.getByRole('button', { name: '열기' }).click()
+  const responseDialog = teacherDesktop.page.getByRole('dialog', { name: '학생 응답' })
+  await responseDialog.waitFor({ state: 'visible' })
+  check('teacher can open current-scene student responses from live pulse',
+    await responseDialog.locator('.classroom-response-list article').count() > 0,
+    `responses=${await responseDialog.locator('.classroom-response-list article').count()}`)
+  await teacherDesktop.page.screenshot({ path: `${outputDir}/teacher-responses-1280.png` })
+  await responseDialog.getByRole('button', { name: '학생 응답 닫기' }).click()
   const measureClassroom = async viewport => {
     await teacherDesktop.page.setViewportSize(viewport)
     await teacherDesktop.page.waitForTimeout(300)
     return teacherDesktop.page.evaluate(() => {
       const stage = document.querySelector('.teacher-preview-stage')
       const zoom = document.querySelector('.classroom-zoom-control button:nth-child(2) span')?.textContent?.trim() || ''
-      const tabs = ['기준 익히기', '답변 고쳐 고르기', '내 경험으로 답하기'].map(label => ({
-        label,
-        visible: (() => {
-          const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT)
-          let node = walker.nextNode()
-          while (node) {
-            if (node.data.includes(label)) {
-              const range = document.createRange()
-              range.selectNodeContents(node)
-              const rect = range.getBoundingClientRect()
-              if (rect.width > 0 && rect.left >= 0 && rect.right <= innerWidth) return true
-            }
-            node = walker.nextNode()
-          }
-          return false
-        })(),
-      }))
+      const projectionHeader = document.querySelector('.classroom-projection-header')?.getBoundingClientRect()
+      const scenario = document.querySelector('.classroom-scenario-nav')?.getBoundingClientRect()
       return {
         zoom,
-        tabs,
+        projectionHeaderVisible: Boolean(projectionHeader?.width && projectionHeader.left >= 0 && projectionHeader.right <= innerWidth),
+        scenarioVisible: Boolean(scenario?.width && scenario.left >= 0 && scenario.right <= innerWidth),
         clientWidth: stage?.clientWidth || 0,
         scrollWidth: stage?.scrollWidth || 0,
       }
@@ -285,9 +293,17 @@ try {
   }
   const classroom1280 = await measureClassroom({ width: 1280, height: 720 })
   const classroom1389 = await measureClassroom({ width: 1389, height: 868 })
-  const fits = result => result.tabs.every(tab => tab.visible) && result.scrollWidth <= result.clientWidth + 2
+  const fits = result => result.projectionHeaderVisible && result.scenarioVisible && result.scrollWidth <= result.clientWidth + 2
   check('desktop classroom starts at 100%', classroom1280.zoom === '100%' && classroom1389.zoom === '100%', JSON.stringify({ classroom1280, classroom1389 }))
   check('desktop classroom starts without horizontal clipping', fits(classroom1280) && fits(classroom1389), JSON.stringify({ classroom1280, classroom1389 }))
+  const projectorTypography = await teacherDesktop.page.evaluate(() => {
+    const visible = [...document.querySelectorAll('.teacher-classroom-content > .screen p, .teacher-classroom-content > .screen li, .teacher-classroom-content > .screen span, .teacher-classroom-content > .screen strong, .teacher-classroom-content > .screen b, .teacher-classroom-content > .screen small, .teacher-classroom-content > .screen figcaption, .teacher-classroom-content > .screen summary, .teacher-classroom-content > .screen button')]
+      .filter(element => element.textContent?.trim() && element.getBoundingClientRect().width > 0)
+    const sizes = visible.map(element => Number(getComputedStyle(element).fontSize.replace('px', '')))
+    return { minimum: sizes.length ? Math.min(...sizes) : 0, count: sizes.length }
+  })
+  check('desktop classroom uses projector-readable body type', projectorTypography.count > 0 && projectorTypography.minimum >= 18,
+    JSON.stringify(projectorTypography))
   await teacherDesktop.page.setViewportSize({ width: 1280, height: 720 })
   await teacherDesktop.page.screenshot({ path: `${outputDir}/teacher-classroom-1280.png` })
 

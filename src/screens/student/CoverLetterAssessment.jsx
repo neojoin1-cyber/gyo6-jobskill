@@ -11,7 +11,8 @@ import {
 import { COVER_LETTER_QUESTION_LIBRARY } from '../../lib/coverQuestionLibrary.js'
 import { questionGuide } from '../../lib/coverLetterGuidance.js'
 import { userLocalStorage as localStorage } from '../../lib/userLocalStorage.js'
-import { COVER_ASSESSMENT_AREAS as AREAS, COVER_DIAGNOSTIC_QUESTIONS } from '../../lib/coverAssessmentBank.js'
+import { COVER_ASSESSMENT_AREAS as AREAS, COVER_DIAGNOSTIC_QUESTIONS, buildCoverDiagnosticPaper } from '../../lib/coverAssessmentBank.js'
+import { saveWrongAnswer } from '../../lib/wrongAnswers.js'
 
 function areasOf(questions) {
   return [...new Set(questions.map(item => item.area))]
@@ -105,23 +106,27 @@ function CoverKnowledgeDiagnostic({ onGoLearn }) {
   const bank = COVER_DIAGNOSTIC_QUESTIONS
   const [scope, setScope] = useState('all')
   const count = 12
+  const [paperNo, setPaperNo] = useState(() => Number(localStorage.getItem('iv_cover_diagnostic_attempt') || 0) + 1)
   const [started, setStarted] = useState(false)
   const [index, setIndex] = useState(0)
   const [answers, setAnswers] = useState({})
   const [finished, setFinished] = useState(false)
 
   const questions = useMemo(() => {
-    const scoped = scope === 'all' ? bank : bank.filter(item => item.area === scope)
-    return scoped.slice(0, Math.min(count, scoped.length))
-  }, [bank, count, scope])
+    return buildCoverDiagnosticPaper(scope, paperNo, count)
+  }, [count, paperNo, scope])
   const current = questions[index]
 
   function start() {
+    try { localStorage.setItem('iv_cover_diagnostic_attempt', String(paperNo)) } catch {}
     setIndex(0); setAnswers({}); setFinished(false); setStarted(true)
   }
   function choose(choice) {
     if (!current || answers[current.id] !== undefined) return
     setAnswers(value => ({ ...value, [current.id]: choice }))
+    if (choice !== current.answer) {
+      saveWrongAnswer({ ...current, answer: String.fromCharCode(65 + current.answer) }, 'cover-letter', String.fromCharCode(65 + choice))
+    }
   }
   function next() {
     if (index < questions.length - 1) setIndex(value => value + 1)
@@ -150,7 +155,7 @@ function CoverKnowledgeDiagnostic({ onGoLearn }) {
       <header className={score >= 80 ? 'is-good' : 'is-review'}><CheckCircle weight="fill" /><div><span>실전 작성 진단 결과</span><strong>{score}점</strong><p>{correct}/{questions.length}개 상황에서 적절하게 수정함</p></div></header>
       <div className="cover-area-results">{areaResults.map(item => <article key={item.area}><div><b>{AREAS[item.area]}</b><span>{item.done}/{item.total}</span></div><i><span style={{ width: `${item.pct}%` }} /></i><small>{item.pct < 70 ? '보완 필요' : '기준 이해'}</small></article>)}</div>
       <section className="cover-result-review"><h4>다시 고칠 상황</h4>{questions.filter(item => answers[item.id] !== item.answer).map(item => <details key={item.id}><summary><WarningCircle />{item.stem}</summary><p><b>권장 수정</b> {item.choices[item.answer]}</p><p>{item.explanation}</p></details>)}</section>
-      <div className="cover-result-actions"><button onClick={() => { setStarted(false); setFinished(false) }}><ArrowLeft />다시 설정</button><button onClick={onGoLearn}><FileText />부족한 기준 학습</button></div>
+      <div className="cover-result-actions"><button onClick={() => { setPaperNo(value => value + 1); setStarted(false); setFinished(false) }}><ArrowLeft />다른 문항으로 재진단</button><button onClick={onGoLearn}><FileText />부족한 기준 학습</button></div>
     </section>
   }
 
