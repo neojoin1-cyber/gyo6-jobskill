@@ -1,0 +1,67 @@
+name: Deploy school materials guide (approved)
+
+on:
+  workflow_dispatch:
+    inputs:
+      approval:
+        description: Type OPERATIONS_APPROVED after the owner's explicit release decision
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: inputs.approval == 'OPERATIONS_APPROVED'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout production baseline
+        uses: actions/checkout@v6
+        with:
+          ref: master
+          path: site
+
+      - name: Checkout approved guide change
+        uses: actions/checkout@v6
+        with:
+          path: change
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: Overlay only the approved guide files
+        shell: bash
+        run: |
+          set -euo pipefail
+          install -D change/public/school-materials/member-registration-guide.html site/public/school-materials/member-registration-guide.html
+          install -D change/public/school-materials/JOB고-학교도입-회원등록-통합서식.xlsx site/public/school-materials/JOB고-학교도입-회원등록-통합서식.xlsx
+
+      - name: Build production baseline with guide overlay
+        working-directory: site
+        run: |
+          npm ci
+          npm run build
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: site/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5
