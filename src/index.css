@@ -1994,3 +1994,23 @@ html.classroom-focus-mode .trial-session-bar { display: none; }
   .jobgo-landing-visual-copy { right: 4%; bottom: 32px; font-size: 14px; }
   .jobgo-landing-footer ol { grid-template-columns: 1fr; gap: 10px; }
 }
+
+/* JOB고 공개 안내 화면은 학생용 480px 앱 프레임을 사용하지 않는다.
+   공통 앱 레이아웃의 PC 규칙이 공개 화면까지 가두면 데스크톱에서도
+   모바일 일부만 보이므로, 안내 화면이 렌더링된 경우에만 전체 뷰포트를 쓴다. */
+body:has(.jobgo-landing) {
+  align-items: flex-start;
+  justify-content: stretch;
+  padding: 0;
+  background: #eef9f8;
+}
+#root:has(.jobgo-landing) {
+  width: 100%;
+  max-width: none;
+  min-height: 100dvh;
+  height: auto;
+  overflow: visible;
+  border-radius: 0;
+  box-shadow: none;
+  background: #eef9f8;
+}
