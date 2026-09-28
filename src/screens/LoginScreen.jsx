@@ -72,6 +72,79 @@ const FEATURES = [
   { icon: '📡', text: '오프라인 지원' },
 ]
 
+function JobgoLanding({ email, setEmail, password, setPassword, handleLogin, loading, error, success, openReset, onSchoolSignup }) {
+  return (
+    <main className="jobgo-landing">
+      <header className="jobgo-landing-header">
+        <a className="jobgo-landing-brand" href="https://gyo6.kr/" aria-label="설탕과소금 홈">
+          <img src={`${import.meta.env.BASE_URL}icons/icon-192.png`} alt="" />
+          <span><small>설탕과소금</small><strong>스킬캠퍼스 / JOB고</strong></span>
+        </a>
+        <nav aria-label="JOB고 주요 메뉴">
+          <a href="https://app.gyo6.kr/school-adoption">학교 도입 신청</a>
+          <a href="https://app.gyo6.kr/school-adoption">JOB고 소개</a>
+          <a href="https://app.gyo6.kr/school-materials/member-registration-guide">학생 메뉴얼</a>
+          <a href="https://app.gyo6.kr/school-materials/member-registration-guide">선생님 메뉴얼</a>
+          <a href="https://app.gyo6.kr/school-materials/member-registration-guide">학교관리자 메뉴얼</a>
+          <a href="https://app.gyo6.kr/school-materials/member-registration-guide">회원등록 서식</a>
+        </nav>
+        <a className="jobgo-landing-jobs" href="https://gyo6.kr/jobs.html">고졸 채용 정보 <span>↗</span></a>
+      </header>
+
+      <section className="jobgo-landing-hero" aria-labelledby="jobgo-landing-title">
+        <div className="jobgo-landing-copy">
+          <p className="jobgo-landing-kicker">K-12 학교를 위한 안전한 진로 · 역량 학습 플랫폼</p>
+          <h1 id="jobgo-landing-title">교육부 직업공통능력 인증평가,<br />고졸공채 필기(NCS)<br />자기소개서, 면접대비는 여기서</h1>
+          <p className="jobgo-landing-lead">실제 현장의 다양한 역할을 바탕으로, 학생은 스스로 탐색하고 선생님은 깊이 있는 수업을, 학교는 안전한 학습 환경을 만듭니다.</p>
+          <div className="jobgo-landing-actions">
+            <a className="jobgo-landing-primary" href="https://app.gyo6.kr/school-materials/member-registration-guide">교재 공개<br />체험하기</a>
+            <button className="jobgo-landing-secondary" type="button" onClick={onSchoolSignup}>관리자·선생님·기존 계정<br />로그인창 열기</button>
+          </div>
+          <p className="jobgo-landing-note">교재 공개 견본은 로그인·시간 제한 없이 읽고, 문제를 풀고, 작성 활동까지 경험할 수 있습니다. 학교 전체 체험은 자료 보호 원칙에 따라 잠겨 있습니다.</p>
+          <a className="jobgo-landing-text-link" href="https://app.gyo6.kr/school-materials/member-registration-guide">JOB고 교재 공개 체험 시작하기 →</a>
+        </div>
+
+        <div className="jobgo-landing-visual">
+          <img src="https://gyo6.kr/assets/platform-hero-vocational.png" alt="선생님과 특성화고 학생들이 함께 취업 역량을 배우는 교실" />
+          <div className="jobgo-landing-badge"><strong>학교장터(S2B) 등록 완료</strong><span>특성화고 취업역량 교육,<br />학교 예산으로 바로 도입할 수 있습니다.</span></div>
+          <div className="jobgo-landing-visual-copy">JOB고 베타버전에 참여하여<br />학생 취업지도의 새 터를 함께 만들<br />의욕 있는 선생님을 기다립니다.</div>
+          <a className="jobgo-landing-visual-link" href="https://app.gyo6.kr/school-adoption">학교 도입 안내 보기 ↗</a>
+        </div>
+
+        <aside className="jobgo-landing-login" aria-labelledby="jobgo-login-title">
+          <h2 id="jobgo-login-title">기존 계정으로 로그인하세요</h2>
+          <p>학생·선생님·학교관리자·총괄관리자 모두 이곳에서 로그인합니다.</p>
+          <form onSubmit={handleLogin}>
+            <label htmlFor="jobgo-email">이메일</label>
+            <input id="jobgo-email" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="이메일을 입력하세요" autoComplete="username" required />
+            <label htmlFor="jobgo-password">비밀번호</label>
+            <input id="jobgo-password" type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="비밀번호를 입력하세요" autoComplete="current-password" required />
+            <button className="jobgo-login-submit" type="submit" disabled={loading}>{loading ? '로그인 중...' : '로그인'}</button>
+          </form>
+          <button className="jobgo-reset-link" type="button" onClick={openReset}>비밀번호를 잊으셨나요? 재설정 메일 받기</button>
+          {error && <p className="jobgo-login-error" role="alert">{error}</p>}
+          {success && <p className="jobgo-login-success" role="status">{success}</p>}
+          <div className="jobgo-login-divider" />
+          <button className="jobgo-signup-link" type="button" onClick={onSchoolSignup}>처음이에요 · 학교와 함께 가입</button>
+          <small>메일로 받은 인증번호는 비밀번호 칸이 아닌 재설정 화면에 입력합니다.</small>
+        </aside>
+      </section>
+
+      <section className="jobgo-landing-benefits" aria-label="JOB고 이용 대상">
+        <article><span className="jobgo-benefit-icon student">●</span><div><h2>학생은<br /><em>스스로 학습</em></h2><p>다양한 직업과 역할을 탐색하며 지금의 관심이 더 넓은 가능성으로 이어지도록 지원합니다.</p></div></article>
+        <article><span className="jobgo-benefit-icon teacher">◆</span><div><h2>선생님은<br /><em>수업과 피드백</em></h2><p>풍부한 수업 자료와 쉬운 운영으로 학생의 배움과 성장을 더 가까이에서 돕습니다.</p></div></article>
+        <article><span className="jobgo-benefit-icon school">■</span><div><h2>학교는<br /><em>안전하게 운영</em></h2><p>간편한 도입 절차와 체계적인 지원으로 모든 학생이 안전하게 학습할 수 있는 환경을 만듭니다.</p></div></article>
+      </section>
+
+      <footer className="jobgo-landing-footer">
+        <div><span>지금, 스킬캠퍼스와 함께</span><strong>우리 학교의 내일을 시작하세요</strong></div>
+        <ol><li><b>1</b><span>도입 상담<small>학교 상황에 맞는 도입 방법을 안내합니다.</small></span></li><li><b>2</b><span>회원등록<small>관리자 계정을 생성하고 학교 구성원을 등록합니다.</small></span></li><li><b>3</b><span>바로 시작<small>자료와 기능을 학교 수업에 연결합니다.</small></span></li></ol>
+        <a href="https://app.gyo6.kr/school-adoption">학교 도입 안내 보기</a>
+      </footer>
+    </main>
+  )
+}
+
 export default function LoginScreen() {
   const [view,          setView]         = useState('landing') // 'landing' | 'login' | 'signup' | 'reset'
   const [tab,           setTab]          = useState('student')
@@ -361,62 +434,20 @@ export default function LoginScreen() {
   // ── 랜딩 화면 ──
   const isNative = Capacitor.isNativePlatform()
 
-  // ── 역할 선택 (첫 화면) ──
+  // 공개 체험·역할 선택 화면은 폐기하고, 운영 루트는 JOB고 안내와 계정 로그인으로 고정한다.
   if (!audience) return (
-    <div style={{ minHeight: '100dvh', background: 'linear-gradient(160deg, #1E1B4B 0%, #312E81 55%, #0F3B33 100%)', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '32px 20px' }}>
-      <div style={{ textAlign: 'center', marginBottom: 36 }}>
-        <img src={`${import.meta.env.BASE_URL}icons/icon-192.png`} alt="설탕과소금"
-          style={{ width: 72, height: 72, borderRadius: 20, marginBottom: 14, boxShadow: '0 8px 32px rgba(0,0,0,0.4)' }} />
-        <h1 style={{ color: '#fff', fontSize: 26, fontWeight: 800, margin: '0 0 8px', letterSpacing: -0.5 }}>설탕과소금</h1>
-        <p style={{ color: 'rgba(255,255,255,0.78)', fontSize: 14, margin: 0 }}>
-          특성화고 · 마이스터고 취업 학습 플랫폼
-        </p>
-      </div>
-
-      {PUBLIC_WEB_TRIAL_ENABLED && !isNative && (
-        <section className="trial-login-panel" aria-labelledby="trial-login-title">
-          <div>
-            <span className="trial-login-kicker">제작·검수 기간 무제한</span>
-            <h2 id="trial-login-title">계정 입력 없이 바로 체험</h2>
-          </div>
-          <div className="trial-login-actions">
-            <button type="button" onClick={() => handleTrialLogin('student')} disabled={loading}>
-              <span className="trial-login-icon student">학</span>
-              <span><b>학생 체험</b><small>학습·문제·오답 흐름</small></span>
-            </button>
-            <button type="button" onClick={() => handleTrialLogin('teacher')} disabled={loading}>
-              <span className="trial-login-icon teacher">교</span>
-              <span><b>교사 체험</b><small>수업·학급·지도 흐름</small></span>
-            </button>
-          </div>
-          <p>체험 기록 저장 안 됨 · 실제 학교 데이터와 분리</p>
-          {trialMessage && <div className="trial-login-message" role="status">{trialMessage}</div>}
-        </section>
-      )}
-
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 12, maxWidth: 420, width: '100%', margin: '0 auto' }}>
-        {[AUDIENCE.student, AUDIENCE.teacher].map(a => (
-          <button key={a.key} onClick={() => { setAudience(a.key); reset() }}
-            style={{
-              display: 'flex', alignItems: 'center', gap: 16, width: '100%',
-              minHeight: 88, padding: '18px 20px', textAlign: 'left', cursor: 'pointer',
-              background: 'rgba(255,255,255,0.10)', border: '1.5px solid rgba(255,255,255,0.28)',
-              borderRadius: 18, color: '#fff',
-            }}>
-            <span style={{ fontSize: 34, lineHeight: 1 }}>{a.emoji}</span>
-            <span style={{ display: 'block' }}>
-              <span style={{ display: 'block', fontSize: 18, fontWeight: 800, marginBottom: 4 }}>{a.pick}</span>
-              <span style={{ display: 'block', fontSize: 13, color: 'rgba(255,255,255,0.78)', lineHeight: 1.5 }}>{a.pickDesc}</span>
-            </span>
-            <span style={{ marginLeft: 'auto', fontSize: 20, color: 'rgba(255,255,255,0.6)' }}>›</span>
-          </button>
-        ))}
-      </div>
-
-      <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.55)', fontSize: 12, marginTop: 28, lineHeight: 1.6 }}>
-        학교관리자·운영자도 선생님으로 들어오시면 됩니다
-      </p>
-    </div>
+    <JobgoLanding
+      email={email}
+      setEmail={setEmail}
+      password={password}
+      setPassword={setPassword}
+      handleLogin={handleLogin}
+      loading={loading}
+      error={error}
+      success={success}
+      openReset={openReset}
+      onSchoolSignup={() => { setAudience('teacher'); setView('signup'); reset() }}
+    />
   )
 
   const A = AUDIENCE[audience] ?? AUDIENCE.student
