@@ -446,7 +446,7 @@ export default function LoginScreen() {
       error={error}
       success={success}
       openReset={openReset}
-      onSchoolSignup={() => { setAudience('teacher'); setView('signup'); reset() }}
+      onSchoolSignup={() => { window.location.assign('/school-adoption') }}
     />
   )
 
