@@ -1914,7 +1914,9 @@ html.classroom-focus-mode .trial-session-bar { display: none; }
 .jobgo-landing-note { margin: 13px 0 0; color: #708694; font-size: 11px; line-height: 1.65; }
 .jobgo-landing-text-link { margin-top: 12px; color: #078f80; font-size: 12px; font-weight: 900; text-decoration: none; }
 .jobgo-landing-visual { position: relative; min-height: 506px; overflow: hidden; background: #cae9f2; }
-.jobgo-landing-visual > img { width: 100%; height: 100%; min-height: 506px; display: block; object-fit: cover; }
+.jobgo-landing-visual-image-link { width: 100%; height: 100%; min-height: 506px; display: block; }
+.jobgo-landing-visual-image-link:focus-visible { outline: 4px solid #078f80; outline-offset: -4px; }
+.jobgo-landing-visual-image-link img { width: 100%; height: 100%; min-height: 506px; display: block; object-fit: cover; }
 .jobgo-landing-badge { position: absolute; top: 23px; left: 7%; max-width: 370px; padding: 24px 28px; border-radius: 22px; background: rgba(255,255,255,.93); box-shadow: 0 12px 30px rgba(29,77,88,.13); }
 .jobgo-landing-badge strong, .jobgo-landing-badge span { display: block; }
 .jobgo-landing-badge strong { color: #078f80; font-family: Georgia, 'Nanum Myeongjo', serif; font-size: 23px; }
@@ -1973,7 +1975,7 @@ html.classroom-focus-mode .trial-session-bar { display: none; }
   .jobgo-landing-copy { padding: 30px 22px 25px; }
   .jobgo-landing-copy h1 { font-size: 30px; }
   .jobgo-landing-visual { min-height: 420px; }
-  .jobgo-landing-visual > img { min-height: 420px; }
+  .jobgo-landing-visual-image-link, .jobgo-landing-visual-image-link img { min-height: 420px; }
   .jobgo-landing-login { margin: 0; border-radius: 0; box-shadow: none; }
   .jobgo-landing-benefits { grid-template-columns: 1fr; gap: 18px; padding: 24px 22px; }
   .jobgo-landing-footer { align-items: stretch; flex-direction: column; padding: 22px; gap: 18px; }
@@ -1987,7 +1989,7 @@ html.classroom-focus-mode .trial-session-bar { display: none; }
   .jobgo-landing-actions { flex-direction: column; }
   .jobgo-landing-primary, .jobgo-landing-secondary { width: 100%; }
   .jobgo-landing-visual { min-height: 340px; }
-  .jobgo-landing-visual > img { min-height: 340px; }
+  .jobgo-landing-visual-image-link, .jobgo-landing-visual-image-link img { min-height: 340px; }
   .jobgo-landing-badge { top: 14px; left: 4%; right: 4%; max-width: none; padding: 14px 17px; }
   .jobgo-landing-badge strong { font-size: 16px; }
   .jobgo-landing-badge span { font-size: 13px; }
