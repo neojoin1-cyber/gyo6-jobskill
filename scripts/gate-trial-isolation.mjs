@@ -56,8 +56,8 @@ if (!campusCss.includes('@container teacher-shell (max-width: 720px)')) {
   fail('iframe 내부 앱 폭에 반응하는 교사용 컨테이너 쿼리가 없음')
 }
 
-if (!loginSource.includes("handleTrialLogin('student')") || !loginSource.includes("handleTrialLogin('teacher')")) {
-  fail('학생·교사 원클릭 체험 버튼이 없음')
+if (!loginSource.includes('JobgoLanding') || !loginSource.includes('PUBLIC_WEB_TRIAL_ENABLED')) {
+  fail('운영 루트가 JOB고 안내·로그인 화면으로 고정되지 않음')
 }
 if (!loginSource.includes('requestTrialToken(role)') || !loginSource.includes('verifyOtp')) {
   fail('체험 로그인이 서버 발급 일회성 토큰을 사용하지 않음')
@@ -157,5 +157,5 @@ if (shouldSwitchTrialRole(trialTeacher, 'teacher')) fail('동일 체험 역할�
 if (shouldSwitchTrialRole(regularTeacher, 'teacher')) fail('정식 교사 로그인을 체험 역할 전환으로 오인함')
 
 if (!process.exitCode) {
-  console.log('[웹 체험 격리] 통과 - 제작 중 무제한·출시 시 15분 전환·탭별 인증·저장 차단·교사 반응형 확인')
+  console.log('[웹 체험 격리] 통과 - 운영 루트 고정·탭별 인증·저장 차단·체험 내부 격리·교사 반응형 확인')
 }
