@@ -1,0 +1,50 @@
+name: Build Worker release artifact (approved)
+
+on:
+  workflow_dispatch:
+    inputs:
+      approval:
+        description: Type OPERATIONS_APPROVED after the owner's explicit release decision
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: worker-build
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: inputs.approval == 'OPERATIONS_APPROVED'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build Worker-root artifact
+        env:
+          VITE_DEPLOY_TARGET: worker
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+          VITE_VAPID_PUBLIC_KEY: ${{ secrets.VITE_VAPID_PUBLIC_KEY }}
+        run: npm run build
+
+      - name: Remove Pages-only redirect rules
+        run: rm -f dist/_redirects
+
+      - name: Verify Worker artifact
+        run: npm run verify:worker-release
+
+      - uses: actions/upload-artifact@v5
+        with:
+          name: worker-root-assets
+          path: dist
+          if-no-files-found: error

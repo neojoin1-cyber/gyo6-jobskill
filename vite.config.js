@@ -71,7 +71,10 @@ export default defineConfig(({ mode }) => ({
       manifest: false,
     }),
   ],
-  base: process.env.GITHUB_ACTIONS ? '/gyo6-jobskill/' : '/',
+  // GitHub Pages uses a repository subpath; the production Worker serves from `/`.
+  base: process.env.VITE_DEPLOY_TARGET === 'worker'
+    ? '/'
+    : (process.env.GITHUB_ACTIONS ? '/gyo6-jobskill/' : '/'),
   server: { port: 5173, strictPort: true },
   build: {
     outDir: 'dist',

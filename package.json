@@ -20,6 +20,7 @@
     "audio:generate": "npm run audio:bundle && node scripts/gen-listening-audio.mjs",
     "audio:regenerate": "npm run audio:bundle && node scripts/gen-listening-audio.mjs --force && npm run audio:manifest",
     "verify:production-flows": "node scripts/verify-production-flows.mjs",
+    "verify:worker-release": "node scripts/verify-worker-release.mjs",
     "verify:public-trial": "node scripts/verify-public-trial.mjs",
     "verify:rls-isolation": "node scripts/verify-rls-isolation.mjs",
     "verify:teacher-release": "node scripts/verify-teacher-release.mjs",
