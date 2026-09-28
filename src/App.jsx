@@ -8,6 +8,7 @@ import { scheduleReviewReminder } from './lib/reminders.js'
 import {
   TRIAL_ACCOUNTS,
   TRIAL_TIME_LIMIT_ENABLED,
+  PUBLIC_WEB_TRIAL_ENABLED,
   beginTrialSession,
   clearTrialSession,
   formatTrialRemaining,
@@ -249,7 +250,9 @@ function AppInner() {
   }, [session?.user?.id, profileRetry])
 
   const trialRole = trialRoleFromUser(session?.user)
-  const requestedTrial = Capacitor.isNativePlatform() ? null : requestedTrialRole()
+  const requestedTrial = Capacitor.isNativePlatform() || !PUBLIC_WEB_TRIAL_ENABLED
+    ? null
+    : requestedTrialRole()
   const switchingTrialRole = Boolean(session && shouldSwitchTrialRole(session.user, requestedTrial))
 
   // The portal reuses one iframe while switching between student and teacher.

@@ -9,6 +9,8 @@ export const TRIAL_COOLDOWN_MS = 45 * 60 * 1000
 // 제작·검수 기간에는 기본적으로 시간 제한을 두지 않는다. 정식 출시에서만
 // VITE_TRIAL_TIME_LIMIT_ENABLED=true를 주입해 15분 제한과 재진입 대기를 켠다.
 export const TRIAL_TIME_LIMIT_ENABLED = import.meta.env?.VITE_TRIAL_TIME_LIMIT_ENABLED === 'true'
+// 공개 체험은 운영 웹 루트에서 폐기하고, 이미 시작된 세션의 내부 호환만 유지한다.
+export const PUBLIC_WEB_TRIAL_ENABLED = false
 
 export const TRIAL_ACCOUNTS = Object.freeze({
   student: {

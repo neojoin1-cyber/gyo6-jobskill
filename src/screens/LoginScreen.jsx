@@ -5,6 +5,7 @@ import { supabase } from '../lib/supabase.js'
 import { pushBack, popBack } from '../lib/backButton.js'
 import {
   TRIAL_ACCOUNTS,
+  PUBLIC_WEB_TRIAL_ENABLED,
   beginTrialSession,
   consumeTrialNotice,
   requestTrialToken,
@@ -108,7 +109,7 @@ export default function LoginScreen() {
   const [selectedSchool, setSelectedSchool] = useState('')
 
   useEffect(() => {
-    if (!Capacitor.isNativePlatform() && requestedTrialRole()) return
+    if (!Capacitor.isNativePlatform() && PUBLIC_WEB_TRIAL_ENABLED && requestedTrialRole()) return
     supabase.from('schools').select('id, name, region, education_office').order('name').then(({ data }) => {
       setSchools(data ?? [])
       if (data?.length === 1) setSelectedSchool(data[0].id)
@@ -116,7 +117,7 @@ export default function LoginScreen() {
   }, [])
 
   useEffect(() => {
-    if (Capacitor.isNativePlatform() || trialLaunchRef.current) return
+    if (!PUBLIC_WEB_TRIAL_ENABLED || Capacitor.isNativePlatform() || trialLaunchRef.current) return
     const role = requestedTrialRole()
     if (!role) return
     trialLaunchRef.current = true
@@ -372,7 +373,7 @@ export default function LoginScreen() {
         </p>
       </div>
 
-      {!isNative && (
+      {PUBLIC_WEB_TRIAL_ENABLED && !isNative && (
         <section className="trial-login-panel" aria-labelledby="trial-login-title">
           <div>
             <span className="trial-login-kicker">제작·검수 기간 무제한</span>
@@ -452,7 +453,7 @@ export default function LoginScreen() {
 
       {/* 버튼 — 헤더 바로 아래 최상단 */}
       <div style={{ padding: '0 16px 20px', display: 'flex', flexDirection: 'column', gap: 10 }}>
-        {!isNative && (
+        {PUBLIC_WEB_TRIAL_ENABLED && !isNative && (
           <button className="trial-role-start" type="button" onClick={() => handleTrialLogin(audience)} disabled={loading}>
             <span>{loading ? '체험 화면 여는 중' : `${A.key === 'teacher' ? '교사' : '학생'} 체험 바로 시작`}</span>
             <small>계정 입력 없음 · 시간 제한 없음 · 저장 안 됨</small>
