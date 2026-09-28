@@ -84,8 +84,8 @@ if (!trialSource.includes('TRIAL_TIME_LIMIT_ENABLED') ||
     !trialSource.includes("VITE_TRIAL_TIME_LIMIT_ENABLED === 'true'")) {
   fail('제작 중 무제한과 출시 후 시간 제한을 분리하는 환경 설정이 없음')
 }
-if (!loginSource.includes('제작·검수 기간 무제한') || !appSource.includes('trial-session-unlimited')) {
-  fail('현재 무제한 체험 상태가 로그인과 앱 상단에 명확히 표시되지 않음')
+if (!trialSource.includes('PUBLIC_WEB_TRIAL_ENABLED = false') || !loginSource.includes('JobgoLanding')) {
+  fail('공개 체험이 비활성화되고 운영 루트가 안내·로그인 화면으로 고정되지 않음')
 }
 if (!appSource.includes('TrialSessionBar') || !appSource.includes("signOut({ scope: 'local' })")) {
   fail('체험 남은 시간 표시 또는 탭 단위 자동 종료가 없음')
