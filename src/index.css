@@ -1917,7 +1917,9 @@ html.classroom-focus-mode .trial-session-bar { display: none; }
 .jobgo-landing-visual-image-link { width: 100%; height: 100%; min-height: 506px; display: block; }
 .jobgo-landing-visual-image-link:focus-visible { outline: 4px solid #078f80; outline-offset: -4px; }
 .jobgo-landing-visual-image-link img { width: 100%; height: 100%; min-height: 506px; display: block; object-fit: cover; }
-.jobgo-landing-badge { position: absolute; top: 23px; left: 7%; max-width: 370px; padding: 24px 28px; border-radius: 22px; background: rgba(255,255,255,.93); box-shadow: 0 12px 30px rgba(29,77,88,.13); }
+.jobgo-landing-badge { position: absolute; top: 23px; left: 7%; max-width: 370px; padding: 24px 28px; border-radius: 22px; background: rgba(255,255,255,.93); box-shadow: 0 12px 30px rgba(29,77,88,.13); color: inherit; text-decoration: none; cursor: pointer; transition: transform .18s ease, box-shadow .18s ease; }
+.jobgo-landing-badge:hover { transform: translateY(-2px); box-shadow: 0 16px 34px rgba(29,77,88,.2); }
+.jobgo-landing-badge:focus-visible { outline: 4px solid #078f80; outline-offset: 3px; }
 .jobgo-landing-badge strong, .jobgo-landing-badge span { display: block; }
 .jobgo-landing-badge strong { color: #078f80; font-family: Georgia, 'Nanum Myeongjo', serif; font-size: 23px; }
 .jobgo-landing-badge span { margin-top: 9px; color: #123b59; font-size: 18px; font-weight: 900; line-height: 1.42; }
