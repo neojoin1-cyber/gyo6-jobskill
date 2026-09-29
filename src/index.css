@@ -1903,12 +1903,18 @@ html.classroom-focus-mode .trial-session-bar { display: none; }
 .jobgo-landing-hero { display: grid; grid-template-columns: minmax(240px,.95fr) minmax(400px,1.7fr) minmax(260px,.82fr); min-height: 506px; background: #effafa; }
 .jobgo-landing-copy { padding: 34px 28px 28px 3.5vw; display: flex; flex-direction: column; justify-content: center; }
 .jobgo-landing-kicker { margin: 0 0 17px; color: #078f80; font-size: 13px; font-weight: 900; }
-.jobgo-landing-copy h1 { margin: 0; color: #103b5b; font-family: Georgia, 'Nanum Myeongjo', serif; font-size: clamp(24px, 2.2vw, 38px); font-weight: 700; letter-spacing: -.08em; line-height: 1.16; word-break: keep-all; }
-.jobgo-landing-title-art { display: grid; justify-items: start; gap: 1px; position: relative; }
-.jobgo-landing-title-art::after { content: ''; width: 58px; height: 6px; margin-top: 10px; border-radius: 999px; background: linear-gradient(90deg, #078f80 0 70%, #f0b85a 70%); transform: rotate(-2deg); }
+.jobgo-landing-copy h1 { margin: 0; color: #103b5b; font-family: Georgia, 'Nanum Myeongjo', serif; font-size: clamp(24px, 2.2vw, 38px); font-weight: 700; letter-spacing: -.08em; line-height: 1.12; word-break: keep-all; }
+.jobgo-landing-title-art { display: grid; justify-items: start; gap: 7px; position: relative; isolation: isolate; }
+.jobgo-landing-title-art::before { content: ''; position: absolute; z-index: -1; top: -12px; left: -18px; width: 88px; height: 88px; opacity: .4; background-image: radial-gradient(#f0b85a 1.5px, transparent 1.7px); background-size: 11px 11px; transform: rotate(-8deg); }
+.jobgo-landing-title-art::after { content: ''; width: 72px; height: 7px; margin-top: 2px; border-radius: 999px; background: linear-gradient(90deg, #078f80 0 68%, #f0b85a 68%); transform: rotate(-3deg); }
+.jobgo-landing-title-ribbon { position: relative; display: inline-block; padding: 5px 13px 7px; border: 3px solid #103b5b; border-radius: 5px 15px 6px 14px; background: linear-gradient(135deg, #078f80, #056476); color: #fff; font-family: Georgia, 'Nanum Myeongjo', serif; font-size: clamp(18px, 1.7vw, 29px); font-weight: 900; letter-spacing: -.1em; line-height: 1.05; white-space: nowrap; transform: rotate(-1.2deg); box-shadow: 5px 5px 0 #f0b85a; }
+.jobgo-landing-title-ribbon::before { content: ''; position: absolute; top: -7px; right: 10px; width: 15px; height: 15px; border: 3px solid #f0b85a; border-radius: 50%; background: #fff8e8; }
+.jobgo-landing-title-ribbon::after { content: 'JOB'; position: absolute; right: -18px; bottom: -15px; padding: 3px 5px; border: 2px solid #103b5b; border-radius: 4px; background: #f0b85a; color: #103b5b; font-family: Arial, sans-serif; font-size: 9px; font-weight: 900; letter-spacing: .04em; transform: rotate(7deg); }
 .jobgo-landing-title-line { display: block; white-space: nowrap; }
+.jobgo-landing-title-pop { text-shadow: 2px 2px 0 rgba(240,184,90,.7); }
 .jobgo-landing-title-line em { color: #078f80; font-style: normal; letter-spacing: -.1em; }
-.jobgo-landing-title-accent { color: #078f80; text-shadow: 2px 2px 0 rgba(7,143,128,.08); }
+.jobgo-landing-title-script { letter-spacing: -.12em; }
+.jobgo-landing-title-accent { color: #078f80; text-shadow: 2px 2px 0 #f0b85a; transform: rotate(-1deg); transform-origin: left center; }
 .jobgo-landing-lead { margin: 22px 0 0; max-width: 360px; color: #557286; font-size: 14px; line-height: 1.9; }
 .jobgo-landing-actions { display: flex; gap: 10px; margin-top: 21px; }
 .jobgo-landing-primary, .jobgo-landing-secondary { min-height: 68px; padding: 11px 18px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid #078f80; border-radius: 9px; font-size: 14px; font-weight: 900; line-height: 1.45; text-align: center; text-decoration: none; cursor: pointer; }
@@ -1983,6 +1989,7 @@ html.classroom-focus-mode .trial-session-bar { display: none; }
   .jobgo-landing-hero { grid-template-columns: 1fr; }
   .jobgo-landing-copy { padding: 30px 22px 25px; }
   .jobgo-landing-copy h1 { font-size: 30px; }
+  .jobgo-landing-title-ribbon { font-size: clamp(21px, 6.6vw, 31px); }
   .jobgo-landing-visual { min-height: 420px; }
   .jobgo-landing-visual-image-link, .jobgo-landing-visual-image-link img { min-height: 420px; }
   .jobgo-landing-login { margin: 0; border-radius: 0; box-shadow: none; }
@@ -1993,6 +2000,8 @@ html.classroom-focus-mode .trial-session-bar { display: none; }
 }
 @media (max-width: 420px) {
   .jobgo-landing-copy h1 { font-size: 25px; line-height: 1.2; }
+  .jobgo-landing-title-ribbon { padding: 4px 9px 6px; font-size: clamp(19px, 6vw, 24px); box-shadow: 3px 3px 0 #f0b85a; }
+  .jobgo-landing-title-ribbon::after { right: -12px; bottom: -13px; font-size: 8px; }
   .jobgo-landing-title-line { white-space: normal; }
 }
 @media (max-width: 480px) {
