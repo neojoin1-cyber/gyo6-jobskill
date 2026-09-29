@@ -109,7 +109,7 @@ function JobgoLanding({ email, setEmail, password, setPassword, handleLogin, loa
             <img src="https://gyo6.kr/assets/platform-hero-vocational.png" alt="선생님과 특성화고 학생들이 함께 취업 역량을 배우는 교실" />
           </a>
           <a className="jobgo-landing-badge" href="https://app.gyo6.kr/school-adoption" aria-label="학교장터 등록 상품 학교 도입 신청">
-            <strong>학교장터(S2B) 등록 완료</strong><span>특성화고 취업역량 교육,<br />학교 예산으로 바로 도입할 수 있습니다.</span>
+            <strong>학교장터(S2B) 등록 제품</strong><span>창업기업제품 · 소상공인 확인기업<br />학교 예산으로 바로 도입할 수 있습니다.</span><small>S2B 물품번호 202609219492759 · 공공기관 구매실적 반영 가능</small>
           </a>
           <div className="jobgo-landing-visual-copy">JOB고 베타버전에 참여하여<br />학생 취업지도의 새 터를 함께 만들<br />의욕 있는 선생님을 기다립니다.</div>
           <a className="jobgo-landing-visual-link" href="https://app.gyo6.kr/school-adoption">학교 도입 안내 보기 ↗</a>

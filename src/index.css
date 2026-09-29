@@ -1923,6 +1923,7 @@ html.classroom-focus-mode .trial-session-bar { display: none; }
 .jobgo-landing-badge strong, .jobgo-landing-badge span { display: block; }
 .jobgo-landing-badge strong { color: #078f80; font-family: Georgia, 'Nanum Myeongjo', serif; font-size: 23px; }
 .jobgo-landing-badge span { margin-top: 9px; color: #123b59; font-size: 18px; font-weight: 900; line-height: 1.42; }
+.jobgo-landing-badge small { display: block; margin-top: 10px; color: #5e7c83; font-size: 11px; font-weight: 700; line-height: 1.45; }
 .jobgo-landing-visual-copy { position: absolute; right: 7%; bottom: 43px; color: #103b5b; font-family: Georgia, 'Nanum Myeongjo', serif; font-size: clamp(15px, 1.3vw, 21px); font-weight: 900; line-height: 1.4; text-align: right; text-shadow: 0 1px 0 rgba(255,255,255,.85); }
 .jobgo-landing-visual-link { position: absolute; right: 7%; bottom: 17px; color: #078f80; font-size: 11px; font-weight: 900; text-decoration: none; }
 .jobgo-landing-login { margin: 14px 14px 14px 0; padding: 25px 25px 20px; align-self: stretch; background: #fff; border: 1px solid #dce8e6; border-radius: 16px; box-shadow: 0 14px 30px rgba(22,60,76,.08); }
@@ -1968,6 +1969,7 @@ html.classroom-focus-mode .trial-session-bar { display: none; }
   .jobgo-landing-badge { left: 5%; padding: 18px 20px; }
   .jobgo-landing-badge strong { font-size: 19px; }
   .jobgo-landing-badge span { font-size: 15px; }
+  .jobgo-landing-badge small { font-size: 10px; }
 }
 @media (max-width: 820px) {
   .jobgo-landing-header { flex-wrap: wrap; padding: 12px 18px; }
@@ -1995,6 +1997,7 @@ html.classroom-focus-mode .trial-session-bar { display: none; }
   .jobgo-landing-badge { top: 14px; left: 4%; right: 4%; max-width: none; padding: 14px 17px; }
   .jobgo-landing-badge strong { font-size: 16px; }
   .jobgo-landing-badge span { font-size: 13px; }
+  .jobgo-landing-badge small { font-size: 9px; }
   .jobgo-landing-visual-copy { right: 4%; bottom: 32px; font-size: 14px; }
   .jobgo-landing-footer ol { grid-template-columns: 1fr; gap: 10px; }
 }
