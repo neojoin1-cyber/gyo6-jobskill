@@ -65,7 +65,9 @@ export default defineConfig(({ mode }) => ({
         ],
         // 오프라인 폴백 페이지
         navigateFallback: 'index.html',
-        navigateFallbackDenylist: [/^\/api\//, /\/join\.html$/],
+        // 정적 안내 페이지는 JOB고 SPA 셸로 대체하지 않는다. 특히
+        // /school-adoption을 가로채면 도입 안내 대신 로그인 랜딩이 열린다.
+        navigateFallbackDenylist: [/^\/api\//, /\/join\.html$/, /^\/school-adoption(?:\/)?$/, /^\/school-materials(?:\/|$)/],
       },
       // manifest는 public/manifest.json 사용 (직접 관리)
       manifest: false,
