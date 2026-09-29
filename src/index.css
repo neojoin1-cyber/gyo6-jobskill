@@ -1903,7 +1903,12 @@ html.classroom-focus-mode .trial-session-bar { display: none; }
 .jobgo-landing-hero { display: grid; grid-template-columns: minmax(240px,.95fr) minmax(400px,1.7fr) minmax(260px,.82fr); min-height: 506px; background: #effafa; }
 .jobgo-landing-copy { padding: 34px 28px 28px 3.5vw; display: flex; flex-direction: column; justify-content: center; }
 .jobgo-landing-kicker { margin: 0 0 17px; color: #078f80; font-size: 13px; font-weight: 900; }
-.jobgo-landing-copy h1 { margin: 0; color: #103b5b; font-family: Georgia, 'Nanum Myeongjo', serif; font-size: clamp(24px, 2.2vw, 38px); font-weight: 700; letter-spacing: -.07em; line-height: 1.27; }
+.jobgo-landing-copy h1 { margin: 0; color: #103b5b; font-family: Georgia, 'Nanum Myeongjo', serif; font-size: clamp(24px, 2.2vw, 38px); font-weight: 700; letter-spacing: -.08em; line-height: 1.16; word-break: keep-all; }
+.jobgo-landing-title-art { display: grid; justify-items: start; gap: 1px; position: relative; }
+.jobgo-landing-title-art::after { content: ''; width: 58px; height: 6px; margin-top: 10px; border-radius: 999px; background: linear-gradient(90deg, #078f80 0 70%, #f0b85a 70%); transform: rotate(-2deg); }
+.jobgo-landing-title-line { display: block; white-space: nowrap; }
+.jobgo-landing-title-line em { color: #078f80; font-style: normal; letter-spacing: -.1em; }
+.jobgo-landing-title-accent { color: #078f80; text-shadow: 2px 2px 0 rgba(7,143,128,.08); }
 .jobgo-landing-lead { margin: 22px 0 0; max-width: 360px; color: #557286; font-size: 14px; line-height: 1.9; }
 .jobgo-landing-actions { display: flex; gap: 10px; margin-top: 21px; }
 .jobgo-landing-primary, .jobgo-landing-secondary { min-height: 68px; padding: 11px 18px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid #078f80; border-radius: 9px; font-size: 14px; font-weight: 900; line-height: 1.45; text-align: center; text-decoration: none; cursor: pointer; }
@@ -1985,6 +1990,10 @@ html.classroom-focus-mode .trial-session-bar { display: none; }
   .jobgo-landing-footer { align-items: stretch; flex-direction: column; padding: 22px; gap: 18px; }
   .jobgo-landing-footer ol { width: 100%; }
   .jobgo-landing-footer > a { width: 100%; }
+}
+@media (max-width: 420px) {
+  .jobgo-landing-copy h1 { font-size: 25px; line-height: 1.2; }
+  .jobgo-landing-title-line { white-space: normal; }
 }
 @media (max-width: 480px) {
   .jobgo-landing-brand strong { font-size: 17px; }

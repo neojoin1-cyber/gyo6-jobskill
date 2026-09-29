@@ -94,7 +94,12 @@ function JobgoLanding({ email, setEmail, password, setPassword, handleLogin, loa
       <section className="jobgo-landing-hero" aria-labelledby="jobgo-landing-title">
         <div className="jobgo-landing-copy">
           <p className="jobgo-landing-kicker">K-12 학교를 위한 안전한 진로 · 역량 학습 플랫폼</p>
-          <h1 id="jobgo-landing-title">교육부 직업공통능력 인증평가,<br />고졸공채 필기(NCS)<br />자기소개서, 면접대비는 여기서</h1>
+          <h1 id="jobgo-landing-title" className="jobgo-landing-title-art" aria-label="직업공통능력 인증평가, 고졸 공채 필기 NCS, 자기소개서와 면접 대비">
+            <span className="jobgo-landing-title-line">직업공통능력</span>
+            <span className="jobgo-landing-title-line jobgo-landing-title-accent">인증평가</span>
+            <span className="jobgo-landing-title-line">고졸 공채 필기 <em>(NCS)</em></span>
+            <span className="jobgo-landing-title-line">자기소개서 · 면접 대비</span>
+          </h1>
           <p className="jobgo-landing-lead">실제 현장의 다양한 역할을 바탕으로, 학생은 스스로 탐색하고 선생님은 깊이 있는 수업을, 학교는 안전한 학습 환경을 만듭니다.</p>
           <div className="jobgo-landing-actions">
             <a className="jobgo-landing-primary" href="https://app.gyo6.kr/school-materials/member-registration-guide">교재 공개<br />체험하기</a>
